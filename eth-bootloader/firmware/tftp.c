@@ -322,7 +322,6 @@ void sendResponse(uint16_t response) {
 #ifdef _DEBUG
   traceln("Tftp: Response sent");
 #endif
-  //FIXME: Reset rx pointer to start
 }
 
 
@@ -359,12 +358,10 @@ uint8_t tftpPoll() {
   if (packetSize) {
     // Process Packet and get TFTP response code
     response = processPacket(packetSize);
-    //Delay to process the packet and let w5100 to ready it's self
-    _delay_ms(250);
     // Send the response
     sendResponse(response);
     //Delay to let the ACK reach it's target
-    _delay_ms(250);
+    _delay_ms(500);
   }
   if ((response == FINAL_ACK) || timedOut()) {
     netWriteReg(REG_S3_CR, CR_CLOSE);
