@@ -1,14 +1,20 @@
 #include <avr/pgmspace.h>
 #include <avr/io.h>
+#include <util/delay.h>
 
-//#define DEBUG
+#define _DEBUG
+#define _DEBUGMORE
+#define _DEBUG_TFTP
+#define _DEBUGMORE_TFTP
+#define _DEBUG_NET
+//#define _DEBUGMORE_NET
+#define _DEBUG_VALD
 
-#ifdef DEBUG
+#ifdef _DEBUG
 #define TRACE(msg) trace(msg)
+void step();
 void trace(char* msg);
-void puthex(uint8_t c);
+void traceln(char* msg);
 void tracenum(uint16_t num);
-#else
-#define TRACE(msg)
-#endif
 void debugInit();
+#endif

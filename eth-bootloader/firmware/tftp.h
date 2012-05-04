@@ -17,8 +17,8 @@
 #define TFTP_ERROR_EXISTS       6
 #define TFTP_ERROR_NO_SUCH_USER 7
 
-
 #define TFTP_PORT 69
+#define TFTP_RANDOM_PORT 46969
 
 void tftpInit();
 uint8_t tftpPoll();

@@ -9,41 +9,64 @@
 
 #include "debug.h"
 
-#ifdef DEBUG
+
+#ifdef _DEBUG
 void debugInit() {
   UCSR0A = 0x22;
   UCSR0B = 0x08;
   //UCSR0C = 0x06; // = reset state
   UBRR0 = 16; // 115k2 baud 8N1
   DDRD = 0x92;
+  PORTB |= _BV(PB1);
 }
+
+void printchar(uint8_t c) {
+  UDR0 = c;
+  while(!(UCSR0A & _BV(UDRE0)));
+}
+
+void printhex(uint8_t c) {
+  c &= 0xf;
+  if(c > 9) c += 7;
+  UDR0 = c + '0';
+  while(!(UCSR0A & _BV(UDRE0)));
+}
+
+/* FIXME: the button is reverse, shortcircuiting when it
+ * is released. Code was modified accordingly */
+uint8_t checkbutton() {
+  /* the button is pressed when BUTTON_BIT is clear */
+  if(bit_is_clear(PINB, PB1)) {
+    _delay_ms(25);
+    if(bit_is_clear(PINB, PB1)) return 0;
+  }
+  return 1;
+}
+
+
+void step() {
+  while(1) if(checkbutton()) break;
+  _delay_ms(250); // Lock input
+}
+
 void trace(char* msg) {
   uint8_t c;
-  while ((c = *msg++)) {
-    UDR0 = c;
-    while (!(UCSR0A & _BV(UDRE0)));
+  if (*msg != "") {
+    while((c = *msg++)) printchar(c);
   }
 }
-void putchar(uint8_t c) {
-  UDR0=c;
-  while(!(UCSR0A & _BV(UDRE0)));
+
+void traceln(char* msg) {
+  trace("\r\n");
+  trace(msg);
 }
-void puthex(uint8_t c) {
-  c &= 0xf;
-  if (c>9) c+=7;
-  UDR0=c+'0';
-  while(!(UCSR0A & _BV(UDRE0)));
-}
+
 void tracenum(uint16_t num) {
-  putchar('0');
-  putchar('x');
-  puthex(num>>12);
-  puthex(num>>8);
-  puthex(num>>4);
-  puthex(num);
-}
-#else
-void debugInit() {
-  ;
+  printchar('0');
+  printchar('x');
+  printhex(num >> 12);
+  printhex(num >> 8);
+  printhex(num >> 4);
+  printhex(num);
 }
 #endif

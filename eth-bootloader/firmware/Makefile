@@ -1,5 +1,5 @@
 # Name: tftp.c
-# Author: .
+# Author: Stelios Tsampas, from work by Denis PEROTTO and Arduino
 # Copyright: Arduino
 # License: GPL http://www.gnu.org/licenses/gpl-2.0.html
 # Project: eboot
@@ -7,32 +7,36 @@
 # Version: 0.1 tftp / flashing functional
 
 # Important make targets:
-# install			: flash bootloader using AVR ISP MkII
-# disasm			: output disassembly of bootloader
-# test				: flash bootloader, then upload an app over tftp
-# readback		: read back flash contents to read.hex
-# testsequence: install bootloader, upload app and read back flash
+# install	: flash bootloader using ArduinoISP
+# disasm	: output disassembly of bootloader
+# test		: flash bootloader, then upload an app over tftp
+# readback	: read back flash contents to read.hex
+# testsequence:	:install bootloader, upload app and read back flash
 
-DEVICE     = atmega328p
-CLOCK      = 16000000
-PROGRAMMER = -c avrispmkII -P usb
-OBJECTS    = main.o net.o tftp.o validate.o announce.o
-APPOBJECTS = app.o
+# ArduinoISP
+ISPTOOL		= -cstk500v1 -C/usr/share/arduino/hardware/tools/avrdude.conf
+ISPPORT		= -P/dev/ttyACM0
+ISPSPEED	= -b19200
+
+# atmega328p
+DEVICE	= atmega328p
+CLOCK	= 16000000
 
 # 2Kword boot block
-FUSES      = -U efuse:w:0x05:m -U hfuse:w:0xd8:m -U lfuse:w:0xff:m
-LDFLAGS = -Ttext=0x7000
+FUSES		= -Uefuse:w:0x05:m -Uhfuse:w:0xd8:m -Ulfuse:w:0xff:m
+#FUSES		= -U efuse:w:0x05:m -U hfuse:w:0xd9:m -U lfuse:w:0xff:m
+LDFLAGS		= -Ttext=0x7000
 
 # 1Kword boot block
-#FUSES      = -U efuse:w:0x05:m -U hfuse:w:0xda:m -U lfuse:w:0xff:m
-#LDFLAGS = -Ttext=0x7800
+#FUSES		= -Uefuse:w:0x05:m -Uhfuse:w:0xda:m -Ulfuse:w:0xff:m
+#LDFLAGS	= -Ttext=0x7800
 
 # 512 word boot block
-#FUSES      = -U efuse:w:0x05:m -U hfuse:w:0xdc:m -U lfuse:w:0xff:m
+#FUSES      = -Uefuse:w:0x05:m -Uhfuse:w:0xdc:m -Ulfuse:w:0xff:m
 #LDFLAGS = -Ttext=0x7C00
 
 # 256 word boot block
-#FUSES      = -U efuse:w:0x05:m -U hfuse:w:0xde:m -U lfuse:w:0xff:m
+#FUSES      = -Uefuse:w:0x05:m -Uhfuse:w:0xde:m -Ulfuse:w:0xff:m
 #LDFLAGS = -Ttext=0x7E00
 
 # Extended Fuse Byte:
@@ -59,17 +63,27 @@ LDFLAGS = -Ttext=0x7000
 #        | +---------------- CKOUT    No clock out
 #        +------------------ CKDIV8   No divide by 8 prescaler
 
-AVRDUDE = avrdude $(PROGRAMMER) -p $(DEVICE)
+PROGRAMMER	= $(ISPTOOL) $(ISPPORT) $(ISPSPEED)
+AVROPTS		= -e -u
+OBJECTS		= main.o net.o tftp.o validate.o debug.o announce.o
+APPOBJECTS	= app.o bigapp.o
+
+AVRDUDE = avrdude $(PROGRAMMER) $(AVROPTS) -p$(DEVICE)
 
 # Compiler options to shrink bootloader size
 #
+
 CCOPT = -Os
+#Interrupts will not be supported in code
 CCOPT += -mno-interrupts
 CCOPT += -mshort-calls
 CCOPT += -fno-inline-small-functions
 CCOPT += -fno-split-wide-types
 CCOPT += -Wl,--relax
-CCOPT += -nostartfiles
+# do not use cause great instability??
+#CCOPT += -nostartfiles
+# call graph visualization
+#CCOPT += -fdump-rtl-expand
 
 # These optimisations have no effect, so turned off
 #
@@ -78,12 +92,15 @@ CCOPT += -nostartfiles
 #CCOPT += -fpack-struct
 #CCOPT += -fno-jump-tables
 
-COMPILE = avr-gcc -Wall $(CCOPT) -DF_CPU=$(CLOCK) -mmcu=$(DEVICE)
+COMPILE = avr-gcc -Wall -Wextra $(CCOPT) -DF_CPU=$(CLOCK) -mmcu=$(DEVICE)
 OBJCOPY = avr-objcopy
 OBJDUMP = avr-objdump
 
 # symbolic targets:
-all:	main.hex app.bin bigapp.bin settings.bin
+#all:	main.hex app.bin bigapp.bin settings.bin
+all:	main.hex app.bin settings.bin bigapp.bin
+#debug:	COMPILE += -D_DEBUG -D_DEBUGMORE
+#debug:	main.hex
 
 %.o: %.c
 	$(COMPILE) -c $< -o $@
@@ -106,18 +123,23 @@ all:	main.hex app.bin bigapp.bin settings.bin
 	rm -f $@
 	$(OBJCOPY) -j .text -j .data -O ihex $< $@
 
-# Programming targets - which are set up for an AVR ISP MkII USB programmer
+# Programming targets - which are set up for ArduinoISP programmer
 flash:	main.hex
-	$(AVRDUDE) -U flash:w:main.hex:i
+	$(AVRDUDE) -Uflash:w:main.hex:i
+
+quickflash:	main.hex
+	$(AVRDUDE) -V -Uflash:w:main.hex:i
 
 fuse:
 	$(AVRDUDE) $(FUSES)
 
 # Xcode uses the Makefile targets "", "clean" and "install"
-install: flash fuse
+install: fuse flash
+
+quickinstall:fuse quickflash
 
 clean:
-	rm -f *.hex *.elf *.bin
+	rm -f *.hex *.elf *.bin *.o
 
 # Bootloader
 #
@@ -150,12 +172,10 @@ map:	main.elf
 cpp:
 	$(COMPILE) -E main.c
 
-test:	install app.bin
-	sleep 3
-	echo "put app.bin\nquit\n" | tftp -e 192.168.1.250
+test:	clean all install
 
 readback:
-	$(AVRDUDE) -U flash:r:read.hex:i
+	$(AVRDUDE) -Uflash:r:read.hex:i
 
 testsequence: clean test readback
 

@@ -9,6 +9,9 @@
 
 #include <stdint.h>
 #include <avr/io.h>
+#include <avr/pgmspace.h>
+
+//const char dummy[469] PROGMEM ={};
 
 int main(void) {
   uint8_t a,b,c;
@@ -31,5 +34,5 @@ int main(void) {
       }
     }
   }
-  return 0;   /* never reached */
+  return(0);   /* never reached */
 }
