@@ -184,7 +184,7 @@ uint8_t processPacket(uint16_t packetSize) {
         // Flash is full - abort with an error before a bootloader overwrite occurs
         // Application is now corrupt, so do not hand over.
 #ifdef _DEBUG
-//    	traceln("Tftp: Flash is full");
+    	traceln("Tftp: Flash is full");
 #endif
         returnCode = ERROR_FULL;
       } else {
@@ -239,7 +239,7 @@ uint8_t processPacket(uint16_t packetSize) {
           // Flash is complete
           // Hand over to application
 #ifdef _DEBUG
-//       	  traceln("Tftp: Flash is complete");
+       	  traceln("Tftp: Flash is complete");
 #endif
           returnCode = FINAL_ACK;
         } else {
@@ -251,14 +251,14 @@ uint8_t processPacket(uint16_t packetSize) {
     // Acknowledgment
     case TFTP_OPCODE_ACK:
 #ifdef _DEBUG
-//      traceln("Tftp: Acknowledge");
+      traceln("Tftp: Acknowledge");
 #endif
       break;
 
     // Error signal
     case TFTP_OPCODE_ERROR:
 #ifdef _DEBUG
-//     traceln("Tftp: Error");
+     traceln("Tftp: Error");
 #endif
       break;
 
@@ -359,8 +359,12 @@ uint8_t tftpPoll() {
   if (packetSize) {
     // Process Packet and get TFTP response code
     response = processPacket(packetSize);
+    //Delay to process the packet and let w5100 to ready it's self
+    _delay_ms(250);
     // Send the response
     sendResponse(response);
+    //Delay to let the ACK reach it's target
+    _delay_ms(250);
   }
   if ((response == FINAL_ACK) || timedOut()) {
     netWriteReg(REG_S3_CR, CR_CLOSE);
