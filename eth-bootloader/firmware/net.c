@@ -17,12 +17,11 @@
 uint8_t registerBuffer[REGISTER_BLOCK_SIZE] = {
   0x80,                           // MR Mode - reset device
 
-  //FIXME: Edited to ITYE network
   // EEPROM block starts here
-  150,140,5,1,                    // GWR Gateway IP Address Register
-  255,255,255,128,                // SUBR Subnet Mask Register
+  192,168,1,1,                    // GWR Gateway IP Address Register
+  255,255,255,0,                  // SUBR Subnet Mask Register
   0x12,0x34,0x45,0x78,0x9A,0xBC,  // SHAR Source Hardware Address Register
-  150,140,5,120,                  // SIPR Source IP Address Register
+  192,168,1,250,                  // SIPR Source IP Address Register
   // EEPROM block ends here
 
   0,0,                            // Reserved locations
@@ -55,7 +54,7 @@ void netWriteReg(uint16_t address, uint8_t value) {
 
 
 uint8_t netReadReg(uint16_t address) {
-//#ifdef _DEBUGMORE
+//#ifdef _DEBUGMORE_NET
 //    traceln(" Net: netReadReg: ");
 //    tracenum(address);
 //#endif
@@ -103,7 +102,7 @@ void netInit() {
       for (;i<18; i++) registerBuffer[i+1] = eeprom_read_byte(EEPROM_DATA+i);
   } else {
 #ifdef _DEBUG_NET
-      traceln(" Net: Using default ip 150.140.5.120");
+      traceln(" Net: Using default ip 192.168.1.250");
 #endif
     ;
   }

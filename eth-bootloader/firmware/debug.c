@@ -51,7 +51,7 @@ void step() {
 
 void trace(char* msg) {
   uint8_t c;
-  if (*msg != "") {
+  if (*msg != '\0') {
     while((c = *msg++)) printchar(c);
   }
 }

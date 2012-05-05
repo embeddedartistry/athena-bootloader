@@ -71,7 +71,7 @@ int main(void) {
 
 #ifdef _DEBUG
   traceln("\r\nMain: TFTP-Bootloader for Arduino Uno, Version 0.1b");
-  step();
+  //step();
 #endif
 
   // Initialize W5100 chip
