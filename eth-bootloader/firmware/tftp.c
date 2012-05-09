@@ -2,7 +2,7 @@
  * Author: .
  * Copyright: Arduino
  * License: GPL http://www.gnu.org/licenses/gpl-2.0.html
- * Project: eboot
+ * Project: ethboot
  * Function: tftp implementation and flasher
  * Version: 0.1 tftp / flashing functional
  */

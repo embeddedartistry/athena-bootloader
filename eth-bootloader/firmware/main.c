@@ -11,6 +11,7 @@
 #include "net.h"
 #include "tftp.h"
 #include "announce.h"
+#include "watchdog.h"
 
 #include "debug.h"
 
@@ -39,6 +40,8 @@ uint8_t timedOut() {
 }
 
 int main(void) {
+  // Watchdog timer disable
+  watchdogInit();
   // Wait to ensure startup
   _delay_ms(300);
 
