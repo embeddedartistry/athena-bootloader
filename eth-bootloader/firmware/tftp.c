@@ -4,7 +4,7 @@
  * License: GPL http://www.gnu.org/licenses/gpl-2.0.html
  * Project: ethboot
  * Function: tftp implementation and flasher
- * Version: 0.1 tftp / flashing functional
+ * Version: 0.1b tftp / flashing functional
  */
 
 #include <avr/boot.h>

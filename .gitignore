@@ -1,0 +1,9 @@
+*.o
+*.c~
+*.h~
+*.bin
+*.hex
+*.elf
+*.kdev*
+*.geany
+eth-bootloader/firmware/tests
