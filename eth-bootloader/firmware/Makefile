@@ -139,7 +139,7 @@ install: fuse flash
 quickinstall:fuse quickflash
 
 clean:
-	rm -f *.hex *.elf *.bin *.o
+	rm -f *.hex *.elf *.bin *.o *.c~ *.h~
 
 # Bootloader
 #
