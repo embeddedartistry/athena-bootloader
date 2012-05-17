@@ -58,8 +58,8 @@ Uploading firmware manually:
 
 Flash codes:
 ------------
-Rapid blinking: Ethernet bootloader is running.
-Slow fading: Test application is running.
+*Rapid blinking: Ethernet bootloader is running.
+*Slow fading: Test application is running.
 
 The bootloader waits for 5 seconds to be flashed. If the board is programmed
 after the 5 seconds the bootloader will timeout and start the user application.
@@ -78,5 +78,5 @@ the test applications do not conform with the validation statements.
 
 Version history
 ---------------
-0.1: First internal release by the Arduino project. Supports uploads on tftp.
-0.2: Tftp upload fixed and working. More debugging support
+*0.1: First internal release by the Arduino project. Supports uploads on tftp.
+*0.2: Tftp upload fixed and working. More debugging support
