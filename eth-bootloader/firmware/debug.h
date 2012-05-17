@@ -2,17 +2,17 @@
 #include <avr/io.h>
 #include <util/delay.h>
 
-#define _DEBUG
-#define _DEBUGMORE
-
-#define _DEBUG_TFTP
-#define _DEBUGMORE_TFTP
-
-#define _DEBUG_NET
+/** general debug **/
+//#define _DEBUG
+//#define _DEBUGMORE
+/** tftp.c **/
+//#define _DEBUG_TFTP
+//#define _DEBUGMORE_TFTP
+/** net.c **/
+//#define _DEBUG_NET
 //#define _DEBUGMORE_NET
-
+/** validate.c **/
 //#define _DEBUG_VALD
-
 
 #ifdef _DEBUG
 #define TRACE(msg) trace(msg)

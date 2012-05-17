@@ -1,18 +1,14 @@
-Ethernet Bootloader
-==================
+TFTP-Bootloader
+===================
 
-Arduino Ethernet board and TFTP Bootloader
-==========================================
+Bootloader for Arduino with Ethernet
+------------------------------------
 
-This is an unfinished TFTP bootloader for the Arduino Ethernet. The developer that was hired to write it never finished it so we are opening it up to the community in the hope that somebody will fix it and make it work.
+This is a work-in-progress bootloader for Arduino Ethernet board and the regular
+Arduino with Ethernet Shield.
 
-It was originally designed to run on both the Arduino Ethernet board and a regular Arduino with Ethernet Shield.
+It is based on previous unfinished work by the Arduino developers as the
+developer that was hired to write it never finished it.
 
-If you intend to work on it, join the Arduino Developers mailing list and let us know.
-
-16 July 2011
-
-
-
-
-
+The bootloader implements a tftp server on the Arduino board and flashing works
+using any regular tftp client.

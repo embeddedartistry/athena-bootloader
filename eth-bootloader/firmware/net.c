@@ -13,24 +13,23 @@
 
 #include "debug.h"
 
-
 uint8_t registerBuffer[REGISTER_BLOCK_SIZE] = {
   0x80,                           // MR Mode - reset device
 
   // EEPROM block starts here
-  192,168,1,1,                    // GWR Gateway IP Address Register
-  255,255,255,0,                  // SUBR Subnet Mask Register
-  0x12,0x34,0x45,0x78,0x9A,0xBC,  // SHAR Source Hardware Address Register
-  192,168,1,250,                  // SIPR Source IP Address Register
+  GW_ADDR,      // GWR Gateway IP Address Register
+  SUBNET_MASK,  // SUBR Subnet Mask Register
+  MAC_ADDR,     // SHAR Source Hardware Address Register
+  IP_ADDR,      // SIPR Source IP Address Register
   // EEPROM block ends here
 
-  0,0,                            // Reserved locations
-  0,                              // IR Interrupt Register
-  0,                              // IMR Interrupt Mask Register
-  0x07,0xd0,                      // RTR Retry Time-value Register
-  0x80,                           // RCR Retry Count Register
-  0x55,                           // RMSR Rx Memory Size Register, 2K per socket
-  0x55                            // TMSR Tx Memory Size Register, 2K per socket
+  0,0,          // Reserved locations
+  0,            // IR Interrupt Register
+  0,            // IMR Interrupt Mask Register
+  0x07,0xd0,    // RTR Retry Time-value Register
+  0x80,         // RCR Retry Count Register
+  0x55,         // RMSR Rx Memory Size Register, 2K per socket
+  0x55          // TMSR Tx Memory Size Register, 2K per socket
 };
 
 void netWriteReg(uint16_t address, uint8_t value) {

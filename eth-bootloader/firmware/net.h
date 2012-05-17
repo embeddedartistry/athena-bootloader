@@ -1,11 +1,17 @@
 #include <avr/io.h>
 #include <avr/eeprom.h>
 
-//Offset of pins inside PORTB
-#define SCK_PIN 5   //PB5  Pin 13
-#define MISO_PIN 4  //PB4  Pin 12
-#define MOSI_PIN 3  //PB3  Pin 11
-#define SS_PIN 2    //PB2  Pin 10
+// Network settings
+#define IP_ADDR     192,168,1,250
+#define SUBNET_MASK 255,255,255,0
+#define GW_ADDR     192,168,1,1
+#define MAC_ADDR    0x12,0x34,0x45,0x78,0x9A,0xBC
+
+// Offset of pins inside PORTB
+#define SCK_PIN   5  //PB5  Pin 13
+#define MISO_PIN  4  //PB4  Pin 12
+#define MOSI_PIN  3  //PB3  Pin 11
+#define SS_PIN    2  //PB2  Pin 10
 
 #define EEPROM_SIG_1 ((uint8_t*)0)
 #define EEPROM_SIG_2 ((uint8_t*)1)
