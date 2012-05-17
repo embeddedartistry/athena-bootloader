@@ -65,7 +65,7 @@ LDFLAGS		= -Ttext=0x7000
 
 PROGRAMMER	= $(ISPTOOL) $(ISPPORT) $(ISPSPEED)
 AVROPTS		= -e -u
-OBJECTS		= main.o net.o tftp.o validate.o debug.o announce.o
+OBJECTS		= main.o net.o tftp.o validate.o debug.o announce.o watchdog.o
 APPOBJECTS	= app.o bigapp.o
 
 AVRDUDE = avrdude $(PROGRAMMER) $(AVROPTS) -p$(DEVICE)

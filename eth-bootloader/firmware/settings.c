@@ -3,7 +3,7 @@
  * Copyright: Arduino
  * License: GPL http://www.gnu.org/licenses/gpl-2.0.html
  * Project: eboot
- * Function: Alter network EEPROM settings
+ * Function: alter network EEPROM settings
  * Version: 0.1 tftp / flashing functional
  */
 
