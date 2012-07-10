@@ -1,6 +1,8 @@
 *.o
 *.c~
 *.h~
+*.java~
+*.class
 *.bin
 *.hex
 *.elf
