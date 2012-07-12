@@ -8,9 +8,11 @@
  */
 
 #include "net.h"
-#include "neteeprom.h"
+#include "pin_defs.h"
 #include "debug.h"
 
+#define SS_LOW() PORTB &= ~_BV(SS)
+#define SS_HIGH() PORTB |= _BV(SS)
 
 uint8_t registerBuffer[REGISTER_BLOCK_SIZE] = {
 	0x80,                           // MR Mode - reset device
@@ -97,9 +99,13 @@ void netInit()
 {
 	// Set up outputs to communicate with W5100 chip
 	// Set pins as output
-	DDRB = _BV(SCK_PIN) | _BV(MOSI_PIN) | _BV(SS_PIN);
+	DDRB = _BV(SCK) | _BV(MOSI) | _BV(SS);
 	// Set pins high
-	PORTB = _BV(SCK_PIN) | _BV(MISO_PIN) | _BV(MOSI_PIN) | _BV(SS_PIN);
+	PORTB = _BV(SCK) | _BV(MISO) | _BV(MOSI) | _BV(SS);
+#ifdef _ARDUINO_ETHERNET
+	DDRB |= _BV(LED);
+	PORTB |= _BV(LED);
+#endif
 
 	// Set up SPI
 	// Set the Double SPI Speed Bit
@@ -109,11 +115,12 @@ void netInit()
 	 * if available from AVR EEPROM (if signature bytes are set)*/
 	if((eeprom_read_byte(EEPROM_SIG_1) == EEPROM_SIG_1_VALUE)
 			&& (eeprom_read_byte(EEPROM_SIG_2) == EEPROM_SIG_2_VALUE)) {
-		uint8_t i = 0;
+
 #ifdef _DEBUG_NET
 		traceln(" Net: Using EEPROM settings");
 #endif
-		for(; i < 18; i++) registerBuffer[i + 1] = eeprom_read_byte(EEPROM_DATA + i);
+		uint8_t i;
+		for(i = 0; i < 18; i++) registerBuffer[i + 1] = eeprom_read_byte(EEPROM_DATA + i);
 	} else {
 #ifdef _DEBUG_NET
 		traceln(" Net: Using default ip 192.168.1.250");
@@ -122,7 +129,7 @@ void netInit()
 	}
 
 	// Configure Wiznet chip
-	uint8_t i = 0;
-	for(; i < REGISTER_BLOCK_SIZE; i++) netWriteReg(i, registerBuffer[i]);
+	uint8_t i;
+	for(i = 0; i < REGISTER_BLOCK_SIZE; i++) netWriteReg(i, registerBuffer[i]);
 }
 

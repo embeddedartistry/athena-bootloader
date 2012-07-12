@@ -25,15 +25,21 @@ void (*appStart)(void) __attribute__((naked)) = 0x0000;
 
 int main(void)
 {
-	uint8_t resetSource;
 	// Watchdog timer disable
-	resetSource = watchdogDisable();
+	watchdogDisable();
 	// Wait to ensure startup
 	_delay_ms(300);
 
+	/* This code makes the following assumptions:
+	 * No interrupts will execute
+	 * SP points to RAMEND
+	 * r1 contains zero
+	 */
 	//cli();
-	asm volatile("clr __zero_reg__");
+	asm volatile ("clr __zero_reg__");
+#ifdef __AVR_ATmega8__
 	SP = RAMEND;  // This is done by hardware reset
+#endif
 
 	// Prescaler=0, ClkIO Period = 62,5ns
 	// TCCR1B values:
@@ -78,7 +84,7 @@ int main(void)
 #endif
 #endif
 
-	_delay_ms(300);
+	_delay_ms(100);
 
 	serialFlashing = FALSE;
 	tftpFlashing = FALSE;

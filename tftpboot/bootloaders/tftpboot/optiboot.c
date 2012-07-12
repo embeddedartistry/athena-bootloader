@@ -7,8 +7,8 @@
  * Version: 0.2 support for USB flashing
  */
 
-// <avr/boot.h> uses sts instructions, but this version uses out instructions.
-// This saves cycles and program memory.
+/* <avr/boot.h> uses sts instructions, but this version uses out instructions.
+ * This saves cycles and program memory. */
 #include "boot.h"
 #include "optiboot.h"
 #include "util.h"

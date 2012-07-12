@@ -3,8 +3,6 @@
 *.h~
 *.java~
 *.class
-*.bin
-*.hex
 *.elf
 *.kdev*
 *.geany

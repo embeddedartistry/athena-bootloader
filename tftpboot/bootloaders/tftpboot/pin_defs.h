@@ -3,7 +3,15 @@
 #define LED_DDR     DDRB
 #define LED_PORT    PORTB
 #define LED_PIN     PINB
-#define LED         PINB5
+#ifdef _ARDUINO_ETHERNET
+#define LED     PINB1  //Pin 9
+#else
+#define LED     PINB5  //Pin 13
+#endif
+#define SCK     PINB5  //Pin 13
+#define MISO    PINB4  //Pin 12
+#define MOSI    PINB3  //Pin 11
+#define SS      PINB2  //Pin 10
 
 /* Ports for soft UART */
 #ifdef SOFT_UART
@@ -17,13 +25,13 @@
 
 #if defined(__AVR_ATmega8__)
 //Name conversion R.Wiersma
-#define UCSR0A	UCSRA
-#define UDR0 		UDR
-#define UDRE0 	UDRE
-#define RXC0		RXC
-#define FE0           FE
-#define TIFR1 	TIFR
-#define WDTCSR	WDTCR
+#define UCSR0A  UCSRA
+#define UDR0    UDR
+#define UDRE0   UDRE
+#define RXC0    RXC
+#define FE0     FE
+#define TIFR1   TIFR
+#define WDTCSR  WDTCR
 #endif
 
 /* Luminet support */

@@ -3,7 +3,7 @@
 #include <util/delay.h>
 
 /** general debug **/
-#define _DEBUG
+//#define _DEBUG
 //#define _DEBUGMORE
 /** debugging steps **/
 //#define DEBUG_STEP

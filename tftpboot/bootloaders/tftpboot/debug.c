@@ -4,11 +4,11 @@
  * License: GPL http://www.gnu.org/licenses/gpl-2.0.html
  * Project: eboot
  * Function: Utility routines for bootloader debugging
- * Version: 0.1b tftp / flashing functional
+ * Version: 0.2 tftp / flashing functional, serial flashing
  */
 
-#include "debug.h"
 #include "serial.h"
+#include "debug.h"
 
 
 #ifdef _DEBUG
@@ -38,7 +38,7 @@ void tracenum(uint16_t num)
 #ifdef _DEBUG_STEP
 void stepInit()
 {
-	PORTB |= _BV(PB1);
+	PORTB |= _BV(PB0);
 }
 
 /* FIXME: the button is reverse, shortcircuiting when it
@@ -46,9 +46,9 @@ void stepInit()
 uint8_t checkbutton()
 {
 	/* the button is pressed when BUTTON_BIT is clear */
-	if(bit_is_clear(PINB, PB1)) {
+	if(bit_is_clear(PINB, PB0)) {
 		_delay_ms(25);
-		if(bit_is_clear(PINB, PB1)) return 0;
+		if(bit_is_clear(PINB, PB0)) return 0;
 	}
 	return 1;
 }
