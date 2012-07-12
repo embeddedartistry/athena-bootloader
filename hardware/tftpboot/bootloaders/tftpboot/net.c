@@ -122,11 +122,12 @@ void netInit()
 		uint8_t i;
 		for(i = 0; i < 18; i++)
 			registerBuffer[i+1] = eeprom_read_byte(EEPROM_DATA+i);
-	} else {
-#ifdef _DEBUG_NET
-		traceln(" Net: Using default ip 192.168.1.250");
-#endif
 	}
+#ifdef _DEBUG_NET
+	else {
+		traceln(" Net: Using default ip 192.168.1.250");
+	}
+#endif
 
 	// Configure Wiznet chip
 	uint8_t i;

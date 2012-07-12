@@ -1,5 +1,4 @@
 /*
-
    WriteNetworkSettings
 
    This sketch writes a set of network configuration settings to EEPROM
@@ -70,4 +69,3 @@ void loop() {
   digitalWrite(13, LOW);
   delay(100);
 }
-

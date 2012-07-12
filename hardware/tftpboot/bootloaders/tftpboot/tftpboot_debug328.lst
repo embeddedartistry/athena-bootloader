@@ -11,11 +11,11 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY
   3 .bss          0000000d  0080034a  0080034a  00000d5a  2**0
                   ALLOC
-  4 .stab         0000327c  00000000  00000000  00000d60  2**2
+  4 .stab         00003294  00000000  00000000  00000d60  2**2
                   CONTENTS, READONLY, DEBUGGING
-  5 .stabstr      000010e4  00000000  00000000  00003fdc  2**0
+  5 .stabstr      000010e4  00000000  00000000  00003ff4  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .comment      00000011  00000000  00000000  000050c0  2**0
+  6 .comment      00000011  00000000  00000000  000050d8  2**0
                   CONTENTS, READONLY
 
 Disassembly of section .text:
@@ -380,7 +380,7 @@ void netInit()
     7230:	ce 2e       	mov	r12, r30
     7232:	e1 e0       	ldi	r30, 0x01	; 1
     7234:	de 2e       	mov	r13, r30
-			&& (eeprom_read_byte(EEPROM_SIG_2) == EEPROM_SIG_2_VALUE)) {
+		&& (eeprom_read_byte(EEPROM_SIG_2) == EEPROM_SIG_2_VALUE)) {
     7236:	e1 2c       	mov	r14, r1
     7238:	f1 2c       	mov	r15, r1
     723a:	19 c0       	rjmp	.+50     	; 0x726e <netInit+0x5e>
@@ -396,12 +396,12 @@ void netInit()
     724e:	72 e0       	ldi	r23, 0x02	; 2
     7250:	e7 2e       	mov	r14, r23
     7252:	f1 2c       	mov	r15, r1
-
 #ifdef _DEBUG_NET
 		traceln(" Net: Using EEPROM settings");
 #endif
 		uint8_t i;
-		for(i = 0; i < 18; i++) registerBuffer[i + 1] = eeprom_read_byte(EEPROM_DATA + i);
+		for(i = 0; i < 18; i++)
+			registerBuffer[i+1] = eeprom_read_byte(EEPROM_DATA+i);
     7254:	c7 01       	movw	r24, r14
     7256:	08 d4       	rcall	.+2064   	; 0x7a68 <__eerd_byte_m328p>
     7258:	f6 01       	movw	r30, r12
@@ -410,17 +410,23 @@ void netInit()
     725e:	ff ef       	ldi	r31, 0xFF	; 255
     7260:	ef 1a       	sub	r14, r31
     7262:	ff 0a       	sbc	r15, r31
+
+#ifdef _DEBUG_NET
+		traceln(" Net: Using EEPROM settings");
+#endif
+		uint8_t i;
+		for(i = 0; i < 18; i++)
     7264:	84 e1       	ldi	r24, 0x14	; 20
     7266:	e8 16       	cp	r14, r24
     7268:	f1 04       	cpc	r15, r1
     726a:	a1 f7       	brne	.-24     	; 0x7254 <netInit+0x44>
     726c:	e0 cf       	rjmp	.-64     	; 0x722e <netInit+0x1e>
-		;
-	}
+#endif
 
 	// Configure Wiznet chip
 	uint8_t i;
-	for(i = 0; i < REGISTER_BLOCK_SIZE; i++) netWriteReg(i, registerBuffer[i]);
+	for(i = 0; i < REGISTER_BLOCK_SIZE; i++)
+		netWriteReg(i, registerBuffer[i]);
     726e:	f6 01       	movw	r30, r12
     7270:	61 91       	ld	r22, Z+
     7272:	6f 01       	movw	r12, r30
@@ -429,10 +435,17 @@ void netInit()
     7278:	ff ef       	ldi	r31, 0xFF	; 255
     727a:	ef 1a       	sub	r14, r31
     727c:	ff 0a       	sbc	r15, r31
+	}
+#endif
+
+	// Configure Wiznet chip
+	uint8_t i;
+	for(i = 0; i < REGISTER_BLOCK_SIZE; i++)
     727e:	8c e1       	ldi	r24, 0x1C	; 28
     7280:	e8 16       	cp	r14, r24
     7282:	f1 04       	cpc	r15, r1
     7284:	a1 f7       	brne	.-24     	; 0x726e <netInit+0x5e>
+		netWriteReg(i, registerBuffer[i]);
 }
     7286:	ff 90       	pop	r15
     7288:	ef 90       	pop	r14
