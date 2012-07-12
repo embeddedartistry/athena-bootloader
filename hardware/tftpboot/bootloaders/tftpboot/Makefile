@@ -143,7 +143,7 @@ debug328_isp: debug328
 debug328_isp: TARGET = debug328
 debug328_isp: MCU_TARGET = atmega328p
 # 512 byte boot, SPIEN
-debug328_isp: HFUSE = D8
+debug328_isp: HFUSE = D0
 # Low power xtal (16MHz) 16KCK/14CK+65ms
 debug328_isp: LFUSE = FF
 # 2.7V brownout
@@ -237,7 +237,7 @@ atmega328_isp: atmega328
 atmega328_isp: TARGET = atmega328
 atmega328_isp: MCU_TARGET = atmega328p
 # 512 byte boot, SPIEN
-atmega328_isp: HFUSE = D8
+atmega328_isp: HFUSE = D0
 # Low power xtal (16MHz) 16KCK/14CK+65ms
 atmega328_isp: LFUSE = FF
 # 2.7V brownout
@@ -255,7 +255,7 @@ atmega328_ether_isp: atmega328_ether
 atmega328_ether_isp: TARGET = atmega328
 atmega328_ether_isp: MCU_TARGET = atmega328p
 # 512 byte boot, SPIEN
-atmega328_ether_isp: HFUSE = D8
+atmega328_ether_isp: HFUSE = D0
 # Low power xtal (16MHz) 16KCK/14CK+65ms
 atmega328_ether_isp: LFUSE = FF
 # 2.7V brownout

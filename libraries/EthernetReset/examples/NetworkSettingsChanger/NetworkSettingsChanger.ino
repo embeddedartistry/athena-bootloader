@@ -15,25 +15,26 @@
 
    Once the settings have been written to EEPROM, an LED on pin 9
    (if connected) will flash rapdily.
-   
-   
+
+
    The default settings used by the bootloader:
-   
+
       192,168,1,254,                       // Gateway IP address
       255,255,255,0,                       // Subnet mask
       0x12,0x34,0x45,0x78,0x9A,0xBC,       // MAC address
       192,168,1,1,                         // Arduino device IP address
 
-   
+
    Settings suitable for link-local use:
-   
+
       169,254,1,1,                         // Gateway IP address
       255,255,0,0,                         // Subnet mask
       0x12,0x34,0x45,0x78,0x9A,0xBC,       // MAC address
       169,254,254,169,                     // Arduino device IP address
-   
+
  */
 
+#include <Arduino.h>
 #include <EEPROM.h>
 
 // TODO: Allow settings to be specified as individual variables.
@@ -42,7 +43,7 @@
 uint8_t NetworkSettings[] = {
   0x55, 0xAA, // Signature
   0xFF, // Image Status (bad)
-  
+
   // EEPROM block starts here
   192,168,1,254,                       // Gateway IP address
   255,255,255,0,                      // Subnet mask
@@ -56,17 +57,17 @@ void setup() {
   for (int address = 0; address < sizeof(NetworkSettings)/sizeof(uint8_t); address++) {
     EEPROM.write(address, NetworkSettings[address]);
   }
-  
-  pinMode(9, OUTPUT);     
+
+  pinMode(13, OUTPUT);
 }
 
 
 void loop() {
   // Blink an LED on pin 9 rapidly if present
   // to indicate the settings have been stored in EEPROM.
-  digitalWrite(9, HIGH);
+  digitalWrite(13, HIGH);
   delay(100);
-  digitalWrite(9, LOW);
+  digitalWrite(13, LOW);
   delay(100);
 }
 

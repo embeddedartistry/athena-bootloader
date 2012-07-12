@@ -3,6 +3,7 @@
 *.h~
 *.ino~
 *.java~
+*.txt~
 *.class
 *.elf
 *.kdev*
