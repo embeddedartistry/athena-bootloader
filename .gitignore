@@ -1,6 +1,7 @@
 *.o
 *.c~
 *.h~
+*.ino~
 *.java~
 *.class
 *.elf

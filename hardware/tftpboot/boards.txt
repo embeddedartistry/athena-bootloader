@@ -1,18 +1,18 @@
 ##############################################################
 
-unotftp.name=Arduino Uno w/ Ethernet Shield TFTP-Bootloader
+unotftp.name=Arduino Uno TFTP-Bootloader
 
 unotftp.upload.protocol=arduino
-unotftp.upload.maximum_size=32256
+unotftp.upload.maximum_size=28672
 unotftp.upload.speed=115200
 
-unotftp.bootloader.low_fuses=0xff
-unotftp.bootloader.high_fuses=0xd8
+unotftp.bootloader.low_fuses=0xFF
+unotftp.bootloader.high_fuses=0xD8
 unotftp.bootloader.extended_fuses=0x05
 unotftp.bootloader.path=tftpboot
-unotftp.bootloader.file=tftpboot_atmega328p.hex
+unotftp.bootloader.file=tftpboot_debug328.hex
 unotftp.bootloader.unlock_bits=0x3F
-unotftp.bootloader.lock_bits=0x0F
+unotftp.bootloader.lock_bits=0x2F
 
 unotftp.build.mcu=atmega328p
 unotftp.build.f_cpu=16000000L
