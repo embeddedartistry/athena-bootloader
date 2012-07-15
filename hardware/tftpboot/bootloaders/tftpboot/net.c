@@ -9,6 +9,7 @@
 
 #include "net.h"
 #include "pin_defs.h"
+#include "serial.h"
 #include "debug.h"
 
 #define SS_LOW() PORTB &= ~_BV(SS)
@@ -97,6 +98,8 @@ void netWriteWord(uint16_t address, uint16_t value)
 
 void netInit()
 {
+	uint8_t i;
+
 	// Set up outputs to communicate with W5100 chip
 	// Set pins as output
 	DDRB = _BV(SCK) | _BV(MOSI) | _BV(SS);
@@ -111,26 +114,46 @@ void netInit()
 	// Set the Double SPI Speed Bit
 	SPSR = (1 << SPI2X);
 
+
 	/* Pull in altered presets
 	 * if available from AVR EEPROM (if signature bytes are set)*/
 	if((eeprom_read_byte(EEPROM_SIG_1) == EEPROM_SIG_1_VALUE)
 		&& (eeprom_read_byte(EEPROM_SIG_2) == EEPROM_SIG_2_VALUE)) {
 
-#ifdef _DEBUG_NET
+//#ifdef _DEBUG_NET
 		traceln(" Net: Using EEPROM settings");
-#endif
-		uint8_t i;
+//#endif
 		for(i = 0; i < 18; i++)
 			registerBuffer[i+1] = eeprom_read_byte(EEPROM_DATA+i);
 	}
-#ifdef _DEBUG_NET
+//#ifdef _DEBUG_NET
 	else {
-		traceln(" Net: Using default ip 192.168.1.250");
+		traceln(" Net: Using built-in settings");
 	}
-#endif
+//#endif
+
+	traceln("\tAddress: ");
+	for(i = 15; i < 19; i++) {
+		tracenum(registerBuffer[i]);
+		if(i != 18) putch(0x2E);
+	}
+	traceln("\t Subnet: ");
+	for(i = 5; i < 9; i++) {
+		tracenum(registerBuffer[i]);
+		if(i != 8) putch(0x2E);
+	}
+	traceln("\tGateway: ");
+	for(i = 1; i < 5; i++) {
+		tracenum(registerBuffer[i]);
+		if(i != 4) putch(0x2E);
+	}
+	traceln("\t    MAC: ");
+	for(i = 9; i < 15; i++) {
+		tracenum(registerBuffer[i]);
+		if(i != 14) putch(0x2E);
+	}
 
 	// Configure Wiznet chip
-	uint8_t i;
 	for(i = 0; i < REGISTER_BLOCK_SIZE; i++)
 		netWriteReg(i, registerBuffer[i]);
 }

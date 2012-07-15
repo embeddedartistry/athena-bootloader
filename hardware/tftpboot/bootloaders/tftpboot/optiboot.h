@@ -32,18 +32,6 @@
 	#define wdtVect (*(uint16_t*)(RAMSTART+SPM_PAGESIZE*2+6))
 #endif
 
-#define TFTPBOOT_MAJVER 0
-#define TFTPBOOT_MINVER 2
-#define MAKESTR(a) #a
-#define MAKEVER(a, b) MAKESTR(a*256+b)
-
-/* FIXME: For some reason avr-gcc 4.7.1 decides that a ".word" has size of 4
- * and a ".byte" has size of 2 registers. For now this will stay like this
- * and change the -Wl,--section-start=.version=0x7ffe in the Makefile to 7ffc */
-asm("  .section .version\n"
-	"tftpboot_version:  .word " MAKEVER(TFTPBOOT_MAJVER, TFTPBOOT_MINVER) "\n"
-	"  .section .text\n");
-
 /* Serial status flag, it is set to TRUE if flashing from
  * serial is currently active */
 uint8_t serialFlashing;

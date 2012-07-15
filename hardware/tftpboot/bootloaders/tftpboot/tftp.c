@@ -96,7 +96,7 @@ uint8_t processPacket()
 	}
 #endif
 
-#ifdef _DEBUG
+#ifdef _DEBUG_TFTP
 	traceln("Tftp: Setting return address");
 #endif
 
@@ -124,15 +124,17 @@ uint8_t processPacket()
 	switch(tftpOpcode) {
 
 		case TFTP_OPCODE_RRQ: // Read request
-#ifdef _DEBUG
+#ifdef _DEBUG_TFTP
 			traceln("Tftp: Read request");
 #endif
 			break;
 
 		case TFTP_OPCODE_WRQ: // Write request
-#ifdef _DEBUG
+//#ifdef _DEBUG_TFTP
 			traceln("Tftp: Write request");
-#endif
+//#endif
+			// Flagging image as invalid since the flashing process has started
+			eeprom_write_byte(EEPROM_IMG_STAT, EEPROM_IMG_BAD_VALUE);
 			netWriteReg(REG_S3_CR, CR_RECV);
 			netWriteReg(REG_S3_CR, CR_CLOSE);
 			do {
@@ -146,13 +148,13 @@ uint8_t processPacket()
 				if(netReadReg(REG_S3_SR) != SOCK_UDP)
 					netWriteReg(REG_S3_CR, CR_CLOSE);
 			} while(netReadReg(REG_S3_SR) != SOCK_UDP);
-#ifdef _DEBUG
+#ifdef _DEBUG_TFTP
 			traceln("Tftp: Changed to port ");
-	#ifdef _TFTP_RANDOM_PORT
+#ifdef _TFTP_RANDOM_PORT
 			tracenum((buffer[4]<<8) | (buffer[5]^0x55));
-	#else
+#else
 			tracenum(TFTP_STATIC_PORT);
-	#endif
+#endif
 #endif
 			lastPacket = 0;
 			returnCode = ACK; // Send back acknowledge for packet 0
@@ -162,20 +164,20 @@ uint8_t processPacket()
 			packetLength = tftpDataLen - (TFTP_OPCODE_SIZE + TFTP_BLOCKNO_SIZE);
 			lastPacket = tftpBlock;
 			writeAddr = (tftpBlock - 1) << 9; // Flash write address for this block
-#ifdef _DEBUG
+//#ifdef _DEBUG_TFTP
 			traceln("Tftp: Data for block ");
 			tracenum(lastPacket);
-#endif
+//#endif
 
 			if((writeAddr + packetLength) > MAX_ADDR) {
 				// Flash is full - abort with an error before a bootloader overwrite occurs
 				// Application is now corrupt, so do not hand over.
-#ifdef _DEBUG
+//#ifdef _DEBUG_TFTP
 				traceln("Tftp: Flash is full");
-#endif
+//#endif
 				returnCode = ERROR_FULL;
 			} else {
-#ifdef _DEBUG
+#ifdef _DEBUG_TFTP
 				traceln("Tftp: Writing data from address ");
 				tracenum(writeAddr);
 #endif
@@ -185,7 +187,7 @@ uint8_t processPacket()
 
 				// Round up packet length to a full flash sector size
 				while(packetLength % SPM_PAGESIZE) packetLength++;
-#ifdef _DEBUG
+#ifdef _DEBUG_TFTP
 				traceln("Tftp: Packet length adjusted to ");
 				tracenum(packetLength);
 #endif
@@ -196,7 +198,7 @@ uint8_t processPacket()
 						/* FIXME: Validity checks. Small programms (under 512 bytes?) don't
 						 * have the the JMP sections and that is why app.bin was failing.
 						 * When flashing big binaries is fixed, uncomment the break below.*/
-#ifndef _DEBUG
+#ifndef _DEBUG_TFTP
 						break;
 #endif
 					}
@@ -227,9 +229,11 @@ uint8_t processPacket()
 				if(packetLength < TFTP_DATA_SIZE) {
 					// Flash is complete
 					// Hand over to application
-#ifdef _DEBUG
+//#ifdef _DEBUG_TFTP
 					traceln("Tftp: Flash is complete");
-#endif
+//#endif
+					// Flag the image as valid since we received the last packet
+					eeprom_write_byte(EEPROM_IMG_STAT, EEPROM_IMG_OK_VALUE);
 					returnCode = FINAL_ACK;
 				} else {
 					returnCode = ACK;
@@ -239,20 +243,20 @@ uint8_t processPacket()
 
 			// Acknowledgment
 		case TFTP_OPCODE_ACK:
-#ifdef _DEBUG
+#ifdef _DEBUG_TFTP
 			traceln("Tftp: Acknowledge");
 #endif
 			break;
 
 			// Error signal
 		case TFTP_OPCODE_ERROR:
-#ifdef _DEBUG
+#ifdef _DEBUG_TFTP
 			traceln("Tftp: Error");
 #endif
 			break;
 
 		default:
-#ifdef _DEBUG
+#ifdef _DEBUG_TFTP
 			traceln("Tftp: Invalid opcode ");
 			tracenum(tftpOpcode);
 #endif
@@ -295,12 +299,12 @@ void sendResponse(uint16_t response)
 			break;
 
 		case ACK:
-#ifdef _DEBUG
+#ifdef _DEBUG_TFTP
 			traceln("Tftp: Sent ACK");
 			/* no break */
 #endif
 		case FINAL_ACK:
-#ifdef _DEBUG
+#ifdef _DEBUG_TFTP
 			if(response == FINAL_ACK) {
 				traceln("Tftp: Sent Final ACK ");
 				tracenum(lastPacket);
@@ -323,9 +327,9 @@ void sendResponse(uint16_t response)
 	netWriteWord(REG_S3_TX_WR0, writePointer - S3_TX_START);
 	netWriteReg(REG_S3_CR, CR_SEND);
 	while(netReadReg(REG_S3_CR));
-#ifdef _DEBUG
+//#ifdef _DEBUG_TFTP
 	traceln("Tftp: Response sent");
-#endif
+//#endif
 }
 
 
@@ -364,12 +368,12 @@ uint8_t tftpPoll()
 		tftpFlashing = TRUE;
 		for(;;) {
 			if(!(netReadReg(REG_S3_IR) & IR_RECV)) break;
-#ifdef _DEBUG
+#ifdef _DEBUG_TFTP
 			traceln("Tftp: S3_IR value before ");
 			tracenum(netReadReg(REG_S3_IR));
 #endif
 			netWriteReg(REG_S3_IR, IR_RECV);
-#ifdef _DEBUG
+#ifdef _DEBUG_TFTP
 			traceln("Tftp: S3_IR value after ");
 			tracenum(netReadReg(REG_S3_IR));
 #endif
@@ -386,7 +390,7 @@ uint8_t tftpPoll()
 		// Send the response
 		sendResponse(response);
 	}
-	if((response==FINAL_ACK) || timedOut()) {
+	if(((response==FINAL_ACK) || timedOut()) && eeprom_read_byte(EEPROM_IMG_STAT)==EEPROM_IMG_OK_VALUE) {
 		netWriteReg(REG_S3_CR, CR_CLOSE);
 		// Complete
 		return(0);

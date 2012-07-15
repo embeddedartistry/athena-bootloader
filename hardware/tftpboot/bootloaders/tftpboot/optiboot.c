@@ -15,6 +15,7 @@
 #include "serial.h"
 #include "watchdog.h"
 #include "stk500.h"
+#include "net.h"
 #include "debug.h"
 
 uint16_t address = 0;
@@ -90,6 +91,8 @@ uint8_t proccessCommand()
 	}
 	/* Write memory, length is big endian and is in bytes */
 	else if(ch == STK_PROG_PAGE) {
+		// This should probably go somewhere but I don't yet know it's place
+		//eeprom_write_byte(EEPROM_IMG_STAT, EEPROM_IMG_BAD_VALUE);
 		// PROGRAM PAGE - we support flash programming only, not EEPROM
 		uint8_t *bufPtr;
 		uint16_t addrPtr;
@@ -172,6 +175,7 @@ uint8_t proccessCommand()
 		// Adaboot no-wait mod
 		//watchdogConfig(WATCHDOG_16MS);
 		verifySpace();
+		eeprom_write_byte(EEPROM_IMG_STAT, EEPROM_IMG_OK_VALUE);
 		putch(STK_OK);
 		return(0);
 	} else {

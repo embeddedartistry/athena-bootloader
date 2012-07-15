@@ -33,8 +33,7 @@ int main(void)
 	/* This code makes the following assumptions:
 	 * No interrupts will execute
 	 * SP points to RAMEND
-	 * r1 contains zero
-	 */
+	 * r1 contains zero */
 	//cli();
 	asm volatile ("clr __zero_reg__");
 #ifdef __AVR_ATmega8__
@@ -53,9 +52,13 @@ int main(void)
 
 	//Initialize UART communication
 	serialInit();
-#ifdef _DEBUG
-	traceln("\r\nMain: TFTP-Bootloader for Arduino Uno, Version 0.2");
+//#ifdef _DEBUG
+#ifdef _ARDUINO_ETHERNET
+	traceln("\r\nMain: Arduino Ethernet with tftpboot, Version 0.3");
+#else
+	traceln("\r\nMain: Arduino Uno with tftpboot, Version 0.3");
 #endif
+//#endif
 
 #ifdef _DEBUG_STEP
 	stepInit();
@@ -64,15 +67,15 @@ int main(void)
 
 	// Initialize W5100 chip
 	netInit();
-#ifdef _DEBUG
+//#ifdef _DEBUG
 	traceln("Main: Net init done");
-#endif
+//#endif
 
 	// Attempt tftp download
 	tftpInit();
-#ifdef _DEBUG
+//#ifdef _DEBUG
 	traceln("Main: TFTP init done");
-#endif
+//#endif
 
 /* This code is to be used with the java-client inherited from the
  * Arduino project. We don't support that yet and it adds about
@@ -108,9 +111,9 @@ int main(void)
 	}
 
 	/* Exit to foreground application */
-#ifdef _DEBUG
+//#ifdef _DEBUG
 	traceln("Main: Start user app");
-#endif
+//#endif
 	appStart();
 	return(0); /* never reached */
 }

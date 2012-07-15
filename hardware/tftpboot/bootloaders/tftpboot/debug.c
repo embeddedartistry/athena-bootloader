@@ -11,7 +11,7 @@
 #include "debug.h"
 
 
-#ifdef _DEBUG
+//#ifdef _DEBUG
 void trace(char *msg)
 {
 	uint8_t c;
@@ -20,11 +20,13 @@ void trace(char *msg)
 	}
 }
 
+
 void traceln(char *msg)
 {
 	trace("\r\n");
 	trace(msg);
 }
+
 
 void tracenum(uint16_t num)
 {
@@ -35,11 +37,13 @@ void tracenum(uint16_t num)
 	puthex(num);
 }
 
+
 #ifdef _DEBUG_STEP
 void stepInit()
 {
 	PORTB |= _BV(PB0);
 }
+
 
 /* FIXME: the button is reverse, shortcircuiting when it
  * is released. Code was modified accordingly */
@@ -53,10 +57,11 @@ uint8_t checkbutton()
 	return 1;
 }
 
+
 void step()
 {
 	while(1) if(checkbutton()) break;
 	_delay_ms(250); // Lock input
 }
 #endif
-#endif
+//#endif

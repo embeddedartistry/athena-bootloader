@@ -18,7 +18,7 @@
 /** optiboot.c **/
 //#define _DEBUG_OPTI
 
-#ifdef _DEBUG
+//#ifdef _DEBUG
 void trace(char *msg);
 void traceln(char *msg);
 void tracenum(uint16_t num);
@@ -26,4 +26,4 @@ void tracenum(uint16_t num);
 void stepInit();
 void step();
 #endif
-#endif
+//#endif
