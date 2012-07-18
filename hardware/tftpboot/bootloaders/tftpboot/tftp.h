@@ -1,4 +1,3 @@
-#include <avr/boot.h>
 #include <avr/pgmspace.h>
 
 /** Define this if you want random port generation */
@@ -35,7 +34,7 @@
 #define INVALID_IMAGE 5
 
 
-///For 328 with 2Kword bootloader
+/** For 328 with 2Kword bootloader */
 #define MAX_ADDR          0x7000
 #define TFTP_DATA_SIZE    512
 #define UDP_HEADER_SIZE   8

@@ -15,7 +15,7 @@
 #include "serial.h"
 #include "watchdog.h"
 #include "stk500.h"
-#include "net.h"
+#include "neteeprom.h"
 #include "debug.h"
 
 uint16_t address = 0;
@@ -94,7 +94,8 @@ uint8_t proccessCommand()
 		// This should probably go somewhere but I don't yet know it's place
 		//eeprom_write_byte(EEPROM_IMG_STAT, EEPROM_IMG_BAD_VALUE);
 		// PROGRAM PAGE - we support flash programming only, not EEPROM
-		uint8_t *bufPtr;
+		uint8_t  buff[256];
+		uint8_t* bufPtr;
 		uint16_t addrPtr;
 
 		getch();			/* getlen() */
@@ -102,7 +103,7 @@ uint8_t proccessCommand()
 		getch();
 
 		// If we are in RWW section, immediately start page erase
-		if(address < NRWWSTART) __boot_page_erase_short((uint16_t)(void *)address);
+		if(address < NRWWSTART) boot_page_erase((uint16_t)(void *)address);
 
 		// While that is going on, read in page contents
 		bufPtr = buff;
@@ -111,7 +112,7 @@ uint8_t proccessCommand()
 
 		// If we are in NRWW section, page erase has to be delayed until now.
 		// Todo: Take RAMPZ into account
-		if(address >= NRWWSTART) __boot_page_erase_short((uint16_t)(void *)address);
+		if(address >= NRWWSTART) boot_page_erase((uint16_t)(void *)address);
 
 		// Read command terminator, start reply
 		verifySpace();
@@ -128,12 +129,12 @@ uint8_t proccessCommand()
 			uint16_t a;
 			a = *bufPtr++;
 			a |= (*bufPtr++) << 8;
-			__boot_page_fill_short((uint16_t)(void *)addrPtr, a);
+			boot_page_fill((uint16_t)(void *)addrPtr, a);
 			addrPtr += 2;
 		} while(--ch);
 
 		// Write from programming buffer
-		__boot_page_write_short((uint16_t)(void *)address);
+		boot_page_write((uint16_t)(void *)address);
 		boot_spm_busy_wait();
 
 #if defined(RWWSRE)

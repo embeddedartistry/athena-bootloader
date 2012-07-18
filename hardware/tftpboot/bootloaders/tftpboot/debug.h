@@ -5,6 +5,12 @@
 /** general debug **/
 //#define _DEBUG
 //#define _DEBUGMORE
+#ifdef _DEBUGMORE
+	#define _DEBUG
+#endif
+#ifdef _DEBUG
+	#define _VERBOSE
+#endif
 /** debugging steps **/
 //#define DEBUG_STEP
 /** tftp.c **/
@@ -18,12 +24,15 @@
 /** optiboot.c **/
 //#define _DEBUG_OPTI
 
-//#ifdef _DEBUG
+#ifdef _VERBOSE
 void trace(char *msg);
 void traceln(char *msg);
-void tracenum(uint16_t num);
+void tracehex(uint16_t num, uint8_t len);
+void tracedec(uint16_t num, uint8_t len);
+#define tracenum(num) tracehex(num, 4)
+#define tracenet(num) tracehex(num, 2)
 #ifdef _DEBUG_STEP
 void stepInit();
 void step();
 #endif
-//#endif
+#endif

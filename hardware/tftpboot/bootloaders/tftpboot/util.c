@@ -14,7 +14,7 @@ uint16_t lastTimer1;
 uint16_t tick = 0;
 
 
-void updateLed()
+void updateLed(void)
 {
 	uint16_t nextTimer1 = TCNT1;
 	if(nextTimer1 & 0x400) LED_PORT ^= _BV(LED); // Led pin high
@@ -23,7 +23,12 @@ void updateLed()
 	lastTimer1 = nextTimer1;
 }
 
-uint8_t timedOut()
+void resetTick(void)
+{
+	tick = 0;
+}
+
+uint8_t timedOut(void)
 {
 	// Never timeout if there is no code in Flash
 	if(pgm_read_word(0x0000) == 0xFFFF) return(0);

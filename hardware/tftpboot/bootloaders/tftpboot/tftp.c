@@ -7,7 +7,9 @@
  * Version: 0.2 tftp / flashing functional
  */
 
+#include "boot.h"
 #include "util.h"
+#include "neteeprom.h"
 #include "net.h"
 #include "w5100_reg.h"
 #include "tftp.h"
@@ -18,22 +20,21 @@
 
 /** Opcode?: tftp operation is unsupported. The bootloader only supports 'put' */
 #define TFTP_OPCODE_ERROR_LEN 12
-const unsigned char tftp_opcode_error_packet[] PROGMEM = "\12"   "\0\5"  "\0\0"  "Opcode?";
+const unsigned char tftp_opcode_error_packet[] PROGMEM = "\12" "\0\5" "\0\0" "Opcode?";
 
 /** Full: Binary image file is larger than the available space. */
 #define TFTP_FULL_ERROR_LEN 9
-const unsigned char tftp_full_error_packet[] PROGMEM = "\x09"  "\0\5"  "\0\3"  "Full";
+const unsigned char tftp_full_error_packet[] PROGMEM = "\x09" "\0\5" "\0\3" "Full";
 
 /** General catch-all error for unknown errors */
 #define TFTP_UNKNOWN_ERROR_LEN 10
-const unsigned char tftp_unknown_error_packet[] PROGMEM = "\10"   "\0\5"  "\0\0"  "Error";
+const unsigned char tftp_unknown_error_packet[] PROGMEM = "\10" "\0\5" "\0\0" "Error";
 
 /** Invalid image file: Doesn't look like a binary image file */
 #define TFTP_INVALID_IMAGE 23
-const unsigned char tftp_invalid_image_packet[] PROGMEM = "\23"   "\0\5"  "\0\0"  "Invalid image file";
+const unsigned char tftp_invalid_image_packet[] PROGMEM = "\23" "\0\5" "\0\0" "Invalid image file";
 
 uint16_t lastPacket = 0;
-//uint8_t downloadStarted=0;
 
 
 #ifdef _DEBUG_TFTP
@@ -130,9 +131,9 @@ uint8_t processPacket()
 			break;
 
 		case TFTP_OPCODE_WRQ: // Write request
-//#ifdef _DEBUG_TFTP
+#ifdef _VERBOSE
 			traceln("Tftp: Write request");
-//#endif
+#endif
 			// Flagging image as invalid since the flashing process has started
 			eeprom_write_byte(EEPROM_IMG_STAT, EEPROM_IMG_BAD_VALUE);
 			netWriteReg(REG_S3_CR, CR_RECV);
@@ -164,17 +165,17 @@ uint8_t processPacket()
 			packetLength = tftpDataLen - (TFTP_OPCODE_SIZE + TFTP_BLOCKNO_SIZE);
 			lastPacket = tftpBlock;
 			writeAddr = (tftpBlock - 1) << 9; // Flash write address for this block
-//#ifdef _DEBUG_TFTP
+#ifdef _VERBOSE
 			traceln("Tftp: Data for block ");
 			tracenum(lastPacket);
-//#endif
+#endif
 
 			if((writeAddr + packetLength) > MAX_ADDR) {
 				// Flash is full - abort with an error before a bootloader overwrite occurs
 				// Application is now corrupt, so do not hand over.
-//#ifdef _DEBUG_TFTP
+#ifdef _VERBOSE
 				traceln("Tftp: Flash is full");
-//#endif
+#endif
 				returnCode = ERROR_FULL;
 			} else {
 #ifdef _DEBUG_TFTP
@@ -229,9 +230,9 @@ uint8_t processPacket()
 				if(packetLength < TFTP_DATA_SIZE) {
 					// Flash is complete
 					// Hand over to application
-//#ifdef _DEBUG_TFTP
+#ifdef _VERBOSE
 					traceln("Tftp: Flash is complete");
-//#endif
+#endif
 					// Flag the image as valid since we received the last packet
 					eeprom_write_byte(EEPROM_IMG_STAT, EEPROM_IMG_OK_VALUE);
 					returnCode = FINAL_ACK;
@@ -327,9 +328,9 @@ void sendResponse(uint16_t response)
 	netWriteWord(REG_S3_TX_WR0, writePointer - S3_TX_START);
 	netWriteReg(REG_S3_CR, CR_SEND);
 	while(netReadReg(REG_S3_CR));
-//#ifdef _DEBUG_TFTP
+#ifdef _VERBOSE
 	traceln("Tftp: Response sent");
-//#endif
+#endif
 }
 
 
@@ -352,6 +353,9 @@ void tftpInit()
 			netWriteReg(REG_S3_CR, CR_CLOSE);
 		// If socket correctly opened continue
 	} while(netReadReg(REG_S3_SR) != SOCK_UDP);
+#ifdef _VERBOSE
+	traceln("Tftp: TFTP server init done");
+#endif
 }
 
 
@@ -365,21 +369,17 @@ uint8_t tftpPoll()
 	uint16_t packetSize = netReadWord(REG_S3_RX_RSR0);
 
 	if(packetSize) {
+		if(!tftpFlashing) resetTick();
 		tftpFlashing = TRUE;
+
 		for(;;) {
 			if(!(netReadReg(REG_S3_IR) & IR_RECV)) break;
-#ifdef _DEBUG_TFTP
-			traceln("Tftp: S3_IR value before ");
-			tracenum(netReadReg(REG_S3_IR));
-#endif
+
 			netWriteReg(REG_S3_IR, IR_RECV);
-#ifdef _DEBUG_TFTP
-			traceln("Tftp: S3_IR value after ");
-			tracenum(netReadReg(REG_S3_IR));
-#endif
+
 			//FIXME: is this right after all? smaller delay but
 			//still a delayand it still breaks occasionally
-			_delay_ms(200);
+			_delay_ms(400);
 		}
 		// Process Packet and get TFTP response code
 #ifdef _DEBUG_TFTP
@@ -390,7 +390,7 @@ uint8_t tftpPoll()
 		// Send the response
 		sendResponse(response);
 	}
-	if(((response==FINAL_ACK) || timedOut()) && eeprom_read_byte(EEPROM_IMG_STAT)==EEPROM_IMG_OK_VALUE) {
+	if(response==FINAL_ACK) {
 		netWriteReg(REG_S3_CR, CR_CLOSE);
 		// Complete
 		return(0);

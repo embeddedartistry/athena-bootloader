@@ -1,4 +1,3 @@
-#include <avr/boot.h>
 #include <avr/pgmspace.h>
 #include <string.h>
 

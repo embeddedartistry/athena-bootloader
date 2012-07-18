@@ -11,7 +11,7 @@
 #include "debug.h"
 
 
-//#ifdef _DEBUG
+#ifdef _VERBOSE
 void trace(char *msg)
 {
 	uint8_t c;
@@ -20,21 +20,19 @@ void trace(char *msg)
 	}
 }
 
-
 void traceln(char *msg)
 {
 	trace("\r\n");
 	trace(msg);
 }
 
-
-void tracenum(uint16_t num)
+void tracehex(uint16_t num, uint8_t len)
 {
 	trace("0x");
-	puthex(num >> 12);
-	puthex(num >> 8);
-	puthex(num >> 4);
-	puthex(num);
+	while(len > 0) {
+		puthex(num >> (4*(len-1)));
+		len--;
+	}
 }
 
 
@@ -42,6 +40,7 @@ void tracenum(uint16_t num)
 void stepInit()
 {
 	PORTB |= _BV(PB0);
+	traceln(" Dbg: Button stepping enabled");
 }
 
 
@@ -64,4 +63,4 @@ void step()
 	_delay_ms(250); // Lock input
 }
 #endif
-//#endif
+#endif

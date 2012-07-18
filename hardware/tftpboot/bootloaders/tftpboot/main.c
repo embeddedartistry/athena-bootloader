@@ -7,11 +7,13 @@
  * Version: 0.2 support for USB flashing
  */
 
+#include "boot.h"
 #include "util.h"
 #include "net.h"
 #include "tftp.h"
 #include "serial.h"
 #include "optiboot.h"
+#include "neteeprom.h"
 #include "watchdog.h"
 #include "debug.h"
 
@@ -50,44 +52,35 @@ int main(void)
 	// Set up Timer 1 as timekeeper for LED flashing
 	TCCR1B = _BV(CS12) | _BV(CS10); // Same thing as TCCR1B = 0x05;
 
+
 	//Initialize UART communication
 	serialInit();
-//#ifdef _DEBUG
+#ifdef _VERBOSE
 #ifdef _ARDUINO_ETHERNET
 	traceln("\r\nMain: Arduino Ethernet with tftpboot, Version 0.3");
 #else
 	traceln("\r\nMain: Arduino Uno with tftpboot, Version 0.3");
 #endif
-//#endif
+#endif
 
 #ifdef _DEBUG_STEP
 	stepInit();
-	traceln("Main: Button stepping enabled");
 #endif
 
 	// Initialize W5100 chip
 	netInit();
-//#ifdef _DEBUG
-	traceln("Main: Net init done");
-//#endif
 
-	// Attempt tftp download
+	// Initialize the UDP socket for tftp
 	tftpInit();
-//#ifdef _DEBUG
-	traceln("Main: TFTP init done");
-//#endif
 
 /* This code is to be used with the java-client inherited from the
  * Arduino project. We don't support that yet and it adds about
  * 600 bytes to the binary. So off it goes */
 #ifdef _ANNOUNCE
 	announceInit();
-#ifdef _DEBUG
-	traceln("Main: Network broadcast init done");
-#endif
 #endif
 
-	_delay_ms(100);
+	_delay_ms(300);
 
 	serialFlashing = FALSE;
 	tftpFlashing = FALSE;
@@ -101,19 +94,30 @@ int main(void)
 		if(!tftpFlashing)
 			/* If flashing is done exit */
 			if(serialPoll() == 0) break;
-
 		/* As explained above this goes out */
 #ifdef _ANNOUNCE
 		announcePoll();
 #endif
+		if(timedOut()) {
+			if(tftpFlashing == TRUE){
+				tftpFlashing = FALSE;
+				// Erase the first page because download is corrupted
+				boot_page_erase_safe(0);
+				// Reset the timeout counter
+				resetTick();
+				// Reinitialize TFTP
+				tftpInit();
+			} else if(eeprom_read_byte(EEPROM_IMG_STAT) == EEPROM_IMG_OK_VALUE)
+				break;
+		}
 		/* Blink the notification led */
 		updateLed();
 	}
 
 	/* Exit to foreground application */
-//#ifdef _DEBUG
+#ifdef _VERBOSE
 	traceln("Main: Start user app");
-//#endif
+#endif
 	appStart();
 	return(0); /* never reached */
 }

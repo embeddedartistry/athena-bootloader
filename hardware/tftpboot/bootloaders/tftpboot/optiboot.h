@@ -1,5 +1,4 @@
 #include <inttypes.h>
-#include <avr/boot.h>
 #include <avr/io.h>
 #include <avr/pgmspace.h>
 
@@ -23,10 +22,14 @@
 	#define NRWWSTART (0x1800)
 #endif
 
-/* C zero initialises all global variables. However, that requires */
-/* These definitions are NOT zero initialised, but that doesn't matter */
-/* This allows us to drop the zero init code, saving us memory */
-#define buff    ((uint8_t*)(RAMSTART))
+/* This define cause the bootloader to hang during flashing
+ * so it has been replaced with an uint8_t array of size 256
+ * inside the programming phase */
+//#define buff    ((uint8_t*)(RAMSTART))
+
+/* C zero initialises all global variables. However, that requires
+ * These definitions are NOT zero initialised, but that doesn't matter
+ * This allows us to drop the zero init code, saving us memory */
 #ifdef VIRTUAL_BOOT_PARTITION
 	#define rstVect (*(uint16_t*)(RAMSTART+SPM_PAGESIZE*2+4))
 	#define wdtVect (*(uint16_t*)(RAMSTART+SPM_PAGESIZE*2+6))

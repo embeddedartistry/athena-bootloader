@@ -19,7 +19,9 @@ void serialInit()
 	UCSR0B = _BV(RXEN0) | _BV(TXEN0);
 	UCSR0C = _BV(UCSZ00) | _BV(UCSZ01);
 	UBRR0L = (uint8_t)((F_CPU + BAUD_RATE * 4L) / (BAUD_RATE * 8L) - 1);
+#ifdef _VERBOSE
 	DDRD = 0x92;
+#endif
 }
 
 

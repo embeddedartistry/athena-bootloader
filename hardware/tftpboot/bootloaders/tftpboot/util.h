@@ -23,5 +23,6 @@
 //     "tftpboot_version: .word " MAKEVER(TFTPBOOT_MAJVER, TFTPBOOT_MINVER) "\n"
 //     "  .section .text\n");
 
-void updateLed();
-uint8_t timedOut();
+void updateLed(void);
+void resetTick(void);
+uint8_t timedOut(void);

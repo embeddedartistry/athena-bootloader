@@ -244,15 +244,15 @@ atmega328_isp: LFUSE = FF
 atmega328_isp: EFUSE = 05
 atmega328_isp: isp
 
-atmega328_ether: TARGET = atmega328
+atmega328_ether: TARGET = atmega328_ether
 atmega328_ether: MCU_TARGET = atmega328p
 atmega328_ether: CFLAGS += '-D_ARDUINO_ETHERNET' '-DBAUD_RATE=115200'
 atmega328_ether: AVR_FREQ = 16000000L
 atmega328_ether: LDSECTIONS  = -Wl,--section-start=.text=0x7000 -Wl,--section-start=.version=0x7ffe
-atmega328_ether: $(PROGRAM)_atmega328.hex
-atmega328_ether: $(PROGRAM)_atmega328.lst
+atmega328_ether: $(PROGRAM)_atmega328_ether.hex
+atmega328_ether: $(PROGRAM)_atmega328_ether.lst
 atmega328_ether_isp: atmega328_ether
-atmega328_ether_isp: TARGET = atmega328
+atmega328_ether_isp: TARGET = atmega328_ether
 atmega328_ether_isp: MCU_TARGET = atmega328p
 # 512 byte boot, SPIEN
 atmega328_ether_isp: HFUSE = D8

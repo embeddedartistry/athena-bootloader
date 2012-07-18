@@ -1,11 +1,7 @@
+*~
 *.o
-*.c~
-*.h~
-*.ino~
-*.java~
-*.txt~
 *.class
 *.elf
 *.kdev*
 *.geany
-eth-bootloader/firmware/tests
+

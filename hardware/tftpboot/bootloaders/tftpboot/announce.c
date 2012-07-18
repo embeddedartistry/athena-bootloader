@@ -14,6 +14,7 @@
 #include "validate.h"
 #include "debug.h"
 
+
 #ifdef _ANNOUNCE
 uint16_t readPointer;
 char *hex = "0123456789ABCDEF";
@@ -117,6 +118,10 @@ void announceInit()
 		if(netReadReg(REG_S2_SR) != SOCK_UDP)
 			netWriteReg(REG_S2_CR, CR_CLOSE);
 	} while(netReadReg(REG_S2_SR) != SOCK_UDP);
+
+#ifdef _VERBOSE
+	traceln(" Ann: Network broadcast init done");
+#endif
 }
 
 void announcePoll()
