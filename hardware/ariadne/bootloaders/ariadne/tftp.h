@@ -1,11 +1,13 @@
+#ifndef tftp_h
+#define tftp_h
+
 #include <avr/pgmspace.h>
 
-/** Define this if you want random port generation */
-//#define _TFTP_RANDOM_PORT
-
-/** TFTP port settings */
+/* TFTP port settings */
 #define TFTP_PORT 69
 #define TFTP_STATIC_PORT 46969
+/* Define this if you want random port generation */
+//#define _TFTP_RANDOM_PORT
 
 /** TFTP Opcode values from RFC 1350 */
 #define TFTP_OPCODE_RRQ   1
@@ -48,6 +50,11 @@
  * tftp is currently active */
 uint8_t tftpFlashing;
 
+#ifndef _TFTP_RANDOM_PORT
+uint16_t tftpPort;
+#endif
+
 void tftpInit();
 uint8_t tftpPoll();
 
+#endif

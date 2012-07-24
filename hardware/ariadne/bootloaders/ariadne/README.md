@@ -48,7 +48,7 @@ Uploading firmware manually:
 1.  Check the target board is powered, and connected to the computer ethernet.
 2.  Verify the computer network settings: Static IP of 192.168.1.1, Subnet of 255.255.255.0.
 3.  In a console window: tftp 192.168.1.250
-4.  At the tftp> prompt: Make sure the tftp client is in octet mode using the 
+4.  At the tftp> prompt: Make sure the tftp client is in octet mode using the
     mode octet" command. Here you can also put the "trace" and "verbose" commands
     for some more output.
 5.  Push reset button to start the bootloader. The LED will blink rapidly.

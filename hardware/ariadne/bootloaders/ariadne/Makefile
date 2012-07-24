@@ -21,7 +21,7 @@
 # etc...
 
 # program name should not be changed...
-PROGRAM    = tftpboot
+PROGRAM    = ariadne
 
 # The default behavior is to build using tools that are in the users
 # current path variables, but we can also build using an installed
@@ -35,8 +35,8 @@ PROGRAM    = tftpboot
 
 # enter the parameters for the avrdude isp tool
 # for now they default to the arduinoISP on linux
-ISPTOOL	   = stk500v1
-ISPPORT	   = /dev/ttyACM0
+ISPTOOL	   = usbtiny
+ISPPORT	   = usb
 ISPSPEED   = -b19200
 
 MCU_TARGET = atmega328p
@@ -194,7 +194,7 @@ SIZE    = $(GCCROOT)avr-size
 # # backward compatibility of makefile
 # atmega168: TARGET = atmega168
 # atmega168: MCU_TARGET = atmega168
-# atmega168: CFLAGS += '-DLED_START_FLASHES=3' '-DBAUD_RATE=115200'
+# atmega168: CFLAGS += '-DBAUD_RATE=115200'
 # atmega168: AVR_FREQ = 16000000L
 # atmega168: $(PROGRAM)_atmega168.hex
 # atmega168: $(PROGRAM)_atmega168.lst
@@ -210,7 +210,7 @@ SIZE    = $(GCCROOT)avr-size
 #
 # diecimila: TARGET = diecimila
 # diecimila: MCU_TARGET = atmega168
-# diecimila: CFLAGS += '-DLED_START_FLASHES=3' '-DBAUD_RATE=115200'
+# diecimila: CFLAGS += '-DBAUD_RATE=115200'
 # diecimila: AVR_FREQ = 16000000L
 # diecimila: $(PROGRAM)_diecimila.hex
 # diecimila: $(PROGRAM)_diecimila.lst
@@ -236,7 +236,7 @@ atmega328: $(PROGRAM)_atmega328.lst
 atmega328_isp: atmega328
 atmega328_isp: TARGET = atmega328
 atmega328_isp: MCU_TARGET = atmega328p
-# 512 byte boot, SPIEN
+# 4096 byte boot, SPIEN
 atmega328_isp: HFUSE = D8
 # Low power xtal (16MHz) 16KCK/14CK+65ms
 atmega328_isp: LFUSE = FF
@@ -244,23 +244,23 @@ atmega328_isp: LFUSE = FF
 atmega328_isp: EFUSE = 05
 atmega328_isp: isp
 
-atmega328_ether: TARGET = atmega328_ether
-atmega328_ether: MCU_TARGET = atmega328p
-atmega328_ether: CFLAGS += '-D_ARDUINO_ETHERNET' '-DBAUD_RATE=115200'
-atmega328_ether: AVR_FREQ = 16000000L
-atmega328_ether: LDSECTIONS  = -Wl,--section-start=.text=0x7000 -Wl,--section-start=.version=0x7ffe
-atmega328_ether: $(PROGRAM)_atmega328_ether.hex
-atmega328_ether: $(PROGRAM)_atmega328_ether.lst
-atmega328_ether_isp: atmega328_ether
-atmega328_ether_isp: TARGET = atmega328_ether
-atmega328_ether_isp: MCU_TARGET = atmega328p
-# 512 byte boot, SPIEN
-atmega328_ether_isp: HFUSE = D8
+atmega328_ethernet: TARGET = atmega328_ethernet
+atmega328_ethernet: MCU_TARGET = atmega328p
+atmega328_ethernet: CFLAGS += '-D_ARDUINO_ETHERNET' '-DBAUD_RATE=115200'
+atmega328_ethernet: AVR_FREQ = 16000000L
+atmega328_ethernet: LDSECTIONS  = -Wl,--section-start=.text=0x7000 -Wl,--section-start=.version=0x7ffe
+atmega328_ethernet: $(PROGRAM)_atmega328_ethernet.hex
+atmega328_ethernet: $(PROGRAM)_atmega328_ethernet.lst
+atmega328_ethernet_isp: atmega328_ethernet
+atmega328_ethernet_isp: TARGET = atmega328_ethernet
+atmega328_ethernet_isp: MCU_TARGET = atmega328p
+# 4096 byte boot, SPIEN
+atmega328_ethernet_isp: HFUSE = D8
 # Low power xtal (16MHz) 16KCK/14CK+65ms
-atmega328_ether_isp: LFUSE = FF
+atmega328_ethernet_isp: LFUSE = FF
 # 2.7V brownout
-atmega328_ether_isp: EFUSE = 05
-atmega328_ether_isp: isp
+atmega328_ethernet_isp: EFUSE = 05
+atmega328_ethernet_isp: isp
 
 
 # # Sanguino has a minimum boot size of 1024 bytes, so enable extra functions

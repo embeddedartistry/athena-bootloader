@@ -11,6 +11,7 @@
 #include "neteeprom.h"
 #include "pin_defs.h"
 #include "serial.h"
+#include "tftp.h"
 #include "debug.h"
 
 #define SS_LOW() PORTB &= ~_BV(SS)
@@ -35,6 +36,7 @@ uint8_t registerBuffer[REGISTER_BLOCK_SIZE] = {
 	0x55          // TMSR Tx Memory Size Register, 2K per socket
 };
 
+
 void netWriteReg(uint16_t address, uint8_t value)
 {
 #ifdef _DEBUGMORE_NET
@@ -56,7 +58,7 @@ void netWriteReg(uint16_t address, uint8_t value)
 	SPDR = value;
 	while(!(SPSR & _BV(SPIF)));
 	SS_HIGH();
-	SPCR = 0; // Turn of SPI
+	SPCR = 0; // Turn off SPI
 }
 
 uint8_t netReadReg(uint16_t address)
@@ -115,17 +117,23 @@ void netInit()
 	// Set the Double SPI Speed Bit
 	SPSR = (1 << SPI2X);
 
-
+#ifndef _TFTP_RANDOM_PORT
+	tftpPort = TFTP_STATIC_PORT;
+#endif
 	/* Pull in altered presets
 	 * if available from AVR EEPROM (if signature bytes are set)*/
 	if((eeprom_read_byte(EEPROM_SIG_1) == EEPROM_SIG_1_VALUE)
 		&& (eeprom_read_byte(EEPROM_SIG_2) == EEPROM_SIG_2_VALUE)) {
 
+		for(i = 0; i < EEPROM_SETTINGS_SIZE; i++)
+			registerBuffer[i+1] = eeprom_read_byte(EEPROM_DATA+i);
+#ifndef _TFTP_RANDOM_PORT
+		tftpPort = ((eeprom_read_byte(EEPROM_PORT+1)<<8) + eeprom_read_byte(EEPROM_PORT));
+#endif
+
 #ifdef _VERBOSE
 		traceln(" Net: Using EEPROM settings");
 #endif
-		for(i = 0; i < 18; i++)
-			registerBuffer[i+1] = eeprom_read_byte(EEPROM_DATA+i);
 	}
 #ifdef _VERBOSE
 	else {
@@ -154,6 +162,10 @@ void netInit()
 		tracenet(registerBuffer[i]);
 		if(i != 14) putch(0x2E);
 	}
+#ifndef _TFTP_RANDOM_PORT
+	traceln("\t   Port: ");
+	tracenum(tftpPort);
+#endif
 #endif
 
 	// Configure Wiznet chip

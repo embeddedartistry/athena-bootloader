@@ -8,7 +8,7 @@ then
 	sudo ifconfig ${eth_dev} down
 	sudo ifconfig ${eth_dev} ${eth_ip} netmask 255.255.255.0
 	sudo route add ${ard_ip} gw ${eth_ip} dev ${eth_dev}
-	
+
 	echo "Network settings have been set"
 	sleep 2
 	ping -c4 ${ard_ip}

@@ -144,7 +144,7 @@ uint8_t processPacket()
 #ifdef _TFTP_RANDOM_PORT
 				netWriteWord(REG_S3_PORT0, (buffer[4]<<8) | ~buffer[5]); // Generate a 'random' TID (RFC1350)
 #else
-				netWriteWord(REG_S3_PORT0, TFTP_STATIC_PORT);   // Not random any more
+				netWriteWord(REG_S3_PORT0, tftpPort);
 #endif
 				if(netReadReg(REG_S3_SR) != SOCK_UDP)
 					netWriteReg(REG_S3_CR, CR_CLOSE);
@@ -154,7 +154,7 @@ uint8_t processPacket()
 #ifdef _TFTP_RANDOM_PORT
 			tracenum((buffer[4]<<8) | (buffer[5]^0x55));
 #else
-			tracenum(TFTP_STATIC_PORT);
+			tracenum(tftpPort);
 #endif
 #endif
 			lastPacket = 0;

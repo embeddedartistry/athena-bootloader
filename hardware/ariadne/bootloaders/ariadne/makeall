@@ -1,11 +1,12 @@
 #!/bin/bash
 make clean
 #
-# The "big one" standard bootloaders.
+# The "big two" standard bootloaders.
+make atmega328
+make atmega328_ethernet
 #make atmega8
 #make atmega168
-#make atmega328
-make debug328
+#make debug328
 #
 # additional buildable platforms of
 #  somewhat questionable support level
