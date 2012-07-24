@@ -4,7 +4,7 @@ Ariadne-Bootloader for Arduino and WizNet W5100
 Bootloader for Arduino with Ethernet
 ------------------------------------
 This is a beta stage bootloader for Arduino Ethernet board and the regular
-Arduino with Ethernet Shield. It is based on previous unfinished work by the Arduino
+Arduino (Uno, Duemilanove /w Atmega 328) with Ethernet Shield. It is based on previous unfinished work by the Arduino
 developers. The bootloader implements a TFTP server on the Arduino board and flashing works
 using any regular TFTP client.
 
@@ -59,15 +59,18 @@ command and wait for about 15 seconds for the operation to complete.
 
 Serial Flashing
 ---------------
-
+Coming soon.
 
 Configuring Network Settings
 ----------------------------
-
+Coming soon.
 
 TFTP Flashing
 -------------
-
+You can watch the how-to video for remote flashing using TFTP [here](http://youtu.be/KCHqhV6xPMg). We will add more info Soon™.
 
 Configuring your Router for Remote Flashing
 -------------------------------------------
+If you are having troubles flashing your Arduino at home from the road, you probably need to enable [port forwarding](http://en.wikipedia.org/wiki/Port_forwarding). You need to forward ports 69 and 46969 to your Arduino in your router's configuration.
+
+Port Forward has [excellent guides](http://portforward.com/english/routers/port_forwarding/) on how to enable port forwarding for a vast number of routers.
