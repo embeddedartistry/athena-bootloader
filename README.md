@@ -8,7 +8,7 @@ Arduino (Uno, Duemilanove /w Atmega 328) with Ethernet Shield. It is based on pr
 developers. The bootloader implements a TFTP server on the Arduino board and flashing works
 using any regular TFTP client.
 
-There are two ways you can get this bootloader. Both of them are really simple. You can either burn your Arduino with this new bootloader (using the guide below), or you can claim the Pioneer perk on codebender's [IndieGoGo campaign](http://www.indiegogo.com/codebender?a=803683) and get an Arduino preloaded with our bootloader delivered straight to your door.
+There are two ways to get this bootloader, both of them are really simple. You can either burn your Arduino with this new bootloader (using the guide below), or you can claim the Pioneer perk on codebender's [IndieGoGo campaign](http://www.indiegogo.com/codebender?a=803683) and get an Arduino preloaded with our bootloader delivered straight to your door.
 
 
 
