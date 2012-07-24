@@ -8,7 +8,10 @@ Arduino (Uno, Duemilanove /w Atmega 328) with Ethernet Shield. It is based on pr
 developers. The bootloader implements a TFTP server on the Arduino board and flashing works
 using any regular TFTP client.
 
-There are two ways to get this bootloader, both of them are really simple. You can either burn your Arduino with this new bootloader (using the guide below), or you can claim the Pioneer perk on codebender's [IndieGoGo campaign](http://www.indiegogo.com/codebender?a=803683) and get an Arduino preloaded with our bootloader delivered straight to your door.
+There are two ways to get this bootloader, both of them are really simple. You can either burn your Arduino with
+this new bootloader (using the guide below), or you can claim the Pioneer perk on codebender's
+[IndieGoGo campaign](http://www.indiegogo.com/codebender?a=803683) and get an Arduino preloaded with our bootloader
+delivered straight to your door.
 
 
 
@@ -70,14 +73,19 @@ Coming soon.
 
 TFTP Flashing
 -------------
-You can watch the how-to video for remote flashing using TFTP [here](http://youtu.be/KCHqhV6xPMg). We will add more info Soon™.
+You can watch the how-to video for remote flashing using TFTP [here](http://youtu.be/KCHqhV6xPMg).
+We will add more info Soon™.
 
 Codebender
 -------------
-One of the best ways to use this bootloader is in comparison with [codebender.cc](http://codebender.cc). Using it is easy. Just register, enter yor Arduino's IP (external IP for those in corporate or home networks behind NAT) and flash.
+One of the best ways to use this bootloader is along with [codebender.cc](http://codebender.cc). Using it is easy.
+Just register, enter your Arduino's IP (external IP for those in corporate or home networks behind NAT) and flash.
 
 Configuring your Router for Remote Flashing
 -------------------------------------------
-If you are having troubles flashing your Arduino at home from the road, you probably need to enable [port forwarding](http://en.wikipedia.org/wiki/Port_forwarding). You need to forward ports 69 and 46969 to your Arduino in your router's configuration.
+If you are having troubles flashing your Arduino at home from the road, you probably need to enable
+[port forwarding](http://en.wikipedia.org/wiki/Port_forwarding). You need to forward ports 69 and 46969 to your
+Arduino in your router's configuration.
 
-Port Forward has [excellent guides](http://portforward.com/english/routers/port_forwarding/) on how to enable port forwarding for a vast number of routers.
+Port Forward has [excellent guides](http://portforward.com/english/routers/port_forwarding/) on how to enable port
+forwarding for a vast number of routers.
