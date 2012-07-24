@@ -1,10 +1,10 @@
-Ariadne-Bootloader for Arduino and WizNet W5100
+Ariadne Bootloader for Arduino and WizNet W5100
 ===============================================
 
 Bootloader for Arduino with Ethernet
 ------------------------------------
 This is a beta stage bootloader for Arduino Ethernet board and the regular
-Arduino (Uno, Duemilanove /w Atmega 328) with Ethernet Shield. It is based on previous unfinished work by the Arduino
+Arduino with Ethernet Shield. It is based on previous unfinished work by the Arduino
 developers. The bootloader implements a TFTP server on the Arduino board and flashing works
 using any regular TFTP client.
 
@@ -67,19 +67,23 @@ Serial Flashing
 ---------------
 Coming soon.
 
+
 Configuring Network Settings
 ----------------------------
 Coming soon.
+
 
 TFTP Flashing
 -------------
 You can watch the how-to video for remote flashing using TFTP [here](http://youtu.be/KCHqhV6xPMg).
 We will add more info Soon™.
 
+
 Codebender
 -------------
 One of the best ways to use this bootloader is along with [codebender.cc](http://codebender.cc). Using it is easy.
 Just register, enter your Arduino's IP (external IP for those in corporate or home networks behind NAT) and flash.
+
 
 Configuring your Router for Remote Flashing
 -------------------------------------------
@@ -89,3 +93,19 @@ Arduino in your router's configuration.
 
 Port Forward has [excellent guides](http://portforward.com/english/routers/port_forwarding/) on how to enable port
 forwarding for a vast number of routers.
+
+
+Supported Boards
+----------------
+Right now the __ATmega328__ processor and the __WizNet W5100__ ethernet controller are supported. That means
+that your Arduino Uno, Arduino Duemilanove, Arduino Ethernet or any Arduino compatible board using these chipsets
+can be burned with the Ariadne bootloader. If you have the know-how you can probably compile the bootloader for other
+processors but note that we haven't tested it. 
+
+
+Roadmap
+-------
+Right now the main focus for the next release is bug fixing and functionality improvement. That is why we encourage you
+to use the bootloader and report any bugs, misbehaviours or feature requests here on github. There is also on going work
+to work on the Arduino Mega and support for Arduino Leonardo is planned after that. Support for other ethernet or wifi
+controllers is being discussed but after the bootloader has been stabilized.
