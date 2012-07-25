@@ -65,12 +65,31 @@ command and wait for about 15 seconds for the operation to complete.
 
 Serial Flashing
 ---------------
-Coming soon.
+Ariadne bootloader supports flashing through serial like any other regular bootloader. Using this way of uploading is
+built upon the very good *Optiboot* bootloader so it should be pretty straight forward to use. Just plug in the USB
+cable and select the serial port and the appropriate board from the __Tools__ > __Board__ menu. After plugging in the cable,
+press the reset button and the indication LED on __pin 13__ or in case of Ethernet __pin 9__ will start blinking rapidly.
+This means that the bootloader is running and the Arduino is ready to be programmed. If the bootloader doesn't receive
+anything for a *5 sec* period and there is a valid program in the memory, the bootloader will time out and run the user's
+application. In case there is not program or the program has been marked invalid the bootloader will never time out.
+After flashing is successful *Arduino Duemilanove* will automatically start the user's application but *Arduino Uno* will
+do a reset cycle and start the program after the bootloader times out. This happens because *Uno* has the autoreset 
+feature that resets the board after flashing.
+
+Due to autoreset for remote tftp programming is being implemented using a watchddog timer timeout, the bootloader
+will do a full run after every reset, physical or software. For those who want *Adaboot No-Wait Mod*-like functionality,
+we have been testing some options on how to circumvent these limitations, but they still need refinement.
 
 
 Configuring Network Settings
 ----------------------------
-Coming soon.
+The default built-in network settings of the bootloader are listed below.
+* ```IP Address:  192.168.1.128```
+* ```Subnet Mask: 255.255.255.0```
+* ```Gateway:     192.168.1.1```
+* ```MAC Address: 0xDE.0xAD.0xBE.0xEF.0xFE.0xED```
+* ```TFTP Data Port: 46969```
+
 
 
 TFTP Flashing
@@ -88,8 +107,14 @@ Just register, enter your Arduino's IP (external IP for those in corporate or ho
 Configuring your Router for Remote Flashing
 -------------------------------------------
 If you are having troubles flashing your Arduino at home from the road, you probably need to enable
-[port forwarding](http://en.wikipedia.org/wiki/Port_forwarding). You need to forward ports 69 and 46969 to your
-Arduino in your router's configuration.
+[port forwarding](http://en.wikipedia.org/wiki/Port_forwarding). You need to forward ports __69__ and __46969__ to your
+Arduino in your router's configuration. In case you have changed the incoming data port from __46969__ to another port
+i.e. __50232__, you are going to have to forward __50232__ port instead of __46969__. This is particularly useful when
+you have more than one Arduinos, that you want to flash, behind your router. In addition to this you are going to have
+to translate a port of your choice on the router to the port and ip of the Arduino in the local network. An example is
+that you have 2 devices, one at *192.168.1.120* and one at *192.168.1.121*. They both listen to port __69__ for the
+initial connection. In this case you can translate port __6969__(any random port will do) on your router to
+*192.168.1.120*:__69__ and port __6970__ to *192.168.1.121*:__69__ and specify these in the tftp client you are using.
 
 Port Forward has [excellent guides](http://portforward.com/english/routers/port_forwarding/) on how to enable port
 forwarding for a vast number of routers.
@@ -100,12 +125,15 @@ Supported Boards
 Right now the __ATmega328__ processor and the __WizNet W5100__ ethernet controller are supported. That means
 that your Arduino Uno, Arduino Duemilanove, Arduino Ethernet or any Arduino compatible board using these chipsets
 can be burned with the Ariadne bootloader. If you have the know-how you can probably compile the bootloader for other
-processors but note that we haven't tested it. 
+processors but note that we haven't tested it. The following list will be updated over time.
+* Arduino Ethernet
+* Arduino Uno
+* Arduino Duemilanove w/ ATmega328
 
 
 Roadmap
 -------
-Right now the main focus for the next release is bug fixing and functionality improvement. That is why we encourage you
-to use the bootloader and report any bugs, misbehaviours or feature requests here on github. There is also on going work
-to work on the Arduino Mega and support for Arduino Leonardo is planned after that. Support for other ethernet or wifi
-controllers is being discussed but after the bootloader has been stabilized.
+Right now the main focus for the first packaged release is bug fixing and improve existing functionality. That is why we
+encourage you to use the bootloader and report any bugs, misbehaviours or feature requests here on github. There is
+also on going work to work on the Arduino Mega and support for Arduino Leonardo is planned after that. Support for
+other ethernet or wifi controllers is being discussed but after the bootloader has been stabilized.
