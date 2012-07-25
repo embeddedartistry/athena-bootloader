@@ -89,19 +89,16 @@ The default built-in network settings of the bootloader are listed below.
 * ```Gateway:     192.168.1.1```
 * ```MAC Address: 0xDE.0xAD.0xBE.0xEF.0xFE.0xED```
 * ```TFTP Data Port: 46969```
-
+These can be changed using our __NetEEPROM__ library. The library is going to have it's own documentation on how it
+can be used but for the purpose of changing and reading the settings you can use the included examples. To load them
+navigate to __File__ > __Examples__ > __NetEEPROM__ and select one of the examples. You can write the network settings
+using the __WriteNetworkSettings__ sketch or read the to the serial using the __ReadNetworkSettings__.
 
 
 TFTP Flashing
 -------------
 You can watch the how-to video for remote flashing using TFTP [here](http://youtu.be/KCHqhV6xPMg).
 We will add more info Soon™.
-
-
-Codebender
--------------
-One of the best ways to use this bootloader is along with [codebender.cc](http://codebender.cc). Using it is easy.
-Just register, enter your Arduino's IP (external IP for those in corporate or home networks behind NAT) and flash.
 
 
 Configuring your Router for Remote Flashing
@@ -118,6 +115,12 @@ initial connection. In this case you can translate port __6969__(any random port
 
 Port Forward has [excellent guides](http://portforward.com/english/routers/port_forwarding/) on how to enable port
 forwarding for a vast number of routers.
+
+
+Codebender
+-------------
+One of the best ways to use this bootloader is along with [codebender.cc](http://codebender.cc). Using it is easy.
+Just register, enter your Arduino's IP (external IP for those in corporate or home networks behind NAT) and flash.
 
 
 Supported Boards
