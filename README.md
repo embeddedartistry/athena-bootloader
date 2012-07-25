@@ -93,7 +93,7 @@ The default built-in network settings of the bootloader are listed below.
 These can be changed using our __NetEEPROM__ library. The library is going to have it's own documentation on how it
 can be used but for the purpose of changing and reading the settings you can use the included examples. To load them
 navigate to __File__ > __Examples__ > __NetEEPROM__ and select one of the examples. You can write the network settings
-using the __WriteNetworkSettings__ sketch or read the to the serial using the __ReadNetworkSettings__.
+using the __WriteNetworkSettings__ sketch or print them to the serial using the __ReadNetworkSettings__.
 
 Note that the settings array in the __WriteNetworkSettings__ sketch hasn't got the settings in the usual order but
 rather in the order that __W1500__ reads them, so make sure you have put the correct values. If you set the network
@@ -104,8 +104,12 @@ documentation on how use these sketches in the form of comments so be sure to re
 
 TFTP Flashing
 -------------
-You can watch the how-to video for remote flashing using TFTP [here](http://youtu.be/KCHqhV6xPMg).
-We will add more info Soon™.
+Now for the real reason we made this bootloader and why you should use it. First of all you can watch __Ariadne__ in
+action in this how-to video for remote flashing using TFTP [here](http://youtu.be/KCHqhV6xPMg). In the video may
+notice that the board is being reset by hand. In the next couple of weeks we are going to release the library that will
+allow for remote resetting through a simple web server with some security measures. More on that as the library progresses.
+
+
 
 
 Configuring your Router for Remote Flashing
