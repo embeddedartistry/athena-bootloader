@@ -89,6 +89,7 @@ The default built-in network settings of the bootloader are listed below.
 * ```Gateway:     192.168.1.1```
 * ```MAC Address: 0xDE.0xAD.0xBE.0xEF.0xFE.0xED```
 * ```TFTP Data Port: 46969```
+
 These can be changed using our __NetEEPROM__ library. The library is going to have it's own documentation on how it
 can be used but for the purpose of changing and reading the settings you can use the included examples. To load them
 navigate to __File__ > __Examples__ > __NetEEPROM__ and select one of the examples. You can write the network settings
