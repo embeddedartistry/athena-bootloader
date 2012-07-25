@@ -15,7 +15,7 @@ delivered straight to your door.
 
 
 
-The files and folders in this repository
+The Files and Folders in this Repository
 ----------------------------------------
 The structure of this repository is made to follow the standarts of the Arduino IDE.
 This way you can simply copy the folders in your sketchbook and be ready
@@ -26,7 +26,7 @@ This way you can simply copy the folders in your sketchbook and be ready
 * utilities: Various stuff used for development and debugging
 
 
-Downloading and installing files
+Downloading and Installing Files
 --------------------------------
 First of all, you need to clone or download the repository. To clone the repository
 you need to have git installed, then you can run
@@ -44,8 +44,8 @@ Take extra care during coping not to overwrite any other files. Restart the Ardu
 the new boards and libraries.
 
 
-Burning of the bootloader
--------------------------
+Burning the Bootloader
+----------------------
 To burn the bootloader, you will need an [AVR-ISP](http://www.atmel.com/dyn/products/tools_card.asp?tool_id=2726)
 (in-system programmer), [USBtinyISP](http://www.ladyada.net/make/usbtinyisp/) or you can build a
 [ParallelProgrammer](http://arduino.cc/en/Hacking/ParallelProgrammer) or an
@@ -93,6 +93,12 @@ These can be changed using our __NetEEPROM__ library. The library is going to ha
 can be used but for the purpose of changing and reading the settings you can use the included examples. To load them
 navigate to __File__ > __Examples__ > __NetEEPROM__ and select one of the examples. You can write the network settings
 using the __WriteNetworkSettings__ sketch or read the to the serial using the __ReadNetworkSettings__.
+
+Note that the settings array in the __WriteNetworkSettings__ sketch hasn't got the settings in the usual order but
+rather in the order that __W1500__ reads them, so make sure you have put the correct values. If you set the network
+settings you have also to set the TFTP data transfer port. The default is good enough but you may need to change it
+for the reasons that are listed below in the ```Configuring your Router for Remote Flashing``` section.There is also
+documentation on how use these sketches in the form of comments so be sure to read them.
 
 
 TFTP Flashing
