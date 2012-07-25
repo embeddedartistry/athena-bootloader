@@ -98,8 +98,9 @@ using the __WriteNetworkSettings__ sketch or print them to the serial using the 
 Note that the settings array in the __WriteNetworkSettings__ sketch hasn't got the settings in the usual order but
 rather in the order that __W1500__ reads them, so make sure you have put the correct values. If you set the network
 settings you have also to set the TFTP data transfer port. The default is good enough but you may need to change it
-for the reasons that are listed below in the ```Configuring your Router for Remote Flashing``` section.There is also
-documentation on how use these sketches in the form of comments so be sure to read them.
+for the reasons that are listed below in the
+[Configuring your Router for Remote Flashing](https://github.com/codebendercc/Ariadne-Bootloader#configuring-your-router-for-remote-flashing)
+section.There is also documentation on how use these sketches in the form of comments so be sure to read them.
 
 
 TFTP Flashing
