@@ -67,17 +67,22 @@ Serial Flashing
 ---------------
 Ariadne bootloader supports flashing through serial like any other regular bootloader. Using this way of uploading is
 built upon the very good *Optiboot* bootloader so it should be pretty straight forward to use. Just plug in the USB
-cable and select the serial port and the appropriate board from the __Tools__ > __Board__ menu. After plugging in the cable,
-press the reset button and the indication LED on __pin 13__ or in case of Ethernet __pin 9__ will start blinking rapidly.
-This means that the bootloader is running and the Arduino is ready to be programmed. If the bootloader doesn't receive
-anything for a *5 sec* period and there is a valid program in the memory, the bootloader will time out and run the user's
-application. In case there is not program or the program has been marked invalid the bootloader will never time out.
-After flashing is successful *Arduino Duemilanove* will automatically start the user's application but *Arduino Uno* will
-do a reset cycle and start the program after the bootloader times out. This happens because *Uno* has the autoreset 
-feature that resets the board after flashing.
+cable and select the serial port and the appropriate board from the __Tools__ > __Board__ menu. After that you must press the
+reset button and the indication LED on __pin 13__ or __pin 9__, in case of Arduino Ethernet, will start blinking rapidly.
+This means that the bootloader is running and the Arduino is ready to be programmed. If there is a __valid__ program already
+flashed on the Arduino, you have to reprogram the device in the next __5 seconds__. If you don't, the bootloader will
+initiate the program that is already in the Arduino. In case there is no program flashed or the program has been marked
+as __invalid__, the bootloader will never time out and you can reprogram it at any time. 
 
-Due to autoreset for remote tftp programming is being implemented using a watchddog timer timeout, the bootloader
-will do a full run after every reset, physical or software. For those who want *Adaboot No-Wait Mod*-like functionality,
+After a succesful flashing,
+
+* *Arduino Duemilanove* will automatically start the user's application.
+* *Arduino Uno* will do a reset cycle and start the program after the bootloader times out.
+
+This happens because *Uno* has the autoreset feature that resets the board after a serial connection.
+
+Due to "autoreset" for remote tftp programming is being implemented using a watchddog timer timeout, the bootloader
+will do a full cycle after every reset, physical or software. For those who want *Adaboot No-Wait Mod*-like functionality,
 we have been testing some options on how to circumvent these limitations, but they still need refinement.
 
 
@@ -91,13 +96,13 @@ The default built-in network settings of the bootloader are listed below.
 * ```TFTP Data Port: 46969```
 
 These can be changed using our __NetEEPROM__ library. The library is going to have it's own documentation on how it
-can be used but for the purpose of changing and reading the settings you can use the included examples. To load them
-navigate to __File__ > __Examples__ > __NetEEPROM__ and select one of the examples. You can write the network settings
-using the __WriteNetworkSettings__ sketch or print them to the serial using the __ReadNetworkSettings__.
+can be used but for the purpose of changing and reading the network settings you can use the included examples. To load
+them navigate to __File__ > __Examples__ > __NetEEPROM__ and select one of the examples. You can write the network
+settings using the __WriteNetworkSettings__ sketch or print them to the serial using the __ReadNetworkSettings__.
 
 Note that the settings array in the __WriteNetworkSettings__ sketch hasn't got the settings in the usual order but
 rather in the order that __W1500__ reads them, so make sure you have put the correct values. If you set the network
-settings you have also to set the TFTP data transfer port. The default is good enough but you may need to change it
+settings you also have to set the TFTP data transfer port. The default is good enough but you may need to change it
 for the reasons that are listed below in the
 [Configuring your Router for Remote Flashing](https://github.com/codebendercc/Ariadne-Bootloader#configuring-your-router-for-remote-flashing)
 section.There is also documentation on how use these sketches in the form of comments so be sure to read them.
@@ -110,7 +115,26 @@ action in this how-to video for remote flashing using TFTP [here](http://youtu.b
 notice that the board is being reset by hand. In the next couple of weeks we are going to release the library that will
 allow for remote resetting through a simple web server with some security measures. More on that as the library progresses.
 
+Unlike serial flashing that uses __HEX__ files to flash the Arduino, the TFTP server implemented in the bootloader works
+with binary files. This means that you have to manually convert your programs to the right format. To do that, first build
+your sketch inside _Arduino IDE_ using the __Verify__ button. After that, without exiting the *Arduino IDE* you need
+to navigate to the temporary directory where your project was built. That is ```C:\Users\owner\AppData\Local\Temp\```
+on *Windows* or ```/tmp``` on *Linux*. There you will find a folder named something like ```build2429295348207572157.tmp```.
+That is where the Arduino temporary build files reside. Enter the directory and make sure that there is a ```.elf```
+or a ```.hex``` file with the same name as your sketch. That is the file you need to convert. To achieve that you have to
+run one of the following commands in a terminal.
 
+* ```avr-objcopy -j .text -j .data -O binary [sketch].elf [sketch].bin```
+* ```avr-objcopy -I ihex [sketch].hex -O binary [sketch].bin```
+
+Or,if you have scons installed, you can use the modified ```SConstruct``` script you can find in ```Ariadne-Bootloader/utilities```.
+This being based on the *arscons* script, it can be used in two ways. If you used the previous process to generate the _HEX_
+file you can just copy the ```SConstruct``` file inside the temporary *Arduino IDE* build directory (as mentioned above)
+and run ```scons``` in a terminal inside that directory.
+
+The other way to use it is to copy the ```SConstruct``` script inside the sketch's directory and, as above, run 
+```scons``` in a terminal inside that directiry. This way you will build your project outside *Arduino IDE* creating
+the ```.bin``` file in the process.
 
 
 Configuring your Router for Remote Flashing
@@ -118,12 +142,13 @@ Configuring your Router for Remote Flashing
 If you are having troubles flashing your Arduino at home from the road, you probably need to enable
 [port forwarding](http://en.wikipedia.org/wiki/Port_forwarding). You need to forward ports __69__ and __46969__ to your
 Arduino in your router's configuration. In case you have changed the incoming data port from __46969__ to another port
-i.e. __50232__, you are going to have to forward __50232__ port instead of __46969__. This is particularly useful when
+i.e. __50232__, you have to forward __50232__ port instead of __46969__. This is particularly useful when
 you have more than one Arduinos, that you want to flash, behind your router. In addition to this you are going to have
-to translate a port of your choice on the router to the port and ip of the Arduino in the local network. An example is
-that you have 2 devices, one at *192.168.1.120* and one at *192.168.1.121*. They both listen to port __69__ for the
-initial connection. In this case you can translate port __6969__(any random port will do) on your router to
-*192.168.1.120*:__69__ and port __6970__ to *192.168.1.121*:__69__ and specify these in the tftp client you are using.
+to translate an external port of your choice on the router to the internal port and ip of the Arduino in the local network.
+An example is that you have 2 devices, one at *192.168.1.120* and one at *192.168.1.121*. They both listen to port
+__69__ for the initial connection. In this case you can translate external port __6969__(any random port will do) on
+your router to *192.168.1.120*:__69__ and external port __6970__ to *192.168.1.121*:__69__ and specify these in the
+tftp client you are using.
 
 Port Forward has [excellent guides](http://portforward.com/english/routers/port_forwarding/) on how to enable port
 forwarding for a vast number of routers.
@@ -131,7 +156,7 @@ forwarding for a vast number of routers.
 
 Codebender
 -------------
-One of the best ways to use this bootloader is along with [codebender.cc](http://codebender.cc). Using it is easy.
+One of the best ways and easiest ways to use this bootloader is along with [codebender.cc](http://codebender.cc).
 Just register, enter your Arduino's IP (external IP for those in corporate or home networks behind NAT) and flash.
 
 
@@ -152,3 +177,7 @@ Right now the main focus for the first packaged release is bug fixing and improv
 encourage you to use the bootloader and report any bugs, misbehaviours or feature requests here on github. There is
 also on going work to work on the Arduino Mega and support for Arduino Leonardo is planned after that. Support for
 other ethernet or wifi controllers is being discussed but after the bootloader has been stabilized.
+
+
+Acknoledgements
+---------------
