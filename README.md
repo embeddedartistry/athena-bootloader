@@ -89,12 +89,13 @@ we have been testing some options on how to circumvent these limitations, but th
 Configuring Network Settings
 ----------------------------
 The default built-in network settings of the bootloader are listed below.
-* ```IP Address:  192.168.1.128```
-* ```Subnet Mask: 255.255.255.0```
-* ```Gateway:     192.168.1.1```
-* ```MAC Address: 0xDE.0xAD.0xBE.0xEF.0xFE.0xED```
-* ```TFTP Data Port: 46969```
-
+```
+* IP Address:  192.168.1.128
+* Subnet Mask: 255.255.255.0
+* Gateway:     192.168.1.1
+* MAC Address: 0xDE.0xAD.0xBE.0xEF.0xFE.0xED
+* TFTP Data Port: 46969
+```
 These can be changed using our __NetEEPROM__ library. The library is going to have it's own documentation on how it
 can be used but for the purpose of changing and reading the network settings you can use the included examples. To load
 them navigate to __File__ > __Examples__ > __NetEEPROM__ and select one of the examples. You can write the network
@@ -115,6 +116,7 @@ action in this how-to video for remote flashing using TFTP [here](http://youtu.b
 notice that the board is being reset by hand. In the next couple of weeks we are going to release the library that will
 allow for remote resetting through a simple web server with some security measures. More on that as the library progresses.
 
+#####Converting your sketch to the right format
 Unlike serial flashing that uses __HEX__ files to flash the Arduino, the TFTP server implemented in the bootloader works
 with binary files. This means that you have to manually convert your programs to the right format. To do that, first build
 your sketch inside _Arduino IDE_ using the __Verify__ button. After that, without exiting the *Arduino IDE* you need
@@ -134,7 +136,80 @@ and run ```scons``` in a terminal inside that directory.
 
 The other way to use it is to copy the ```SConstruct``` script inside the sketch's directory and, as above, run 
 ```scons``` in a terminal inside that directiry. This way you will build your project outside *Arduino IDE* creating
-the ```.bin``` file in the process.
+the ```.bin``` file in the process. Note that this way the sketch's folder will be polluted with Arduino's build files,
+much line the temporary directory *Arduino IDE* uses.
+
+For testing purposes you can find a __blink__ sketch in binary form inside the ```Ardidne-Bootloader/utilities/tests/blink```
+folder. The __fade__ sketch in the ```tests/fade``` folder will also give you a view of what a failed upload looks like.
+This sketch fails becose it is written in plain __C__ and not in __Arduino__. That way it lacks some "signatures" the
+bootloader uses to validate *Arduino* sketches. The third on in ```tests/led_display``` it an easter egg for which you
+need to find out how we had our led matrices connected on *Arduino Uno*. Or we might release the schematics at some point.
+Who knows.
+
+#####Using a tftp client to upload the sketch
+Now that the binary is ready you have to upload it. First you have to connect to your Arduino using any tftp client you
+may have on your computer. All three major operating systems have their own clients that you can use through the command line.
+So open a terminal and type ```tftp [ip] [port]```. For the default bootloader settings that would be:
+```
+tftp 192.168.1.128 69
+```
+In this case it could just be ```tftp 192.168.1.128``` as __69__ is the default tftp port and the client would automatically
+connect to it. For any other port you have to explicitly set it.
+
+Now you should have been greeted by the ```tftp> ``` prompt. First you have to enter this command:
+```
+tftp> mode octet
+```
+This way you tell the __TFTP__ client to send binary data. This is absolutely needed as if your client is in netascii
+mode, uploading will fail. After this it is advised to use the two following commands to make the process more informative
+so you can have a better view of what is happening, but they are not needed.
+```
+tftp> trace
+tftp> verbose
+```
+Now to actually upload the binary file all you have to do is __reset__ the board and in the next __5 seconds__ run
+the following command.
+```
+tftp> put [sketch].bin
+```
+The __5 second__ time frame is in case you already have a valid program uploaded on the Arduino. In case you don't have
+a program loaded or it has been marked invalid, you don't have any time constrains.
+
+Now you should see your tftp client sending packets and the indication LED on __pin 13__ or __pin 9__ blinking in a random
+way, almost like having a hiccup. A sample correct output of the TFTP client uploading the *blink* sketch is below:
+```
+tftp> mode octet
+```
+```
+tftp> trace
+Trace mode on.
+```
+```
+tftp> verbose 
+Verbose mode on.
+```
+```
+tftp> put blink.bin 
+sent WRQ <file: blink.bin, mode: octet <>>
+received ACK <block: 0>
+sent DATA <block: 1, size: 512>
+received ACK <block: 1>
+sent DATA <block: 2, size: 512>
+received ACK <block: 2>
+sent DATA <block: 3, size: 512>
+received ACK <block: 3>
+sent DATA <block: 4, size: 512>
+received ACK <block: 4>
+sent DATA <block: 5, size: 42>
+received ACK <block: 5>
+tftp> 
+```
+After a successful upload the bootloader will start the uploaded application instantly.
+
+In case that for some reason the upload fails, first of all stop you TFTP client from sending any more packets. After that
+you should wait for the upload process on the bootloader to timeout. That takes about __5 seconds__ too. For this period
+you should witness the indication led doing some random blinking. After the timeout and since there is no valid program
+in the memory, the TFTP server should restart itself and wait for a new upload.
 
 
 Configuring your Router for Remote Flashing
@@ -181,3 +256,8 @@ other ethernet or wifi controllers is being discussed but after the bootloader h
 
 Acknoledgements
 ---------------
+__Ariadne__ bootloader is built upon some great open source projects. First of all is the TFTP-Bootloader from the
+*Arduino Team*. This is our base and we tried to stay on path with what they wanted to make. Serial flashing was made
+possible by *Optiboot* project's bootloader. Credit should also go to [mharizanov](https://github.com/mharizanov) for
+commenting some of the initial *Arduino* code, making it easy for me to start and [follower](https://github.com/follower)
+whos sketches served as a starting point for the included __NetEEPROM__ and __EthernetReset__ libraries.
