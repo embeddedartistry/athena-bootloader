@@ -139,7 +139,7 @@ The other way to use it is to copy the ```SConstruct``` script inside the sketch
 the ```.bin``` file in the process. Note that this way the sketch's folder will be polluted with Arduino's build files,
 much like the temporary directory *Arduino IDE* uses.
 
-For testing purposes you can find a __blink__ sketch in binary form inside the ```Ardiadne-Bootloader/utilities/tests/blink```
+For testing purposes you can find a __blink__ sketch in binary form inside the ```Ariadne-Bootloader/utilities/tests/blink```
 folder. The __fade__ sketch in the ```tests/fade``` folder will also give you a view of what a failed upload looks like.
 This sketch fails because it is written in plain __C__ and not in __Arduino__. That way it lacks some "signatures" the
 bootloader uses to validate *Arduino* sketches. The third sketch in ```tests/led_display``` is an easter egg for which you
