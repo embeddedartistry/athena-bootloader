@@ -256,8 +256,8 @@ other ethernet or wifi controllers is being discussed but after the bootloader h
 
 Acknoledgements
 ---------------
-__Ariadne__ bootloader is built upon some great open source projects. First of all is the TFTP-Bootloader from the
+__Ariadne__ bootloader is built upon some great open source projects. First of all is the [TFTP-Bootloader](https://github.com/arduino/TFTP-Bootloader) from the
 *Arduino Team*. This is our base and we tried to stay on path with what they wanted to make. Serial flashing was made
-possible by *Optiboot* project's bootloader. Credit should also go to [mharizanov](https://github.com/mharizanov) for
+possible by [Optiboot](https://code.google.com/p/optiboot/) project's bootloader. Credit should also go to [mharizanov](https://github.com/mharizanov) for
 commenting some of the initial *Arduino* code, making it easy for me to start and [follower](https://github.com/follower)
 whos sketches served as a starting point for the included __NetEEPROM__ and __EthernetReset__ libraries.
