@@ -65,7 +65,7 @@ command and wait for about 15 seconds for the operation to complete.
 
 Serial Flashing
 ---------------
-Ariadne bootloader supports flashing through serial like any other regular bootloader. Using this way of uploading is
+Ariadne bootloader supports flashing through serial like any other regular bootloader. This way of uploading is
 built upon the very good *Optiboot* bootloader so it should be pretty straight forward to use. Just plug in the USB
 cable and select the serial port and the appropriate board from the __Tools__ > __Board__ menu. After that you must press the
 reset button and the indication LED on __pin 13__ or __pin 9__, in case of Arduino Ethernet, will start blinking rapidly.
@@ -81,7 +81,7 @@ After a succesful flashing,
 
 This happens because *Uno* has the autoreset feature that resets the board after a serial connection.
 
-Due to "autoreset" for remote tftp programming is being implemented using a watchddog timer timeout, the bootloader
+Due to the fact that "autoreset" for remote tftp programming is implemented using a watchddog timer timeout, the bootloader
 will do a full cycle after every reset, physical or software. For those who want *Adaboot No-Wait Mod*-like functionality,
 we have been testing some options on how to circumvent these limitations, but they still need refinement.
 
@@ -112,9 +112,9 @@ section.There is also documentation on how use these sketches in the form of com
 TFTP Flashing
 -------------
 Now for the real reason we made this bootloader and why you should use it. First of all you can watch __Ariadne__ in
-action in this how-to video for remote flashing using TFTP [here](http://youtu.be/KCHqhV6xPMg). In the video may
+action in this how-to video for remote flashing using TFTP [here](http://youtu.be/KCHqhV6xPMg). In the video you may
 notice that the board is being reset by hand. In the next couple of weeks we are going to release the library that will
-allow for remote resetting through a simple web server with some security measures. More on that as the library progresses.
+allow remote resetting through a simple web server with some security measures. More on that as the library progresses.
 
 #####Converting your sketch to the right format
 Unlike serial flashing that uses __HEX__ files to flash the Arduino, the TFTP server implemented in the bootloader works
@@ -135,14 +135,14 @@ file you can just copy the ```SConstruct``` file inside the temporary *Arduino I
 and run ```scons``` in a terminal inside that directory.
 
 The other way to use it is to copy the ```SConstruct``` script inside the sketch's directory and, as above, run 
-```scons``` in a terminal inside that directiry. This way you will build your project outside *Arduino IDE* creating
+```scons``` in a terminal inside that directory. This way you will build your project outside *Arduino IDE* creating
 the ```.bin``` file in the process. Note that this way the sketch's folder will be polluted with Arduino's build files,
-much line the temporary directory *Arduino IDE* uses.
+much like the temporary directory *Arduino IDE* uses.
 
-For testing purposes you can find a __blink__ sketch in binary form inside the ```Ardidne-Bootloader/utilities/tests/blink```
+For testing purposes you can find a __blink__ sketch in binary form inside the ```Ardiadne-Bootloader/utilities/tests/blink```
 folder. The __fade__ sketch in the ```tests/fade``` folder will also give you a view of what a failed upload looks like.
-This sketch fails becose it is written in plain __C__ and not in __Arduino__. That way it lacks some "signatures" the
-bootloader uses to validate *Arduino* sketches. The third on in ```tests/led_display``` it an easter egg for which you
+This sketch fails because it is written in plain __C__ and not in __Arduino__. That way it lacks some "signatures" the
+bootloader uses to validate *Arduino* sketches. The third sketch in ```tests/led_display``` is an easter egg for which you
 need to find out how we had our led matrices connected on *Arduino Uno*. Or we might release the schematics at some point.
 Who knows.
 
@@ -161,7 +161,7 @@ Now you should have been greeted by the ```tftp> ``` prompt. First you have to e
 tftp> mode octet
 ```
 This way you tell the __TFTP__ client to send binary data. This is absolutely needed as if your client is in netascii
-mode, uploading will fail. After this it is advised to use the two following commands to make the process more informative
+mode, uploading will fail. After this, it is advised to use the two following commands to make the process more informative
 so you can have a better view of what is happening, but they are not needed.
 ```
 tftp> trace
@@ -173,10 +173,10 @@ the following command.
 tftp> put [sketch].bin
 ```
 The __5 second__ time frame is in case you already have a valid program uploaded on the Arduino. In case you don't have
-a program loaded or it has been marked invalid, you don't have any time constrains.
+a program loaded or it has been marked invalid, you don't have any time constraints.
 
 Now you should see your tftp client sending packets and the indication LED on __pin 13__ or __pin 9__ blinking in a random
-way, almost like having a hiccup. A sample correct output of the TFTP client uploading the *blink* sketch is below:
+way, almost like having a hiccup. A correct output sample of the TFTP client uploading the *blink* sketch is below:
 ```
 tftp> mode octet
 ```
@@ -206,7 +206,7 @@ tftp>
 ```
 After a successful upload the bootloader will start the uploaded application instantly.
 
-In case that for some reason the upload fails, first of all stop you TFTP client from sending any more packets. After that
+In case that for some reason the upload fails, first of all stop your TFTP client from sending any more packets. After that
 you should wait for the upload process on the bootloader to timeout. That takes about __5 seconds__ too. For this period
 you should witness the indication led doing some random blinking. After the timeout and since there is no valid program
 in the memory, the TFTP server should restart itself and wait for a new upload.
