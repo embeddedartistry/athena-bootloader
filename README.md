@@ -260,4 +260,9 @@ __Ariadne__ bootloader is built upon some great open source projects. First of a
 *Arduino Team*. This is our base and we tried to stay on path with what they wanted to make. Serial flashing was made
 possible by [Optiboot](https://code.google.com/p/optiboot/) project's bootloader. Credit should also go to [mharizanov](https://github.com/mharizanov) for
 commenting some of the initial *Arduino* code, making it easy for me to start and [follower](https://github.com/follower)
-whos sketches served as a starting point for the included __NetEEPROM__ and __EthernetReset__ libraries.
+who's sketches served as a starting point for the included __NetEEPROM__ and __EthernetReset__ libraries.
+
+
+License
+-------
+This is free software and it is released under the [GPLv2, GNU General Public License](https://www.gnu.org/licenses/gpl-2.0.html)
