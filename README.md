@@ -102,7 +102,7 @@ them navigate to __File__ > __Examples__ > __NetEEPROM__ and select one of the e
 settings using the __WriteNetworkSettings__ sketch or print them to the serial using the __ReadNetworkSettings__.
 
 Note that the settings array in the __WriteNetworkSettings__ sketch hasn't got the settings in the usual order but
-rather in the order that __W1500__ reads them, so make sure you have put the correct values. If you set the network
+rather in the order that __W5100__ reads them, so make sure you have put the correct values. If you set the network
 settings you also have to set the TFTP data transfer port. The default is good enough but you may need to change it
 for the reasons that are listed below in the
 [Configuring your Router for Remote Flashing](https://github.com/codebendercc/Ariadne-Bootloader#configuring-your-router-for-remote-flashing)
