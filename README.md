@@ -86,8 +86,8 @@ will do a full cycle after every reset, physical or software. For those who want
 we have been testing some options on how to circumvent these limitations, but they still need refinement.
 
 
-Configuring Network Settings
-----------------------------
+Default Network Settings
+------------------------
 The default built-in network settings of the bootloader are listed below.
 ```
 * IP Address:  192.168.1.128
@@ -96,6 +96,10 @@ The default built-in network settings of the bootloader are listed below.
 * MAC Address: 0xDE.0xAD.0xBE.0xEF.0xFE.0xED
 * TFTP Data Port: 46969
 ```
+
+
+Configuring Network Settings
+----------------------------
 These can be changed using our __NetEEPROM__ library. The library is going to have it's own documentation on how it
 can be used but for the purpose of changing and reading the network settings you can use the included examples. To load
 them navigate to __File__ > __Examples__ > __NetEEPROM__ and select one of the examples. You can write the network
@@ -121,7 +125,7 @@ Unlike serial flashing that uses __HEX__ files to flash the Arduino, the TFTP se
 with binary files. This means that you have to manually convert your programs to the right format. To do that, first build
 your sketch inside _Arduino IDE_ using the __Verify__ button. After that, without exiting the *Arduino IDE* you need
 to navigate to the temporary directory where your project was built. That is ```C:\Users\owner\AppData\Local\Temp\```
-on *Windows* or ```/tmp``` on *Linux*. There you will find a folder named something like ```build2429295348207572157.tmp```.
+on *Windows* or ```/tmp``` on *Linux* and *Mac OS*. There you will find a folder named something like ```build2429295348207572157.tmp```.
 That is where the Arduino temporary build files reside. Enter the directory and make sure that there is a ```.elf```
 or a ```.hex``` file with the same name as your sketch. That is the file you need to convert. To achieve that you have to
 run one of the following commands in a terminal.
