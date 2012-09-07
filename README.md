@@ -44,8 +44,8 @@ Take extra care during coping not to overwrite any other files. Restart the Ardu
 the new boards and libraries.
 
 
-Burning the Bootloader
-----------------------
+Installing the Bootloader
+-------------------------
 To burn the bootloader, you will need an [AVR-ISP](http://www.atmel.com/dyn/products/tools_card.asp?tool_id=2726)
 (in-system programmer), [USBtinyISP](http://www.ladyada.net/make/usbtinyisp/) or you can build a
 [ParallelProgrammer](http://arduino.cc/en/Hacking/ParallelProgrammer) or an
