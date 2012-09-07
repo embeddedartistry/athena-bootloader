@@ -1,7 +1,5 @@
-#include <avr/io.h>
-#include <avr/pgmspace.h>
-#include <util/delay.h>
-
+#ifndef serial_h
+#define serial_h
 
 #ifdef LUDICROUS_SPEED
 	#define BAUD_RATE 230400L
@@ -34,3 +32,4 @@ void puthex(uint8_t c);
 
 uint8_t getch(void);
 
+#endif

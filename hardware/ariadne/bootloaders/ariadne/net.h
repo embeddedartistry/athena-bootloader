@@ -1,9 +1,6 @@
 #ifndef net_h
 #define net_h
 
-#include <avr/io.h>
-#include <avr/eeprom.h>
-
 /* Network settings */
 #define IP_ADDR     192,168,1,128
 #define SUB_MASK    255,255,255,0

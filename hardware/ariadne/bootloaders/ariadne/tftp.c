@@ -7,6 +7,8 @@
  * Version: 0.2 tftp / flashing functional
  */
 
+#include <avr/pgmspace.h>
+
 #include "boot.h"
 #include "util.h"
 #include "neteeprom.h"

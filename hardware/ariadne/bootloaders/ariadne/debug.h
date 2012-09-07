@@ -1,6 +1,5 @@
-#include <avr/pgmspace.h>
-#include <avr/io.h>
-#include <util/delay.h>
+#ifndef debug_h
+#define debug_h
 
 /** general debug **/
 //#define _DEBUG
@@ -35,4 +34,6 @@ void tracedec(uint16_t num, uint8_t len);
 void stepInit();
 void step();
 #endif
+#endif
+
 #endif

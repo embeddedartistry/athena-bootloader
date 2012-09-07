@@ -1,9 +1,6 @@
 #ifndef watchdog_h
 #define watchdog_h
 
-#include <stdint.h>
-#include <avr/wdt.h>
-
 /* Watchdog settings */
 #define WATCHDOG_OFF    (0)
 #define WATCHDOG_16MS   (_BV(WDE))

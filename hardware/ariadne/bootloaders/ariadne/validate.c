@@ -1,4 +1,7 @@
 /* Validate first sector is a genuine image */
+
+#include <stdint.h>
+
 #include "validate.h"
 #include "debug.h"
 #include "serial.h"

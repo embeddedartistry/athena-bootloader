@@ -7,6 +7,9 @@
  * Version: 0.2 tftp / flashing functional
  */
 
+#include <stdint.h>
+#include <avr/wdt.h>
+
 #include "watchdog.h"
 #include "debug.h"
 

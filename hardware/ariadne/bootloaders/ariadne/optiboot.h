@@ -1,6 +1,5 @@
-#include <inttypes.h>
-#include <avr/io.h>
-#include <avr/pgmspace.h>
+#ifndef optiboot_h
+#define optiboot_h
 
 #if defined(__AVR_ATmega168__)
 	#define RAMSTART (0x100)
@@ -40,3 +39,5 @@
 uint8_t serialFlashing;
 
 uint8_t serialPoll();
+
+#endif

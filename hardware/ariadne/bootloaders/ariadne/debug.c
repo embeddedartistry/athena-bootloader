@@ -7,6 +7,10 @@
  * Version: 0.2 tftp / flashing functional, serial flashing
  */
 
+#include <avr/pgmspace.h>
+#include <avr/io.h>
+#include <util/delay.h>
+
 #include "serial.h"
 #include "debug.h"
 

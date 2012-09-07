@@ -1,8 +1,6 @@
 #ifndef tftp_h
 #define tftp_h
 
-#include <avr/pgmspace.h>
-
 /* TFTP port settings */
 #define TFTP_PORT 69
 #define TFTP_STATIC_PORT 46969

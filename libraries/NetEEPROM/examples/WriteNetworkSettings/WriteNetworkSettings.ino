@@ -36,16 +36,11 @@
 #include <EEPROM.h>
 #include <NetEEPROM.h>
 
-//uint8_t  ip[] = {192,168,1,20};
-//uint8_t  subnet[] = {255,255,255,0};
-//uint8_t  gateway[] = {192,168,1,1};
-//uint8_t  mac[] = {0x12,0x34,0x45,0x78,0x9A,0xBC};
-uint8_t settings[NETWORK_SETTINGS_SIZE] = {
-	192,168,1,1,                   // Gateway IP address
-	255,255,255,0,                 // Subnet mask
-	0x12,0x34,0x45,0x78,0x9A,0xBC, // MAC address
-	192,168,1,20,                  // Arduino device IP address
-};
+byte  mac[] = {0x12, 0x34, 0x56,
+			   0x78, 0x9A, 0xBC};
+IPAddress  ip(192, 168, 1, 120);
+IPAddress  gateway(192, 168, 1, 1);
+IPAddress  subnet(255, 255, 255, 0);
 /* Because of limitations in the bootloader, if you set the network settings you have
  * to set the pseudo-random port for the tftp data transfer. If you have more than one arduinos
  * with ethernet behind your router that you want to program from outside your local
@@ -62,9 +57,7 @@ int ledpin = 13;
 void setup()
 {
 	/* Write the new settings values to EEPROM */
-	NetEEPROM.writeNet(settings, port);
-	/* Or this way if you prefer it */
-	//NetEEPROM.writeNet(ip, subnet, gateway, mac, port);
+	NetEEPROM.writeNet(mac, ip, gateway, subnet, port);
 	/* Set image status to bad, so upon reboot, the bootloader won't time out */
 	NetEEPROM.writeImgBad();
 

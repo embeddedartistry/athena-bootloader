@@ -7,6 +7,9 @@
  * Version: 0.1 tftp / flashing functional
  */
 
+#include <avr/io.h>
+#include <avr/eeprom.h>
+
 #include "net.h"
 #include "neteeprom.h"
 #include "pin_defs.h"

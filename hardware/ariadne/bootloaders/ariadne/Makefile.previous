@@ -98,7 +98,7 @@ OBJDUMP = avr-objdump
 
 # symbolic targets:
 #all:	main.hex app.bin bigapp.bin settings.bin
-all:	main.hex app.bin settings.bin bigapp.bin
+all:	main.hex #app.bin settings.bin bigapp.bin
 debug:	COMPILE += -D_DEBUG -D_DEBUGMORE
 debug:	main.hex
 

@@ -1,6 +1,5 @@
-#include <avr/io.h>
-#include <avr/pgmspace.h>
-#include <util/delay.h>
+#ifndef util_h
+#define util_h
 
 #define TIMEOUT 3
 
@@ -26,3 +25,5 @@
 void updateLed(void);
 void resetTick(void);
 uint8_t timedOut(void);
+
+#endif

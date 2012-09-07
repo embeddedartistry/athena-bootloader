@@ -7,6 +7,10 @@
  * Version: 0.2 support for USB flashing
  */
 
+#include <inttypes.h>
+#include <avr/io.h>
+#include <avr/pgmspace.h>
+
 /* <avr/boot.h> uses sts instructions, but this version uses out instructions.
  * This saves cycles and program memory. */
 #include "boot.h"

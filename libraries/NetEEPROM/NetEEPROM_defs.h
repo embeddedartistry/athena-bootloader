@@ -8,7 +8,7 @@
 //#define SIG_3    2 /* This is going to be the port signature byte */
 #define NETEEPROM_IMG_STAT 2
 #define NETEEPROM_DATA     3
-#define NETEEPROM_GW       4
+#define NETEEPROM_GW       3
 #define NETEEPROM_SN       7
 #define NETEEPROM_MAC      11
 #define NETEEPROM_IP       17

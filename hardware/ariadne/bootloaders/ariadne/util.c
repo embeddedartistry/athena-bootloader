@@ -7,6 +7,10 @@
  * Version: 0.2 support for USB flashing
  */
 
+#include <avr/io.h>
+#include <avr/pgmspace.h>
+#include <util/delay.h>
+
 #include "util.h"
 #include "pin_defs.h"
 

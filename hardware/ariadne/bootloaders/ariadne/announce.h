@@ -1,5 +1,5 @@
-#include <avr/pgmspace.h>
-#include <string.h>
+#ifndef announce_h
+#define announce_h
 
 #define ANNOUNCE_PORT (5555)
 #define ANNOUNCE_DATA_SIZE    128
@@ -8,4 +8,6 @@
 #ifdef _ANNOUNCE
 void announceInit();
 void announcePoll();
+#endif
+
 #endif

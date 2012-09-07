@@ -7,6 +7,9 @@
  * Version: 0.1 tftp / flashing functional
  */
 
+#include <avr/pgmspace.h>
+#include <string.h>
+
 #include "announce.h"
 #include "net.h"
 #include "w5100_reg.h"

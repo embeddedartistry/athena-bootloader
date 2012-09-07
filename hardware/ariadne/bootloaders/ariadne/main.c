@@ -7,6 +7,8 @@
  * Version: 0.2 support for USB flashing
  */
 
+#include <avr/eeprom.h>
+
 #include "boot.h"
 #include "util.h"
 #include "net.h"
