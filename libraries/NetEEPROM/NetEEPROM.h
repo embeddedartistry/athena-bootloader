@@ -7,7 +7,8 @@
 
 #define NETWORK_SETTINGS_SIZE   18
 
-class NetEEPROMClass: public EEPROMClass {
+class NetEEPROMClass
+{
 	private:
 		/* Write signature bytes in eeprom, informing the bootloader that
 		 * the network settings will be loaded from the eeprom */

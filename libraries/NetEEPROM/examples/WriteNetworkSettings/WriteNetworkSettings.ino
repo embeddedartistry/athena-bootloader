@@ -2,7 +2,7 @@
  * WriteNetworkSettings
 
    This sketch writes a set of network configuration settings to EEPROM
-   in such a way that both the `tftpboot` bootloader & a sketch
+   in such a way that both the Ariadne bootloader & a sketch
    can read them back later and share the same settings.
 
    As commented below these are the settings available for modification:

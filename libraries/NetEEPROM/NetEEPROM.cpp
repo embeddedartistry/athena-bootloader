@@ -7,15 +7,15 @@
  */
 void NetEEPROMClass::writeSig(void)
 {
-	write(NETEEPROM_SIG_1, NETEEPROM_SIG_1_VAL); // Set signature 1 to load eeprom settings
-	write(NETEEPROM_SIG_2, NETEEPROM_SIG_2_VAL); // Set signature 2
+	EEPROM.write(NETEEPROM_SIG_1, NETEEPROM_SIG_1_VAL); // Set signature 1 to load eeprom settings
+	EEPROM.write(NETEEPROM_SIG_2, NETEEPROM_SIG_2_VAL); // Set signature 2
 }
 
 IPAddress NetEEPROMClass::readAddr(byte start)
 {
 	byte octet[4];
-	for(byte address = start; address < start+4; address++)
-		octet[address-start] = read(address);
+	for(byte address = start; address < start + 4; address++)
+		octet[address - start] = EEPROM.read(address);
 	IPAddress Addr(octet);
 	return(Addr);
 }
@@ -23,7 +23,7 @@ IPAddress NetEEPROMClass::readAddr(byte start)
 void NetEEPROMClass::readNet(byte settings[NETWORK_SETTINGS_SIZE], word* port)
 {
 	for(byte address = 0; address < NETWORK_SETTINGS_SIZE; address++)
-		settings[address] = read(address+NETEEPROM_SETTINGS_OFFSET);
+		settings[address] = EEPROM.read(address + NETEEPROM_SETTINGS_OFFSET);
 
 	*port = readPort();
 }
@@ -63,34 +63,35 @@ void NetEEPROMClass::printNet(byte settings[NETWORK_SETTINGS_SIZE], word port)
  */
 void NetEEPROMClass::eraseSig(void)
 {
-	write(NETEEPROM_SIG_1, 0xFF); // Unset signature 1 to load built-in settings
-	write(NETEEPROM_SIG_2, 0xFF); // Unset signature 2
+	EEPROM.write(NETEEPROM_SIG_1, 0xFF); // Unset signature 1 to load built-in settings
+	EEPROM.write(NETEEPROM_SIG_2, 0xFF); // Unset signature 2
 }
 
 void NetEEPROMClass::writeImgBad(void)
 {
-	write(NETEEPROM_IMG_STAT, NETEEPROM_IMG_BAD_VAL); // Image status set to invalid
+	EEPROM.write(NETEEPROM_IMG_STAT, NETEEPROM_IMG_BAD_VAL); // Image status set to invalid
 }
 
 void NetEEPROMClass::writeImgOk(void)
 {
-	write(NETEEPROM_IMG_STAT, NETEEPROM_IMG_OK_VAL); // Image status set to valid
+	EEPROM.write(NETEEPROM_IMG_STAT, NETEEPROM_IMG_OK_VAL); // Image status set to valid
 }
 
 void NetEEPROMClass::writeNet(byte* mac, IPAddress ip, IPAddress gw, IPAddress sn, word port)
 {
-	byte settings[NETWORK_SETTINGS_SIZE] =
-				{gw[0], gw[1], gw[2], gw[3],
-				 sn[0], sn[1], sn[2], sn[3],
-				 mac[0], mac[1], mac[2],
-				 mac[3], mac[4], mac[5],
-				 ip[0], ip[1], ip[2], ip[3]};
+	byte settings[NETWORK_SETTINGS_SIZE] = {
+		gw[0], gw[1], gw[2], gw[3],
+		sn[0], sn[1], sn[2], sn[3],
+		mac[0], mac[1], mac[2],
+		mac[3], mac[4], mac[5],
+		ip[0], ip[1], ip[2], ip[3]
+	};
 
 	for(byte address = 0; address < NETWORK_SETTINGS_SIZE; address++) {
-		write(address+NETEEPROM_SETTINGS_OFFSET, settings[address]);
+		EEPROM.write(address + NETEEPROM_SETTINGS_OFFSET, settings[address]);
 	}
-	write(NETEEPROM_PORT, (port&0xFF));
-	write(NETEEPROM_PORT+1, (port>>8));
+	EEPROM.write(NETEEPROM_PORT, (port & 0xFF));
+	EEPROM.write(NETEEPROM_PORT + 1, (port >> 8));
 
 	writeSig();
 }
@@ -101,16 +102,16 @@ void NetEEPROMClass::writeNet(byte* mac, IPAddress ip, IPAddress gw, IPAddress s
  */
 bool NetEEPROMClass::sigIsSet(void)
 {
-	if((read(NETEEPROM_SIG_1)==NETEEPROM_SIG_1_VAL)
-		&& (read(NETEEPROM_SIG_2)==NETEEPROM_SIG_2_VAL)) return(1);
-	else return(0);
+	if((EEPROM.read(NETEEPROM_SIG_1) == NETEEPROM_SIG_1_VAL)
+	        && (EEPROM.read(NETEEPROM_SIG_2) == NETEEPROM_SIG_2_VAL)) return(true);
+	else return(false);
 }
 
 byte* NetEEPROMClass::readMAC(void)
 {
 	byte* mac = (byte*)malloc(6 * sizeof(byte));
-	for(byte address = NETEEPROM_MAC; address < NETEEPROM_MAC+6; address++)
-		mac[address-NETEEPROM_MAC] = read(address);
+	for(byte address = NETEEPROM_MAC; address < NETEEPROM_MAC + 6; address++)
+		mac[address - NETEEPROM_MAC] = EEPROM.read(address);
 	return(mac);
 }
 
@@ -131,8 +132,8 @@ IPAddress NetEEPROMClass::readSN(void)
 
 word NetEEPROMClass::readPort(void)
 {
-	byte loByte = read(NETEEPROM_PORT);
-	byte hiByte = read(NETEEPROM_PORT+1);
+	byte loByte = EEPROM.read(NETEEPROM_PORT);
+	byte hiByte = EEPROM.read(NETEEPROM_PORT + 1);
 	return(makeWord(hiByte, loByte));
 }
 
@@ -146,28 +147,28 @@ void NetEEPROMClass::printNet(byte* mac, IPAddress ip, IPAddress gw, IPAddress s
 		byte i;
 
 		Serial.print("    MAC: ");
-		for(i=0; i<6; i++){
+		for(i = 0; i < 6; i++) {
 			Serial.print("0x");
 			Serial.print(mac[i], HEX);
-			if(i!=5) Serial.print(".");
+			if(i != 5) Serial.print(".");
 			else Serial.println();
 		}
 		Serial.print("Address: ");
-		for(i=0; i<4; i++) {
+		for(i = 0; i < 4; i++) {
 			Serial.print(ip[i]);
-			if(i!=3) Serial.print(".");
+			if(i != 3) Serial.print(".");
 			else Serial.println();
 		}
 		Serial.print("Gateway: ");
-		for(i=0; i<4; i++) {
+		for(i = 0; i < 4; i++) {
 			Serial.print(gw[i]);
-			if(i!=3) Serial.print(".");
+			if(i != 3) Serial.print(".");
 			else Serial.println();
 		}
 		Serial.print(" Subnet: ");
-		for(i=0; i<4; i++) {
+		for(i = 0; i < 4; i++) {
 			Serial.print(sn[i]);
-			if(i!=3) Serial.print(".");
+			if(i != 3) Serial.print(".");
 			else Serial.println();
 		}
 		Serial.print("   Port: ");
