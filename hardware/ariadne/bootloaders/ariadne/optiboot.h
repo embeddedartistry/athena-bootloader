@@ -13,7 +13,7 @@
 #elif defined(__AVR_ATtiny84__)
 	#define RAMSTART (0x100)
 	#define NRWWSTART (0x0000)
-#elif defined(__AVR_ATmega1280__)
+#elif defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
 	#define RAMSTART (0x200)
 	#define NRWWSTART (0xE000)
 #elif defined(__AVR_ATmega8__) || defined(__AVR_ATmega88__)

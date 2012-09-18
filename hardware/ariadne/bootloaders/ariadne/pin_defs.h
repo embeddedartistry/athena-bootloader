@@ -8,11 +8,11 @@
 #else
 #define LED     PINB5  //Pin 13
 #endif
+/* SPI pins */
 #define SCK     PINB5  //Pin 13
 #define MISO    PINB4  //Pin 12
 #define MOSI    PINB3  //Pin 11
 #define SS      PINB2  //Pin 10
-
 /* Ports for soft UART */
 #ifdef SOFT_UART
 #define UART_PORT   PORTD
@@ -22,6 +22,7 @@
 #define UART_RX_BIT 0
 #endif
 #endif
+
 
 #if defined(__AVR_ATmega8__)
 //Name conversion R.Wiersma
@@ -33,6 +34,7 @@
 #define TIFR1   TIFR
 #define WDTCSR  WDTCR
 #endif
+
 
 /* Luminet support */
 #if defined(__AVR_ATtiny84__)
@@ -50,6 +52,7 @@
 #define UART_RX_BIT 3
 #endif
 #endif
+
 
 /* Sanguino support */
 #if defined(__AVR_ATmega644P__)
@@ -69,14 +72,19 @@
 #endif
 #endif
 
+
 /* Mega support */
-#if defined(__AVR_ATmega1280__)
+#if defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
 /* Onboard LED is connected to pin PB7 on Arduino Mega */
 #define LED_DDR     DDRB
 #define LED_PORT    PORTB
 #define LED_PIN     PINB
 #define LED         PINB7
-
+/* SPI pins */
+#define SCK     PINB7  //Pin 13
+#define MISO    PINB6  //Pin 12
+#define MOSI    PINB5  //Pin 11
+#define SS      PINB4  //Pin 10
 /* Ports for soft UART */
 #ifdef SOFT_UART
 #define UART_PORT   PORTE
@@ -85,4 +93,9 @@
 #define UART_TX_BIT 1
 #define UART_RX_BIT 0
 #endif
+#endif
+
+
+/* Leonardo support */
+#if defined(__AVR_ATmega32U4__)
 #endif

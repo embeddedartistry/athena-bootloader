@@ -8,6 +8,7 @@
  */
 
 #include <avr/pgmspace.h>
+#include <util/delay.h>
 
 #include "boot.h"
 #include "util.h"

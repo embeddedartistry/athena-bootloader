@@ -155,7 +155,7 @@ uint8_t proccessCommand()
 
 		verifySpace();
 
-#ifdef __AVR_ATmega1280__
+		#if defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560)
 		//      do putch(pgm_read_byte_near(address++));
 		//      while (--length);
 		do {
@@ -164,10 +164,10 @@ uint8_t proccessCommand()
 			putch(result);
 			address++;
 		} while(--length);
-#else
+		#else
 		do putch(pgm_read_byte_near(address++));
 		while(--length);
-#endif
+		#endif
 	}
 	/* Get device signature bytes  */
 	else if(ch == STK_READ_SIGN) {
