@@ -23,19 +23,19 @@
 
 /** Opcode?: tftp operation is unsupported. The bootloader only supports 'put' */
 #define TFTP_OPCODE_ERROR_LEN 12
-const unsigned char tftp_opcode_error_packet[] PROGMEM = "\12" "\0\5" "\0\0" "Opcode?";
+PROGMEM const unsigned char tftp_opcode_error_packet[] = "\12" "\0\5" "\0\0" "Opcode?";
 
 /** Full: Binary image file is larger than the available space. */
 #define TFTP_FULL_ERROR_LEN 9
-const unsigned char tftp_full_error_packet[] PROGMEM = "\x09" "\0\5" "\0\3" "Full";
+PROGMEM const unsigned char tftp_full_error_packet[] = "\x09" "\0\5" "\0\3" "Full";
 
 /** General catch-all error for unknown errors */
 #define TFTP_UNKNOWN_ERROR_LEN 10
-const unsigned char tftp_unknown_error_packet[] PROGMEM = "\10" "\0\5" "\0\0" "Error";
+PROGMEM const unsigned char tftp_unknown_error_packet[] = "\10" "\0\5" "\0\0" "Error";
 
 /** Invalid image file: Doesn't look like a binary image file */
 #define TFTP_INVALID_IMAGE 23
-const unsigned char tftp_invalid_image_packet[] PROGMEM = "\23" "\0\5" "\0\0" "Invalid image file";
+PROGMEM const unsigned char tftp_invalid_image_packet[] = "\23" "\0\5" "\0\0" "Invalid image file";
 
 uint16_t lastPacket = 0;
 
@@ -226,7 +226,10 @@ uint8_t processPacket()
 						boot_spm_busy_wait();
 						boot_page_write(writeAddr + offset - SPM_PAGESIZE);
 						boot_spm_busy_wait();
+						#if defined(RWWSRE)
+						// Reenable read access to flash
 						boot_rww_enable();
+						#endif
 					}
 				}
 
@@ -372,7 +375,7 @@ uint8_t tftpPoll()
 	uint16_t packetSize = netReadWord(REG_S3_RX_RSR0);
 
 	if(packetSize) {
-		if(!tftpFlashing) resetTick();
+		resetTick();
 		tftpFlashing = TRUE;
 
 		for(;;) {
@@ -381,7 +384,7 @@ uint8_t tftpPoll()
 			netWriteReg(REG_S3_IR, IR_RECV);
 
 			//FIXME: is this right after all? smaller delay but
-			//still a delayand it still breaks occasionally
+			//still a delay and it still breaks occasionally
 			_delay_ms(400);
 		}
 		// Process Packet and get TFTP response code

@@ -12,7 +12,7 @@ ariadne328.bootloader.extended_fuses=0x05
 ariadne328.bootloader.path=ariadne
 ariadne328.bootloader.file=ariadne_atmega328.hex
 ariadne328.bootloader.unlock_bits=0x3F
-ariadne328.bootloader.lock_bits=0x2F
+ariadne328.bootloader.lock_bits=0x0F
 
 ariadne328.build.mcu=atmega328p
 ariadne328.build.f_cpu=16000000L
@@ -33,7 +33,7 @@ ariadne328eth.bootloader.extended_fuses=0x05
 ariadne328eth.bootloader.path=ariadne
 ariadne328eth.bootloader.file=ariadne_atmega328_ethernet.hex
 ariadne328eth.bootloader.unlock_bits=0x3F
-ariadne328eth.bootloader.lock_bits=0x2F
+ariadne328eth.bootloader.lock_bits=0x0F
 
 ariadne328eth.build.mcu=atmega328p
 ariadne328eth.build.f_cpu=16000000L

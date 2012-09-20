@@ -2,8 +2,8 @@
 #define debug_h
 
 /** general debug **/
-//#define _DEBUG
 //#define _DEBUGMORE
+//#define _DEBUG
 #ifdef _DEBUGMORE
 	#define _DEBUG
 #endif

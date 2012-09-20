@@ -20,7 +20,7 @@ IPAddress NetEEPROMClass::readAddr(byte start)
 	return(Addr);
 }
 
-void NetEEPROMClass::readNet(byte settings[NETWORK_SETTINGS_SIZE], word* port)
+void NetEEPROMClass::read(byte settings[NETWORK_SETTINGS_SIZE], word* port)
 {
 	for(byte address = 0; address < NETWORK_SETTINGS_SIZE; address++)
 		settings[address] = EEPROM.read(address + NETEEPROM_SETTINGS_OFFSET);
@@ -28,7 +28,7 @@ void NetEEPROMClass::readNet(byte settings[NETWORK_SETTINGS_SIZE], word* port)
 	*port = readPort();
 }
 
-void NetEEPROMClass::printNet(byte settings[NETWORK_SETTINGS_SIZE], word port)
+void NetEEPROMClass::print(byte settings[NETWORK_SETTINGS_SIZE], word port)
 {
 	if(sigIsSet()) {
 		byte i;
@@ -54,6 +54,30 @@ void NetEEPROMClass::printNet(byte settings[NETWORK_SETTINGS_SIZE], word port)
 		Serial.println();
 		Serial.print("   Port: ");
 		Serial.print(port);
+	} else Serial.print("Using built in settings");
+}
+
+void NetEEPROMClass::print(byte* mac, IPAddress ip, IPAddress gw, IPAddress sn, word port)
+{
+	if(sigIsSet()) {
+		byte i;
+
+		Serial.print("    MAC: ");
+		for(i = 0; i < 6; i++) {
+			Serial.print("0x");
+			Serial.print(mac[i], HEX);
+			if(i != 5) Serial.print(".");
+			else Serial.println();
+		}
+		Serial.print("Address: ");
+		Serial.println(ip);
+		Serial.print("Gateway: ");
+		Serial.println(gw);
+		Serial.print(" Subnet: ");
+		Serial.println(sn);
+		Serial.print("   Port: ");
+		Serial.print(port);
+		Serial.println();
 	} else Serial.print("Using built in settings");
 }
 
@@ -141,45 +165,9 @@ word NetEEPROMClass::readPort(void)
 /*
  * Print functions
  */
-void NetEEPROMClass::printNet(byte* mac, IPAddress ip, IPAddress gw, IPAddress sn, word port)
-{
-	if(sigIsSet()) {
-		byte i;
-
-		Serial.print("    MAC: ");
-		for(i = 0; i < 6; i++) {
-			Serial.print("0x");
-			Serial.print(mac[i], HEX);
-			if(i != 5) Serial.print(".");
-			else Serial.println();
-		}
-		Serial.print("Address: ");
-		for(i = 0; i < 4; i++) {
-			Serial.print(ip[i]);
-			if(i != 3) Serial.print(".");
-			else Serial.println();
-		}
-		Serial.print("Gateway: ");
-		for(i = 0; i < 4; i++) {
-			Serial.print(gw[i]);
-			if(i != 3) Serial.print(".");
-			else Serial.println();
-		}
-		Serial.print(" Subnet: ");
-		for(i = 0; i < 4; i++) {
-			Serial.print(sn[i]);
-			if(i != 3) Serial.print(".");
-			else Serial.println();
-		}
-		Serial.print("   Port: ");
-		Serial.print(port);
-		Serial.println();
-	} else Serial.print("Using built in settings");
-}
-
 void NetEEPROMClass::print(void)
 {
-	printNet(readMAC(), readIP(), readGW(), readSN(), readPort());
+	print(readMAC(), readIP(), readGW(), readSN(), readPort());
 }
 
 NetEEPROMClass NetEEPROM;

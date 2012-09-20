@@ -17,8 +17,10 @@ class NetEEPROMClass
 		/* Basic method to read addresses used in public functions */
 		IPAddress readAddr(byte start);
 
-		void readNet(byte settings[NETWORK_SETTINGS_SIZE], word* port);
-		void printNet(byte settings[NETWORK_SETTINGS_SIZE], word port);
+		void read(byte settings[NETWORK_SETTINGS_SIZE], word* port);
+		void print(byte settings[NETWORK_SETTINGS_SIZE], word port);
+		/* Print the network settings from previously loaded arrays */
+		void print(byte* mac, IPAddress ip, IPAddress gw, IPAddress sn, word port);
 
 	public:
 		/* Erase signature bytes in eeprom to revert the bootloader to
@@ -43,8 +45,6 @@ class NetEEPROMClass
 		/* Function to return only the port */
 		word readPort(void);
 
-		/* Print the network settings from previously loaded arrays */
-		void printNet(byte* mac, IPAddress ip, IPAddress gw, IPAddress sn, word port);
 		/* Print the network settings */
 		void print(void);
 };

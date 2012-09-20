@@ -195,7 +195,9 @@ uint8_t proccessCommand()
 uint8_t serialPoll()
 {
 	if(UCSR0A & _BV(RXC0)){
+		resetTick();
 		serialFlashing = TRUE;
 		return(proccessCommand());
-	} else return(1);
+	}
+	return(1);
 }

@@ -11,7 +11,7 @@
 #include <EthernetServer.h>
 #include <EthernetClient.h>
 
-#define P(name)   static const prog_uchar name[] PROGMEM
+#define pgm_uchar(name)   static const prog_uchar name[] PROGMEM
 //#define DEBUG
 #ifdef DEBUG
 	#define DBG(c) c
@@ -37,6 +37,9 @@ class EthernetReset
 			_path = path;
 			_path_len = strlen(_path);
 			_server = new EthernetServer(port);
+		}
+		~EthernetReset() {
+			delete _server;
 		}
 
 		void begin(void);

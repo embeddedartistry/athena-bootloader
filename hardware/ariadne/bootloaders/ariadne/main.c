@@ -110,8 +110,7 @@ int main(void)
 				resetTick();
 				// Reinitialize TFTP
 				tftpInit();
-			} else if(eeprom_read_byte(EEPROM_IMG_STAT) == EEPROM_IMG_OK_VALUE)
-				break;
+			} else if(eeprom_read_byte(EEPROM_IMG_STAT) == EEPROM_IMG_OK_VALUE) break;
 		}
 		/* Blink the notification led */
 		updateLed();

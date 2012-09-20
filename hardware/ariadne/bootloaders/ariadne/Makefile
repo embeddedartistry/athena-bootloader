@@ -104,7 +104,7 @@ ISPFUSES = $(GCCROOT)avrdude $(AVRDUDE_CONF) -c $(ISPTOOL) \
            -U hfuse:w:0x$(HFUSE):m -U lfuse:w:0x$(LFUSE):m
 ISPFLASH = $(GCCROOT)avrdude $(AVRDUDE_CONF) -c $(ISPTOOL) \
            -p $(MCU_TARGET) -P $(ISPPORT) $(ISPSPEED) \
-           -U flash:w:$(PROGRAM)_$(TARGET).hex -U lock:w:0x2F:m
+           -U flash:w:$(PROGRAM)_$(TARGET).hex -U lock:w:0x0F:m
 
 STK500   = "C:\Program Files\Atmel\AVR Tools\STK500\Stk500.exe"
 STK500-1 = $(STK500) -e -d$(MCU_TARGET) -pf -vf -if$(PROGRAM)_$(TARGET).hex \
@@ -236,10 +236,10 @@ atmega328: $(PROGRAM)_atmega328.lst
 atmega328_isp: atmega328
 atmega328_isp: TARGET = atmega328
 atmega328_isp: MCU_TARGET = atmega328p
-# 4096 byte boot, SPIEN
-atmega328_isp: HFUSE = D8
 # Low power xtal (16MHz) 16KCK/14CK+65ms
 atmega328_isp: LFUSE = FF
+# 4096 byte boot, SPIEN
+atmega328_isp: HFUSE = D8
 # 2.7V brownout
 atmega328_isp: EFUSE = 05
 atmega328_isp: isp
@@ -254,10 +254,10 @@ atmega328_ethernet: $(PROGRAM)_atmega328_ethernet.lst
 atmega328_ethernet_isp: atmega328_ethernet
 atmega328_ethernet_isp: TARGET = atmega328_ethernet
 atmega328_ethernet_isp: MCU_TARGET = atmega328p
-# 4096 byte boot, SPIEN
-atmega328_ethernet_isp: HFUSE = D8
 # Low power xtal (16MHz) 16KCK/14CK+65ms
 atmega328_ethernet_isp: LFUSE = FF
+# 4096 byte boot, SPIEN
+atmega328_ethernet_isp: HFUSE = D8
 # 2.7V brownout
 atmega328_ethernet_isp: EFUSE = 05
 atmega328_ethernet_isp: isp
@@ -283,24 +283,44 @@ atmega328_ethernet_isp: isp
 # sanguino_isp: isp
 #
 #
-# # Mega has a minimum boot size of 1024 bytes, so enable extra functions
-# #mega: TARGET = atmega1280
+# Mega has a minimum boot size of 1024 bytes
+# mega: TARGET = atmega1280
 # mega: MCU_TARGET = atmega1280
-# mega: CFLAGS += '-DLED_START_FLASHES=3' '-DBAUD_RATE=115200' '-DBIGBOOT'
+# mega: CFLAGS += '-DBAUD_RATE=115200'
 # mega: AVR_FREQ = 16000000L
-# mega: LDSECTIONS  = -Wl,--section-start=.text=0x1fc00
+# mega: LDSECTIONS  = -Wl,--section-start=.text=0x1f800
 # mega: $(PROGRAM)_atmega1280.hex
 # mega: $(PROGRAM)_atmega1280.lst
 # mega_isp: mega
 # mega_isp: TARGET = atmega1280
 # mega_isp: MCU_TARGET = atmega1280
-# # 1024 byte boot
-# mega_isp: HFUSE = DE
 # # Low power xtal (16MHz) 16KCK/14CK+65ms
 # mega_isp: LFUSE = FF
+# # 4069 byte boot
+# mega_isp: HFUSE = DA
 # # 2.7V brownout
-# mega_isp: EFUSE = 05
+# mega_isp: EFUSE = F5
 # mega_isp: isp
+# #
+# #
+# # Mega has a minimum boot size of 1024 bytes
+# mega2560: TARGET = atmega2560
+# mega2560: MCU_TARGET = atmega2560
+# mega2560: CFLAGS += '-DBAUD_RATE=115200'
+# mega2560: AVR_FREQ = 16000000L
+# mega2560: LDSECTIONS  = -Wl,--section-start=.text=0x3f800
+# mega2560: $(PROGRAM)_atmega2560.hex
+# mega2560: $(PROGRAM)_atmega2560.lst
+# mega2560_isp: mega2560
+# mega2560_isp: TARGET = atmega2560
+# mega2560_isp: MCU_TARGET = atmega2560
+# # Low power xtal (16MHz) 16KCK/14CK+65ms
+# mega2560_isp: LFUSE = FF
+# # 4069 byte boot
+# mega2560_isp: HFUSE = DA
+# # 2.7V brownout
+# mega2560_isp: EFUSE = FD
+# mega2560_isp: isp
 #
 #
 # # ATmega8
