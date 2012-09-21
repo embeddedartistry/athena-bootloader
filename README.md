@@ -150,10 +150,19 @@ bootloader uses to validate *Arduino* sketches. The third sketch in ```tests/led
 need to find out how we had our led matrices connected on *Arduino Uno*. Or we might release the schematics at some point.
 Who knows.
 
+
 #####Using a tftp client to upload the sketch
-Now that the binary is ready you have to upload it. First you have to connect to your Arduino using any tftp client you
+Now that the binary is ready, you have to upload it. First you have to connect to your Arduino using any tftp client you
 may have on your computer. All three major operating systems have their own clients that you can use through the command line.
-So open a terminal and type ```tftp [ip] [port]```. For the default bootloader settings that would be:
+On some *Linux* distribution like *Fedora/RedHat*, before you use ```tftp```, you should load the ```ip_conntrack_tftp```
+module or the tftp client won't be able to *ACK* the packets sent. That is needed because TFTP is insecure and it is not
+enabled by default. Other distributions like *Arch*, don't need this step. To do that, open a terminal and run
+```
+modprobe ip_conntrack_tftp
+```
+as *root* using ```su``` or ```sudo```.
+
+After that open a terminal as a regular user and type ```tftp [ip] [port]```. For the default bootloader settings that would be:
 ```
 tftp 192.168.1.128 69
 ```
