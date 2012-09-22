@@ -190,6 +190,7 @@ uint8_t processPacket()
 				uint16_t offset = 0; // Block offset
 
 				// Round up packet length to a full flash sector size
+				uint16_t realPacketLength = packetLength;
 				while(packetLength % SPM_PAGESIZE) packetLength++;
 #ifdef _DEBUG_TFTP
 				traceln("Tftp: Packet length adjusted to ");
@@ -233,7 +234,7 @@ uint8_t processPacket()
 					}
 				}
 
-				if(packetLength < TFTP_DATA_SIZE) {
+				if(realPacketLength < TFTP_DATA_SIZE) {
 					// Flash is complete
 					// Hand over to application
 #ifdef _VERBOSE
