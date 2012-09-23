@@ -132,23 +132,23 @@ SIZE    = $(GCCROOT)avr-size
 
 # # Build with the debug messages enabled
 # # Use it only if you have already seen the source
-# debug328: TARGET = debug328
-# debug328: MCU_TARGET = atmega328p
-# debug328: CFLAGS += '-D_DEBUG' '-DBAUD_RATE=115200'
-# debug328: AVR_FREQ = 16000000L
-# debug328: LDSECTIONS  = -Wl,--section-start=.text=0x7000 -Wl,--section-start=.version=0x7ffc
-# debug328: $(PROGRAM)_debug328.hex
-# debug328: $(PROGRAM)_debug328.lst
-# debug328_isp: debug328
-# debug328_isp: TARGET = debug328
-# debug328_isp: MCU_TARGET = atmega328p
-# # 512 byte boot, SPIEN
-# debug328_isp: HFUSE = D8
-# # Low power xtal (16MHz) 16KCK/14CK+65ms
-# debug328_isp: LFUSE = FF
-# # 2.7V brownout
-# debug328_isp: EFUSE = 05
-# debug328_isp: isp
+debug328: TARGET = debug328
+debug328: MCU_TARGET = atmega328p
+debug328: CFLAGS += '-D_DEBUG' '-D_DEBUG_TFTP' '-DBAUD_RATE=115200'
+debug328: AVR_FREQ = 16000000L
+debug328: LDSECTIONS  = -Wl,--section-start=.text=0x7000 -Wl,--section-start=.version=0x7ffe
+debug328: $(PROGRAM)_debug328.hex
+debug328: $(PROGRAM)_debug328.lst
+debug328_isp: debug328
+debug328_isp: TARGET = debug328
+debug328_isp: MCU_TARGET = atmega328p
+# Low power xtal (16MHz) 16KCK/14CK+65ms
+debug328_isp: LFUSE = FF
+# 4096 byte boot, SPIEN
+debug328_isp: HFUSE = D8
+# 2.7V brownout
+debug328_isp: EFUSE = 05
+debug328_isp: isp
 #
 #
 # # 20MHz clocked platforms

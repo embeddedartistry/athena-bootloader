@@ -21,6 +21,7 @@
 #include "serial.h"
 #include "debug.h"
 
+
 /** Opcode?: tftp operation is unsupported. The bootloader only supports 'put' */
 #define TFTP_OPCODE_ERROR_LEN 12
 PROGMEM const unsigned char tftp_opcode_error_packet[] = "\12" "\0\5" "\0\0" "Opcode?";
@@ -165,6 +166,9 @@ uint8_t processPacket()
 			break;
 
 		case TFTP_OPCODE_DATA:
+			// Valid packet with data so reset timer
+			resetTick();
+
 			packetLength = tftpDataLen - (TFTP_OPCODE_SIZE + TFTP_BLOCKNO_SIZE);
 			lastPacket = tftpBlock;
 			writeAddr = (tftpBlock - 1) << 9; // Flash write address for this block
@@ -261,6 +265,7 @@ uint8_t processPacket()
 #ifdef _DEBUG_TFTP
 			traceln("Tftp: Error");
 #endif
+			/* FIXME: Resetting might be needed here too */
 			break;
 
 		default:
@@ -268,6 +273,11 @@ uint8_t processPacket()
 			traceln("Tftp: Invalid opcode ");
 			tracenum(tftpOpcode);
 #endif
+			/* FIXME: This is where the tftp server should be resetted.
+			 * It can be done by reinitializig the tftpd or
+			 * by resetting the device. I should find out which is best...
+			 * Right now it is being done by resetting the timer if we have a
+			 * data packet. */
 			// Invalid - return error
 			returnCode = ERROR_INVALID;
 			break;
@@ -376,7 +386,6 @@ uint8_t tftpPoll()
 	uint16_t packetSize = netReadWord(REG_S3_RX_RSR0);
 
 	if(packetSize) {
-		resetTick();
 		tftpFlashing = TRUE;
 
 		for(;;) {
