@@ -20,7 +20,7 @@
 
 #ifdef _ANNOUNCE
 uint16_t readPointer;
-char *hex = "0123456789ABCDEF";
+char* hex = "0123456789ABCDEF";
 const char bootloaderIdentString[] PROGMEM = "Ethernet 1.0";
 
 
@@ -35,7 +35,7 @@ uint8_t readNextByte()
 void announceReply()
 {
 	uint8_t txBuffer[100];
-	uint8_t *txPtr;
+	uint8_t* txPtr;
 	uint8_t packetLength = 0;
 	uint16_t writePointer;
 	uint8_t value;
@@ -78,7 +78,7 @@ void announcePacket()
 	uint16_t packetLength;
 
 	// Transfer entire packet to RAM
-	uint8_t *bufPtr = buffer;
+	uint8_t* bufPtr = buffer;
 	uint16_t count;
 
 	readPointer = netReadWord(REG_S2_RX_RD0) + S2_RX_START;

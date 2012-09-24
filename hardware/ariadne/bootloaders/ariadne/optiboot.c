@@ -107,16 +107,16 @@ uint8_t proccessCommand()
 		getch();
 
 		// If we are in RWW section, immediately start page erase
-		if(address < NRWWSTART) boot_page_erase((uint16_t)(void *)address);
+		if(address < NRWWSTART) boot_page_erase((uint16_t)(void*)address);
 
 		// While that is going on, read in page contents
 		bufPtr = buff;
-		do *bufPtr++ = getch();
+		do* bufPtr++ = getch();
 		while(--length);
 
 		// If we are in NRWW section, page erase has to be delayed until now.
 		// Todo: Take RAMPZ into account
-		if(address >= NRWWSTART) boot_page_erase((uint16_t)(void *)address);
+		if(address >= NRWWSTART) boot_page_erase((uint16_t)(void*)address);
 
 		// Read command terminator, start reply
 		verifySpace();
@@ -127,18 +127,18 @@ uint8_t proccessCommand()
 
 		// Copy buffer into programming buffer
 		bufPtr = buff;
-		addrPtr = (uint16_t)(void *)address;
+		addrPtr = (uint16_t)(void*)address;
 		ch = SPM_PAGESIZE / 2;
 		do {
 			uint16_t a;
 			a = *bufPtr++;
 			a |= (*bufPtr++) << 8;
-			boot_page_fill((uint16_t)(void *)addrPtr, a);
+			boot_page_fill((uint16_t)(void*)addrPtr, a);
 			addrPtr += 2;
 		} while(--ch);
 
 		// Write from programming buffer
-		boot_page_write((uint16_t)(void *)address);
+		boot_page_write((uint16_t)(void*)address);
 		boot_spm_busy_wait();
 
 #if defined(RWWSRE)
@@ -155,7 +155,7 @@ uint8_t proccessCommand()
 
 		verifySpace();
 
-		#if defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560)
+#if defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560)
 		//      do putch(pgm_read_byte_near(address++));
 		//      while (--length);
 		do {
@@ -164,10 +164,10 @@ uint8_t proccessCommand()
 			putch(result);
 			address++;
 		} while(--length);
-		#else
+#else
 		do putch(pgm_read_byte_near(address++));
 		while(--length);
-		#endif
+#endif
 	}
 	/* Get device signature bytes  */
 	else if(ch == STK_READ_SIGN) {
@@ -194,7 +194,7 @@ uint8_t proccessCommand()
 
 uint8_t serialPoll()
 {
-	if(UCSR0A & _BV(RXC0)){
+	if(UCSR0A & _BV(RXC0)) {
 		resetTick();
 		serialFlashing = TRUE;
 		return(proccessCommand());

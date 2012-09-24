@@ -53,7 +53,7 @@ uint8_t processPacket()
 	uint16_t readPointer;
 	uint16_t writeAddr;
 	// Transfer entire packet to RAM
-	uint8_t *bufPtr = buffer;
+	uint8_t* bufPtr = buffer;
 	uint16_t count;
 
 #ifdef _DEBUG_TFTP
@@ -146,7 +146,7 @@ uint8_t processPacket()
 				netWriteReg(REG_S3_MR, MR_UDP);
 				netWriteReg(REG_S3_CR, CR_OPEN);
 #ifdef _TFTP_RANDOM_PORT
-				netWriteWord(REG_S3_PORT0, (buffer[4]<<8) | ~buffer[5]); // Generate a 'random' TID (RFC1350)
+				netWriteWord(REG_S3_PORT0, (buffer[4] << 8) | ~buffer[5]); // Generate a 'random' TID (RFC1350)
 #else
 				netWriteWord(REG_S3_PORT0, tftpPort);
 #endif
@@ -156,7 +156,7 @@ uint8_t processPacket()
 #ifdef _DEBUG_TFTP
 			traceln("Tftp: Changed to port ");
 #ifdef _TFTP_RANDOM_PORT
-			tracenum((buffer[4]<<8) | (buffer[5]^0x55));
+			tracenum((buffer[4] << 8) | (buffer[5] ^ 0x55));
 #else
 			tracenum(tftpPort);
 #endif
@@ -190,11 +190,15 @@ uint8_t processPacket()
 				tracenum(writeAddr);
 #endif
 
-				uint8_t *pageBase = buffer + (UDP_HEADER_SIZE + TFTP_OPCODE_SIZE + TFTP_BLOCKNO_SIZE); // Start of block data
+				uint8_t* pageBase = buffer + (UDP_HEADER_SIZE + TFTP_OPCODE_SIZE + TFTP_BLOCKNO_SIZE); // Start of block data
 				uint16_t offset = 0; // Block offset
 
+
+				// Set the return code before packetLength gets rounded up
+				if(packetLength < TFTP_DATA_SIZE) returnCode = FINAL_ACK;
+				else returnCode = ACK;
+
 				// Round up packet length to a full flash sector size
-				uint16_t realPacketLength = packetLength;
 				while(packetLength % SPM_PAGESIZE) packetLength++;
 #ifdef _DEBUG_TFTP
 				traceln("Tftp: Packet length adjusted to ");
@@ -231,14 +235,14 @@ uint8_t processPacket()
 						boot_spm_busy_wait();
 						boot_page_write(writeAddr + offset - SPM_PAGESIZE);
 						boot_spm_busy_wait();
-						#if defined(RWWSRE)
+#if defined(RWWSRE)
 						// Reenable read access to flash
 						boot_rww_enable();
-						#endif
+#endif
 					}
 				}
 
-				if(realPacketLength < TFTP_DATA_SIZE) {
+				if(returnCode == FINAL_ACK) {
 					// Flash is complete
 					// Hand over to application
 #ifdef _VERBOSE
@@ -246,9 +250,6 @@ uint8_t processPacket()
 #endif
 					// Flag the image as valid since we received the last packet
 					eeprom_write_byte(EEPROM_IMG_STAT, EEPROM_IMG_OK_VALUE);
-					returnCode = FINAL_ACK;
-				} else {
-					returnCode = ACK;
 				}
 			}
 			break;
@@ -290,7 +291,7 @@ uint8_t processPacket()
 void sendResponse(uint16_t response)
 {
 	uint8_t txBuffer[100];
-	uint8_t *txPtr = txBuffer;
+	uint8_t* txPtr = txBuffer;
 	uint8_t packetLength;
 	uint16_t writePointer;
 
@@ -406,7 +407,7 @@ uint8_t tftpPoll()
 		// Send the response
 		sendResponse(response);
 	}
-	if(response==FINAL_ACK) {
+	if(response == FINAL_ACK) {
 		netWriteReg(REG_S3_CR, CR_CLOSE);
 		// Complete
 		return(0);

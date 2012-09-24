@@ -126,12 +126,12 @@ void netInit()
 	/* Pull in altered presets
 	 * if available from AVR EEPROM (if signature bytes are set)*/
 	if((eeprom_read_byte(EEPROM_SIG_1) == EEPROM_SIG_1_VALUE)
-		&& (eeprom_read_byte(EEPROM_SIG_2) == EEPROM_SIG_2_VALUE)) {
+	        && (eeprom_read_byte(EEPROM_SIG_2) == EEPROM_SIG_2_VALUE)) {
 
 		for(i = 0; i < EEPROM_SETTINGS_SIZE; i++)
-			registerBuffer[i+1] = eeprom_read_byte(EEPROM_DATA+i);
+			registerBuffer[i + 1] = eeprom_read_byte(EEPROM_DATA + i);
 #ifndef _TFTP_RANDOM_PORT
-		tftpPort = ((eeprom_read_byte(EEPROM_PORT+1)<<8) + eeprom_read_byte(EEPROM_PORT));
+		tftpPort = ((eeprom_read_byte(EEPROM_PORT + 1) << 8) + eeprom_read_byte(EEPROM_PORT));
 #endif
 
 #ifdef _VERBOSE
@@ -175,7 +175,7 @@ void netInit()
 	for(i = 0; i < REGISTER_BLOCK_SIZE; i++)
 		netWriteReg(i, registerBuffer[i]);
 #ifdef _VERBOSE
-		traceln(" Net: Network init done");
+	traceln(" Net: Network init done");
 #endif
 }
 

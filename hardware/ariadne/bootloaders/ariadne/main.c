@@ -40,7 +40,7 @@ int main(void)
 	 * SP points to RAMEND
 	 * r1 contains zero */
 	//cli();
-	asm volatile ("clr __zero_reg__");
+	asm volatile("clr __zero_reg__");
 #ifdef __AVR_ATmega8__
 	SP = RAMEND;  // This is done by hardware reset
 #endif
@@ -76,9 +76,9 @@ int main(void)
 	// Initialize the UDP socket for tftp
 	tftpInit();
 
-/* This code is to be used with the java-client inherited from the
- * Arduino project. We don't support that yet and it adds about
- * 600 bytes to the binary. So off it goes */
+	/* This code is to be used with the java-client inherited from the
+	 * Arduino project. We don't support that yet and it adds about
+	 * 600 bytes to the binary. So off it goes */
 #ifdef _ANNOUNCE
 	announceInit();
 #endif
@@ -102,7 +102,7 @@ int main(void)
 		announcePoll();
 #endif
 		if(timedOut()) {
-			if(tftpFlashing == TRUE){
+			if(tftpFlashing == TRUE) {
 				tftpFlashing = FALSE;
 				// Erase the first page because download is corrupted
 				boot_page_erase_safe(0);

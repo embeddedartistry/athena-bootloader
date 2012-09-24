@@ -4,7 +4,7 @@
 #define TIMEOUT 3
 
 #ifndef LED_START_FLASHES
-	#define LED_START_FLASHES 0
+#define LED_START_FLASHES 0
 #endif
 
 #define TRUE  1

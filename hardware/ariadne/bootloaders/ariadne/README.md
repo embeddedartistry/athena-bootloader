@@ -1,3 +1,6 @@
+THIS IS THE OLD README. IT REMAINS AS IT MAY HAVE SOME MORE INFORMATION. OUTDATED
+=================================================================================
+
 Ethernet Bootloader for the ATmega328P / W5100
 ==============================================
 

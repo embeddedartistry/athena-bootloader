@@ -42,7 +42,7 @@
 #define TFTP_BLOCKNO_SIZE 2
 #define TFTP_MAX_PAYLOAD  512
 #define TFTP_PACKET_MAX_SIZE (UDP_HEADER_SIZE+TFTP_OPCODE_SIZE+\
-							  TFTP_BLOCKNO_SIZE+TFTP_MAX_PAYLOAD)
+                              TFTP_BLOCKNO_SIZE+TFTP_MAX_PAYLOAD)
 
 /* Tftp status flag, it is set to TRUE if flashing from
  * tftp is currently active */

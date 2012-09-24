@@ -7,7 +7,7 @@
 #include "serial.h"
 
 
-uint8_t validImage(uint8_t *base)
+uint8_t validImage(uint8_t* base)
 {
 	/* Check that a jump table is present in the first flash sector */
 	uint8_t i;

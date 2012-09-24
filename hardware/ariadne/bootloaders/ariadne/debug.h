@@ -5,10 +5,10 @@
 //#define _DEBUGMORE
 //#define _DEBUG
 #ifdef _DEBUGMORE
-	#define _DEBUG
+#define _DEBUG
 #endif
 #ifdef _DEBUG
-	#define _VERBOSE
+#define _VERBOSE
 #endif
 /** debugging steps **/
 //#define DEBUG_STEP
@@ -24,8 +24,8 @@
 //#define _DEBUG_OPTI
 
 #ifdef _VERBOSE
-void trace(char *msg);
-void traceln(char *msg);
+void trace(char* msg);
+void traceln(char* msg);
 void tracehex(uint16_t num, uint8_t len);
 void tracedec(uint16_t num, uint8_t len);
 #define tracenum(num) tracehex(num, 4)

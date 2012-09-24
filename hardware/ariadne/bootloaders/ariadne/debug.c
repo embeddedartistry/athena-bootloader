@@ -16,7 +16,7 @@
 
 
 #ifdef _VERBOSE
-void trace(char *msg)
+void trace(char* msg)
 {
 	uint8_t c;
 	if(*msg != '\0') {
@@ -24,7 +24,7 @@ void trace(char *msg)
 	}
 }
 
-void traceln(char *msg)
+void traceln(char* msg)
 {
 	trace("\r\n");
 	trace(msg);
@@ -34,7 +34,7 @@ void tracehex(uint16_t num, uint8_t len)
 {
 	trace("0x");
 	while(len > 0) {
-		puthex(num >> (4*(len-1)));
+		puthex(num >> (4 * (len - 1)));
 		len--;
 	}
 }

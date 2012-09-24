@@ -2,23 +2,23 @@
 #define optiboot_h
 
 #if defined(__AVR_ATmega168__)
-	#define RAMSTART (0x100)
-	#define NRWWSTART (0x3800)
+#define RAMSTART (0x100)
+#define NRWWSTART (0x3800)
 #elif defined(__AVR_ATmega328P__)
-	#define RAMSTART (0x100)
-	#define NRWWSTART (0x7000)
+#define RAMSTART (0x100)
+#define NRWWSTART (0x7000)
 #elif defined (__AVR_ATmega644P__)
-	#define RAMSTART (0x100)
-	#define NRWWSTART (0xE000)
+#define RAMSTART (0x100)
+#define NRWWSTART (0xE000)
 #elif defined(__AVR_ATtiny84__)
-	#define RAMSTART (0x100)
-	#define NRWWSTART (0x0000)
+#define RAMSTART (0x100)
+#define NRWWSTART (0x0000)
 #elif defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
-	#define RAMSTART (0x200)
-	#define NRWWSTART (0xE000)
+#define RAMSTART (0x200)
+#define NRWWSTART (0xE000)
 #elif defined(__AVR_ATmega8__) || defined(__AVR_ATmega88__)
-	#define RAMSTART (0x100)
-	#define NRWWSTART (0x1800)
+#define RAMSTART (0x100)
+#define NRWWSTART (0x1800)
 #endif
 
 /* This define cause the bootloader to hang during flashing
@@ -30,8 +30,8 @@
  * These definitions are NOT zero initialised, but that doesn't matter
  * This allows us to drop the zero init code, saving us memory */
 #ifdef VIRTUAL_BOOT_PARTITION
-	#define rstVect (*(uint16_t*)(RAMSTART+SPM_PAGESIZE*2+4))
-	#define wdtVect (*(uint16_t*)(RAMSTART+SPM_PAGESIZE*2+6))
+#define rstVect (*(uint16_t*)(RAMSTART+SPM_PAGESIZE*2+4))
+#define wdtVect (*(uint16_t*)(RAMSTART+SPM_PAGESIZE*2+6))
 #endif
 
 /* Serial status flag, it is set to TRUE if flashing from
