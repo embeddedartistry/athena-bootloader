@@ -154,13 +154,13 @@ Who knows.
 #####Using a tftp client to upload the sketch
 Now that the binary is ready, you have to upload it. First you have to connect to your Arduino using any tftp client you
 may have on your computer. All three major operating systems have their own clients that you can use through the command line.
-On some *Linux* distribution like *Fedora/RedHat*, before you use ```tftp```, you should load the ```ip_conntrack_tftp```
-module or the tftp client won't be able to *ACK* the packets sent. That is needed because TFTP is insecure and it is not
-enabled by default. Other distributions like *Arch*, don't need this step. To do that, open a terminal and run
+On some __Linux__ distributions, like __Fedora/RedHat__, before you use ```tftp```, you should load the ```ip_conntrack_tftp```
+module or the tftp client won't be able to __ACK__ the packets sent. That is needed because TFTP is insecure and it is not
+enabled by default. Other distributions like __Arch__, don't need this step. To do that, open a terminal and run
 ```
 modprobe ip_conntrack_tftp
 ```
-as *root* using ```su``` or ```sudo```.
+as __root__ using ```su``` or ```sudo```.
 
 After that open a terminal as a regular user and type ```tftp [ip] [port]```. For the default bootloader settings that would be:
 ```
