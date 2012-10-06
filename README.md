@@ -8,12 +8,6 @@ Arduino with Ethernet Shield. It is based on previous unfinished work by the Ard
 developers. The bootloader implements a TFTP server on the Arduino board and flashing works
 using any regular TFTP client.
 
-There are two ways to get this bootloader, both of them are really simple. You can either burn your Arduino with
-this new bootloader (using the guide below), or you can claim the Pioneer perk on codebender's
-[IndieGoGo campaign](http://www.indiegogo.com/codebender?a=803683) and get an Arduino preloaded with our bootloader
-delivered straight to your door.
-
-
 
 The Files and Folders in this Repository
 ----------------------------------------
@@ -72,7 +66,7 @@ reset button and the indication LED on __pin 13__ or __pin 9__, in case of Ardui
 This means that the bootloader is running and the Arduino is ready to be programmed. If there is a __valid__ program already
 flashed on the Arduino, you have to reprogram the device in the next __5 seconds__. If you don't, the bootloader will
 initiate the program that is already in the Arduino. In case there is no program flashed or the program has been marked
-as __invalid__, the bootloader will never time out and you can reprogram it at any time. 
+as __invalid__, the bootloader will never time out and you can reprogram it at any time.
 
 After a succesful flashing,
 
@@ -94,6 +88,7 @@ The default built-in network settings of the bootloader are listed below.
 * Subnet Mask: 255.255.255.0
 * Gateway:     192.168.1.1
 * MAC Address: 0xDE.0xAD.0xBE.0xEF.0xFE.0xED
+* TFTP Negotiation Port: 69
 * TFTP Data Port: 46969
 ```
 
@@ -110,7 +105,7 @@ rather in the order that __W5100__ reads them, so make sure you have put the cor
 settings you also have to set the TFTP data transfer port. The default is good enough but you may need to change it
 for the reasons that are listed below in the
 [Configuring your Router for Remote Flashing](https://github.com/codebendercc/Ariadne-Bootloader#configuring-your-router-for-remote-flashing)
-section.There is also documentation on how use these sketches in the form of comments so be sure to read them.
+section. There is also documentation on how use these sketches in the form of comments so be sure to read them.
 
 
 TFTP Flashing
@@ -125,7 +120,9 @@ Unlike serial flashing that uses __HEX__ files to flash the Arduino, the TFTP se
 with binary files. This means that you have to manually convert your programs to the right format. To do that, first build
 your sketch inside _Arduino IDE_ using the __Verify__ button. After that, without exiting the *Arduino IDE* you need
 to navigate to the temporary directory where your project was built. That is ```C:\Users\owner\AppData\Local\Temp\```
-on *Windows* or ```/tmp``` on *Linux* and *Mac OS*. There you will find a folder named something like ```build2429295348207572157.tmp```.
+on *Windows*, ```/tmp``` on *Linux*. On *MacOS*  you'll need to go to Arduino's prefferences, and check the
+"Show verbose output during compilation" checkbox. After that, when you compile, you will see the path for the compiled .hex
+file in the last line of the compilation output.. There you will find a folder named something like ```build2429295348207572157.tmp```.
 That is where the Arduino temporary build files reside. Enter the directory and make sure that there is a ```.elf```
 or a ```.hex``` file with the same name as your sketch. That is the file you need to convert. To achieve that you have to
 run one of the following commands in a terminal.
@@ -138,7 +135,7 @@ This being based on the *arscons* script, it can be used in two ways. If you use
 file you can just copy the ```SConstruct``` file inside the temporary *Arduino IDE* build directory (as mentioned above)
 and run ```scons``` in a terminal inside that directory.
 
-The other way to use it is to copy the ```SConstruct``` script inside the sketch's directory and, as above, run 
+The other way to use it is to copy the ```SConstruct``` script inside the sketch's directory and, as above, run
 ```scons``` in a terminal inside that directory. This way you will build your project outside *Arduino IDE* creating
 the ```.bin``` file in the process. Note that this way the sketch's folder will be polluted with Arduino's build files,
 much like the temporary directory *Arduino IDE* uses.
@@ -198,11 +195,11 @@ tftp> trace
 Trace mode on.
 ```
 ```
-tftp> verbose 
+tftp> verbose
 Verbose mode on.
 ```
 ```
-tftp> put blink.bin 
+tftp> put blink.bin
 sent WRQ <file: blink.bin, mode: octet <>>
 received ACK <block: 0>
 sent DATA <block: 1, size: 512>
@@ -215,7 +212,7 @@ sent DATA <block: 4, size: 512>
 received ACK <block: 4>
 sent DATA <block: 5, size: 42>
 received ACK <block: 5>
-tftp> 
+tftp>
 ```
 After a successful upload the bootloader will start the uploaded application instantly.
 
@@ -233,9 +230,9 @@ Arduino in your router's configuration. In case you have changed the incoming da
 i.e. __50232__, you have to forward __50232__ port instead of __46969__. This is particularly useful when
 you have more than one Arduinos, that you want to flash, behind your router. In addition to this you are going to have
 to translate an external port of your choice on the router to the internal port and ip of the Arduino in the local network.
-An example is that you have 2 devices, one at *192.168.1.120* and one at *192.168.1.121*. They both listen to port
+An example is that you have 2 devices, one at *192.168.1.128* and one at *192.168.1.129*. They both listen to port
 __69__ for the initial connection. In this case you can translate external port __6969__(any random port will do) on
-your router to *192.168.1.120*:__69__ and external port __6970__ to *192.168.1.121*:__69__ and specify these in the
+your router to *192.168.1.128*:__69__ and external port __6970__ to *192.168.1.129*:__69__ and specify these in the
 tftp client you are using.
 
 Port Forward has [excellent guides](http://portforward.com/english/routers/port_forwarding/) on how to enable port
