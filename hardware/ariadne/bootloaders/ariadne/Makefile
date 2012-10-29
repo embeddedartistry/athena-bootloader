@@ -134,7 +134,7 @@ SIZE    = $(GCCROOT)avr-size
 # # Use it only if you have already seen the source
 debug328: TARGET = debug328
 debug328: MCU_TARGET = atmega328p
-debug328: CFLAGS += '-D_DEBUG' '-D_DEBUG_TFTP' '-DBAUD_RATE=115200'
+debug328: CFLAGS += '-D_DEBUG' '-D_DEBUG_TFTP' -D_ARDUINO_ETHERNET '-DBAUD_RATE=115200'
 debug328: AVR_FREQ = 16000000L
 debug328: LDSECTIONS  = -Wl,--section-start=.text=0x7000 -Wl,--section-start=.version=0x7ffe
 debug328: $(PROGRAM)_debug328.hex
@@ -145,10 +145,11 @@ debug328_isp: MCU_TARGET = atmega328p
 # Low power xtal (16MHz) 16KCK/14CK+65ms
 debug328_isp: LFUSE = FF
 # 4096 byte boot, SPIEN
-debug328_isp: HFUSE = D8
+debug328_isp: HFUSE = D0
 # 2.7V brownout
 debug328_isp: EFUSE = 05
 debug328_isp: isp
+
 #
 #
 # # 20MHz clocked platforms
@@ -239,7 +240,7 @@ atmega328_isp: MCU_TARGET = atmega328p
 # Low power xtal (16MHz) 16KCK/14CK+65ms
 atmega328_isp: LFUSE = FF
 # 4096 byte boot, SPIEN
-atmega328_isp: HFUSE = D8
+atmega328_isp: HFUSE = D0
 # 2.7V brownout
 atmega328_isp: EFUSE = 05
 atmega328_isp: isp
@@ -257,7 +258,7 @@ atmega328_ethernet_isp: MCU_TARGET = atmega328p
 # Low power xtal (16MHz) 16KCK/14CK+65ms
 atmega328_ethernet_isp: LFUSE = FF
 # 4096 byte boot, SPIEN
-atmega328_ethernet_isp: HFUSE = D8
+atmega328_ethernet_isp: HFUSE = D0
 # 2.7V brownout
 atmega328_ethernet_isp: EFUSE = 05
 atmega328_ethernet_isp: isp
@@ -284,43 +285,43 @@ atmega328_ethernet_isp: isp
 #
 #
 # Mega has a minimum boot size of 1024 bytes
-# mega: TARGET = atmega1280
-# mega: MCU_TARGET = atmega1280
-# mega: CFLAGS += '-DBAUD_RATE=115200'
-# mega: AVR_FREQ = 16000000L
-# mega: LDSECTIONS  = -Wl,--section-start=.text=0x1f800
-# mega: $(PROGRAM)_atmega1280.hex
-# mega: $(PROGRAM)_atmega1280.lst
-# mega_isp: mega
-# mega_isp: TARGET = atmega1280
-# mega_isp: MCU_TARGET = atmega1280
-# # Low power xtal (16MHz) 16KCK/14CK+65ms
-# mega_isp: LFUSE = FF
-# # 4069 byte boot
-# mega_isp: HFUSE = DA
-# # 2.7V brownout
-# mega_isp: EFUSE = F5
-# mega_isp: isp
-# #
-# #
-# # Mega has a minimum boot size of 1024 bytes
-# mega2560: TARGET = atmega2560
-# mega2560: MCU_TARGET = atmega2560
-# mega2560: CFLAGS += '-DBAUD_RATE=115200'
-# mega2560: AVR_FREQ = 16000000L
-# mega2560: LDSECTIONS  = -Wl,--section-start=.text=0x3f800
-# mega2560: $(PROGRAM)_atmega2560.hex
-# mega2560: $(PROGRAM)_atmega2560.lst
-# mega2560_isp: mega2560
-# mega2560_isp: TARGET = atmega2560
-# mega2560_isp: MCU_TARGET = atmega2560
-# # Low power xtal (16MHz) 16KCK/14CK+65ms
-# mega2560_isp: LFUSE = FF
-# # 4069 byte boot
-# mega2560_isp: HFUSE = DA
-# # 2.7V brownout
-# mega2560_isp: EFUSE = FD
-# mega2560_isp: isp
+mega: TARGET = atmega1280
+mega: MCU_TARGET = atmega1280
+mega: CFLAGS += '-DBAUD_RATE=115200'
+mega: AVR_FREQ = 16000000L
+mega: LDSECTIONS  = -Wl,--section-start=.text=0x1f000
+mega: $(PROGRAM)_atmega1280.hex
+mega: $(PROGRAM)_atmega1280.lst
+mega_isp: mega
+mega_isp: TARGET = atmega1280
+mega_isp: MCU_TARGET = atmega1280
+# Low power xtal (16MHz) 16KCK/14CK+65ms
+mega_isp: LFUSE = FF
+# 4069 byte boot
+mega_isp: HFUSE = DA
+# 2.7V brownout
+mega_isp: EFUSE = F5
+mega_isp: isp
+#
+#
+# Mega has a minimum boot size of 1024 bytes
+mega2560: TARGET = atmega2560
+mega2560: MCU_TARGET = atmega2560
+mega2560: CFLAGS += '-DBAUD_RATE=115200'
+mega2560: AVR_FREQ = 16000000L
+mega2560: LDSECTIONS  = -Wl,--section-start=.text=0x3f000
+mega2560: $(PROGRAM)_atmega2560.hex
+mega2560: $(PROGRAM)_atmega2560.lst
+mega2560_isp: mega2560
+mega2560_isp: TARGET = atmega2560
+mega2560_isp: MCU_TARGET = atmega2560
+# Low power xtal (16MHz) 16KCK/14CK+65ms
+mega2560_isp: LFUSE = FF
+# 4069 byte boot
+mega2560_isp: HFUSE = DA
+# 2.7V brownout
+mega2560_isp: EFUSE = FD
+mega2560_isp: isp
 #
 #
 # # ATmega8

@@ -41,6 +41,23 @@ PROGMEM const unsigned char tftp_invalid_image_packet[] = "\23" "\0\5" "\0\0" "I
 uint16_t lastPacket = 0;
 
 
+void sockInit(uint16_t port)
+{
+	do {
+		// Write TFTP Port
+		netWriteWord(REG_S3_PORT0, port);
+		// Write mode
+		netWriteReg(REG_S3_MR, MR_UDP);
+		// Open Socket
+		netWriteReg(REG_S3_CR, CR_OPEN);
+		// Read Status
+		if(netReadReg(REG_S3_SR) != SOCK_UDP)
+			// Close Socket if it wasn't initialized correctly
+		netWriteReg(REG_S3_CR, CR_CLOSE);
+		// If socket correctly opened continue
+	} while(netReadReg(REG_S3_SR) != SOCK_UDP);
+}
+
 #ifdef _DEBUG_TFTP
 uint8_t processPacket(uint16_t packetSize)
 {
@@ -51,7 +68,7 @@ uint8_t processPacket()
 
 	uint8_t buffer[TFTP_PACKET_MAX_SIZE];
 	uint16_t readPointer;
-	uint16_t writeAddr;
+	uint32_t writeAddr;
 	// Transfer entire packet to RAM
 	uint8_t* bufPtr = buffer;
 	uint16_t count;
@@ -64,6 +81,7 @@ uint8_t processPacket()
 	//  step();
 #endif
 
+	// Read data from chip to buffer
 	readPointer = netReadWord(REG_S3_RX_RD0);
 #ifdef _DEBUG_TFTP
 	traceln("Tftp: readPointer at position ");
@@ -142,17 +160,11 @@ uint8_t processPacket()
 			eeprom_write_byte(EEPROM_IMG_STAT, EEPROM_IMG_BAD_VALUE);
 			netWriteReg(REG_S3_CR, CR_RECV);
 			netWriteReg(REG_S3_CR, CR_CLOSE);
-			do {
-				netWriteReg(REG_S3_MR, MR_UDP);
-				netWriteReg(REG_S3_CR, CR_OPEN);
 #ifdef _TFTP_RANDOM_PORT
-				netWriteWord(REG_S3_PORT0, (buffer[4] << 8) | ~buffer[5]); // Generate a 'random' TID (RFC1350)
+			sockInit((buffer[4] << 8) | ~buffer[5]); // Generate a 'random' TID (RFC1350)
 #else
-				netWriteWord(REG_S3_PORT0, tftpPort);
+			sockInit(tftpPort);
 #endif
-				if(netReadReg(REG_S3_SR) != SOCK_UDP)
-					netWriteReg(REG_S3_CR, CR_CLOSE);
-			} while(netReadReg(REG_S3_SR) != SOCK_UDP);
 #ifdef _DEBUG_TFTP
 			traceln("Tftp: Changed to port ");
 #ifdef _TFTP_RANDOM_PORT
@@ -172,7 +184,7 @@ uint8_t processPacket()
 			packetLength = tftpDataLen - (TFTP_OPCODE_SIZE + TFTP_BLOCKNO_SIZE);
 			lastPacket = tftpBlock;
 			writeAddr = (tftpBlock - 1) << 9; // Flash write address for this block
-#ifdef _VERBOSE
+#ifdef _DEBUGMORE_TFTP
 			traceln("Tftp: Data for block ");
 			tracenum(lastPacket);
 #endif
@@ -221,7 +233,7 @@ uint8_t processPacket()
 				for(offset = 0; offset < packetLength;) {
 					uint16_t writeValue = (pageBase[offset]) | (pageBase[offset + 1] << 8);
 					boot_page_fill(writeAddr + offset, writeValue);
-#ifdef _DEBUGMORE
+#ifdef _DEBUGMORE_TFTP
 					if((offset == 0) || ((offset == (packetLength - 2)))) {
 						traceln("Tftp: Writing ");
 						tracenum(writeValue);
@@ -274,6 +286,13 @@ uint8_t processPacket()
 			traceln("Tftp: Invalid opcode ");
 			tracenum(tftpOpcode);
 #endif
+			netWriteReg(REG_S3_CR, CR_RECV);
+			netWriteReg(REG_S3_CR, CR_CLOSE);
+#ifdef _TFTP_RANDOM_PORT
+			sockInit((buffer[4] << 8) | ~buffer[5]); // Generate a 'random' TID (RFC1350)
+#else
+			sockInit(tftpPort);
+#endif
 			/* FIXME: This is where the tftp server should be resetted.
 			 * It can be done by reinitializig the tftpd or
 			 * by resetting the device. I should find out which is best...
@@ -324,10 +343,7 @@ void sendResponse(uint16_t response)
 #endif
 		case FINAL_ACK:
 #ifdef _DEBUG_TFTP
-			if(response == FINAL_ACK) {
-				traceln("Tftp: Sent Final ACK ");
-				tracenum(lastPacket);
-			}
+			if(response == FINAL_ACK) traceln("Tftp: Sent Final ACK ");
 #endif
 			packetLength = 4;
 			*txPtr++ = TFTP_OPCODE_ACK >> 8;
@@ -358,19 +374,7 @@ void sendResponse(uint16_t response)
 void tftpInit()
 {
 	// Open socket
-	do {
-		// Write TFTP Port
-		netWriteWord(REG_S3_PORT0, TFTP_PORT);
-		// Write mode
-		netWriteReg(REG_S3_MR, MR_UDP);
-		// Open Socket
-		netWriteReg(REG_S3_CR, CR_OPEN);
-		// Read Status
-		if(netReadReg(REG_S3_SR) != SOCK_UDP)
-			// Close Socket if it wasn't initialized correctly
-			netWriteReg(REG_S3_CR, CR_CLOSE);
-		// If socket correctly opened continue
-	} while(netReadReg(REG_S3_SR) != SOCK_UDP);
+	sockInit(TFTP_PORT);
 #ifdef _VERBOSE
 	traceln("Tftp: TFTP server init done");
 #endif
@@ -384,22 +388,33 @@ uint8_t tftpPoll()
 {
 	uint8_t response = ACK;
 	// Get the size of the recieved data
-	uint16_t packetSize = netReadWord(REG_S3_RX_RSR0);
+	//uint16_t packetSize = netReadWord(REG_S3_RX_RSR0);
+	uint16_t packetSize = 0, incSize = 0;
+
+	do {
+		incSize = netReadWord(REG_S3_RX_RSR0);
+		if (incSize != 0) {
+			_delay_ms(50);
+			packetSize = netReadWord(REG_S3_RX_RSR0);
+		}
+	}
+	while (packetSize != incSize);
 
 	if(packetSize) {
 		tftpFlashing = TRUE;
 
-		for(;;) {
-			if(!(netReadReg(REG_S3_IR) & IR_RECV)) break;
-
-			netWriteReg(REG_S3_IR, IR_RECV);
-
-			//FIXME: is this right after all? smaller delay but
-			//still a delay and it still breaks occasionally
-			_delay_ms(400);
-		}
+// 		for(;;) {
+// 			if(!(netReadReg(REG_S3_IR) & IR_RECV)) break;
+//
+// 			netWriteReg(REG_S3_IR, IR_RECV);
+//
+// 			//FIXME: is this right after all? smaller delay but
+// 			//still a delay and it still breaks occasionally
+// 			_delay_ms(400);
+// 		}
 		// Process Packet and get TFTP response code
 #ifdef _DEBUG_TFTP
+		packetSize = netReadWord(REG_S3_RX_RSR0);
 		response = processPacket(packetSize);
 #else
 		response = processPacket();

@@ -8,6 +8,11 @@ uint8_t EthernetClass::_state[MAX_SOCK_NUM] = {
 uint16_t EthernetClass::_server_port[MAX_SOCK_NUM] = {
   0, 0, 0, 0 };
 
+int EthernetClass::begin()
+{
+  begin(NetEEPROM.readMAC(), NetEEPROM.readIP(), NetEEPROM.readGW(), NetEEPROM.readGW(), NetEEPROM.readSN());
+}
+
 int EthernetClass::begin(uint8_t *mac_address)
 {
   _dhcp = new DhcpClass();

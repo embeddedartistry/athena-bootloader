@@ -10,6 +10,9 @@
 #define SPI_WRITE (0xF0)
 #define SPI_READ  (0x0F)
 
+#ifndef _TFTP_RANDOM_PORT
+uint16_t tftpPort;
+#endif
 
 void netWriteReg(uint16_t address, uint8_t value);
 uint8_t netReadReg(uint16_t address);

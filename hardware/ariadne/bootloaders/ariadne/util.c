@@ -12,6 +12,7 @@
 #include <util/delay.h>
 
 #include "util.h"
+#include "neteeprom.h"
 #include "pin_defs.h"
 
 uint16_t lastTimer1;
@@ -35,7 +36,7 @@ void resetTick(void)
 uint8_t timedOut(void)
 {
 	// Never timeout if there is no code in Flash
-	if(pgm_read_word(0x0000) == 0xFFFF) return(0);
+	if(eeprom_read_byte(EEPROM_IMG_STAT) == EEPROM_IMG_BAD_VALUE) return(0);
 	if(tick > TIMEOUT) return(1);
 	return(0);
 }

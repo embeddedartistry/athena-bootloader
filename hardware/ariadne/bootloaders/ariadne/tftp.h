@@ -34,8 +34,14 @@
 #define INVALID_IMAGE 5
 
 
-/** For 328 with 2Kword bootloader */
-#define MAX_ADDR          0x7000
+#if defined(__AVR_ATmega328P__)
+#define MAX_ADDR          0x7000	// For 328p with 2Kword bootloader
+#elif defined(__AVR_ATmega1280__)
+#define MAX_ADDR          0x1F000	// For 1280 with 2Kword bootloader
+#elif defined(__AVR_ATmega2560__)
+#define MAX_ADDR          0x3F000	// For 2560 with 2Kword bootloader
+#endif
+
 #define TFTP_DATA_SIZE    512
 #define UDP_HEADER_SIZE   8
 #define TFTP_OPCODE_SIZE  2
@@ -47,10 +53,6 @@
 /* Tftp status flag, it is set to TRUE if flashing from
  * tftp is currently active */
 uint8_t tftpFlashing;
-
-#ifndef _TFTP_RANDOM_PORT
-uint16_t tftpPort;
-#endif
 
 void tftpInit();
 uint8_t tftpPoll();
