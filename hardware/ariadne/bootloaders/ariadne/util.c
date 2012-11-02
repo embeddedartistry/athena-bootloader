@@ -12,8 +12,9 @@
 #include <util/delay.h>
 
 #include "util.h"
-#include "neteeprom.h"
 #include "pin_defs.h"
+
+#include "debug.h"
 
 uint16_t lastTimer1;
 uint16_t tick = 0;
@@ -24,19 +25,30 @@ void updateLed(void)
 	uint16_t nextTimer1 = TCNT1;
 	if(nextTimer1 & 0x400) LED_PORT ^= _BV(LED); // Led pin high
 	else LED_PORT &= ~_BV(LED); // Led pin low
-	if(nextTimer1 < lastTimer1) tick++;
+	if(nextTimer1 < lastTimer1) {
+		tick++;
+#ifdef _DEBUG_UTIL
+		traceln("Tick: ");
+		tracenum(tick);
+		traceln(" nTM: ");
+		tracenum(nextTimer1);
+		traceln(" lTM: ");
+		tracenum(lastTimer1);
+#endif
+	}
 	lastTimer1 = nextTimer1;
 }
 
 void resetTick(void)
 {
+	TCNT1 = 0;
 	tick = 0;
 }
 
 uint8_t timedOut(void)
 {
 	// Never timeout if there is no code in Flash
-	if(eeprom_read_byte(EEPROM_IMG_STAT) == EEPROM_IMG_BAD_VALUE) return(0);
+	if (pgm_read_word(0x0000) == 0xFFFF) return(0);
 	if(tick > TIMEOUT) return(1);
-	return(0);
+	else return(0);
 }

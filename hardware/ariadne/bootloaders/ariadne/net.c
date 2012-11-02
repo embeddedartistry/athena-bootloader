@@ -120,9 +120,6 @@ void netInit()
 	// Set the Double SPI Speed Bit
 	SPSR = (1 << SPI2X);
 
-#ifndef _TFTP_RANDOM_PORT
-	tftpPort = TFTP_STATIC_PORT;
-#endif
 	/* Pull in altered presets
 	 * if available from AVR EEPROM (if signature bytes are set)*/
 	if((eeprom_read_byte(EEPROM_SIG_1) == EEPROM_SIG_1_VALUE)
@@ -130,9 +127,6 @@ void netInit()
 
 		for(i = 0; i < EEPROM_SETTINGS_SIZE; i++)
 			registerBuffer[i + 1] = eeprom_read_byte(EEPROM_DATA + i);
-#ifndef _TFTP_RANDOM_PORT
-		tftpPort = ((eeprom_read_byte(EEPROM_PORT + 1) << 8) + eeprom_read_byte(EEPROM_PORT));
-#endif
 
 #ifdef _VERBOSE
 		traceln(" Net: Using EEPROM settings");
@@ -165,10 +159,6 @@ void netInit()
 		tracenet(registerBuffer[i]);
 		if(i != 14) putch(0x2E);
 	}
-#ifndef _TFTP_RANDOM_PORT
-	traceln("\t   Port: ");
-	tracenum(tftpPort);
-#endif
 #endif
 
 	// Configure Wiznet chip

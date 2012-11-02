@@ -12,7 +12,11 @@ class NetEEPROMClass
 	private:
 		/* Write signature bytes in eeprom, informing the bootloader that
 		 * the network settings will be loaded from the eeprom */
-		void writeSig();
+		void writeNetSig();
+		/* Same as above but for the port */
+		void writePortSig();
+		/* Same for password */
+		void writePassSig();
 
 		/* Basic method to read addresses used in public functions */
 		IPAddress readAddr(byte start);
@@ -25,7 +29,9 @@ class NetEEPROMClass
 	public:
 		/* Erase signature bytes in eeprom to revert the bootloader to
 		 * built-in settings */
-		void eraseSig(void);
+		void eraseNetSig(void);
+		void erasePortSig(void);
+		void erasePassSig(void);
 		/* Set the flashed image status to bad, to prevent the bootloader
 		 * from timing out */
 		void writeImgBad(void);
@@ -33,11 +39,14 @@ class NetEEPROMClass
 		 * to load the program in memory */
 		void writeImgOk(void);
 		/* Write the network settings to EEPROM as individual arrays */
+		void writeNet(byte* mac, IPAddress ip, IPAddress gw, IPAddress sn);
 		void writeNet(byte* mac, IPAddress ip, IPAddress gw, IPAddress sn, word port);
 
 		/* Check if the signature bytes are set, returning 1 if they are
 		 * set or 0 if they are unset */
-		bool sigIsSet(void);
+		bool netSigIsSet(void);
+		bool portSigIsSet(void);
+		bool passSigIsSet(void);
 		byte* readMAC(void);
 		IPAddress readIP(void);
 		IPAddress readGW(void);

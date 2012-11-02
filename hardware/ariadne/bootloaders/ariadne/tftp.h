@@ -7,6 +7,7 @@
 /* Define this if you want random port generation */
 //#define _TFTP_RANDOM_PORT
 
+#define TFTP_OPCODE_UKN   0
 /** TFTP Opcode values from RFC 1350 */
 #define TFTP_OPCODE_RRQ   1
 #define TFTP_OPCODE_WRQ   2
@@ -50,9 +51,15 @@
 #define TFTP_PACKET_MAX_SIZE (UDP_HEADER_SIZE+TFTP_OPCODE_SIZE+\
                               TFTP_BLOCKNO_SIZE+TFTP_MAX_PAYLOAD)
 
+#define TFTP_PACKET_DELAY 400
+
 /* Tftp status flag, it is set to TRUE if flashing from
  * tftp is currently active */
 uint8_t tftpFlashing;
+
+#ifndef _TFTP_RANDOM_PORT
+uint16_t tftpTransferPort;
+#endif
 
 void tftpInit();
 uint8_t tftpPoll();

@@ -1,7 +1,7 @@
 #ifndef util_h
 #define util_h
 
-#define TIMEOUT 3
+#define TIMEOUT 4
 
 #ifndef LED_START_FLASHES
 #define LED_START_FLASHES 0
@@ -10,8 +10,7 @@
 #define TRUE  1
 #define FALSE 0
 
-#define TFTPBOOT_MAJVER 0
-#define TFTPBOOT_MINVER 3
+
 #define MAKESTR(a) #a
 #define MAKEVER(a, b) MAKESTR(a*256+b)
 

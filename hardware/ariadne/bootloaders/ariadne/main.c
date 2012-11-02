@@ -55,14 +55,17 @@ int main(void)
 	// Set up Timer 1 as timekeeper for LED flashing
 	TCCR1B = _BV(CS12) | _BV(CS10); // Same thing as TCCR1B = 0x05;
 
+	/* Write version information in the EEPROM */
+	if(eeprom_read_byte(EEPROM_MAJVER) != ARIADNE_MAJVER) eeprom_write_byte(EEPROM_MAJVER, ARIADNE_MAJVER);
+	if(eeprom_read_byte(EEPROM_MINVER) != ARIADNE_MINVER) eeprom_write_byte(EEPROM_MINVER, ARIADNE_MINVER);
 
 	//Initialize UART communication
 	serialInit();
 #ifdef _VERBOSE
 #ifdef _ARDUINO_ETHERNET
-	traceln("\r\nMain: Arduino Ethernet with tftpboot, Version 0.3");
+	traceln("\r\nMain: Arduino Ethernet with tftpboot, Version 0.4");
 #else
-	traceln("\r\nMain: Arduino Uno with tftpboot, Version 0.3");
+	traceln("\r\nMain: Arduino Uno with tftpboot, Version 0.4");
 #endif
 #endif
 
@@ -89,28 +92,33 @@ int main(void)
 	tftpFlashing = FALSE;
 
 	for(;;) {
-		/* If there is no serial flashing under way, poll tftp */
+		// If there is no serial flashing under way, poll tftp
 		if(!serialFlashing)
-			/* If tftp recieved a FINAL_ACK, break */
+			// If tftp recieved a FINAL_ACK, break
 			if(tftpPoll() == 0) break;
-		/* If there is no tftp flashing, poll serial */
+		// If there is no tftp flashing, poll serial
 		if(!tftpFlashing)
-			/* If flashing is done exit */
+			// If flashing is done exit
 			if(serialPoll() == 0) break;
+
 		/* As explained above this goes out */
 #ifdef _ANNOUNCE
 		announcePoll();
 #endif
 		if(timedOut()) {
+			if(eeprom_read_byte(EEPROM_IMG_STAT) == EEPROM_IMG_OK_VALUE) break;
+
+			//TODO: determine the conditions for reseting server OR reseting socket
 			if(tftpFlashing == TRUE) {
-				tftpFlashing = FALSE;
-				// Erase the first page because download is corrupted
-				boot_page_erase_safe(0);
-				// Reset the timeout counter
-				resetTick();
+				// Delete first page of flash memory
+				boot_page_erase(0);
 				// Reinitialize TFTP
 				tftpInit();
-			} else if(eeprom_read_byte(EEPROM_IMG_STAT) == EEPROM_IMG_OK_VALUE) break;
+				// Reset the timeout counter
+				resetTick();
+				// Unset tftp flag
+				tftpFlashing = FALSE;
+			}
 		}
 		/* Blink the notification led */
 		updateLed();

@@ -36,8 +36,7 @@
 #include <EEPROM.h>
 #include <NetEEPROM.h>
 
-byte  mac[] = {0x12, 0x34, 0x56,
-			   0x78, 0x9A, 0xBC};
+byte  mac[] = {0x12, 0x34, 0x56, 0x78, 0x9A, 0xBC};
 IPAddress  ip(192, 168, 1, 120);
 IPAddress  gateway(192, 168, 1, 1);
 IPAddress  subnet(255, 255, 255, 0);
@@ -47,17 +46,17 @@ IPAddress  subnet(255, 255, 255, 0);
  * network you need a unique value for each one value. The initial negotiation of tftp still
  * happens at port [69]. You will also need to forwards these ports from your router.
  * The value set below is the built-in default [46969]. */
-uint16_t port = 46969;
+//uint16_t port = 46969;
 
 
 /* Preset for Arduino Uno with Ethernet shield.
  * For Arduino Ethernet set this to 9 */
-int ledpin = 13;
+int ledpin = 9;
 
 void setup()
 {
 	/* Write the new settings values to EEPROM */
-	NetEEPROM.writeNet(mac, ip, gateway, subnet, port);
+	NetEEPROM.writeNet(mac, ip, gateway, subnet);
 	/* Set image status to bad, so upon reboot, the bootloader won't time out */
 	NetEEPROM.writeImgBad();
 

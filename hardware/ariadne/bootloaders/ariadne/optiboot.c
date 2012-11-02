@@ -58,9 +58,9 @@ uint8_t proccessCommand()
 			/*
 			 * Send tftpboot version as "minor SW version"
 			 */
-			putch(TFTPBOOT_MINVER);
+			putch(ARIADNE_MINVER);
 		} else if(which == 0x81) {
-			putch(TFTPBOOT_MAJVER);
+			putch(ARIADNE_MAJVER);
 		} else {
 			/*
 			 * GET PARAMETER returns a generic 0x03 reply for

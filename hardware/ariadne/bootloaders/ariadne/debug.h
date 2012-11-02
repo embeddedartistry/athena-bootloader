@@ -22,6 +22,8 @@
 //#define _DEBUG_VALD
 /** optiboot.c **/
 //#define _DEBUG_OPTI
+/** util.c **/
+//#define _DEBUG_UTIL
 
 #ifdef _VERBOSE
 void trace(char* msg);

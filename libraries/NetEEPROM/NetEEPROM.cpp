@@ -5,10 +5,20 @@
 /*
  * Private functions
  */
-void NetEEPROMClass::writeSig(void)
+void NetEEPROMClass::writeNetSig(void)
 {
-	EEPROM.write(NETEEPROM_SIG_1, NETEEPROM_SIG_1_VAL); // Set signature 1 to load eeprom settings
-	EEPROM.write(NETEEPROM_SIG_2, NETEEPROM_SIG_2_VAL); // Set signature 2
+	EEPROM.write(NETEEPROM_SIG_1, NETEEPROM_SIG_1_VALUE); // Set signature 1 to load eeprom settings
+	EEPROM.write(NETEEPROM_SIG_2, NETEEPROM_SIG_2_VALUE); // Set signature 2
+}
+
+void NetEEPROMClass::writePortSig()
+{
+	EEPROM.write(NETEEPROM_SIG_3, NETEEPROM_SIG_3_VALUE);
+}
+
+void NetEEPROMClass::writePassSig()
+{
+	EEPROM.write(NETEEPROM_SIG_4, NETEEPROM_SIG_4_VALUE);
 }
 
 IPAddress NetEEPROMClass::readAddr(byte start)
@@ -30,7 +40,7 @@ void NetEEPROMClass::read(byte settings[NETWORK_SETTINGS_SIZE], word* port)
 
 void NetEEPROMClass::print(byte settings[NETWORK_SETTINGS_SIZE], word port)
 {
-	if(sigIsSet()) {
+	if(netSigIsSet()) {
 		byte i;
 
 		for(i = 0; i < NETWORK_SETTINGS_SIZE; i++) {
@@ -51,15 +61,18 @@ void NetEEPROMClass::print(byte settings[NETWORK_SETTINGS_SIZE], word port)
 				Serial.print(settings[i], HEX);
 			} else Serial.print(settings[i]);
 		}
+	} else Serial.print("Using built in settings");
+
+	if(portSigIsSet()) {
 		Serial.println();
 		Serial.print("   Port: ");
 		Serial.print(port);
-	} else Serial.print("Using built in settings");
+	} else Serial.print("Using default port 46969");
 }
 
 void NetEEPROMClass::print(byte* mac, IPAddress ip, IPAddress gw, IPAddress sn, word port)
 {
-	if(sigIsSet()) {
+	if(netSigIsSet()) {
 		byte i;
 
 		Serial.print("    MAC: ");
@@ -85,23 +98,33 @@ void NetEEPROMClass::print(byte* mac, IPAddress ip, IPAddress gw, IPAddress sn, 
 /*
  * Public functions
  */
-void NetEEPROMClass::eraseSig(void)
+void NetEEPROMClass::eraseNetSig(void)
 {
 	EEPROM.write(NETEEPROM_SIG_1, 0xFF); // Unset signature 1 to load built-in settings
 	EEPROM.write(NETEEPROM_SIG_2, 0xFF); // Unset signature 2
 }
 
+void NetEEPROMClass::erasePortSig(void)
+{
+	EEPROM.write(NETEEPROM_SIG_3, 0xFF);
+}
+
+void NetEEPROMClass::erasePassSig(void)
+{
+	EEPROM.write(NETEEPROM_SIG_4, 0xFF);
+}
+
 void NetEEPROMClass::writeImgBad(void)
 {
-	EEPROM.write(NETEEPROM_IMG_STAT, NETEEPROM_IMG_BAD_VAL); // Image status set to invalid
+	EEPROM.write(NETEEPROM_IMG_STAT, NETEEPROM_IMG_BAD_VALUE); // Image status set to invalid
 }
 
 void NetEEPROMClass::writeImgOk(void)
 {
-	EEPROM.write(NETEEPROM_IMG_STAT, NETEEPROM_IMG_OK_VAL); // Image status set to valid
+	EEPROM.write(NETEEPROM_IMG_STAT, NETEEPROM_IMG_OK_VALUE); // Image status set to valid
 }
 
-void NetEEPROMClass::writeNet(byte* mac, IPAddress ip, IPAddress gw, IPAddress sn, word port)
+void NetEEPROMClass::writeNet(byte* mac, IPAddress ip, IPAddress gw, IPAddress sn)
 {
 	byte settings[NETWORK_SETTINGS_SIZE] = {
 		gw[0], gw[1], gw[2], gw[3],
@@ -114,20 +137,40 @@ void NetEEPROMClass::writeNet(byte* mac, IPAddress ip, IPAddress gw, IPAddress s
 	for(byte address = 0; address < NETWORK_SETTINGS_SIZE; address++) {
 		EEPROM.write(address + NETEEPROM_SETTINGS_OFFSET, settings[address]);
 	}
+
+	writeNetSig();
+}
+
+void NetEEPROMClass::writeNet(byte* mac, IPAddress ip, IPAddress gw, IPAddress sn, word port)
+{
+	writeNet(mac, ip, gw, sn);
+
 	EEPROM.write(NETEEPROM_PORT, (port & 0xFF));
 	EEPROM.write(NETEEPROM_PORT + 1, (port >> 8));
 
-	writeSig();
+	writePortSig();
 }
 
 
 /*
  * Read functions
  */
-bool NetEEPROMClass::sigIsSet(void)
+bool NetEEPROMClass::netSigIsSet(void)
 {
-	if((EEPROM.read(NETEEPROM_SIG_1) == NETEEPROM_SIG_1_VAL)
-	        && (EEPROM.read(NETEEPROM_SIG_2) == NETEEPROM_SIG_2_VAL)) return(true);
+	if((EEPROM.read(NETEEPROM_SIG_1) == NETEEPROM_SIG_1_VALUE)
+		&& (EEPROM.read(NETEEPROM_SIG_2) == NETEEPROM_SIG_2_VALUE)) return(true);
+	else return(false);
+}
+
+bool NetEEPROMClass::portSigIsSet(void)
+{
+	if(EEPROM.read(NETEEPROM_SIG_3) == NETEEPROM_SIG_3_VALUE) return(true);
+	else return(false);
+}
+
+bool NetEEPROMClass::passSigIsSet(void)
+{
+	if(EEPROM.read(NETEEPROM_SIG_4) == NETEEPROM_SIG_4_VALUE) return(true);
 	else return(false);
 }
 
