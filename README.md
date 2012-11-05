@@ -92,6 +92,9 @@ The default built-in network settings of the bootloader are listed below.
 * TFTP Data Port: 46969
 ```
 
+___NOTE:___ The Arduino Ethernet that were sent as Indiegogo Perks were flashed with different network settings.
+Their bootloader still defaults to the previous settings ___but___ the current values are on the accompaning leaflet.
+
 
 Configuring Network Settings
 ----------------------------
@@ -130,6 +133,7 @@ run one of the following commands in a terminal.
 * ```avr-objcopy -j .text -j .data -O binary [sketch].elf [sketch].bin```
 * ```avr-objcopy -I ihex [sketch].hex -O binary [sketch].bin```
 
+In Windows and MacOS you can find the ```avr-objcopy``` program in your Arduino IDE installation folder under ```hardware/tools/avr/bin/```.
 Or,if you have scons installed, you can use the modified ```SConstruct``` script you can find in ```Ariadne-Bootloader/utilities```.
 This being based on the *arscons* script, it can be used in two ways. If you used the previous process to generate the _HEX_
 file you can just copy the ```SConstruct``` file inside the temporary *Arduino IDE* build directory (as mentioned above)
@@ -251,10 +255,16 @@ Right now the __ATmega328__ processor and the __WizNet W5100__ ethernet controll
 that your Arduino Uno, Arduino Duemilanove, Arduino Ethernet or any Arduino compatible board using these chipsets
 can be burned with the Ariadne bootloader. If you have the know-how you can probably compile the bootloader for other
 processors but note that we haven't tested it. The following list will be updated over time.
-* Arduino Ethernet
-* Arduino Uno
-* Arduino Duemilanove w/ ATmega328
+* [Arduino Ethernet](www.arduino.cc/en/Main/ArduinoBoardEthernet)
+* [Arduino Uno](http://www.arduino.cc/en/Main/ArduinoBoardUno)
+* [Arduino Duemilanove w/ ATmega328](http://www.arduino.cc/en/Main/ArduinoBoardDuemilanove)
 
+Other Tested Boards
+-------------------
+These boards have been also tested and found to be working with Ariadne Bootloader. I don't have any of these so
+a big ___thank you___ goes to the people that took their time to test them.
+* [ITead Studio IBoard](http://imall.iteadstudio.com/im120410001.html)
+* [Sparkfun Ethernet Pro](https://www.sparkfun.com/products/10536)
 
 Roadmap
 -------
