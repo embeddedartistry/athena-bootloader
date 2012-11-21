@@ -18,6 +18,7 @@
 #define NETEEPROM_SIG_4    26
 #define NETEEPROM_PSIZE    27
 #define NETEEPROM_PASS     28
+#define NETEEPROM_END      63
 
 /* EERPOM values */
 #define NETEEPROM_SIG_1_VALUE   (0x55)
@@ -27,5 +28,10 @@
 
 #define NETEEPROM_IMG_OK_VALUE  (0xEE)
 #define NETEEPROM_IMG_BAD_VALUE (0xFF)
+
+#define DEFAULT_IP_ADDR     192,168,1,128
+#define DEFAULT_SUB_MASK    255,255,255,0
+#define DEFAULT_GW_ADDR     192,168,1,1
+#define DEFAULT_MAC_ADDR    0xDE,0xAD,0xBE,0xEF,0xFE,0xED
 
 #endif

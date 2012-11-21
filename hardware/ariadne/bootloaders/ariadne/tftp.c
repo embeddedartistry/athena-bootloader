@@ -84,13 +84,13 @@ uint8_t processPacket()
 
 	// Read data from chip to buffer
 	readPointer = netReadWord(REG_S3_RX_RD0);
-#ifdef _DEBUG_TFTP
+#ifdef _DEBUGMORE_TFTP
 	traceln("Tftp: readPointer at position ");
 	tracenum(readPointer);
 #endif
 	if(readPointer == 0) readPointer += S3_RX_START;
 	for(count = TFTP_PACKET_MAX_SIZE; count--;) {
-#ifdef _DEBUG_TFTP
+#ifdef _DEBUGMORE_TFTP
 		if((count == TFTP_PACKET_MAX_SIZE - 1) || (count == 0)) {
 			traceln("Tftp: Reading from position ");
 			tracenum(readPointer);
@@ -102,7 +102,7 @@ uint8_t processPacket()
 	netWriteWord(REG_S3_RX_RD0, readPointer);     // Write back new pointer
 	netWriteReg(REG_S3_CR, CR_RECV);
 	while(netReadReg(REG_S3_CR));
-#ifdef _DEBUG_TFTP
+#ifdef _DEBUGMORE_TFTP
 	traceln("Tftp: Bytes left to read ");
 	tracenum(netReadWord(REG_S3_RX_RSR0));
 #endif

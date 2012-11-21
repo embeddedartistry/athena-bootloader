@@ -7,57 +7,119 @@
 
 #define NETWORK_SETTINGS_SIZE   18
 
-class NetEEPROMClass
-{
+#define DEBUG
+#ifdef DEBUG
+#define DBG(c) c
+#else
+#define DBG(c)
+#endif
+
+class NetEEPROMClass {
+
 	private:
-		/* Write signature bytes in eeprom, informing the bootloader that
-		 * the network settings will be loaded from the eeprom */
+		/*
+		 * Network functions
+		 */
+		/** Write signature bytes in eeprom, informing the bootloader that
+		 *  the network settings will be loaded from the eeprom */
 		void writeNetSig();
-		/* Same as above but for the port */
-		void writePortSig();
-		/* Same for password */
-		void writePassSig();
-
-		/* Basic method to read addresses used in public functions */
+		/** Generic function to write IP addresses to EEPROM */
+		void writeAddr(IPAddress addr, byte start);
+		/** Basic method to read addresses used in public functions */
 		IPAddress readAddr(byte start);
+		/** Print the network settings in a standartized way. Serial needs to be
+		 *  initalized in the sketch */
+		void printNet(byte* mac, IPAddress ip, IPAddress gw, IPAddress sn);
 
-		void read(byte settings[NETWORK_SETTINGS_SIZE], word* port);
-		void print(byte settings[NETWORK_SETTINGS_SIZE], word port);
-		/* Print the network settings from previously loaded arrays */
-		void print(byte* mac, IPAddress ip, IPAddress gw, IPAddress sn, word port);
+		/*
+		 * Port functions
+		 */
+		/** Write port signature byte to enable reading the TFTP data port from the bootloader */
+		void writePortSig();
+		/** Print the port number to the serial. Serial needs to be initalized in the sketch */
+		void printPort(word port);
+
+		/*
+		 * Password functions
+		 */
+		/** Write password signature to enable reading of password from EEPROM */
+		void writePassSig();
+		/** Print password stored in EEPROM to serial. Serial has to be initalized in the sketch */
+		void printPass(String passwd);
+
 
 	public:
-		/* Erase signature bytes in eeprom to revert the bootloader to
-		 * built-in settings */
-		void eraseNetSig(void);
-		void erasePortSig(void);
-		void erasePassSig(void);
-		/* Set the flashed image status to bad, to prevent the bootloader
-		 * from timing out */
+		/** @name Image Status
+		 * Image status functions
+		 */
+		/** Set the flashed image status to bad, to prevent the bootloader
+		 *  from timing out */
 		void writeImgBad(void);
-		/* Set the flashed image status to good, to allow the bootloader
-		 * to load the program in memory */
+		/** Set the flashed image status to good, to allow the bootloader
+		 *  to load the program in memory */
 		void writeImgOk(void);
-		/* Write the network settings to EEPROM as individual arrays */
-		void writeNet(byte* mac, IPAddress ip, IPAddress gw, IPAddress sn);
-		void writeNet(byte* mac, IPAddress ip, IPAddress gw, IPAddress sn, word port);
 
-		/* Check if the signature bytes are set, returning 1 if they are
-		 * set or 0 if they are unset */
+		/** @name Networking
+		 * Network functions
+		 */
+		/** Erase signature bytes in eeprom to revert the bootloader to
+		 *  built-in networking settings */
+		void eraseNetSig(void);
+		/** Write MAC address to EEPROM */
+		void writeMAC(byte* mac);
+		/** Write IP to EEPROM */
+		void writeIP(IPAddress ip);
+		/** Write gateway to EEPROM */
+		void writeGW(IPAddress gw);
+		/** Write subnet mask to EEPROM */
+		void writeSN(IPAddress sn);
+		/** Write the full network settings to the EEPROM and set the netwrk
+		 *  settings signature in order to have the bootloader detect them */
+		void writeNet(byte* mac, IPAddress ip, IPAddress gw, IPAddress sn);
+		/** Query if the bootloader uses the custom network settings. True if set */
 		bool netSigIsSet(void);
-		bool portSigIsSet(void);
-		bool passSigIsSet(void);
+		/** Read the MAC address from EEPROM and return a pointer to allocated memory*/
 		byte* readMAC(void);
+		/** Read IP */
 		IPAddress readIP(void);
+		/** Read Gateway */
 		IPAddress readGW(void);
+		/** Read Subnet Mask */
 		IPAddress readSN(void);
-		/* Function to return only the port */
+
+		/** @name Tftp
+		 * Port functions
+		 */
+		/** Erase port signature byte to disable reading the TFTP data port from the bootloader */
+		void erasePortSig(void);
+		/** Write the port value to EEPROM */
+		void writePort(word port);
+		/** Query if the port signature is set. Returns true if port is set in the EEPROM */
+		bool portSigIsSet(void);
+		/** Read the port from EEPROM */
 		word readPort(void);
 
-		/* Print the network settings */
+		/** @name Password
+		 * Password functions
+		 */
+		/** Erase password signature byte to disable password in the bootloader.
+		 *  No default pass exists */
+		void erasePassSig(void);
+		/** Write the password to the EEPROM */
+		void writePass(String passwd);
+		/** Query if the password is set */
+		bool passSigIsSet(void);
+		/** Read the password from EEPROM */
+		String readPass(void);
+
+		/** @name Generic
+		 * General purpose functions
+		 */
+		/** Print all bootloader settings */
 		void print(void);
 };
 
 extern NetEEPROMClass NetEEPROM;
 
 #endif
+// kate: indent-mode cstyle; indent-width 4; replace-tabs off; tab-width 4;

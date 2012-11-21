@@ -563,7 +563,7 @@ uint8_t processPacket()
     731e:	88 e2       	ldi	r24, 0x28	; 40
     7320:	97 e0       	ldi	r25, 0x07	; 7
     7322:	6f df       	rcall	.-290    	; 0x7202 <netReadWord>
-#ifdef _DEBUG_TFTP
+#ifdef _DEBUGMORE_TFTP
 	traceln("Tftp: readPointer at position ");
 	tracenum(readPointer);
 #endif
@@ -609,7 +609,7 @@ uint8_t processPacket()
     7356:	02 c0       	rjmp	.+4      	; 0x735c <processPacket+0x5a>
     7358:	80 e0       	ldi	r24, 0x00	; 0
     735a:	98 e7       	ldi	r25, 0x78	; 120
-#ifdef _DEBUG_TFTP
+#ifdef _DEBUGMORE_TFTP
 	traceln("Tftp: readPointer at position ");
 	tracenum(readPointer);
 #endif

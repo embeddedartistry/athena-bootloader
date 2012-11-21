@@ -40,14 +40,15 @@ byte  mac[] = {0x12, 0x34, 0x56, 0x78, 0x9A, 0xBC};
 IPAddress  ip(192, 168, 1, 120);
 IPAddress  gateway(192, 168, 1, 1);
 IPAddress  subnet(255, 255, 255, 0);
-/* Because of limitations in the bootloader, if you set the network settings you have
- * to set the pseudo-random port for the tftp data transfer. If you have more than one arduinos
+/* You might want to also change the TFTP transfer port. If you have more than one arduinos
  * with ethernet behind your router that you want to program from outside your local
  * network you need a unique value for each one value. The initial negotiation of tftp still
  * happens at port [69]. You will also need to forwards these ports from your router.
  * The value set below is the built-in default [46969]. */
-//uint16_t port = 46969;
-
+uint16_t port = 46969;
+/* This is the "password" for the reset server in case you want to reset your Arduino
+ * remotely. This setting has no effect on the bootloader itself. */
+String password = "random_pass";
 
 /* Preset for Arduino Uno with Ethernet shield.
  * For Arduino Ethernet set this to 9 */
@@ -57,6 +58,10 @@ void setup()
 {
 	/* Write the new settings values to EEPROM */
 	NetEEPROM.writeNet(mac, ip, gateway, subnet);
+	/* Write the settings as above but also set the port */
+	//NetEEPROM.writeNet(mac, ip, gateway, subnet, port)
+	/* Write password in EEPROM */
+	NetEEPROM.writePass(password);
 	/* Set image status to bad, so upon reboot, the bootloader won't time out */
 	NetEEPROM.writeImgBad();
 
