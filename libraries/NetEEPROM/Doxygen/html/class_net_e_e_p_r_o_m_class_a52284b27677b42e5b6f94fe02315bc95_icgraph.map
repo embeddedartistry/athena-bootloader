@@ -1,6 +1,0 @@
-<map id="NetEEPROMClass::readAddr" name="NetEEPROMClass::readAddr">
-<area shape="rect" id="node3" href="$class_net_e_e_p_r_o_m_class.html#abeaa066be39f005f8b4b8460273c0456" title="NetEEPROMClass::readIP" alt="" coords="251,5,429,32"/>
-<area shape="rect" id="node7" href="$class_net_e_e_p_r_o_m_class.html#a0ebd6db9f95be744c121382da0e3f958" title="NetEEPROMClass::readGW" alt="" coords="246,56,434,83"/>
-<area shape="rect" id="node10" href="$class_net_e_e_p_r_o_m_class.html#a4fab6663a021d71e65de3d94602ad6d6" title="NetEEPROMClass::readSN" alt="" coords="249,107,431,133"/>
-<area shape="rect" id="node5" href="$class_net_e_e_p_r_o_m_class.html#ad299347b9ddaf920b9e534793ba8d2f7" title="NetEEPROMClass::print" alt="" coords="483,56,648,83"/>
-</map>
