@@ -33,9 +33,13 @@
  */
 
 #include <avr/wdt.h>
-#include <EEPROM.h>
+#include <NewEEPROM.h>
 #include <NetEEPROM.h>
 
+/* You have to set each and every of these variables below to their correct values
+ * for your network. The bootloader won't function correctly if one of these is wrong.
+ * For the MAC Address, you can set it to anything you like, but using the one provided
+ * with your Ethernet Shield or Arduino Ethernet is strongly suggested. */
 byte  mac[] = {0x12, 0x34, 0x56, 0x78, 0x9A, 0xBC};
 IPAddress  ip(192, 168, 1, 120);
 IPAddress  gateway(192, 168, 1, 1);
@@ -45,24 +49,26 @@ IPAddress  subnet(255, 255, 255, 0);
  * network you need a unique value for each one value. The initial negotiation of tftp still
  * happens at port [69]. You will also need to forwards these ports from your router.
  * The value set below is the built-in default [46969]. */
-uint16_t port = 46969;
+word port = 46970;
 /* This is the "password" for the reset server in case you want to reset your Arduino
- * remotely. This setting has no effect on the bootloader itself. */
-String password = "random_pass";
+ * remotely. This setting has no effect on the bootloader itself. Password can be 36 characters
+ * long, at maximum. Any string longer than 36 characters will be truncated.
+ * Spaces should not be used */
+String password = "r4nd0m_p4ss";
 
-/* Preset for Arduino Uno with Ethernet shield.
- * For Arduino Ethernet set this to 9 */
+/* Preset for Arduino Ethernet.
+ * For Arduino with Ethernet Shield set this to 13 */
 int ledpin = 9;
 
 void setup()
 {
 	/* Write the new settings values to EEPROM */
 	NetEEPROM.writeNet(mac, ip, gateway, subnet);
-	/* Write the settings as above but also set the port */
-	//NetEEPROM.writeNet(mac, ip, gateway, subnet, port)
-	/* Write password in EEPROM */
+	/* Set the TFTP data transfer port in EEPROM. Change it only if you need to */
+	//NetEEPROM.writePort(port);
+	/* Write Reset Server password in EEPROM */
 	NetEEPROM.writePass(password);
-	/* Set image status to bad, so upon reboot, the bootloader won't time out */
+	/* Set image status to bad, so upon reboot the bootloader won't load the previous sketch */
 	NetEEPROM.writeImgBad();
 
 	pinMode(ledpin, OUTPUT);
@@ -79,4 +85,6 @@ void loop()
 	delay(500);
 	digitalWrite(ledpin, LOW);
 	delay(500);
+	/* 1 Hz blinking continues until timer (which was started
+	 * in "setup") forces reset and this sketch then is invalid. */
 }

@@ -4,12 +4,12 @@
  *
  */
 
-#include <EEPROM.h>
+#include <NewEEPROM.h>
 #include <NetEEPROM.h>
 
-/* Preset for Arduino Uno with Ethernet shield.
- * For Arduino Ethernet set this to 9 */
-int ledpin = 13;
+/* Preset for Arduino Ethernet.
+ * For Arduino with Ethernet Shield set this to 13 */
+int ledpin = 9;
 
 void setup()
 {
@@ -23,7 +23,7 @@ void setup()
 	//}
 
 	/* Print the network settings to serial. Baud rate is 9600 */
-	NetEEPROM.print();
+	NetEEPROM.printAll(&Serial);
 	/* If you want to invalidate the image after first run, uncomment this
 	 * Because Duemilanove doesn't have auto-reset, don't uncomment this or
 	 * you will invalidate the image before you open the serial console */

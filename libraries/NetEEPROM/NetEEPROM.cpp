@@ -1,45 +1,42 @@
+/*
+ * NetEEPROM.cpp - Ariadne Bootloader helper library
+ * Copyright (c) 2012 Stylianos Tsampas.  All right reserved.
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ */
+
 #include "NetEEPROM.h"
 #include "NetEEPROM_defs.h"
 
 
-/*
- * Image status functions
- */
-void NetEEPROMClass::writeImgBad(void)
-{
-	EEPROM.write(NETEEPROM_IMG_STAT, NETEEPROM_IMG_BAD_VALUE); // Image status set to invalid
-}
-
-void NetEEPROMClass::writeImgOk(void)
-{
-	EEPROM.write(NETEEPROM_IMG_STAT, NETEEPROM_IMG_OK_VALUE); // Image status set to valid
-}
-
-
+/****************************************************
+ * Definitions                                      *
+ ****************************************************/
 
 /*
  * Netowork functions
  */
 void NetEEPROMClass::writeNetSig(void)
 {
-	EEPROM.write(NETEEPROM_SIG_1, NETEEPROM_SIG_1_VALUE); // Set signature 1 to load eeprom settings
-	EEPROM.write(NETEEPROM_SIG_2, NETEEPROM_SIG_2_VALUE); // Set signature 2
-}
-
-void NetEEPROMClass::eraseNetSig(void)
-{
-	EEPROM.write(NETEEPROM_SIG_1, 0xFF); // Unset signature 1 to load built-in settings
-	EEPROM.write(NETEEPROM_SIG_2, 0xFF); // Unset signature 2
-}
-
-void NetEEPROMClass::writeMAC(byte* mac)
-{
-	for(byte i = 0; i < 6; i++)	EEPROM.write(i + NETEEPROM_MAC, mac[i]);
+	write(NETEEPROM_SIG_1, NETEEPROM_SIG_1_VALUE, 0); // Set signature 1 to load eeprom settings
+	write(NETEEPROM_SIG_2, NETEEPROM_SIG_2_VALUE, 0); // Set signature 2
 }
 
 void NetEEPROMClass::writeAddr(IPAddress addr, byte start)
 {
-	for(byte i = 0; i < 4; i++)	EEPROM.write(i + start, addr[i]);
+	for(byte i = 0; i < 4; i++)	write(i + start, addr[i], 0);
 }
 
 void NetEEPROMClass::writeIP(IPAddress ip)
@@ -57,6 +54,62 @@ void NetEEPROMClass::writeSN(IPAddress sn)
 	writeAddr(sn, NETEEPROM_SN);
 }
 
+IPAddress NetEEPROMClass::readAddr(byte start)
+{
+	byte octet[4];
+	for(byte i = 0; i < 4; i++) octet[i] = read(i, start);
+	IPAddress Addr(octet);
+	return(Addr);
+}
+
+/*
+ * Port functions
+ */
+void NetEEPROMClass::writePortSig()
+{
+	write(NETEEPROM_SIG_3, NETEEPROM_SIG_3_VALUE, 0);
+}
+
+/*
+ * Password functions
+ */
+void NetEEPROMClass::writePassSig()
+{
+	write(NETEEPROM_SIG_4, NETEEPROM_SIG_4_VALUE, 0);
+}
+
+
+
+/****************************************************
+ * User API                                         *
+ ****************************************************/
+
+/*
+ * Image status functions
+ */
+void NetEEPROMClass::writeImgBad(void)
+{
+	write(NETEEPROM_IMG_STAT, NETEEPROM_IMG_BAD_VALUE, 0); // Image status set to invalid
+}
+
+void NetEEPROMClass::writeImgOk(void)
+{
+	write(NETEEPROM_IMG_STAT, NETEEPROM_IMG_OK_VALUE, 0); // Image status set to valid
+}
+
+
+/* Netowork functions */
+void NetEEPROMClass::eraseNetSig(void)
+{
+	write(NETEEPROM_SIG_1, 0, 0); // Unset signature 1 to load built-in settings
+	write(NETEEPROM_SIG_2, 0, 0); // Unset signature 2
+}
+
+void NetEEPROMClass::writeMAC(byte* mac)
+{
+	for(byte i = 0; i < 6; i++)	write(i + NETEEPROM_MAC, mac[i], 0);
+}
+
 void NetEEPROMClass::writeNet(byte* mac, IPAddress ip, IPAddress gw, IPAddress sn)
 {
 	writeMAC(mac);
@@ -69,8 +122,8 @@ void NetEEPROMClass::writeNet(byte* mac, IPAddress ip, IPAddress gw, IPAddress s
 
 bool NetEEPROMClass::netSigIsSet(void)
 {
-	if((EEPROM.read(NETEEPROM_SIG_1) == NETEEPROM_SIG_1_VALUE)
-		&& (EEPROM.read(NETEEPROM_SIG_2) == NETEEPROM_SIG_2_VALUE)) return(true);
+	if((read(NETEEPROM_SIG_1, 0) == NETEEPROM_SIG_1_VALUE)
+	        && (read(NETEEPROM_SIG_2, 0) == NETEEPROM_SIG_2_VALUE)) return(true);
 	else return(false);
 }
 
@@ -82,17 +135,9 @@ byte* NetEEPROMClass::readMAC(void)
 	memcpy((void*)mac, (void*)default_mac, 6);
 
 	if(netSigIsSet())
-		for(byte i = 0; i < 6; i++) mac[i] = EEPROM.read(i + NETEEPROM_MAC);
+		for(byte i = 0; i < 6; i++) mac[i] = read(i, NETEEPROM_MAC);
 
 	return(mac);
-}
-
-IPAddress NetEEPROMClass::readAddr(byte start)
-{
-	byte octet[4];
-	for(byte i = 0; i < 4; i++) octet[i] = EEPROM.read(i + start);
-	IPAddress Addr(octet);
-	return(Addr);
 }
 
 IPAddress NetEEPROMClass::readIP(void)
@@ -116,97 +161,95 @@ IPAddress NetEEPROMClass::readSN(void)
 	return(sn);
 }
 
-void NetEEPROMClass::printNet(byte* mac, IPAddress ip, IPAddress gw, IPAddress sn)
+void NetEEPROMClass::printNet(HardwareSerial* serial)
 {
-	if(netSigIsSet()) {
-		byte i;
+	serial->println("--- Network Settings ---");
 
-		Serial.print("    MAC: ");
-		for(i = 0; i < 6; i++) {
-			Serial.print("0x");
-			Serial.print(mac[i], HEX);
-			if(i != 5) Serial.print(".");
-			else Serial.println();
-		}
-		Serial.print("Address: ");
-		Serial.println(ip);
-		Serial.print("Gateway: ");
-		Serial.println(gw);
-		Serial.print(" Subnet: ");
-		Serial.println(sn);
-		Serial.println();
-	} else Serial.print("Using built in settings");
+	byte* mac = readMAC();
+	serial->print("    MAC: ");
+	for(uint8_t i = 0; i < 6; i++) {
+		serial->print("0x");
+		serial->print(mac[i], HEX);
+		if(i != 5) serial->print(".");
+		else serial->println();
+	}
+	free(mac);
+
+	serial->print("Address: ");
+	serial->println(readIP());
+
+	serial->print("Gateway: ");
+	serial->println(readGW());
+
+	serial->print(" Subnet: ");
+	serial->println(readSN());
 }
-
-
 
 /*
  * Port functions
  */
-void NetEEPROMClass::writePortSig()
-{
-	EEPROM.write(NETEEPROM_SIG_3, NETEEPROM_SIG_3_VALUE);
-}
-
 void NetEEPROMClass::erasePortSig(void)
 {
-	EEPROM.write(NETEEPROM_SIG_3, 0xFF);
+	write(NETEEPROM_SIG_3, 0, 0);
 }
 
 void NetEEPROMClass::writePort(word port)
 {
-	EEPROM.write(NETEEPROM_PORT, (port & 0xFF));
-	EEPROM.write(NETEEPROM_PORT + 1, (port >> 8));
+	write(NETEEPROM_PORT, (port & 0xFF), 0);
+	write(NETEEPROM_PORT + 1, (port >> 8), 0);
 
 	writePortSig();
 }
 
 bool NetEEPROMClass::portSigIsSet(void)
 {
-	if(EEPROM.read(NETEEPROM_SIG_3) == NETEEPROM_SIG_3_VALUE) return(true);
+	if(read(NETEEPROM_SIG_3, 0) == NETEEPROM_SIG_3_VALUE) return(true);
 	else return(false);
 }
 
 word NetEEPROMClass::readPort(void)
 {
-	if(portSigIsSet()){
-		byte loByte = EEPROM.read(NETEEPROM_PORT);
-		byte hiByte = EEPROM.read(NETEEPROM_PORT + 1);
+	if(portSigIsSet()) {
+		byte loByte = read(NETEEPROM_PORT, 0);
+		byte hiByte = read(NETEEPROM_PORT + 1, 0);
 		return(makeWord(hiByte, loByte));
 	} else return(46969);
 }
 
+void NetEEPROMClass::printPort(HardwareSerial* serial)
+{
+	serial->println("--- Tftp Settings ---");
 
+	serial->print("Data Port: ");
+	serial->println(readPort());
+}
 
 /*
  * Password functions
  */
-void NetEEPROMClass::writePassSig()
-{
-	EEPROM.write(NETEEPROM_SIG_4, NETEEPROM_SIG_4_VALUE);
-}
-
 void NetEEPROMClass::erasePassSig(void)
 {
-	EEPROM.write(NETEEPROM_SIG_4, 0xFF);
+	write(NETEEPROM_SIG_4, 0, 0);
 }
 
 void NetEEPROMClass::writePass(String passwd)
 {
 	uint8_t i;
 	uint8_t pass_size = passwd.length();
-	if(pass_size > (NETEEPROM_END-NETEEPROM_PASS)) pass_size = NETEEPROM_END-NETEEPROM_PASS;
 
-	EEPROM.write(NETEEPROM_PSIZE, pass_size);
+	if(pass_size > (NETEEPROM_END - NETEEPROM_PASS))
+		pass_size = NETEEPROM_END - NETEEPROM_PASS;
 
-	for(i=0; i<=pass_size; i++) EEPROM.write(NETEEPROM_PASS+i, passwd.charAt(i));
+	for(i = 0; i < pass_size; i++)
+		write(i, passwd.charAt(i), NETEEPROM_PASS);
+	write(pass_size, '\0', NETEEPROM_PASS);
 
 	writePassSig();
 }
 
 bool NetEEPROMClass::passSigIsSet(void)
 {
-	if(EEPROM.read(NETEEPROM_SIG_4) == NETEEPROM_SIG_4_VALUE) return(true);
+	if(read(NETEEPROM_SIG_4, 0) == NETEEPROM_SIG_4_VALUE) return(true);
 	else return(false);
 }
 
@@ -215,15 +258,13 @@ String NetEEPROMClass::readPass(void)
 	String password;
 
 	if(passSigIsSet()) {
-		uint8_t pass_size = EEPROM.read(NETEEPROM_PSIZE);
-		DBG(Serial.print("Password size: ");
-			Serial.println(pass_size);
-		)
-		char passwd[pass_size];
 
-		for(uint8_t i=0; i<pass_size; i++) {
-			passwd[i] = EEPROM.read(NETEEPROM_PASS+i);
-		}
+		uint8_t c, i = 0;
+		char passwd[NETEEPROM_END - NETEEPROM_PASS + 1];
+
+		while((c = read(i, NETEEPROM_PASS)) != '\0') passwd[i++] = c;
+		passwd[i] = '\0';
+
 		password = passwd;
 
 	} else password = "";
@@ -231,14 +272,40 @@ String NetEEPROMClass::readPass(void)
 	return password;
 }
 
+void NetEEPROMClass::printPass(HardwareSerial* serial)
+{
+	serial->println("--- Reset Server Settings ---");
 
+	serial->print("Password: ");
+	serial->println(readPass());
+
+	serial->print("  Length: ");
+	serial->println(readPass().length());
+}
 
 /*
  * General print function
  */
-void NetEEPROMClass::print(void)
+void NetEEPROMClass::print(HardwareSerial* serial)
 {
-	printNet(readMAC(), readIP(), readGW(), readSN());
+	if(netSigIsSet())
+		printNet(serial);
+	if(portSigIsSet())
+		printPort(serial);
+	if(passSigIsSet())
+		printPass(serial);
+}
+
+void NetEEPROMClass::printAll(HardwareSerial* serial)
+{
+	printNet(serial);
+	if(!netSigIsSet()) serial->println("Using default network settings");
+
+	printPort(serial);
+	if(!portSigIsSet()) serial->println("Using default tftp data transfer port");
+
+	printPass(serial);
+	if(!passSigIsSet()) serial->println("No password for Reset Server has been set");
 }
 
 NetEEPROMClass NetEEPROM;
