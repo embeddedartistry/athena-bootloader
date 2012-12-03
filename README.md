@@ -1,4 +1,4 @@
-[Ariadne Bootloader for Arduino and WizNet W5100] http://codebendercc.github.com/Ariadne-Bootloader/
+[Ariadne Bootloader for Arduino and WizNet W5100](http://codebendercc.github.com/Ariadne-Bootloader/)
 ===============================================
 
 Bootloader for Arduino with Ethernet
