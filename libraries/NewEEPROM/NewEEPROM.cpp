@@ -1,5 +1,5 @@
 /*
-  EEPROM.cpp - EEPROM library
+  NewEEPROM.cpp - EEPROM library
   Copyright (c) 2006 David A. Mellis.  All right reserved.
 
   Adapted for Ariadne Bootloader support by Stylianos Tsampas, 2012.
