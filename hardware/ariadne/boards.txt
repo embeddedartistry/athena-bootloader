@@ -1,43 +1,64 @@
 ##############################################################
 
-ariadne328.name=Arduino Duemilanove/Uno(ATmega328) w/ Ariadne Bootloader
+ariadne328D.name=Arduino Duemilanove /w ATmega328 (Ariadne Bootloader)
 
-ariadne328.upload.protocol=arduino
-ariadne328.upload.maximum_size=28672
-ariadne328.upload.speed=115200
+ariadne328D.upload.protocol=arduino
+ariadne328D.upload.maximum_size=28672
+ariadne328D.upload.speed=115200
 
-ariadne328.bootloader.low_fuses=0xFF
-ariadne328.bootloader.high_fuses=0xD8
-ariadne328.bootloader.extended_fuses=0x05
-ariadne328.bootloader.path=ariadne
-ariadne328.bootloader.file=ariadne_atmega328.hex
-ariadne328.bootloader.unlock_bits=0x3F
-ariadne328.bootloader.lock_bits=0x0F
+ariadne328D.bootloader.low_fuses=0xFF
+ariadne328D.bootloader.high_fuses=0xD8
+ariadne328D.bootloader.extended_fuses=0x05
+ariadne328D.bootloader.path=ariadne
+ariadne328D.bootloader.file=ariadne_atmega328.hex
+ariadne328D.bootloader.unlock_bits=0x3F
+ariadne328D.bootloader.lock_bits=0x0F
 
-ariadne328.build.mcu=atmega328p
-ariadne328.build.f_cpu=16000000L
-ariadne328.build.core=arduino:arduino
-ariadne328.build.variant=arduino:standard
+ariadne328D.build.mcu=atmega328p
+ariadne328D.build.f_cpu=16000000L
+ariadne328D.build.core=arduino:arduino
+ariadne328D.build.variant=arduino:standard
 
 ##############################################################
 
-ariadne328eth.name=Arduino Ethernet w/ Ariadne Bootloader
+ariadne328U.name=Arduino Uno (Ariadne Bootloader)
 
-ariadne328eth.upload.protocol=arduino
-ariadne328eth.upload.maximum_size=28672
-ariadne328eth.upload.speed=115200
+ariadne328U.upload.protocol=arduino
+ariadne328U.upload.maximum_size=28672
+ariadne328U.upload.speed=115200
 
-ariadne328eth.bootloader.low_fuses=0xFF
-ariadne328eth.bootloader.high_fuses=0xD8
-ariadne328eth.bootloader.extended_fuses=0x05
-ariadne328eth.bootloader.path=ariadne
-ariadne328eth.bootloader.file=ariadne_atmega328_ethernet.hex
-ariadne328eth.bootloader.unlock_bits=0x3F
-ariadne328eth.bootloader.lock_bits=0x0F
+ariadne328U.bootloader.low_fuses=0xFF
+ariadne328U.bootloader.high_fuses=0xD8
+ariadne328U.bootloader.extended_fuses=0x05
+ariadne328U.bootloader.path=ariadne
+ariadne328U.bootloader.file=ariadne_atmega328.hex
+ariadne328U.bootloader.unlock_bits=0x3F
+ariadne328U.bootloader.lock_bits=0x0F
 
-ariadne328eth.build.mcu=atmega328p
-ariadne328eth.build.f_cpu=16000000L
-ariadne328eth.build.core=arduino:arduino
-ariadne328eth.build.variant=arduino:standard
+ariadne328U.build.mcu=atmega328p
+ariadne328U.build.f_cpu=16000000L
+ariadne328U.build.core=arduino:arduino
+ariadne328U.build.variant=arduino:standard
+
+##############################################################
+
+ariadne328E.name=Arduino Ethernet (Ariadne Bootloader)
+
+ariadne328E.upload.protocol=arduino
+ariadne328E.upload.maximum_size=28672
+ariadne328E.upload.speed=115200
+
+ariadne328E.bootloader.low_fuses=0xFF
+ariadne328E.bootloader.high_fuses=0xD8
+ariadne328E.bootloader.extended_fuses=0x05
+ariadne328E.bootloader.path=ariadne
+ariadne328E.bootloader.file=ariadne_atmega328_ethernet.hex
+ariadne328E.bootloader.unlock_bits=0x3F
+ariadne328E.bootloader.lock_bits=0x0F
+
+ariadne328E.build.mcu=atmega328p
+ariadne328E.build.f_cpu=16000000L
+ariadne328E.build.core=arduino:arduino
+ariadne328E.build.variant=arduino:standard
 
 ##############################################################
