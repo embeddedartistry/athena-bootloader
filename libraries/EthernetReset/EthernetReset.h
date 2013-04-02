@@ -5,6 +5,7 @@
 #include <avr/wdt.h>
 #include <string.h>
 #include <Arduino.h>
+#include <NewEEPROM.h>
 #include <NetEEPROM.h>
 #include <SPI.h>
 #include <Ethernet.h>
@@ -12,35 +13,28 @@
 #include <EthernetClient.h>
 
 #define pgm_uchar(name)   static const prog_uchar name[] PROGMEM
-//#define DEBUG
-#ifdef DEBUG
+
+#define ETHERNETRESET_DEBUG 0
+#ifdef ETHERNETRESET_DEBUG > 0
 	#define DBG(c) c
 #else
 	#define DBG(c)
 #endif
-
 
 class EthernetReset
 {
 	private:
 		EthernetServer* _server;
 		EthernetClient _client;
+		char _path[20];
+
 		void stdResponce(char* msg);
 		void watchdogReset();
 		void stop(void);
-		char* _path;
-		size_t _path_len;
 
 	public:
-		//EthernetReset(String);
-		EthernetReset(char* path, word port = NetEEPROM.readPort()) {
-			_path = path;
-			_path_len = strlen(_path);
-			_server = new EthernetServer(port);
-		}
-		~EthernetReset() {
-			delete _server;
-		}
+		EthernetReset(int port);
+		//~EthernetReset();
 
 		void begin(void);
 		void check(void);

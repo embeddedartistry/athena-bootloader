@@ -22,41 +22,27 @@
  created 14 Sep 2012
  by Stelios Tsampas
 
- Analog pin server example
- created 18 Dec 2009
- by David A. Mellis
- modified 9 Apr 2012
- by Tom Igoe
-
  */
 
-#include <EEPROM.h>
+#include <NewEEPROM.h>
 #include <NetEEPROM.h>
 #include <SPI.h>
 #include <Ethernet.h>
 #include <EthernetReset.h>
 
-/* This is your "password". Set it to something long, unique and not
- * easily guessable. And remember to remove it before releasing your sketch */
-char reset_path[] = "reset_server_random_path";
 /* Create the reset server. This way your reser server will be at the port you
  * have speciefied in the bootloader for remote uploading. For more information on that
  * look at the "NetEEPROM" library in the "WriteNetworkSettings" sketch.
  * If you want to use your own port, create the object as this
  * "EthernetReset reset(reset_path, port);" where port is a number, i.e. 81 */
-EthernetReset reset(reset_path);
-
+EthernetReset reset(8080);
 EthernetServer server(80);
-
 
 void setup()
 {
-// Open serial communications and wait for port to open:
+	// Open serial communications and wait for port to open:
+	// This is for debugging. you can safely omit this line.
 	Serial.begin(9600);
-	//while(!Serial) {
-	//	; // wait for serial port to connect. Needed for Leonardo only
-	//}
-
 	/* For now the Arduino EthShield and the server are being configured using the
 	 * settings already stored in the EEPROM and are the same with the ones for Ariadne bootloader.
 	 * This means that you *MUST* have updated the network settings on your Arduino with the
@@ -65,9 +51,6 @@ void setup()
 	 * starting the web server for resetting. This is why you should always start it before any other
 	 * server you might want to have */
 	reset.begin();
-	server.begin();
-	Serial.print("server is at ");
-	Serial.println(Ethernet.localIP());
 }
 
 
@@ -78,55 +61,5 @@ void loop()
 	 * reprogram requests */
 	reset.check();
 
-	// listen for incoming clients
-	EthernetClient client = server.available();
-	if(client) {
-		Serial.println("new client");
-		// an http request ends with a blank line
-		boolean currentLineIsBlank = true;
-		while(client.connected()) {
-			if(client.available()) {
-				char c = client.read();
-				Serial.write(c);
-				// if you've gotten to the end of the line (received a newline
-				// character) and the line is blank, the http request has ended,
-				// so you can send a reply
-				if(c == '\n' && currentLineIsBlank) {
-					// send a standard http response header
-					client.println("HTTP/1.1 200 OK");
-					client.println("Content-Type: text/html");
-					client.println("Connnection: close");
-					client.println();
-					client.println("<!DOCTYPE HTML>");
-					client.println("<html>");
-					// add a meta refresh tag, so the browser pulls again every 5 seconds:
-					client.println("<meta http-equiv=\"refresh\" content=\"5\">");
-					// output the value of each analog input pin
-					for(int analogChannel = 0; analogChannel < 6; analogChannel++) {
-						int sensorReading = analogRead(analogChannel);
-						client.print("analog input ");
-						client.print(analogChannel);
-						client.print(" is ");
-						client.print(sensorReading);
-						client.println("<br />");
-					}
-					client.println("</html>");
-					break;
-				}
-				if(c == '\n') {
-					// you're starting a new line
-					currentLineIsBlank = true;
-				} else if(c != '\r') {
-					// you've gotten a character on the current line
-					currentLineIsBlank = false;
-				}
-			}
-		}
-		// give the web browser time to receive the data
-		delay(10);
-		// close the connection:
-		client.stop();
-		Serial.println("client disonnected");
-	}
 }
 
