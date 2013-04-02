@@ -9,8 +9,8 @@
 
 #include <avr/eeprom.h>
 #include <util/delay.h>
+#include <avr/boot.h>
 
-#include "boot.h"
 #include "util.h"
 #include "net.h"
 #include "tftp.h"

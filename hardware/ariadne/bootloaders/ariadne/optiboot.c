@@ -2,7 +2,7 @@
  * Author: .
  * Copyright: Stelios Tsampas based on the optiboot bootloader
  * License: GPL http://www.gnu.org/licenses/gpl-2.0.html
- * Project: tftpboot
+ * Project: Ariadne bootloader
  * Function: optiboot flasher
  * Version: 0.2 support for USB flashing
  */
@@ -10,10 +10,8 @@
 #include <inttypes.h>
 #include <avr/io.h>
 #include <avr/pgmspace.h>
+#include <avr/boot.h>
 
-/* <avr/boot.h> uses sts instructions, but this version uses out instructions.
- * This saves cycles and program memory. */
-#include "boot.h"
 #include "optiboot.h"
 #include "util.h"
 #include "serial.h"
