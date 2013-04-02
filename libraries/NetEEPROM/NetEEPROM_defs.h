@@ -40,7 +40,7 @@
 #define EEPROM_SETTINGS_SIZE 18
 #define REGISTER_BLOCK_SIZE  28
 
-/* EEPROM partitioning */
+/* EEPROM values */
 #define ARIADNE_MAJVER 0
 #define ARIADNE_MINVER 4
 

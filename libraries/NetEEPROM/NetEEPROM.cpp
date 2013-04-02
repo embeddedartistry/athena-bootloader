@@ -267,7 +267,7 @@ String NetEEPROMClass::readPass(void)
 
 		password = passwd;
 
-	} else password = "";
+	} else password = "ariadne";
 
 	return password;
 }
@@ -288,24 +288,21 @@ void NetEEPROMClass::printPass(HardwareSerial* serial)
  */
 void NetEEPROMClass::print(HardwareSerial* serial)
 {
-	if(netSigIsSet())
-		printNet(serial);
-	if(portSigIsSet())
-		printPort(serial);
-	if(passSigIsSet())
-		printPass(serial);
+	if(netSigIsSet()) printNet(serial);
+	if(portSigIsSet()) printPort(serial);
+	if(passSigIsSet()) printPass(serial);
 }
 
 void NetEEPROMClass::printAll(HardwareSerial* serial)
 {
 	printNet(serial);
-	if(!netSigIsSet()) serial->println("Using default network settings");
+	if(!netSigIsSet()) serial->println("(Defaults)");
 
 	printPort(serial);
-	if(!portSigIsSet()) serial->println("Using default tftp data transfer port");
+	if(!portSigIsSet()) serial->println("(Default)");
 
 	printPass(serial);
-	if(!passSigIsSet()) serial->println("No password for Reset Server has been set");
+	if(!passSigIsSet()) serial->println("(No password)");
 }
 
 NetEEPROMClass NetEEPROM;

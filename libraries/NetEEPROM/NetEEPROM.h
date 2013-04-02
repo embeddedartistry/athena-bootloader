@@ -20,16 +20,18 @@
 #ifndef NetEEPROM_h
 #define NetEEPROM_h
 
+#include <avr/pgmspace.h>
 #include <Arduino.h>
 #include <HardwareSerial.h>
 #include <NewEEPROM.h>
 #include <IPAddress.h>
 
-#define DEBUG
+#define pgm_uchar(name)   static const unsigned char name[] PROGMEM
+
 #ifdef DEBUG
-#define DBG(c) c
+	#define DBG(c) c
 #else
-#define DBG(c)
+	#define DBG(c)
 #endif
 
 class NetEEPROMClass : NewEEPROMClass {
