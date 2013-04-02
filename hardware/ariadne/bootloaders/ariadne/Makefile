@@ -35,7 +35,8 @@ PROGRAM    = ariadne
 
 # enter the parameters for the avrdude isp tool
 # for now they default to the arduinoISP on linux
-ISPTOOL	   = usbtiny
+ISPTOOL    = avrispmkii
+#ISPTOOL   = usbtiny
 ISPPORT	   = usb
 ISPSPEED   = -b19200
 
@@ -111,7 +112,7 @@ STK500-1 = $(STK500) -e -d$(MCU_TARGET) -pf -vf -if$(PROGRAM)_$(TARGET).hex \
 	   -lFF -LFF -f$(HFUSE)$(LFUSE) -EF8 -ms -q -cUSB -I200kHz -s -wt
 STK500-2 = $(STK500) -d$(MCU_TARGET) -ms -q -lCF -LCF -cUSB -I200kHz -s -wt
 
-OBJ      = main.o net.o tftp.o validate.o debug.o watchdog.o optiboot.o serial.o util.o announce.o
+OBJ      = main.o net.o tftp.o validate.o debug.o watchdog.o serial.o util.o announce.o optiboot.o
 OPTIMIZE = -Os -fno-inline-small-functions -fno-split-wide-types -mshort-calls -mno-interrupts
 
 DEFS     =
@@ -151,23 +152,23 @@ debug328_isp: EFUSE = 05
 debug328_isp: isp
 
 # Debug build for Arduino Mega2560
-debug2560: TARGET = debug2560
-debug2560: MCU_TARGET = atmega2560
-debug2560: CFLAGS += '-D_DEBUG' '-D_DEBUG_TFTP' '-DBAUD_RATE=115200'
-debug2560: AVR_FREQ = 16000000L
-debug2560: LDSECTIONS  = -Wl,--section-start=.text=0x1f000
-debug2560: $(PROGRAM)_debug2560.hex
-debug2560: $(PROGRAM)_debug2560.lst
-debug2560_isp: debug2560
-debug2560_isp: TARGET = debug2560
-debug2560_isp: MCU_TARGET = atmega2560
-# Low power xtal (16MHz) 16KCK/14CK+65ms
-debug2560_isp: LFUSE = FF
-# 4069 byte boot
-debug2560_isp: HFUSE = D0
-# 2.7V brownout
-debug2560_isp: EFUSE = FD
-debug2560_isp: isp
+# debug2560: TARGET = debug2560
+# debug2560: MCU_TARGET = atmega2560
+# debug2560: CFLAGS += '-D_DEBUG' '-D_DEBUG_TFTP' '-DBAUD_RATE=115200'
+# debug2560: AVR_FREQ = 16000000L
+# debug2560: LDSECTIONS  = -Wl,--section-start=.text=0x1f000
+# debug2560: $(PROGRAM)_debug2560.hex
+# debug2560: $(PROGRAM)_debug2560.lst
+# debug2560_isp: debug2560
+# debug2560_isp: TARGET = debug2560
+# debug2560_isp: MCU_TARGET = atmega2560
+# # Low power xtal (16MHz) 16KCK/14CK+65ms
+# debug2560_isp: LFUSE = FF
+# # 4069 byte boot
+# debug2560_isp: HFUSE = D0
+# # 2.7V brownout
+# debug2560_isp: EFUSE = FD
+# debug2560_isp: isp
 
 #
 #
@@ -304,43 +305,43 @@ atmega328_ethernet_isp: isp
 #
 #
 # Mega has a minimum boot size of 1024 bytes
-mega1280: TARGET = atmega1280
-mega1280: MCU_TARGET = atmega1280
-mega1280: CFLAGS += '-DBAUD_RATE=115200'
-mega1280: AVR_FREQ = 16000000L
-mega1280: LDSECTIONS  = -Wl,--section-start=.text=0x1f000
-mega1280: $(PROGRAM)_atmega1280.hex
-mega1280: $(PROGRAM)_atmega1280.lst
-mega1280_isp: mega1280
-mega1280_isp: TARGET = atmega1280
-mega1280_isp: MCU_TARGET = atmega1280
-# Low power xtal (16MHz) 16KCK/14CK+65ms
-mega1280_isp: LFUSE = FF
-# 4069 byte boot
-mega1280_isp: HFUSE = DA
-# 2.7V brownout
-mega1280_isp: EFUSE = F5
-mega1280_isp: isp
+# mega1280: TARGET = atmega1280
+# mega1280: MCU_TARGET = atmega1280
+# mega1280: CFLAGS += '-DBAUD_RATE=115200'
+# mega1280: AVR_FREQ = 16000000L
+# mega1280: LDSECTIONS  = -Wl,--section-start=.text=0x1f000
+# mega1280: $(PROGRAM)_atmega1280.hex
+# mega1280: $(PROGRAM)_atmega1280.lst
+# mega1280_isp: mega1280
+# mega1280_isp: TARGET = atmega1280
+# mega1280_isp: MCU_TARGET = atmega1280
+# # Low power xtal (16MHz) 16KCK/14CK+65ms
+# mega1280_isp: LFUSE = FF
+# # 4069 byte boot
+# mega1280_isp: HFUSE = DA
+# # 2.7V brownout
+# mega1280_isp: EFUSE = F5
+# mega1280_isp: isp
 #
 #
 # Mega has a minimum boot size of 1024 bytes
-mega2560: TARGET = atmega2560
-mega2560: MCU_TARGET = atmega2560
-mega2560: CFLAGS += '-DBAUD_RATE=115200'
-mega2560: AVR_FREQ = 16000000L
-mega2560: LDSECTIONS  = -Wl,--section-start=.text=0x3e000
-mega2560: $(PROGRAM)_atmega2560.hex
-mega2560: $(PROGRAM)_atmega2560.lst
-mega2560_isp: mega2560
-mega2560_isp: TARGET = atmega2560
-mega2560_isp: MCU_TARGET = atmega2560
-# Low power xtal (16MHz) 16KCK/14CK+65ms
-mega2560_isp: LFUSE = FF
-# 4069 byte boot
-mega2560_isp: HFUSE = D8
-# 2.7V brownout
-mega2560_isp: EFUSE = FD
-mega2560_isp: isp
+# mega2560: TARGET = atmega2560
+# mega2560: MCU_TARGET = atmega2560
+# mega2560: CFLAGS += '-DBAUD_RATE=115200'
+# mega2560: AVR_FREQ = 16000000L
+# mega2560: LDSECTIONS  = -Wl,--section-start=.text=0x3e000
+# mega2560: $(PROGRAM)_atmega2560.hex
+# mega2560: $(PROGRAM)_atmega2560.lst
+# mega2560_isp: mega2560
+# mega2560_isp: TARGET = atmega2560
+# mega2560_isp: MCU_TARGET = atmega2560
+# # Low power xtal (16MHz) 16KCK/14CK+65ms
+# mega2560_isp: LFUSE = FF
+# # 4069 byte boot
+# mega2560_isp: HFUSE = D8
+# # 2.7V brownout
+# mega2560_isp: EFUSE = FD
+# mega2560_isp: isp
 #
 #
 # # ATmega8
