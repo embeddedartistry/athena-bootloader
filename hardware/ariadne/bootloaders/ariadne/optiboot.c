@@ -16,7 +16,7 @@
 #include "util.h"
 #include "serial.h"
 #include "watchdog.h"
-#include "stk500.h"
+#include "optiboot_stk500.h"
 #include "neteeprom.h"
 #include "debug.h"
 
