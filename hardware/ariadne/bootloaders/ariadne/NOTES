@@ -1,0 +1,7 @@
+__THIS FILE IS A COMPILATION OF NOTES THAT MIGHT PROVE USEFUL IN THE FUTURE__
+
+
+* NOTE: The tablejump instructions use the LPM assembler instruction for access to jump tables. Always use -fno-jump-tables switch, if compiling a bootloader for devices with more than 64 KB of code memory. 
+  (http://www.nongnu.org/avr-libc/user-manual/using_tools.html)
+
+
