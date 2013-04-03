@@ -21,7 +21,8 @@
 #define NRWWSTART (0x1800)
 #endif
 
-/* This define cause the bootloader to hang during flashing
+/* This kind of define'd pointer to memory cause
+ * the bootloader to hang during flashing
  * so it has been replaced with an uint8_t array of size 256
  * inside the programming phase */
 //#define buff    ((uint8_t*)(RAMSTART))
