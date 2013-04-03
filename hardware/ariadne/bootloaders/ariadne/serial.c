@@ -13,7 +13,6 @@
 
 #include "serial.h"
 #include "watchdog.h"
-#include "stk500.h"
 #include "pin_defs.h"
 
 
