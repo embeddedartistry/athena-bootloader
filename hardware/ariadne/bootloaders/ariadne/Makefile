@@ -113,7 +113,7 @@ STK500-1 = $(STK500) -e -d$(MCU_TARGET) -pf -vf -if$(PROGRAM)_$(TARGET).hex \
 STK500-2 = $(STK500) -d$(MCU_TARGET) -ms -q -lCF -LCF -cUSB -I200kHz -s -wt
 
 OBJ      = main.o net.o tftp.o validate.o debug.o watchdog.o serial.o util.o announce.o optiboot.o
-OPTIMIZE = -Os -fno-inline-small-functions -fno-split-wide-types -mshort-calls -mno-interrupts
+OPTIMIZE = -Os -fno-inline-small-functions -fno-split-wide-types -mno-interrupts
 
 DEFS     =
 LIBS     =
