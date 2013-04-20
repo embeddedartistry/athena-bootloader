@@ -102,7 +102,7 @@ void netWriteWord(uint16_t address, uint16_t value)
 	netWriteReg(address, value & 0xff);
 }
 
-void netInit()
+void netInit(void)
 {
 	uint8_t i;
 

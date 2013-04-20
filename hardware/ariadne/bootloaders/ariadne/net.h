@@ -15,6 +15,6 @@ void netWriteReg(uint16_t address, uint8_t value);
 uint8_t netReadReg(uint16_t address);
 uint16_t netReadWord(uint16_t address);
 void netWriteWord(uint16_t address, uint16_t value);
-void netInit();
+void netInit(void);
 
 #endif
