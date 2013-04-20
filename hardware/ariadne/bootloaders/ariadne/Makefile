@@ -327,23 +327,23 @@ atmega328_ethernet_isp: isp
 #
 #
 # Mega has a minimum boot size of 1024 bytes
-mega2560: TARGET = atmega2560
-mega2560: MCU_TARGET = atmega2560
-mega2560: CFLAGS += '-DBAUD_RATE=115200'
-mega2560: AVR_FREQ = 16000000L
-mega2560: LDSECTIONS  = -Wl,--section-start=.text=0x3e000
-mega2560: $(PROGRAM)_atmega2560.hex
-mega2560: $(PROGRAM)_atmega2560.lst
-mega2560_isp: mega2560
-mega2560_isp: TARGET = atmega2560
-mega2560_isp: MCU_TARGET = atmega2560
+atmega2560: TARGET = atmega2560
+atmega2560: MCU_TARGET = atmega2560
+atmega2560: CFLAGS += '-DBAUD_RATE=115200'
+atmega2560: AVR_FREQ = 16000000L
+atmega2560: LDSECTIONS  = -Wl,--section-start=.text=0x3e000
+atmega2560: $(PROGRAM)_atmega2560.hex
+atmega2560: $(PROGRAM)_atmega2560.lst
+atmega2560_isp: mega2560
+atmega2560_isp: TARGET = atmega2560
+atmega2560_isp: MCU_TARGET = atmega2560
 # Low power xtal (16MHz) 16KCK/14CK+65ms
-mega2560_isp: LFUSE = FF
+atmega2560_isp: LFUSE = FF
 # 4069 byte boot
-mega2560_isp: HFUSE = D8
+atmega2560_isp: HFUSE = D8
 # 2.7V brownout
-mega2560_isp: EFUSE = FD
-mega2560_isp: isp
+atmega2560_isp: EFUSE = FD
+atmega2560_isp: isp
 #
 #
 # # ATmega8
