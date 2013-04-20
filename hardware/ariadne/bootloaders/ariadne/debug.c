@@ -15,12 +15,11 @@
 #include "debug.h"
 
 
-#ifdef _VERBOSE
 void trace(char* msg)
 {
 	uint8_t c;
 	if(*msg != '\0') {
-		while((c = *msg++)) putch(c);
+		while((c = *msg++)) putCh(c);
 	}
 }
 
@@ -34,23 +33,22 @@ void tracehex(uint16_t num, uint8_t len)
 {
 	trace("0x");
 	while(len > 0) {
-		puthex(num >> (4 * (len - 1)));
+		putHex(num >> (4 * (len - 1)));
 		len--;
 	}
 }
 
 
-#ifdef _DEBUG_STEP
-void stepInit()
+void stepInit(void)
 {
 	PORTB |= _BV(PB0);
 	traceln(" Dbg: Button stepping enabled");
 }
 
 
-/* FIXME: the button is reverse, shortcircuiting when it
- * is released. Code was modified accordingly */
-uint8_t checkbutton()
+/* FIXME: the button used was reverse, shortcircuiting when it is released. Code was modified
+ * accordingly */
+uint8_t checkbutton(void)
 {
 	/* the button is pressed when BUTTON_BIT is clear */
 	if(bit_is_clear(PINB, PB0)) {
@@ -61,10 +59,8 @@ uint8_t checkbutton()
 }
 
 
-void step()
+void step(void)
 {
 	while(1) if(checkbutton()) break;
 	_delay_ms(250); // Lock input
 }
-#endif
-#endif
