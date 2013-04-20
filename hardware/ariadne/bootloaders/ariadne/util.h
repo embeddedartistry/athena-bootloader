@@ -4,12 +4,11 @@
 #define TIMEOUT 4
 
 #ifndef LED_START_FLASHES
-#define LED_START_FLASHES 0
+	#define LED_START_FLASHES 0
 #endif
 
 #define TRUE  1
 #define FALSE 0
-
 
 #define MAKESTR(a) #a
 #define MAKEVER(a, b) MAKESTR(a*256+b)
@@ -20,6 +19,16 @@
 // asm("  .section .version\n"
 //     "tftpboot_version: .word " MAKEVER(TFTPBOOT_MAJVER, TFTPBOOT_MINVER) "\n"
 //     "  .section .text\n");
+
+/*
+ * use 16bit address variable for ATmegas with <= 64K flash
+ */
+#if defined(RAMPZ)
+	typedef uint32_t address_t;
+#else
+	typedef uint16_t address_t;
+#endif
+
 
 void updateLed(void);
 void resetTick(void);

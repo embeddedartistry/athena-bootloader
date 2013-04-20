@@ -16,27 +16,27 @@
 
 #include "debug.h"
 
-uint16_t lastTimer1;
-uint16_t tick = 0;
+static uint16_t last_timer_1;
+static uint16_t tick = 0;
 
 
 void updateLed(void)
 {
-	uint16_t nextTimer1 = TCNT1;
-	if(nextTimer1 & 0x400) LED_PORT ^= _BV(LED); // Led pin high
+	uint16_t next_timer_1 = TCNT1;
+	if(next_timer_1 & 0x400) LED_PORT ^= _BV(LED); // Led pin high
 	else LED_PORT &= ~_BV(LED); // Led pin low
-	if(nextTimer1 < lastTimer1) {
+	if(next_timer_1 < last_timer_1) {
 		tick++;
 #ifdef _DEBUG_UTIL
 		traceln("Tick: ");
 		tracenum(tick);
 		traceln(" nTM: ");
-		tracenum(nextTimer1);
+		tracenum(next_timer_1);
 		traceln(" lTM: ");
-		tracenum(lastTimer1);
+		tracenum(last_timer_1);
 #endif
 	}
-	lastTimer1 = nextTimer1;
+	last_timer_1 = next_timer_1;
 }
 
 void resetTick(void)
