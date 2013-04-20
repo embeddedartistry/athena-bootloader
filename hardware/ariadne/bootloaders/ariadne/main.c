@@ -15,13 +15,23 @@
 #include "net.h"
 #include "tftp.h"
 #include "serial.h"
-#include "optiboot.h"
 #include "neteeprom.h"
 #include "watchdog.h"
-#include "debug.h"
+
+#if defined(__AVR_ATmega328__) || defined(__AVR_ATmega328P__)
+	#include "optiboot.h"
+#elif defined(__AVR_ATmega2560__)
+	#include "stk500boot.h"
+#else
+	#error "unsupported MCU"
+#endif
 
 #ifdef _ANNOUNCE
-#include "announce.h"
+	#include "announce.h"
+#endif
+
+#if _DEBUG > 0
+	#include "debug.h"
 #endif
 
 int main(void) __attribute__((naked)) __attribute__((section(".init9")));
@@ -61,12 +71,12 @@ int main(void)
 
 	//Initialize UART communication
 	serialInit();
-#ifdef _VERBOSE
-#ifdef _ARDUINO_ETHERNET
-	traceln("\r\nMain: Arduino Ethernet with tftpboot, Version 0.4");
-#else
-	traceln("\r\nMain: Arduino Uno with tftpboot, Version 0.4");
-#endif
+#if _DEBUG > 0
+	#ifdef _ARDUINO_ETHERNET
+	traceln("\r\nMain: Arduino Ethernet with ariadne, Version 0.4");
+	#else
+	traceln("\r\nMain: Arduino Uno with ariadne, Version 0.4");
+	#endif
 #endif
 
 #ifdef _DEBUG_STEP
@@ -80,7 +90,7 @@ int main(void)
 	tftpInit();
 
 	/* This code is to be used with the java-client inherited from the
-	 * Arduino project. We don't support that yet and it adds about
+	 * Arduino project. We don't support it yet and it adds about
 	 * 600 bytes to the binary. So off it goes */
 #ifdef _ANNOUNCE
 	announceInit();
@@ -99,7 +109,7 @@ int main(void)
 		// If there is no tftp flashing, poll serial
 		if(!tftpFlashing)
 			// If flashing is done exit
-			if(serialPoll() == 0) break;
+			if(serialPoll(processCommand()) == 0) break;
 
 		/* As explained above this goes out */
 #ifdef _ANNOUNCE
@@ -125,7 +135,7 @@ int main(void)
 	}
 
 	/* Exit to foreground application */
-#ifdef _VERBOSE
+#if _DEBUG > 0
 	traceln("Main: Start user app");
 #endif
 	appStart();
