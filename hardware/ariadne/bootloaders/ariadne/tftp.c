@@ -40,9 +40,10 @@ const unsigned char tftp_invalid_image_packet[] PROGMEM = "\23" "\0\5" "\0\0" "I
 uint16_t lastPacket = 0, highPacket = 0;
 
 
-void sockInit(uint16_t port)
+static void sockInit(uint16_t port)
 {
 	netWriteReg(REG_S3_CR, CR_CLOSE);
+
 	do {
 		// Write TFTP Port
 		netWriteWord(REG_S3_PORT0, port);
@@ -50,19 +51,21 @@ void sockInit(uint16_t port)
 		netWriteReg(REG_S3_MR, MR_UDP);
 		// Open Socket
 		netWriteReg(REG_S3_CR, CR_OPEN);
+
 		// Read Status
 		if(netReadReg(REG_S3_SR) != SOCK_UDP)
 			// Close Socket if it wasn't initialized correctly
-		netWriteReg(REG_S3_CR, CR_CLOSE);
+			netWriteReg(REG_S3_CR, CR_CLOSE);
+
 		// If socket correctly opened continue
 	} while(netReadReg(REG_S3_SR) != SOCK_UDP);
 }
 
 #ifdef _DEBUG_TFTP
-uint8_t processPacket(uint16_t packetSize)
+static uint8_t processPacket(uint16_t packetSize)
 {
 #else
-uint8_t processPacket()
+static uint8_t processPacket(void)
 {
 #endif
 
@@ -77,7 +80,9 @@ uint8_t processPacket()
 	traceln("Tftp: ----");
 	traceln("Tftp: Starting processing packet of size ");
 	tracenum(packetSize);
+
 	if(packetSize >= 0x800) traceln("Tftp: Overflow");
+
 	//  step();
 #endif
 
@@ -87,20 +92,28 @@ uint8_t processPacket()
 	traceln("Tftp: readPointer at position ");
 	tracenum(readPointer);
 #endif
+
 	if(readPointer == 0) readPointer += S3_RX_START;
+
 	for(count = TFTP_PACKET_MAX_SIZE; count--;) {
+
 #ifdef _DEBUGMORE_TFTP
 		if((count == TFTP_PACKET_MAX_SIZE - 1) || (count == 0)) {
 			traceln("Tftp: Reading from position ");
 			tracenum(readPointer);
 		}
 #endif
+
 		*bufPtr++ = netReadReg(readPointer++);
+
 		if(readPointer == S3_RX_END) readPointer = S3_RX_START;
 	}
+
 	netWriteWord(REG_S3_RX_RD0, readPointer);     // Write back new pointer
 	netWriteReg(REG_S3_CR, CR_RECV);
+
 	while(netReadReg(REG_S3_CR));
+
 #ifdef _DEBUGMORE_TFTP
 	traceln("Tftp: Bytes left to read ");
 	tracenum(netReadWord(REG_S3_RX_RSR0));
@@ -110,13 +123,16 @@ uint8_t processPacket()
 	// Dump packet
 	bufPtr = buffer;
 	traceln("");
+
 	for(count = TFTP_PACKET_MAX_SIZE / 2; count--;) {
 		uint16_t val = *bufPtr++;
 		val |= (*bufPtr++) << 8;
 		tracenum(val);
+
 		if((count % 8) == 0 && count != 0) traceln("");
 		else trace(" ");
 	}
+
 #endif
 
 #ifdef _DEBUG_TFTP
@@ -125,6 +141,7 @@ uint8_t processPacket()
 
 	// Set up return IP address and port
 	uint8_t i;
+
 	for(i = 0; i < 6; i++) netWriteReg(REG_S3_DIPR0 + i, buffer[i]);
 
 	// Parse packet
@@ -141,10 +158,11 @@ uint8_t processPacket()
 #endif
 
 	if((tftpOpcode == TFTP_OPCODE_DATA)
-		&& ((tftpBlock > MAX_ADDR/0x200)
-		|| (tftpBlock < highPacket)
-		|| (tftpBlock > highPacket+1))) tftpOpcode = TFTP_OPCODE_UKN;
-	if(tftpDataLen > (0x200 + TFTP_OPCODE_SIZE + TFTP_BLOCKNO_SIZE)) tftpOpcode = TFTP_OPCODE_UKN;
+		&& ((tftpBlock > MAX_ADDR / 0x200) || (tftpBlock < highPacket) || (tftpBlock > highPacket + 1)))
+		tftpOpcode = TFTP_OPCODE_UKN;
+
+	if(tftpDataLen > (0x200 + TFTP_OPCODE_SIZE + TFTP_BLOCKNO_SIZE))
+		tftpOpcode = TFTP_OPCODE_UKN;
 
 	uint8_t returnCode = ERROR_UNKNOWN;
 	uint16_t packetLength;
@@ -220,10 +238,12 @@ uint8_t processPacket()
 
 				// Round up packet length to a full flash sector size
 				while(packetLength % SPM_PAGESIZE) packetLength++;
+
 #ifdef _DEBUG_TFTP
 				traceln("Tftp: Packet length adjusted to ");
 				tracenum(packetLength);
 #endif
+
 				if(writeAddr == 0) {
 					// First sector - validate
 					if(!validImage(pageBase)) {
@@ -242,14 +262,17 @@ uint8_t processPacket()
 					uint16_t writeValue = (pageBase[offset]) | (pageBase[offset + 1] << 8);
 					boot_page_fill(writeAddr + offset, writeValue);
 #ifdef _DEBUGMORE_TFTP
+
 					if((offset == 0) || ((offset == (packetLength - 2)))) {
 						traceln("Tftp: Writing ");
 						tracenum(writeValue);
 						trace(" at offset ");
 						tracenum(writeAddr + offset);
 					}
+
 #endif
 					offset += 2;
+
 					if(offset % SPM_PAGESIZE == 0) {
 						boot_page_erase(writeAddr + offset - SPM_PAGESIZE);
 						boot_spm_busy_wait();
@@ -272,6 +295,7 @@ uint8_t processPacket()
 					eeprom_write_byte(EEPROM_IMG_STAT, EEPROM_IMG_OK_VALUE);
 				}
 			}
+
 			break;
 
 			// Acknowledgment
@@ -310,11 +334,12 @@ uint8_t processPacket()
 			break;
 
 	}
+
 	return(returnCode);
 }
 
 
-void sendResponse(uint16_t response)
+static void sendResponse(uint16_t response)
 {
 	uint8_t txBuffer[100];
 	uint8_t* txPtr = txBuffer;
@@ -322,6 +347,7 @@ void sendResponse(uint16_t response)
 	uint16_t writePointer;
 
 	writePointer = netReadWord(REG_S3_TX_WR0) + S3_TX_START;
+
 	switch(response) {
 		default:
 
@@ -345,6 +371,7 @@ void sendResponse(uint16_t response)
 
 		case ACK:
 			if(lastPacket > highPacket) highPacket = lastPacket;
+
 #ifdef _DEBUG_TFTP
 			traceln("Tftp: Sent ACK");
 			/* no break */
@@ -353,6 +380,7 @@ void sendResponse(uint16_t response)
 #ifdef _DEBUG_TFTP
 			if(response == FINAL_ACK) traceln("Tftp: Sent Final ACK ");
 #endif
+			
 			packetLength = 4;
 			*txPtr++ = TFTP_OPCODE_ACK >> 8;
 			*txPtr++ = TFTP_OPCODE_ACK & 0xff;
@@ -363,13 +391,18 @@ void sendResponse(uint16_t response)
 	}
 
 	txPtr = txBuffer;
+
 	while(packetLength--) {
 		netWriteReg(writePointer++, *txPtr++);
+
 		if(writePointer == S3_TX_END) writePointer = S3_TX_START;
 	}
+
 	netWriteWord(REG_S3_TX_WR0, writePointer - S3_TX_START);
 	netWriteReg(REG_S3_CR, CR_SEND);
+
 	while(netReadReg(REG_S3_CR));
+
 #ifdef _VERBOSE
 	traceln("Tftp: Response sent");
 #endif
@@ -379,7 +412,7 @@ void sendResponse(uint16_t response)
 /**
  * Initializes the network controller
  */
-void tftpInit()
+void tftpInit(void)
 {
 	// Open socket
 	sockInit(TFTP_PORT);
@@ -390,6 +423,7 @@ void tftpInit()
 	else
 		tftpTransferPort = TFTP_STATIC_PORT;
 #endif
+
 #ifdef _VERBOSE
 	traceln("Tftp: TFTP server init done");
 #ifndef _TFTP_RANDOM_PORT
@@ -403,7 +437,7 @@ void tftpInit()
 /**
  * Looks for a connection
  */
-uint8_t tftpPoll()
+uint8_t tftpPoll(void)
 {
 	uint8_t response = ACK;
 	// Get the size of the recieved data
@@ -438,11 +472,13 @@ uint8_t tftpPoll()
 		// Send the response
 		sendResponse(response);
 	}
+
 	if(response == FINAL_ACK) {
 		netWriteReg(REG_S3_CR, CR_CLOSE);
 		// Complete
 		return(0);
 	}
+
 	// Tftp continues
 	return(1);
 }
