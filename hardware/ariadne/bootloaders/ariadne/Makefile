@@ -334,7 +334,7 @@ atmega2560: AVR_FREQ = 16000000L
 atmega2560: LDSECTIONS  = -Wl,--section-start=.text=0x3e000
 atmega2560: $(PROGRAM)_atmega2560.hex
 atmega2560: $(PROGRAM)_atmega2560.lst
-atmega2560_isp: mega2560
+atmega2560_isp: atmega2560
 atmega2560_isp: TARGET = atmega2560
 atmega2560_isp: MCU_TARGET = atmega2560
 # Low power xtal (16MHz) 16KCK/14CK+65ms
