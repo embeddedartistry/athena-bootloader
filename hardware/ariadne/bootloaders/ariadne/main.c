@@ -67,6 +67,7 @@ int main(void)
 
 	/* Write version information in the EEPROM */
 	if(eeprom_read_byte(EEPROM_MAJVER) != ARIADNE_MAJVER) eeprom_write_byte(EEPROM_MAJVER, ARIADNE_MAJVER);
+
 	if(eeprom_read_byte(EEPROM_MINVER) != ARIADNE_MINVER) eeprom_write_byte(EEPROM_MINVER, ARIADNE_MINVER);
 
 	//Initialize UART communication
@@ -104,17 +105,23 @@ int main(void)
 	for(;;) {
 		// If there is no serial flashing under way, poll tftp
 		if(!serialFlashing)
+
 			// If tftp recieved a FINAL_ACK, break
-			if(tftpPoll() == 0) break;
+			if(tftpPoll() == 0)
+				break;
+
 		// If there is no tftp flashing, poll serial
 		if(!tftpFlashing)
+
 			// If flashing is done exit
-			if(serialPoll(processCommand()) == 0) break;
+			if(serialPoll(processCommand()) == 0)
+				break;
 
 		/* As explained above this goes out */
 #ifdef _ANNOUNCE
 		announcePoll();
 #endif
+
 		if(timedOut()) {
 			if(eeprom_read_byte(EEPROM_IMG_STAT) == EEPROM_IMG_OK_VALUE) break;
 
@@ -130,6 +137,7 @@ int main(void)
 				tftpFlashing = FALSE;
 			}
 		}
+
 		/* Blink the notification led */
 		updateLed();
 	}

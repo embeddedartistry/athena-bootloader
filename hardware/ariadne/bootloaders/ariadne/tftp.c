@@ -71,7 +71,7 @@ static uint8_t processPacket(void)
 
 	uint8_t buffer[TFTP_PACKET_MAX_SIZE];
 	uint16_t readPointer;
-	uint32_t writeAddr;
+	address_t writeAddr;
 	// Transfer entire packet to RAM
 	uint8_t* bufPtr = buffer;
 	uint16_t count;
