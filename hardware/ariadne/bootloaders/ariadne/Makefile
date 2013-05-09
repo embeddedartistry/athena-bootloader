@@ -136,7 +136,7 @@ SIZE    = $(GCCROOT)avr-size
 # Use it only if you have already seen the source
 debug328: TARGET = debug328
 debug328: MCU_TARGET = atmega328p
-debug328: CFLAGS += '-DDEBUG=1' '-DBAUD_RATE=115200'
+debug328: CFLAGS += '-DDEBUG=1' '-DDEBUG_TFTP' '-DDEBUG_NET' '-DBAUD_RATE=115200'
 debug328: AVR_FREQ = 16000000L
 debug328: LDSECTIONS = -Wl,--section-start=.text=0x7000 #-Wl,--section-start=.version=0x7ffe
 debug328: $(PROGRAM)_debug328.hex

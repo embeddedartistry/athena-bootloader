@@ -18,8 +18,8 @@
 #include "debug.h"
 #include "debug_net.h"
 
-#define SS_LOW() PORTB &= ~_BV(SS)
-#define SS_HIGH() PORTB |= _BV(SS)
+#define SS_LOW()	PORTB &= ~_BV(SS)
+#define SS_HIGH()	PORTB |= _BV(SS)
 
 uint8_t registerBuffer[REGISTER_BLOCK_SIZE] = {
 	0x80,         // MR Mode - reset device
