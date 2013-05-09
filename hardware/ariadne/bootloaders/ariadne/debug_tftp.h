@@ -40,6 +40,7 @@ const unsigned char mTftpDebug_SFACK[]	PROGMEM =	"Sent Final ACK";
 const unsigned char mTftpDebug_RESP[]	PROGMEM =	"Response sent";
 const unsigned char mTftpDebug_INIT[]	PROGMEM =	"TFTP server init done";
 const unsigned char mTftpDebug_PORT[]	PROGMEM =	"\t   Port: ";
+const unsigned char mTftpDebug_SOCK[]	PROGMEM =	"Init socket to port ";
 	#if (DEBUG > 1)
 		#undef DBG_TFTP_EX
 		#define DBG_TFTP_EX(block) block
