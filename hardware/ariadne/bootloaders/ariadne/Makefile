@@ -136,7 +136,7 @@ SIZE    = $(GCCROOT)avr-size
 # Use it only if you have already seen the source
 debug328: TARGET = debug328
 debug328: MCU_TARGET = atmega328p
-debug328: CFLAGS += '-D_DEBUG' '-D_DEBUG_TFTP' '-D_ARDUINO_ETHERNET' '-DBAUD_RATE=115200'
+debug328: CFLAGS += '-DDEBUG=1' '-DBAUD_RATE=115200'
 debug328: AVR_FREQ = 16000000L
 debug328: LDSECTIONS = -Wl,--section-start=.text=0x7000 #-Wl,--section-start=.version=0x7ffe
 debug328: $(PROGRAM)_debug328.hex
@@ -155,9 +155,9 @@ debug328_isp: isp
 # Debug build for Arduino Mega2560
 debug2560: TARGET = debug2560
 debug2560: MCU_TARGET = atmega2560
-debug2560: CFLAGS += '-D_DEBUG' '-D_DEBUG_TFTP' '-DBAUD_RATE=115200'
+debug2560: CFLAGS += '-DDEBUG=1' '-DDEBUG_ALL' '-DBAUD_RATE=115200'
 debug2560: AVR_FREQ = 16000000L
-debug2560: LDSECTIONS  = -Wl,--section-start=.text=0x3f000
+debug2560: LDSECTIONS  = -Wl,--section-start=.text=0x3e000
 debug2560: $(PROGRAM)_debug2560.hex
 debug2560: $(PROGRAM)_debug2560.lst
 debug2560_isp: debug2560
@@ -269,7 +269,7 @@ atmega328_isp: isp
 
 atmega328_ethernet: TARGET = atmega328_ethernet
 atmega328_ethernet: MCU_TARGET = atmega328p
-atmega328_ethernet: CFLAGS += '-D_ARDUINO_ETHERNET' '-DBAUD_RATE=115200'
+atmega328_ethernet: CFLAGS += '-DARDUINO_ETHERNET' '-DBAUD_RATE=115200'
 atmega328_ethernet: AVR_FREQ = 16000000L
 atmega328_ethernet: LDSECTIONS  = -Wl,--section-start=.text=0x7000 #-Wl,--section-start=.version=0x7ffe
 atmega328_ethernet: $(PROGRAM)_atmega328_ethernet.hex
