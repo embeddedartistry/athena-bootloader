@@ -29,18 +29,18 @@ static uint8_t  length;
 
 static void verifySpace(void)
 {
-	if(getCh() != CRC_EOP) {
+	if(getch() != CRC_EOP) {
 		watchdogConfig(WATCHDOG_16MS);	// shorten WD timeout
 		while(1)						// and busy-loop so that WD causes
 			;							// a reset and app start.
 	}
-	putCh(STK_INSYNC);
+	putch(STK_INSYNC);
 }
 
 
 static void getNch(uint8_t count)
 {
-	do getCh();
+	do getch();
 	while(--count);
 	verifySpace();
 }
@@ -50,24 +50,24 @@ uint8_t processOptiboot(void)
 {
 	uint8_t ch;
 
-	ch = getCh();
+	ch = getch();
 
 	if(ch == STK_GET_PARAMETER) {
-		unsigned char which = getCh();
+		unsigned char which = getch();
 		verifySpace();
 		if(which == 0x82) {
 			/*
 			 * Send tftpboot version as "minor SW version"
 			 */
-			putCh(ARIADNE_MINVER);
+			putch(ARIADNE_MINVER);
 		} else if(which == 0x81) {
-			putCh(ARIADNE_MAJVER);
+			putch(ARIADNE_MAJVER);
 		} else {
 			/*
 			 * GET PARAMETER returns a generic 0x03 reply for
 			 * other parameters - enough to keep Avrdude happy
 			 */
-			putCh(0x03);
+			putch(0x03);
 		}
 	} else if(ch == STK_SET_DEVICE) {
 		// SET DEVICE is ignored
@@ -78,8 +78,8 @@ uint8_t processOptiboot(void)
 	} else if(ch == STK_LOAD_ADDRESS) {
 		// LOAD ADDRESS
 		uint16_t newAddress;
-		newAddress = getCh();
-		newAddress = (newAddress & 0xff) | (getCh() << 8);
+		newAddress = getch();
+		newAddress = (newAddress & 0xff) | (getch() << 8);
 
 #ifdef RAMPZ
 		// Transfer top bit to RAMPZ
@@ -92,7 +92,7 @@ uint8_t processOptiboot(void)
 	} else if(ch == STK_UNIVERSAL) {
 		// UNIVERSAL command is ignored
 		getNch(4);
-		putCh(0x00);
+		putch(0x00);
 	}
 	/* Write memory, length is big endian and is in bytes */
 	else if(ch == STK_PROG_PAGE) {
@@ -103,16 +103,16 @@ uint8_t processOptiboot(void)
 		uint8_t* bufPtr;
 		uint16_t addrPtr;
 
-		getCh();			/* getlen() */
-		length = getCh();
-		getCh();
+		getch();			/* getlen() */
+		length = getch();
+		getch();
 
 		// If we are in RWW section, immediately start page erase
 		if(address < NRWWSTART) boot_page_erase((uint16_t)(void*)address);
 
 		// While that is going on, read in page contents
 		bufPtr = buff;
-		do* bufPtr++ = getCh();
+		do* bufPtr++ = getch();
 		while(--length);
 
 		// If we are in NRWW section, page erase has to be delayed until now.
@@ -150,23 +150,23 @@ uint8_t processOptiboot(void)
 	/* Read memory block mode, length is big endian.  */
 	else if(ch == STK_READ_PAGE) {
 		// READ PAGE - we only read flash
-		getCh();			/* getlen() */
-		length = getCh();
-		getCh();
+		getch();			/* getlen() */
+		length = getch();
+		getch();
 
 		verifySpace();
 
 #if defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560)
-		//      do putCh(pgm_read_byte_near(address++));
+		//      do putch(pgm_read_byte_near(address++));
 		//      while (--length);
 		do {
 			uint8_t result;
 			__asm__("elpm %0,Z\n":"=r"(result):"z"(address));
-			putCh(result);
+			putch(result);
 			address++;
 		} while(--length);
 #else
-		do putCh(pgm_read_byte_near(address++));
+		do putch(pgm_read_byte_near(address++));
 		while(--length);
 #endif
 	}
@@ -174,20 +174,20 @@ uint8_t processOptiboot(void)
 	else if(ch == STK_READ_SIGN) {
 		// READ SIGN - return what Avrdude wants to hear
 		verifySpace();
-		putCh(SIGNATURE_0);
-		putCh(SIGNATURE_1);
-		putCh(SIGNATURE_2);
+		putch(SIGNATURE_0);
+		putch(SIGNATURE_1);
+		putch(SIGNATURE_2);
 	} else if(ch == STK_LEAVE_PROGMODE) {
 		// Adaboot no-wait mod
 		//watchdogConfig(WATCHDOG_16MS);
 		verifySpace();
 		eeprom_write_byte(EEPROM_IMG_STAT, EEPROM_IMG_OK_VALUE);
-		putCh(STK_OK);
+		putch(STK_OK);
 		return(0);
 	} else {
 		// This covers the response to commands like STK_ENTER_PROGMODE
 		verifySpace();
 	}
-	putCh(STK_OK);
+	putch(STK_OK);
 	return(1);
 }

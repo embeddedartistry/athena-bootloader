@@ -17,7 +17,8 @@
 #include "serial.h"
 #include "neteeprom.h"
 #include "watchdog.h"
-
+#include "debug.h"
+#include "debug_main.h"
 #if defined(__AVR_ATmega328__) || defined(__AVR_ATmega328P__)
 	#include "optiboot.h"
 #elif defined(__AVR_ATmega2560__)
@@ -25,14 +26,10 @@
 #else
 	#error "unsupported MCU"
 #endif
-
-#ifdef _ANNOUNCE
+#ifdef ANNOUNCE
 	#include "announce.h"
 #endif
 
-#if _DEBUG > 0
-	#include "debug.h"
-#endif
 
 int main(void) __attribute__((naked)) __attribute__((section(".init9")));
 void (*appStart)(void) __attribute__((naked)) = 0x0000;
@@ -66,34 +63,33 @@ int main(void)
 	TCCR1B = _BV(CS12) | _BV(CS10); // Same thing as TCCR1B = 0x05;
 
 	/* Write version information in the EEPROM */
-	if(eeprom_read_byte(EEPROM_MAJVER) != ARIADNE_MAJVER) eeprom_write_byte(EEPROM_MAJVER, ARIADNE_MAJVER);
-
-	if(eeprom_read_byte(EEPROM_MINVER) != ARIADNE_MINVER) eeprom_write_byte(EEPROM_MINVER, ARIADNE_MINVER);
+	if(eeprom_read_byte(EEPROM_MAJVER) != ARIADNE_MAJVER)
+		eeprom_write_byte(EEPROM_MAJVER, ARIADNE_MAJVER);
+	if(eeprom_read_byte(EEPROM_MINVER) != ARIADNE_MINVER)
+		eeprom_write_byte(EEPROM_MINVER, ARIADNE_MINVER);
 
 	//Initialize UART communication
 	serialInit();
-#if _DEBUG > 0
-	#ifdef _ARDUINO_ETHERNET
-	traceln("\r\nMain: Arduino Ethernet with ariadne, Version 0.4");
-	#else
-	traceln("\r\nMain: Arduino Uno with ariadne, Version 0.4");
-	#endif
-#endif
+	DBG_MAIN(tracePGMlnMain(mMainDebug_TITLE);)
 
-#ifdef _DEBUG_STEP
-	stepInit();
-#endif
+	DBG_BTN(
+		DBG_MAIN(tracePGMlnMain(mMainDebug_BTN);)
+		buttonInit();
+	)
 
 	// Initialize W5100 chip
+	DBG_MAIN(tracePGMlnMain(mMainDebug_NET);)
 	netInit();
 
 	// Initialize the UDP socket for tftp
+	DBG_MAIN(tracePGMlnMain(mMainDebug_TFTP);)
 	tftpInit();
 
 	/* This code is to be used with the java-client inherited from the
-	 * Arduino project. We don't support it yet and it adds about
+	 * Arduino project. We don't support it and it adds about
 	 * 600 bytes to the binary. So off it goes */
-#ifdef _ANNOUNCE
+#ifdef ANNOUNCE
+	DBG_MAIN(tracePGMlnMain(mMainDebug_ANN);)
 	announceInit();
 #endif
 
@@ -118,7 +114,7 @@ int main(void)
 				break;
 
 		/* As explained above this goes out */
-#ifdef _ANNOUNCE
+#ifdef ANNOUNCE
 		announcePoll();
 #endif
 
@@ -142,10 +138,8 @@ int main(void)
 		updateLed();
 	}
 
-	/* Exit to foreground application */
-#if _DEBUG > 0
-	traceln("Main: Start user app");
-#endif
+	/* Exit to user application */
+	DBG_MAIN(tracePGMlnMain(mMainDebug_EXIT);)
 	appStart();
 	return(0); /* never reached */
 }

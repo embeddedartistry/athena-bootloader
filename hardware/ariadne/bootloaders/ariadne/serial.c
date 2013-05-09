@@ -38,24 +38,24 @@ void serialInit(void)
 }
 
 
-void putCh(uint8_t c)
+void putch(uint8_t c)
 {
 	while(!(UART_STATUS_REG & _BV(UART_DATA_REG_EMPTY)));
 	UART_DATA_REG = c;
 }
 
 
-void putHex(uint8_t c)
+void puthex(uint8_t c)
 {
 	c &= 0xf;
 	if(c > 9) c += 7;
 	//while(!(UART_STATUS_REG & _BV(UART_DATA_REG_EMPTY)));
 	//UART_DATA_REG = c + '0';
-	putCh(c + '0');
+	putch(c + '0');
 }
 
 
-uint8_t getCh(void)
+uint8_t getch(void)
 {
 	uint8_t ch;
 

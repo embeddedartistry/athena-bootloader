@@ -57,7 +57,7 @@
  * tftp is currently active */
 uint8_t tftpFlashing;
 
-#ifndef _TFTP_RANDOM_PORT
+#ifndef TFTP_RANDOM_PORT
 uint16_t tftpTransferPort;
 #endif
 

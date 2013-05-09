@@ -13,8 +13,8 @@
 
 #include "util.h"
 #include "pin_defs.h"
-
 #include "debug.h"
+#include "debug_util.h"
 
 static uint16_t last_timer_1;
 static uint16_t tick = 0;
@@ -27,14 +27,14 @@ void updateLed(void)
 	else LED_PORT &= ~_BV(LED); // Led pin low
 	if(next_timer_1 < last_timer_1) {
 		tick++;
-#ifdef _DEBUG_UTIL
-		traceln("Tick: ");
-		tracenum(tick);
-		traceln(" nTM: ");
-		tracenum(next_timer_1);
-		traceln(" lTM: ");
-		tracenum(last_timer_1);
-#endif
+		DBG_UTIL(
+			tracePGMlnUtil(mUtilDebug_TICK);
+			tracenum(tick);
+			tracePGMlnUtil(mUtilDebug_NEXT);
+			tracenum(next_timer_1);
+			tracePGMlnUtil(mUtilDebug_LAST);
+			tracenum(last_timer_1);
+		)
 	}
 	last_timer_1 = next_timer_1;
 }

@@ -20,6 +20,7 @@
 #include "watchdog.h"
 #include "serial.h"
 #include "debug.h"
+#include "debug_tftp.h"
 
 /** Opcode?: tftp operation is unsupported. The bootloader only supports 'put' */
 #define TFTP_OPCODE_ERROR_LEN 12
@@ -61,13 +62,13 @@ static void sockInit(uint16_t port)
 	} while(netReadReg(REG_S3_SR) != SOCK_UDP);
 }
 
-#ifdef _DEBUG_TFTP
+
+#ifdef DEBUG_TFTP
 static uint8_t processPacket(uint16_t packetSize)
-{
 #else
 static uint8_t processPacket(void)
-{
 #endif
+{
 
 	uint8_t buffer[TFTP_PACKET_MAX_SIZE];
 	uint16_t readPointer;
@@ -76,33 +77,33 @@ static uint8_t processPacket(void)
 	uint8_t* bufPtr = buffer;
 	uint16_t count;
 
-#ifdef _DEBUG_TFTP
-	traceln("Tftp: ----");
-	traceln("Tftp: Starting processing packet of size ");
-	tracenum(packetSize);
+	DBG_TFTP(
+		tracePGMlnTftp(mTftpDebug_START);
+		tracenum(packetSize);
 
-	if(packetSize >= 0x800) traceln("Tftp: Overflow");
+		if(packetSize >= 0x800) tracePGMlnTftp(mTftpDebug_OVFL);
 
-	//  step();
-#endif
+		DBG_BTN(button();)
+	)
 
 	// Read data from chip to buffer
 	readPointer = netReadWord(REG_S3_RX_RD0);
-#ifdef _DEBUGMORE_TFTP
-	traceln("Tftp: readPointer at position ");
-	tracenum(readPointer);
-#endif
+	
+	DBG_TFTP_EX(
+		tracePGMlnTftp(mTftpDebug_RPTR);
+		tracenum(readPointer);
+	)
 
 	if(readPointer == 0) readPointer += S3_RX_START;
 
 	for(count = TFTP_PACKET_MAX_SIZE; count--;) {
 
-#ifdef _DEBUGMORE_TFTP
-		if((count == TFTP_PACKET_MAX_SIZE - 1) || (count == 0)) {
-			traceln("Tftp: Reading from position ");
-			tracenum(readPointer);
-		}
-#endif
+		DBG_TFTP_EX(
+			if((count == TFTP_PACKET_MAX_SIZE - 1) || (count == 0)) {
+				tracePGMlnTftp(mTftpDebug_RPOS);
+				tracenum(readPointer);
+			}
+		)
 
 		*bufPtr++ = netReadReg(readPointer++);
 
@@ -114,48 +115,46 @@ static uint8_t processPacket(void)
 
 	while(netReadReg(REG_S3_CR));
 
-#ifdef _DEBUGMORE_TFTP
-	traceln("Tftp: Bytes left to read ");
-	tracenum(netReadWord(REG_S3_RX_RSR0));
-#endif
+	DBG_TFTP_EX(
+		tracePGMlnTftp(mTftpDebug_BLEFT);
+		tracenum(netReadWord(REG_S3_RX_RSR0));
+	)
 
-#ifdef _DEBUGMORE_TFTP
-	// Dump packet
-	bufPtr = buffer;
-	traceln("");
+	DBG_TFTP_EX(
+		// Dump packet
+		bufPtr = buffer;
+		tracePGM(mTftpDebug_NEWLINE);
 
-	for(count = TFTP_PACKET_MAX_SIZE / 2; count--;) {
-		uint16_t val = *bufPtr++;
-		val |= (*bufPtr++) << 8;
-		tracenum(val);
+		for(count = TFTP_PACKET_MAX_SIZE / 2; count--;) {
+			uint16_t val = *bufPtr++;
+			val |= (*bufPtr++) << 8;
+			tracenum(val);
 
-		if((count % 8) == 0 && count != 0) traceln("");
-		else trace(" ");
-	}
-
-#endif
-
-#ifdef _DEBUG_TFTP
-	traceln("Tftp: Setting return address");
-#endif
+			if((count % 8) == 0 && count != 0) tracePGM(mTftpDebug_NEWLINE);
+			else tracePGM(mTftpDebug_SPACE);
+		}
+	)
 
 	// Set up return IP address and port
 	uint8_t i;
 
 	for(i = 0; i < 6; i++) netWriteReg(REG_S3_DIPR0 + i, buffer[i]);
 
+	DBG_TFTP(tracePGMlnTftp(mTftpDebug_RADDR);)
+	
 	// Parse packet
 	uint16_t tftpDataLen = (buffer[6] << 8) + buffer[7];
 	uint16_t tftpOpcode = (buffer[8] << 8) + buffer[9];
 	uint16_t tftpBlock = (buffer[10] << 8) + buffer[11];
-#ifdef _DEBUG
-	traceln("Tftp: This is block ");
-	tracenum(tftpBlock);
-	trace(" with opcode ");
-	tracenum(tftpOpcode);
-	trace(" and data length ");
-	tracenum(tftpDataLen - (TFTP_OPCODE_SIZE + TFTP_BLOCKNO_SIZE));
-#endif
+	
+	DBG_TFTP(
+		tracePGMlnTftp(mTftpDebug_BLOCK);
+		tracenum(tftpBlock);
+		tracePGM(mTftpDebug_OPCODE);
+		tracenum(tftpOpcode);
+		tracePGM(mTftpDebug_DLEN);
+		tracenum(tftpDataLen - (TFTP_OPCODE_SIZE + TFTP_BLOCKNO_SIZE));
+	)
 
 	if((tftpOpcode == TFTP_OPCODE_DATA)
 		&& ((tftpBlock > MAX_ADDR / 0x200) || (tftpBlock < highPacket) || (tftpBlock > highPacket + 1)))
@@ -171,34 +170,33 @@ static uint8_t processPacket(void)
 	switch(tftpOpcode) {
 
 		case TFTP_OPCODE_RRQ: // Read request
-#ifdef _DEBUG_TFTP
-			traceln("Tftp: Read request");
-#endif
+			DBG_TFTP(tracePGMlnTftp(mTftpDebug_OPRRQ);)
 			break;
 
 		case TFTP_OPCODE_WRQ: // Write request
 			// Valid WRQ -> reset timer
 			resetTick();
-#ifdef _VERBOSE
-			traceln("Tftp: Write request");
-#endif
+
+			DBG_TFTP(tracePGMlnTftp(mTftpDebug_OPWRQ);)
+
 			// Flagging image as invalid since the flashing process has started
 			eeprom_write_byte(EEPROM_IMG_STAT, EEPROM_IMG_BAD_VALUE);
 
-#ifdef _TFTP_RANDOM_PORT
+#ifdef TFTP_RANDOM_PORT
 			sockInit((buffer[4] << 8) | ~buffer[5]); // Generate a 'random' TID (RFC1350)
 #else
 			sockInit(tftpTransferPort);
 #endif
-#ifdef _DEBUG_TFTP
-			traceln("Tftp: Changed to port ");
-#ifdef _TFTP_RANDOM_PORT
-			tracenum((buffer[4] << 8) | (buffer[5] ^ 0x55));
-#else
-			tracenum(tftpTransferPort);
-#endif
-#endif
 
+			DBG_TFTP(
+				tracePGMlnTftp(mTftpDebug_NPORT);
+#ifdef TFTP_RANDOM_PORT
+				tracenum((buffer[4] << 8) | (buffer[5] ^ 0x55));
+#else
+				tracenum(tftpTransferPort);
+#endif
+			)
+			
 			lastPacket = highPacket = 0;
 			returnCode = ACK; // Send back acknowledge for packet 0
 			break;
@@ -206,28 +204,27 @@ static uint8_t processPacket(void)
 		case TFTP_OPCODE_DATA:
 			// Valid Data Packet -> reset timer
 			resetTick();
-
+			
+			DBG_TFTP(tracePGMlnTftp(mTftpDebug_OPDATA);)
+			
 			packetLength = tftpDataLen - (TFTP_OPCODE_SIZE + TFTP_BLOCKNO_SIZE);
 			lastPacket = tftpBlock;
 			writeAddr = (tftpBlock - 1) << 9; // Flash write address for this block
-#ifdef _DEBUGMORE_TFTP
-			traceln("Tftp: Data for block ");
-			tracenum(lastPacket);
-#endif
 
 			if((writeAddr + packetLength) > MAX_ADDR) {
 				// Flash is full - abort with an error before a bootloader overwrite occurs
 				// Application is now corrupt, so do not hand over.
-#ifdef _VERBOSE
-				traceln("Tftp: Flash is full");
-#endif
+
+				DBG_TFTP(tracePGMlnTftp(mTftpDebug_FULL);)
+
 				returnCode = ERROR_FULL;
 			} else {
-#ifdef _DEBUG_TFTP
-				traceln("Tftp: Writing data from address ");
-				tracenum(writeAddr);
-#endif
-
+				
+				DBG_TFTP(
+					tracePGMlnTftp(mTftpDebug_WRADDR);
+					tracenum(writeAddr);
+				)
+				
 				uint8_t* pageBase = buffer + (UDP_HEADER_SIZE + TFTP_OPCODE_SIZE + TFTP_BLOCKNO_SIZE); // Start of block data
 				uint16_t offset = 0; // Block offset
 
@@ -239,10 +236,10 @@ static uint8_t processPacket(void)
 				// Round up packet length to a full flash sector size
 				while(packetLength % SPM_PAGESIZE) packetLength++;
 
-#ifdef _DEBUG_TFTP
-				traceln("Tftp: Packet length adjusted to ");
-				tracenum(packetLength);
-#endif
+				DBG_TFTP(
+					tracePGMlnTftp(mTftpDebug_PLEN);
+					tracenum(packetLength);
+				)
 
 				if(writeAddr == 0) {
 					// First sector - validate
@@ -251,7 +248,7 @@ static uint8_t processPacket(void)
 						/* FIXME: Validity checks. Small programms (under 512 bytes?) don't
 						 * have the the JMP sections and that is why app.bin was failing.
 						 * When flashing big binaries is fixed, uncomment the break below.*/
-#ifndef _DEBUG_TFTP
+#ifndef DEBUG_TFTP
 						break;
 #endif
 					}
@@ -261,16 +258,16 @@ static uint8_t processPacket(void)
 				for(offset = 0; offset < packetLength;) {
 					uint16_t writeValue = (pageBase[offset]) | (pageBase[offset + 1] << 8);
 					boot_page_fill(writeAddr + offset, writeValue);
-#ifdef _DEBUGMORE_TFTP
 
-					if((offset == 0) || ((offset == (packetLength - 2)))) {
-						traceln("Tftp: Writing ");
-						tracenum(writeValue);
-						trace(" at offset ");
-						tracenum(writeAddr + offset);
-					}
+					DBG_TFTP_EX(
+						if((offset == 0) || ((offset == (packetLength - 2)))) {
+							tracePGMlnTftp(mTftpDebug_WRITE);
+							tracenum(writeValue);
+							tracePGM(mTftpDebug_OFFSET);
+							tracenum(writeAddr + offset);
+						}
+					)
 
-#endif
 					offset += 2;
 
 					if(offset % SPM_PAGESIZE == 0) {
@@ -288,9 +285,9 @@ static uint8_t processPacket(void)
 				if(returnCode == FINAL_ACK) {
 					// Flash is complete
 					// Hand over to application
-#ifdef _VERBOSE
-					traceln("Tftp: Flash is complete");
-#endif
+
+					DBG_TFTP(tracePGMlnTftp(mTftpDebug_DONE);)
+
 					// Flag the image as valid since we received the last packet
 					eeprom_write_byte(EEPROM_IMG_STAT, EEPROM_IMG_OK_VALUE);
 				}
@@ -298,28 +295,28 @@ static uint8_t processPacket(void)
 
 			break;
 
-			// Acknowledgment
+		// Acknowledgment
 		case TFTP_OPCODE_ACK:
-#ifdef _DEBUG_TFTP
-			traceln("Tftp: Acknowledge");
-#endif
+
+			DBG_TFTP(tracePGMlnTftp(mTftpDebug_OPACK);)
+
 			break;
 
-			// Error signal
+		// Error signal
 		case TFTP_OPCODE_ERROR:
-#ifdef _DEBUG_TFTP
-			traceln("Tftp: Error");
-#endif
+
+			DBG_TFTP(tracePGMlnTftp(mTftpDebug_OPERR);)
+
 			/* FIXME: Resetting might be needed here too */
 			break;
 
 		default:
-#ifdef _DEBUG_TFTP
-			traceln("Tftp: Invalid opcode ");
-			tracenum(tftpOpcode);
-#endif
+			DBG_TFTP(
+				tracePGMlnTftp(mTftpDebug_INVOP);
+				tracenum(tftpOpcode);
+			)
 
-#ifdef _TFTP_RANDOM_PORT
+#ifdef TFTP_RANDOM_PORT
 			sockInit((buffer[4] << 8) | ~buffer[5]); // Generate a 'random' TID (RFC1350)
 #else
 			sockInit(tftpTransferPort);
@@ -372,15 +369,15 @@ static void sendResponse(uint16_t response)
 		case ACK:
 			if(lastPacket > highPacket) highPacket = lastPacket;
 
-#ifdef _DEBUG_TFTP
-			traceln("Tftp: Sent ACK");
+			DBG_TFTP(tracePGMlnTftp(mTftpDebug_SACK);)
 			/* no break */
-#endif
+
 		case FINAL_ACK:
-#ifdef _DEBUG_TFTP
-			if(response == FINAL_ACK) traceln("Tftp: Sent Final ACK ");
-#endif
-			
+			DBG_TFTP(
+				if(response == FINAL_ACK)
+					tracePGMlnTftp(mTftpDebug_SFACK);
+			)
+
 			packetLength = 4;
 			*txPtr++ = TFTP_OPCODE_ACK >> 8;
 			*txPtr++ = TFTP_OPCODE_ACK & 0xff;
@@ -403,9 +400,7 @@ static void sendResponse(uint16_t response)
 
 	while(netReadReg(REG_S3_CR));
 
-#ifdef _VERBOSE
-	traceln("Tftp: Response sent");
-#endif
+	DBG_TFTP(tracePGMlnTftp(mTftpDebug_RESP);)
 }
 
 
@@ -417,20 +412,20 @@ void tftpInit(void)
 	// Open socket
 	sockInit(TFTP_PORT);
 
-#ifndef _TFTP_RANDOM_PORT
+#ifndef TFTP_RANDOM_PORT
 	if(eeprom_read_byte(EEPROM_SIG_3) == EEPROM_SIG_3_VALUE)
 		tftpTransferPort = ((eeprom_read_byte(EEPROM_PORT + 1) << 8) + eeprom_read_byte(EEPROM_PORT));
 	else
 		tftpTransferPort = TFTP_STATIC_PORT;
 #endif
-
-#ifdef _VERBOSE
-	traceln("Tftp: TFTP server init done");
-#ifndef _TFTP_RANDOM_PORT
-	traceln("\t   Port: ");
-	tracenum(tftpTransferPort);
+	
+	DBG_TFTP(
+		tracePGMlnTftp(mTftpDebug_INIT);
+#ifndef TFTP_RANDOM_PORT
+		tracePGMlnTftp(mTftpDebug_PORT);
+		tracenum(tftpTransferPort);
 #endif
-#endif
+	)
 }
 
 
@@ -463,7 +458,7 @@ uint8_t tftpPoll(void)
 		}
 
 		// Process Packet and get TFTP response code
-#ifdef _DEBUG_TFTP
+#ifdef DEBUG_TFTP
 		packetSize = netReadWord(REG_S3_RX_RSR0);
 		response = processPacket(packetSize);
 #else

@@ -125,7 +125,7 @@ uint8_t processStk500v2(void)
 		while(msgParseState != ST_PROCESS) {
 // 			if(boot_state == 1) {
 // 				boot_state	=	0;
- 				c			=	getCh();
+ 				c			=	getch();
 // 			} else {
 // 				//	c	=	recchar();
 // 				c = recchar_timeout();
@@ -498,33 +498,33 @@ uint8_t processStk500v2(void)
 		/*
 		 * Now send answer message back
 		 */
-		putCh(MESSAGE_START);
+		putch(MESSAGE_START);
 		checksum	=	MESSAGE_START ^ 0;
 
-		putCh(seqNum);
+		putch(seqNum);
 		checksum	^=	seqNum;
 
 		c			=	((msgLength >> 8) & 0xFF);
-		putCh(c);
+		putch(c);
 		checksum	^=	c;
 
 		c			=	msgLength & 0x00FF;
-		putCh(c);
+		putch(c);
 		checksum ^= c;
 
-		putCh(TOKEN);
+		putch(TOKEN);
 		checksum ^= TOKEN;
 
 		p	=	msgBuffer;
 
 		while(msgLength) {
 			c	=	*p++;
-			putCh(c);
+			putch(c);
 			checksum ^= c;
 			msgLength--;
 		}
 
-		putCh(checksum);
+		putch(checksum);
 		seqNum++;
 
 	}

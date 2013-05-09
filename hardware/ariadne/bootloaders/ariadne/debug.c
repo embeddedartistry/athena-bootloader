@@ -15,52 +15,107 @@
 #include "debug.h"
 
 
-void trace(char* msg)
+#if (DEBUG > 0)
+
+/*
+ * Standart strings used throughout the code. 
+ */
+const unsigned char mDebug_NEWLINE[]	PROGMEM =	"\r\n";
+const unsigned char mDebug_HEXPREF[]	PROGMEM =	"0x";
+
+void tracePGM(const void* p_msg)
 {
-	uint8_t c;
-	if(*msg != '\0') {
-		while((c = *msg++)) putCh(c);
+	uint8_t	c = 1, i = 0;
+
+	while(c != 0){
+#if (FLASHEND > 0x10000)
+		c = pgm_read_byte_far((uint32_t)(uint16_t)p_msg + i);
+#else
+		c = pgm_read_byte_near((uint16_t)p_msg + i);
+#endif
+		if (c != 0)
+		{
+			putch(c);
+		}
+		i++;
 	}
 }
 
-void traceln(char* msg)
+
+void tracePGMln(const void* p_prefix, const void* p_msg)
 {
-	trace("\r\n");
+	tracePGM(mDebug_NEWLINE);
+	tracePGM(p_prefix);
+	tracePGM(p_msg);
+}
+
+
+void trace(char* msg)
+{
+	uint8_t c;
+
+	if(*msg != '\0') {
+		while((c = *msg++)) putch(c);
+	}
+}
+
+
+void traceln(const void* p_prefix, char* msg)
+{
+	tracePGM(mDebug_NEWLINE);
+	tracePGM(p_prefix);
 	trace(msg);
 }
 
+
 void tracehex(uint16_t num, uint8_t len)
 {
-	trace("0x");
+	tracePGM(mDebug_HEXPREF);
+
 	while(len > 0) {
-		putHex(num >> (4 * (len - 1)));
+		puthex(num >> (4 * (len - 1)));
 		len--;
 	}
 }
 
 
-void stepInit(void)
+#ifdef DEBUG_BTN
+	#undef DBG_BTN
+	#define DBG_BTN(block) block
+	#define tracePGMlnBtn(msg) tracePGMln(mBtnDebug_PREFIX, msg)
+const unsigned char mBtnDebug_PREFIX[]	PROGMEM =	" Dbg: ";
+const unsigned char mBtnDebug_INIT[]	PROGMEM =	"Button enabled";
+const unsigned char mBtnDebug_WAIT[]	PROGMEM =	"Wait input";
+
+void buttonInit(void)
 {
 	PORTB |= _BV(PB0);
-	traceln(" Dbg: Button stepping enabled");
+	DBG_BTN(tracePGMlnBtn(mBtnDebug_INIT);)
 }
 
 
 /* FIXME: the button used was reverse, shortcircuiting when it is released. Code was modified
  * accordingly */
-uint8_t checkbutton(void)
+uint8_t checkButton(void)
 {
 	/* the button is pressed when BUTTON_BIT is clear */
 	if(bit_is_clear(PINB, PB0)) {
 		_delay_ms(25);
+
 		if(bit_is_clear(PINB, PB0)) return 0;
 	}
+
 	return 1;
 }
 
 
-void step(void)
-{
-	while(1) if(checkbutton()) break;
+void button(void)
+{	
+	DBG_BTN(tracePGMlnBtn(mBtnDebug_WAIT);)
+	
+// 	while(1) if(checkButton()) break;
+
 	_delay_ms(250); // Lock input
 }
+#endif
+#endif

@@ -141,10 +141,10 @@ uint8_t serialFlashing;
  */
 void serialInit(void);
 
-void putCh(uint8_t c);
-void putHex(uint8_t c);
+void putch(uint8_t c);
+void puthex(uint8_t c);
 
-uint8_t getCh(void);
+uint8_t getch(void);
 
 uint8_t serialPoll(uint8_t command);
 #endif

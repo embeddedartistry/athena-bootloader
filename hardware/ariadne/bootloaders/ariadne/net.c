@@ -16,6 +16,7 @@
 #include "serial.h"
 #include "tftp.h"
 #include "debug.h"
+#include "debug_net.h"
 
 #define SS_LOW() PORTB &= ~_BV(SS)
 #define SS_HIGH() PORTB |= _BV(SS)
@@ -42,12 +43,12 @@ uint8_t registerBuffer[REGISTER_BLOCK_SIZE] = {
 
 void netWriteReg(uint16_t address, uint8_t value)
 {
-#ifdef _DEBUGMORE_NET
-	traceln(" Net: netWriteReg: ");
-	tracenum(address);
-	trace(", ");
-	tracenum(value);
-#endif
+	DBG_NET_EX(
+		tracePGMlnNet(mNetDebug_NWREG);
+		tracenum(address);
+		tracePGM(mNetDebug_COMMA);
+		tracenum(value);
+	)
 
 	// Send uint8_t to Ethernet controller
 	SPCR = _BV(SPE) | _BV(MSTR); // Set SPI as master
@@ -66,10 +67,12 @@ void netWriteReg(uint16_t address, uint8_t value)
 
 uint8_t netReadReg(uint16_t address)
 {
-//#ifdef _DEBUGMORE_NET
-//    traceln(" Net: netReadReg: ");
-//    tracenum(address);
-//#endif
+#ifdef SPAM_ME
+	DBG_NET_EX(
+		tracePGMlnNet(mNetDebug_NRREG);
+		tracenum(address);
+	)
+#endif
 
 	// Read uint8_t from Ethernet controller
 	uint8_t returnValue;
@@ -111,7 +114,7 @@ void netInit(void)
 	DDRB = _BV(SCK) | _BV(MOSI) | _BV(SS);
 	// Set pins high
 	PORTB = _BV(SCK) | _BV(MISO) | _BV(MOSI) | _BV(SS);
-#ifdef _ARDUINO_ETHERNET
+#ifdef ARDUINO_ETHERNET
 	DDRB |= _BV(LED);
 	PORTB |= _BV(LED);
 #endif
@@ -120,52 +123,50 @@ void netInit(void)
 	// Set the Double SPI Speed Bit
 	SPSR = (1 << SPI2X);
 
-	/* Pull in altered presets
-	 * if available from AVR EEPROM (if signature bytes are set)*/
+	/* Pull in altered network settings
+	 * if available from AVR EEPROM (if signature bytes are set)
+	 */
 	if((eeprom_read_byte(EEPROM_SIG_1) == EEPROM_SIG_1_VALUE)
-	        && (eeprom_read_byte(EEPROM_SIG_2) == EEPROM_SIG_2_VALUE)) {
+			&& (eeprom_read_byte(EEPROM_SIG_2) == EEPROM_SIG_2_VALUE)) {
 
 		for(i = 0; i < EEPROM_SETTINGS_SIZE; i++)
 			registerBuffer[i + 1] = eeprom_read_byte(EEPROM_DATA + i);
 
-#ifdef _VERBOSE
-		traceln(" Net: Using EEPROM settings");
-#endif
-	}
-#ifdef _VERBOSE
-	else {
-		traceln(" Net: Using built-in settings");
-	}
-#endif
+		DBG_NET(tracePGMlnNet(mNetDebug_EEPROM);)
 
-#ifdef _VERBOSE
-	traceln("\tAddress: ");
-	for(i = 15; i < 19; i++) {
-		tracenet(registerBuffer[i]);
-		if(i != 18) putch(0x2E);
+	} else {
+		DBG_NET(tracePGMlnNet(mNetDebug_BUILTIN);)
 	}
-	traceln("\t Subnet: ");
-	for(i = 5; i < 9; i++) {
-		tracenet(registerBuffer[i]);
-		if(i != 8) putch(0x2E);
-	}
-	traceln("\tGateway: ");
-	for(i = 1; i < 5; i++) {
-		tracenet(registerBuffer[i]);
-		if(i != 4) putch(0x2E);
-	}
-	traceln("\t    MAC: ");
-	for(i = 9; i < 15; i++) {
-		tracenet(registerBuffer[i]);
-		if(i != 14) putch(0x2E);
-	}
-#endif
+
+
+	DBG_NET(
+		tracePGMlnNet(mNetDebug_ADDR);
+		for(i = 15; i < 19; i++) {
+			tracenet(registerBuffer[i]);
+			if(i != 18) putch(0x2E);
+		}
+		tracePGMlnNet(mNetDebug_SUBN);
+		for(i = 5; i < 9; i++) {
+			tracenet(registerBuffer[i]);
+			if(i != 8) putch(0x2E);
+		}
+		tracePGMlnNet(mNetDebug_GW);
+		for(i = 1; i < 5; i++) {
+			tracenet(registerBuffer[i]);
+			if(i != 4) putch(0x2E);
+		}
+		tracePGMlnNet(mNetDebug_MAC);
+		for(i = 9; i < 15; i++) {
+			tracenet(registerBuffer[i]);
+			if(i != 14) putch(0x2E);
+		}
+	)
 
 	// Configure Wiznet chip
 	for(i = 0; i < REGISTER_BLOCK_SIZE; i++)
 		netWriteReg(i, registerBuffer[i]);
-#ifdef _VERBOSE
-	traceln(" Net: Network init done");
-#endif
+
+	DBG_NET(tracePGMlnNet(mNetDebug_DONE);)
 }
 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs off; tab-width 4; 
