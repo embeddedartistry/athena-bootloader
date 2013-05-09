@@ -3,9 +3,9 @@
 
 /* TFTP port settings */
 #define TFTP_PORT 69
-#define TFTP_STATIC_PORT 46969
+#define TFTP_DATA_PORT 46969
 /* Define this if you want random port generation */
-//#define _TFTP_RANDOM_PORT
+//#define RANDOM_TFTP_DATA_PORT
 
 #define TFTP_OPCODE_UKN   0
 /** TFTP Opcode values from RFC 1350 */

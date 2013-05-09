@@ -43,6 +43,11 @@ uint16_t lastPacket = 0, highPacket = 0;
 
 static void sockInit(uint16_t port)
 {
+	DBG_TFTP(
+		tracePGMlnTftp(mTftpDebug_SOCK);
+		tracenum(port);
+	)
+
 	netWriteReg(REG_S3_CR, CR_CLOSE);
 
 	do {
@@ -182,7 +187,7 @@ static uint8_t processPacket(void)
 			// Flagging image as invalid since the flashing process has started
 			eeprom_write_byte(EEPROM_IMG_STAT, EEPROM_IMG_BAD_VALUE);
 
-#ifdef TFTP_RANDOM_PORT
+#ifdef RANDOM_TFTP_DATA_PORT
 			sockInit((buffer[4] << 8) | ~buffer[5]); // Generate a 'random' TID (RFC1350)
 #else
 			sockInit(tftpTransferPort);
@@ -190,7 +195,7 @@ static uint8_t processPacket(void)
 
 			DBG_TFTP(
 				tracePGMlnTftp(mTftpDebug_NPORT);
-#ifdef TFTP_RANDOM_PORT
+#ifdef RANDOM_TFTP_DATA_PORT
 				tracenum((buffer[4] << 8) | (buffer[5] ^ 0x55));
 #else
 				tracenum(tftpTransferPort);
@@ -316,7 +321,7 @@ static uint8_t processPacket(void)
 				tracenum(tftpOpcode);
 			)
 
-#ifdef TFTP_RANDOM_PORT
+#ifdef RANDOM_TFTP_DATA_PORT
 			sockInit((buffer[4] << 8) | ~buffer[5]); // Generate a 'random' TID (RFC1350)
 #else
 			sockInit(tftpTransferPort);
@@ -373,6 +378,7 @@ static void sendResponse(uint16_t response)
 			/* no break */
 
 		case FINAL_ACK:
+			
 			DBG_TFTP(
 				if(response == FINAL_ACK)
 					tracePGMlnTftp(mTftpDebug_SFACK);
@@ -412,16 +418,16 @@ void tftpInit(void)
 	// Open socket
 	sockInit(TFTP_PORT);
 
-#ifndef TFTP_RANDOM_PORT
+#ifndef RANDOM_TFTP_DATA_PORT
 	if(eeprom_read_byte(EEPROM_SIG_3) == EEPROM_SIG_3_VALUE)
 		tftpTransferPort = ((eeprom_read_byte(EEPROM_PORT + 1) << 8) + eeprom_read_byte(EEPROM_PORT));
 	else
-		tftpTransferPort = TFTP_STATIC_PORT;
+		tftpTransferPort = TFTP_DATA_PORT;
 #endif
 	
 	DBG_TFTP(
 		tracePGMlnTftp(mTftpDebug_INIT);
-#ifndef TFTP_RANDOM_PORT
+#ifndef RANDOM_TFTP_DATA_PORT
 		tracePGMlnTftp(mTftpDebug_PORT);
 		tracenum(tftpTransferPort);
 #endif
