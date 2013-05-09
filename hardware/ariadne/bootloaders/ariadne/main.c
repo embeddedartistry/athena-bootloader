@@ -19,13 +19,6 @@
 #include "watchdog.h"
 #include "debug.h"
 #include "debug_main.h"
-#if defined(__AVR_ATmega328__) || defined(__AVR_ATmega328P__)
-	#include "optiboot.h"
-#elif defined(__AVR_ATmega2560__)
-	#include "stk500boot.h"
-#else
-	#error "unsupported MCU"
-#endif
 #ifdef ANNOUNCE
 	#include "announce.h"
 #endif
@@ -101,16 +94,14 @@ int main(void)
 	for(;;) {
 		// If there is no serial flashing under way, poll tftp
 		if(!serialFlashing)
-
 			// If tftp recieved a FINAL_ACK, break
 			if(tftpPoll() == 0)
 				break;
 
 		// If there is no tftp flashing, poll serial
 		if(!tftpFlashing)
-
 			// If flashing is done exit
-			if(serialPoll(processCommand()) == 0)
+			if(serialPoll() == 0)
 				break;
 
 		/* As explained above this goes out */
