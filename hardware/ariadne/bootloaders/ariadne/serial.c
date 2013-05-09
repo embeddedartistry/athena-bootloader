@@ -15,6 +15,14 @@
 #include "watchdog.h"
 #include "pin_defs.h"
 #include "util.h"
+#if defined(__AVR_ATmega328__) || defined(__AVR_ATmega328P__)
+	#include "optiboot.h"
+#elif defined(__AVR_ATmega2560__)
+	#include "stk500boot.h"
+#else
+	#error "Unknown MCU. Cannot find the proper serial bootloader."
+#endif
+
 
 
 void serialInit(void)
@@ -29,9 +37,9 @@ void serialInit(void)
 	UART_BAUD_RATE_LOW	= (uint8_t)((F_CPU + BAUD_RATE * 4L) / (BAUD_RATE * 8L) - 1);
 	// Alternative way taken from stk500boot
 	//UART_BAUD_RATE_LOW	= UART_BAUD_SELECT(BAUDRATE, F_CPU);
-	
 
-#if DEBUG > 0
+
+#if (DEBUG > 0)
 	DDRD = 0x92;
 #endif
 
@@ -77,12 +85,16 @@ uint8_t getch(void)
 }
 
 
-uint8_t serialPoll(uint8_t command)
+uint8_t serialPoll(void)
 {
 	if(UART_STATUS_REG & _BV(UART_RECEIVE_COMPLETE)) {
 		resetTick();
 		serialFlashing = TRUE;
-		return(command);
+#if defined(__AVR_ATmega328__) || defined(__AVR_ATmega328P__)
+		return(processOptiboot());
+#elif defined(__AVR_ATmega2560__)
+		return(processStk500v2());
+#endif
 	}
 	return(1);
 }

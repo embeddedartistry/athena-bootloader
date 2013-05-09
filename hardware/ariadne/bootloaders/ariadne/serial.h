@@ -146,5 +146,5 @@ void puthex(uint8_t c);
 
 uint8_t getch(void);
 
-uint8_t serialPoll(uint8_t command);
+uint8_t serialPoll(void);
 #endif
