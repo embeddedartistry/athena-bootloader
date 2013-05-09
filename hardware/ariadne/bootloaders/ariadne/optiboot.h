@@ -37,10 +37,9 @@
 #define wdtVect (*(uint16_t*)(RAMSTART+SPM_PAGESIZE*2+6))
 #endif
 
-/* 
+/*
  * Jump into the serial flashing subsystem
  */
 uint8_t processOptiboot(void);
-#define processCommand() processOptiboot()
 
 #endif

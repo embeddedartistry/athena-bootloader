@@ -53,6 +53,5 @@
 
 
 uint8_t processStk500v2(void);
-#define processCommand() processStk500v2()
 
 #endif
