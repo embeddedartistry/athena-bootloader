@@ -18,7 +18,7 @@
 #if (DEBUG > 0)
 
 /*
- * Standart strings used throughout the code. 
+ * Standart strings used throughout the code.
  */
 const unsigned char mDebug_NEWLINE[]	PROGMEM =	"\r\n";
 const unsigned char mDebug_HEXPREF[]	PROGMEM =	"0x";
@@ -29,7 +29,11 @@ void tracePGM(const void* p_msg)
 
 	while(c != 0){
 #if (FLASHEND > 0x10000)
-		c = pgm_read_byte_far((uint32_t)(uint16_t)p_msg + i);
+		/* 0x30000 was added to fix the issues of progmem with >64Kb flash.
+		 * 0x30000 is specific to atmega2560 and won't work on smaller flashes.
+		 * I should find a way to macro the calculation of this value
+		 */
+		c = pgm_read_byte_far(PROGMEM_OFFSET + (uint32_t)(uint16_t)p_msg + i);
 #else
 		c = pgm_read_byte_near((uint16_t)p_msg + i);
 #endif
@@ -110,10 +114,10 @@ uint8_t checkButton(void)
 
 
 void button(void)
-{	
+{
 	DBG_BTN(tracePGMlnBtn(mBtnDebug_WAIT);)
-	
-// 	while(1) if(checkButton()) break;
+
+ 	while(1) if(checkButton()) break;
 
 	_delay_ms(250); // Lock input
 }

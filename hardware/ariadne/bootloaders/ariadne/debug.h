@@ -23,6 +23,16 @@
 	#define DEBUG_UTIL
 #endif
 
+#if (FLASHEND > 0x10000)
+	#if defined(__AVR_ATmega2560__)
+		#define PROGMEM_OFFSET 0x30000
+	#elif defined(__AVR_ATmega1280__)
+		#define PROGMEM_OFFSET 0x10000
+	#else
+		#error "Unknown MCU. Cannot define PROGMEM_OFFSET"
+	#endif
+#endif
+
 void tracePGM(const void* p_msg);
 void tracePGMln(const void* p_prefix, const void* p_msg);
 void tracehex(uint16_t num, uint8_t len);
