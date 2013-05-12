@@ -66,19 +66,16 @@
 #include	"stk500boot.h"
 #include	"stk500boot_command.h"
 
-#if _DEBUG > 0
-	#include	"debug.h"
-#endif
 
 // #define	MAX_TIME_COUNT	(F_CPU >> 1)
 // static unsigned char recchar_timeout(void)
 // {
 // 	uint32_t count = 0;
-// 
+//
 // 	while(!(UART_STATUS_REG & (1 << UART_RECEIVE_COMPLETE))) {
 // 		// wait for data
 // 		count++;
-// 
+//
 // 		if(count > MAX_TIME_COUNT) {
 // 			unsigned int	data;
 // #if (FLASHEND > 0x10000)
@@ -86,7 +83,7 @@
 // #else
 // 			data	=	pgm_read_word_near(0);	//*	get the first word of the user program
 // #endif
-// 
+//
 // 			if(data != 0xffff) {				//*	make sure its valid before jumping to it.
 // 				asm volatile(
 // 				    "clr	r30		\n\t"
@@ -94,11 +91,11 @@
 // 				    "ijmp	\n\t"
 // 				);
 // 			}
-// 
+//
 // 			count	=	0;
 // 		}
 // 	}
-// 
+//
 // 	return UART_DATA_REG;
 // }
 
@@ -534,7 +531,8 @@ uint8_t processStk500v2(void)
 	/*
 	 * Now leave bootloader
 	 */
-	UART_STATUS_REG	&=	0xfd;
+	//TODO: find out what this does
+	//UART_STATUS_REG	&=	0xfd;
 	boot_rww_enable();				// enable application section
 
 	eeprom_write_byte(EEPROM_IMG_STAT, EEPROM_IMG_OK_VALUE);
