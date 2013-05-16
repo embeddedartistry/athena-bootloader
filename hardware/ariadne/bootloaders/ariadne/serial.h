@@ -130,6 +130,7 @@
 
 #else
 	#error "no UART definition for MCU available"
+
 #endif
 
 /* Serial status flag, it is set to TRUE if flashing from

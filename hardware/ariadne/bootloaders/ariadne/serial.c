@@ -65,7 +65,7 @@ void puthex(uint8_t c)
 
 uint8_t getch(void)
 {
-	uint8_t ch;
+	//uint8_t ch;
 
 	while(!(UART_STATUS_REG & _BV(UART_RECEIVE_COMPLETE)));
 	if(!(UART_STATUS_REG & _BV(UART_FRAME_ERROR))) {
@@ -79,9 +79,11 @@ uint8_t getch(void)
 		 */
 		watchdogReset();
 	}
-	ch = UART_DATA_REG;
 
-	return ch;
+	//ch = UART_DATA_REG;
+	//return ch;
+
+	return(UART_DATA_REG);
 }
 
 
@@ -93,7 +95,7 @@ uint8_t serialPoll(void)
 #if defined(__AVR_ATmega328__) || defined(__AVR_ATmega328P__)
 		return(processOptiboot());
 #elif defined(__AVR_ATmega2560__)
-		return(processStk500v2());
+		return(processStk500boot());
 #endif
 	}
 	return(1);
