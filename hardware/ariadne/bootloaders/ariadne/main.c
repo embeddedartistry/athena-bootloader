@@ -19,7 +19,7 @@
 #include "watchdog.h"
 #include "debug.h"
 #include "debug_main.h"
-#ifdef ANNOUNCE
+#if defined(ANNOUNCE)
 	#include "announce.h"
 #endif
 
@@ -41,7 +41,7 @@ int main(void)
 	 * r1 contains zero */
 	//cli();
 	asm volatile("clr __zero_reg__");
-#ifdef __AVR_ATmega8__
+#if defined(__AVR_ATmega8__)
 	SP = RAMEND;  // This is done by hardware reset
 #endif
 
@@ -63,26 +63,26 @@ int main(void)
 
 	//Initialize UART communication
 	serialInit();
-	DBG_MAIN(tracePGMlnMain(mMainDebug_TITLE);)
+	DBG_MAIN(tracePGMlnMain(mDebugMain_TITLE);)
 
 	DBG_BTN(
-		DBG_MAIN(tracePGMlnMain(mMainDebug_BTN);)
+		DBG_MAIN(tracePGMlnMain(mDebugMain_BTN);)
 		buttonInit();
 	)
 
 	// Initialize W5100 chip
-	DBG_MAIN(tracePGMlnMain(mMainDebug_NET);)
+	DBG_MAIN(tracePGMlnMain(mDebugMain_NET);)
 	netInit();
 
 	// Initialize the UDP socket for tftp
-	DBG_MAIN(tracePGMlnMain(mMainDebug_TFTP);)
+	DBG_MAIN(tracePGMlnMain(mDebugMain_TFTP);)
 	tftpInit();
 
 	/* This code is to be used with the java-client inherited from the
 	 * Arduino project. We don't support it and it adds about
 	 * 600 bytes to the binary. So off it goes */
-#ifdef ANNOUNCE
-	DBG_MAIN(tracePGMlnMain(mMainDebug_ANN);)
+#if defined(ANNOUNCE)
+	DBG_MAIN(tracePGMlnMain(mDebugMain_ANN);)
 	announceInit();
 #endif
 
@@ -105,7 +105,7 @@ int main(void)
 				break;
 
 		/* As explained above this goes out */
-#ifdef ANNOUNCE
+#if defined(ANNOUNCE)
 		announcePoll();
 #endif
 
@@ -124,13 +124,12 @@ int main(void)
 				tftpFlashing = FALSE;
 			}
 		}
-
 		/* Blink the notification led */
 		updateLed();
 	}
 
 	/* Exit to user application */
-	DBG_MAIN(tracePGMlnMain(mMainDebug_EXIT);)
+	DBG_MAIN(tracePGMlnMain(mDebugMain_EXIT);)
 	appStart();
 	return(0); /* never reached */
 }

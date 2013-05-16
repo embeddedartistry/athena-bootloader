@@ -23,19 +23,22 @@ static uint16_t tick = 0;
 void updateLed(void)
 {
 	uint16_t next_timer_1 = TCNT1;
+
 	if(next_timer_1 & 0x400) LED_PORT ^= _BV(LED); // Led pin high
 	else LED_PORT &= ~_BV(LED); // Led pin low
+
 	if(next_timer_1 < last_timer_1) {
 		tick++;
 		DBG_UTIL(
-			tracePGMlnUtil(mUtilDebug_TICK);
-			tracenum(tick);
-			tracePGMlnUtil(mUtilDebug_NEXT);
-			tracenum(next_timer_1);
-			tracePGMlnUtil(mUtilDebug_LAST);
-			tracenum(last_timer_1);
+		    tracePGMlnUtil(mDebugUtil_TICK);
+		    tracenum(tick);
+		    tracePGMlnUtil(mDebugUtil_NEXT);
+		    tracenum(next_timer_1);
+		    tracePGMlnUtil(mDebugUtil_LAST);
+		    tracenum(last_timer_1);
 		)
 	}
+
 	last_timer_1 = next_timer_1;
 }
 
@@ -48,7 +51,8 @@ void resetTick(void)
 uint8_t timedOut(void)
 {
 	// Never timeout if there is no code in Flash
-	if (pgm_read_word(0x0000) == 0xFFFF) return(0);
+	if(pgm_read_word(0x0000) == 0xFFFF) return(0);
+
 	if(tick > TIMEOUT) return(1);
 	else return(0);
 }

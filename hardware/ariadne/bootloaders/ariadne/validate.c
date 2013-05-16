@@ -17,28 +17,28 @@ uint8_t validImage(uint8_t* base)
 		// 0x0C 0x94 0xWX 0xYZ  ; JMP 0xWXYZ
 		if(base[i] != 0x0c) {
 			DBG_VALD(
-				tracePGMlnVald(mValdDebug_FAILED);
+				tracePGMlnVald(mDebugVald_FAILED);
 				tracenum(i);
-				tracePGM(mValdDebug_WITH);
+				tracePGM(mDebugVald_WITH);
 				tracenum(base[i]);
-				tracePGM(mValdDebug_0x0C);
+				tracePGM(mDebugVald_0x0C);
 			)
 			return(0);
 		}
 		
 		if(base[i + 1] != 0x94) {
 			DBG_VALD(
-				tracePGMlnVald(mValdDebug_FAILED);
+				tracePGMlnVald(mDebugVald_FAILED);
 				tracenum(i + 1);
-				tracePGM(mValdDebug_WITH);
+				tracePGM(mDebugVald_WITH);
 				tracenum(base[i + 1]);
-				tracePGM(mValdDebug_0x94);
+				tracePGM(mDebugVald_0x94);
 			)
 			return(0);
 		}
 	}
 
-	DBG_VALD(tracePGMlnVald(mValdDebug_VALID);)
+	DBG_VALD(tracePGMlnVald(mDebugVald_VALID);)
 
 	return(1);
 }
