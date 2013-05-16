@@ -12,47 +12,44 @@
 
 #include <avr/pgmspace.h>
 
-#if (DEBUG > 0)
-#ifdef DEBUG_TFTP
+#if (DEBUG_TFTP > 0)
 	#undef DBG_TFTP
 	#define DBG_TFTP(block) block
-	#define tracePGMlnTftp(msg) tracePGMln(mTftpDebug_PREFIX, msg)
-const unsigned char mTftpDebug_PREFIX[] PROGMEM =	"Tftp: ";
-const unsigned char mTftpDebug_START[]	PROGMEM =	"Processing packet of size ";
-const unsigned char mTftpDebug_OVFL[]	PROGMEM =	"Overflow";
-const unsigned char mTftpDebug_RADDR[]	PROGMEM =	"Set up return address";
-const unsigned char mTftpDebug_BLOCK[]	PROGMEM =	"This is block ";
-const unsigned char mTftpDebug_OPCODE[]	PROGMEM =	" with opcode ";
-const unsigned char mTftpDebug_DLEN[]	PROGMEM =	" and data length ";
-const unsigned char mTftpDebug_OPRRQ[]	PROGMEM =	"Read request";
-const unsigned char mTftpDebug_OPWRQ[]	PROGMEM =	"Write request";
-const unsigned char mTftpDebug_OPDATA[]	PROGMEM =	"Data block";
-const unsigned char mTftpDebug_NPORT[]	PROGMEM =	"Changed to port ";
-const unsigned char mTftpDebug_FULL[]	PROGMEM =	"Flash is full";
-const unsigned char mTftpDebug_WRADDR[]	PROGMEM =	"Writing data from address ";
-const unsigned char mTftpDebug_PLEN[]	PROGMEM =	"Packet length adjusted to ";
-const unsigned char mTftpDebug_DONE[]	PROGMEM =	"Flashing complete";
-const unsigned char mTftpDebug_OPACK[]	PROGMEM =	"Acknowledge";
-const unsigned char mTftpDebug_OPERR[]	PROGMEM =	"Error";
-const unsigned char mTftpDebug_INVOP[]	PROGMEM =	"Invalid opcode ";
-const unsigned char mTftpDebug_SACK[]	PROGMEM =	"Sent ACK";
-const unsigned char mTftpDebug_SFACK[]	PROGMEM =	"Sent Final ACK";
-const unsigned char mTftpDebug_RESP[]	PROGMEM =	"Response sent";
-const unsigned char mTftpDebug_INIT[]	PROGMEM =	"TFTP server init done";
-const unsigned char mTftpDebug_PORT[]	PROGMEM =	"\t   Port: ";
-const unsigned char mTftpDebug_SOCK[]	PROGMEM =	"Init socket to port ";
-	#if (DEBUG > 1)
+	#define tracePGMlnTftp(msg) tracePGMln(mDebugTftp_PREFIX, msg)
+const unsigned char mDebugTftp_PREFIX[] PROGMEM =	"Tftp: ";
+const unsigned char mDebugTftp_START[]	PROGMEM =	"Processing packet of size ";
+const unsigned char mDebugTftp_OVFL[]	PROGMEM =	"Overflow";
+const unsigned char mDebugTftp_RADDR[]	PROGMEM =	"Set up return address";
+const unsigned char mDebugTftp_BLOCK[]	PROGMEM =	"This is block ";
+const unsigned char mDebugTftp_OPCODE[]	PROGMEM =	" with opcode ";
+const unsigned char mDebugTftp_DLEN[]	PROGMEM =	" and data length ";
+const unsigned char mDebugTftp_OPRRQ[]	PROGMEM =	"Read request";
+const unsigned char mDebugTftp_OPWRQ[]	PROGMEM =	"Write request";
+const unsigned char mDebugTftp_OPDATA[]	PROGMEM =	"Data block";
+const unsigned char mDebugTftp_NPORT[]	PROGMEM =	"Changed to port ";
+const unsigned char mDebugTftp_FULL[]	PROGMEM =	"Flash is full";
+const unsigned char mDebugTftp_WRADDR[]	PROGMEM =	"Writing data from address ";
+const unsigned char mDebugTftp_PLEN[]	PROGMEM =	"Packet length adjusted to ";
+const unsigned char mDebugTftp_DONE[]	PROGMEM =	"Flashing complete";
+const unsigned char mDebugTftp_OPACK[]	PROGMEM =	"Acknowledge";
+const unsigned char mDebugTftp_OPERR[]	PROGMEM =	"Error";
+const unsigned char mDebugTftp_INVOP[]	PROGMEM =	"Invalid opcode ";
+const unsigned char mDebugTftp_SACK[]	PROGMEM =	"Sent ACK";
+const unsigned char mDebugTftp_SFACK[]	PROGMEM =	"Sent Final ACK";
+const unsigned char mDebugTftp_RESP[]	PROGMEM =	"Response sent";
+const unsigned char mDebugTftp_INIT[]	PROGMEM =	"TFTP server init done";
+const unsigned char mDebugTftp_PORT[]	PROGMEM =	"\tData Port: ";
+const unsigned char mDebugTftp_SOCK[]	PROGMEM =	"Init socket to port ";
+	#if (DEBUG_TFTP > 1)
 		#undef DBG_TFTP_EX
 		#define DBG_TFTP_EX(block) block
-const unsigned char mTftpDebug_NEWLINE[]	PROGMEM =	"\r\n";
-const unsigned char mTftpDebug_SPACE[]	PROGMEM =	" ";
-const unsigned char mTftpDebug_RPTR[]	PROGMEM =	"readPointer at position ";
-const unsigned char mTftpDebug_RPOS[]	PROGMEM =	"Reading from position ";
-const unsigned char mTftpDebug_BLEFT[]	PROGMEM =	"Bytes left ";
-const unsigned char mTftpDebug_WRITE[]	PROGMEM =	"Writing ";
-const unsigned char mTftpDebug_OFFSET[]	PROGMEM =	" at offset ";
+const unsigned char mDebugTftp_NEWLINE[]	PROGMEM =	"\r\n";
+const unsigned char mDebugTftp_RPTR[]	PROGMEM =	"readPointer at position ";
+const unsigned char mDebugTftp_RPOS[]	PROGMEM =	"Reading from position ";
+const unsigned char mDebugTftp_BLEFT[]	PROGMEM =	"Bytes left ";
+const unsigned char mDebugTftp_WRITE[]	PROGMEM =	"Writing ";
+const unsigned char mDebugTftp_OFFSET[]	PROGMEM =	" at offset ";
 	#endif
-#endif
 #endif
 
 #endif

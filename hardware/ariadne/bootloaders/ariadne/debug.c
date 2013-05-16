@@ -15,7 +15,7 @@
 #include "debug.h"
 
 
-#if (DEBUG > 0)
+#if defined(ENABLE_DEBUG)
 
 /*
  * Standart strings used throughout the code.
@@ -30,17 +30,14 @@ void tracePGM(const void* p_msg)
 	while(c != 0){
 #if (FLASHEND > 0x10000)
 		/* 0x30000 was added to fix the issues of progmem with >64Kb flash.
-		 * 0x30000 is specific to atmega2560 and won't work on smaller flashes.
+		 * 0x30000 is specific to atmega2560 and won't work on smaller or larger flashes.
 		 * I should find a way to macro the calculation of this value
 		 */
 		c = pgm_read_byte_far(PROGMEM_OFFSET + (uint32_t)(uint16_t)p_msg + i);
 #else
 		c = pgm_read_byte_near((uint16_t)p_msg + i);
 #endif
-		if (c != 0)
-		{
-			putch(c);
-		}
+		if (c != 0) putch(c);
 		i++;
 	}
 }
@@ -83,18 +80,18 @@ void tracehex(uint16_t num, uint8_t len)
 }
 
 
-#ifdef DEBUG_BTN
+#if defined(DEBUG_BTN)
 	#undef DBG_BTN
 	#define DBG_BTN(block) block
-	#define tracePGMlnBtn(msg) tracePGMln(mBtnDebug_PREFIX, msg)
-const unsigned char mBtnDebug_PREFIX[]	PROGMEM =	" Dbg: ";
-const unsigned char mBtnDebug_INIT[]	PROGMEM =	"Button enabled";
-const unsigned char mBtnDebug_WAIT[]	PROGMEM =	"Wait input";
+	#define tracePGMlnBtn(msg) tracePGMln(mDebugBtn_PREFIX, msg)
+const unsigned char mDebugBtn_PREFIX[]	PROGMEM =	" Dbg: ";
+const unsigned char mDebugBtn_INIT[]	PROGMEM =	"Button enabled";
+const unsigned char mDebugBtn_WAIT[]	PROGMEM =	"Wait input";
 
 void buttonInit(void)
 {
 	PORTB |= _BV(PB0);
-	DBG_BTN(tracePGMlnBtn(mBtnDebug_INIT);)
+	DBG_BTN(tracePGMlnBtn(mDebugBtn_INIT);)
 }
 
 
@@ -115,11 +112,12 @@ uint8_t checkButton(void)
 
 void button(void)
 {
-	DBG_BTN(tracePGMlnBtn(mBtnDebug_WAIT);)
+	DBG_BTN(tracePGMlnBtn(mDebugBtn_WAIT);)
 
  	while(1) if(checkButton()) break;
 
 	_delay_ms(250); // Lock input
 }
 #endif
+
 #endif

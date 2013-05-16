@@ -14,14 +14,26 @@
 #define DBG_UTIL(block)
 #define DBG_BTN(block)
 
-#if (DEBUG > 0)
-
-#ifdef DEBUG_ALL
-	#define DEBUG_NET
-	#define DEBUG_TFTP
-	#define DEBUG_VALD
-	#define DEBUG_UTIL
+#if (DEBUG_ALL > 1)
+	#define DEBUG_MAIN	2
+	#define DEBUG_NET	2
+	#define DEBUG_TFTP	2
+	#define DEBUG_VALD	2
+	#define DEBUG_UTIL	2
+#elif (DEBUG_ALL > 0)
+	#define DEBUG_MAIN	1
+	#define DEBUG_NET	1
+	#define DEBUG_TFTP	1
+	#define DEBUG_VALD	1
+	#define DEBUG_UTIL	1
 #endif
+
+#if (DEBUG_MAIN > 0) || (DEBUG_NET > 0) || (DEBUG_TFTP > 0) \
+	|| (DEBUG_VALD > 0) || (DEBUG_UTIL > 0) || (DEBUG_BTN > 0)
+	#define ENABLE_DEBUG
+#endif
+
+#if defined(ENABLE_DEBUG)
 
 #if (FLASHEND > 0x10000)
 	#if defined(__AVR_ATmega2560__)
@@ -42,7 +54,7 @@ void traceln(const void* p_prefix, char* msg);
 #define tracenum(num) tracehex(num, 4)
 #define tracenet(num) tracehex(num, 2)
 
-#ifdef DEBUG_BTN
+#if defined(DEBUG_BTN)
 void buttonInit(void);
 void button(void);
 #endif

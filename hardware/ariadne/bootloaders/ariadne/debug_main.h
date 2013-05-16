@@ -12,37 +12,33 @@
 
 #include <avr/pgmspace.h>
 
-#if (DEBUG > 0)
+#if (DEBUG_MAIN > 0)
+	#undef DBG_MAIN
+	#define DBG_MAIN(block) block
+	#define tracePGMlnMain(msg) tracePGMln(mDebugMain_PREFIX, msg)
+const unsigned char mDebugMain_PREFIX[]	PROGMEM = 	"Main: ";
 
-/*
- * Basic debugging for "main.c". This is alway enabled when debugging is active
- * to print general information and the steps of the bootloader.
- */
-#undef DBG_MAIN
-#define DBG_MAIN(block) block
-#define tracePGMlnMain(msg) tracePGMln(mMainDebug_PREFIX, msg)
-const unsigned char mMainDebug_PREFIX[]	PROGMEM = 	"Main: ";
+	#if defined(__AVR_ATmega328__) || defined(__AVR_ATmega328P__)
+		#if defined(ARDUINO_ETHERNET)
+const unsigned char mDebugMain_TITLE[]	PROGMEM = 	"Ariadne for Arduino Ethernet, Version 0.5";
+		#else
+const unsigned char mDebugMain_TITLE[]	PROGMEM = 	"Ariadne for Arduino Uno, Version 0.5";
+		#endif
+	#elif defined(__AVR_ATmega2560__)
+const unsigned char mDebugMain_TITLE[]	PROGMEM = 	"Ariadne for Arduino Mega2560, Version 0.5";
+	#else
+const unsigned char mDebugMain_TITLE[]	PROGMEM = 	"Unknown MCU with ariadne, Version 0.5";
+	#endif
+const unsigned char mDebugMain_NET[]	PROGMEM =	"Init network layer";
+const unsigned char mDebugMain_TFTP[]	PROGMEM =	"Init tftp server";
+const unsigned char mDebugMain_EXIT[]	PROGMEM = 	"Start user app";
 
-#if defined(__AVR_ATmega328__) || defined(__AVR_ATmega328P__)
-#if defined(_ARDUINO_ETHERNET)
-const unsigned char mMainDebug_TITLE[]	PROGMEM = 	"Ariadne for Arduino Ethernet, Version 0.5";
-#else
-const unsigned char mMainDebug_TITLE[]	PROGMEM = 	"Ariadne for Arduino Uno, Version 0.5";
+	#if defined(DEBUG_BTN)
+const unsigned char mDebugMain_BTN[]	PROGMEM =	"Init button debugging";
+	#endif
+	#if defined(ANNOUNCE)
+const unsigned char mDebugMain_ANN[]	PROGMEM =	"Init network announce";
+	#endif
 #endif
-#elif defined(__AVR_ATmega2560__)
-const unsigned char mMainDebug_TITLE[]	PROGMEM = 	"Ariadne for Arduino Mega2560, Version 0.5";
-#else
-const unsigned char mMainDebug_TITLE[]	PROGMEM = 	"Unknown MCU with ariadne, Version 0.5";
-#endif
-#ifdef DEBUG_BTN
-const unsigned char mMainDebug_BTN[]	PROGMEM =	"Init button debugging";
-#endif
-const unsigned char mMainDebug_NET[]	PROGMEM =	"Init network layer";
-const unsigned char mMainDebug_TFTP[]	PROGMEM =	"Init tftp server";
-#ifdef ANNOUNCE
-const unsigned char mMainDebug_ANN[]	PROGMEM =	"Init network announce";
-#endif
-const unsigned char mMainDebug_EXIT[]	PROGMEM = 	"Start user app";
 
-#endif
 #endif
