@@ -100,7 +100,7 @@
 // }
 
 
-uint8_t processStk500v2(void)
+uint8_t processStk500boot(void)
 {
 	address_t		address			=	0;
 	address_t		eraseAddress	=	0;

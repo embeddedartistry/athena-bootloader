@@ -52,6 +52,6 @@
 #define	ST_PROCESS		7
 
 
-uint8_t processStk500v2(void);
+uint8_t processStk500boot(void);
 
 #endif
