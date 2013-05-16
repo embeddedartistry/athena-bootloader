@@ -14,12 +14,11 @@
 #include "neteeprom.h"
 #include "pin_defs.h"
 #include "serial.h"
-#include "tftp.h"
 #include "debug.h"
 #include "debug_net.h"
 
-#define SS_LOW()	PORTB &= ~_BV(SS)
-#define SS_HIGH()	PORTB |= _BV(SS)
+#define SS_LOW()	SPI_PORT &= ~_BV(ESS)
+#define SS_HIGH()	SPI_PORT |= _BV(ESS)
 
 uint8_t registerBuffer[REGISTER_BLOCK_SIZE] = {
 	0x80,         // MR Mode - reset device
@@ -44,9 +43,9 @@ uint8_t registerBuffer[REGISTER_BLOCK_SIZE] = {
 void netWriteReg(uint16_t address, uint8_t value)
 {
 	DBG_NET_EX(
-		tracePGMlnNet(mNetDebug_NWREG);
+		tracePGMlnNet(mDebugNet_NWREG);
 		tracenum(address);
-		tracePGM(mNetDebug_COMMA);
+		tracePGM(mDebugNet_COMMA);
 		tracenum(value);
 	)
 
@@ -69,7 +68,7 @@ uint8_t netReadReg(uint16_t address)
 {
 #ifdef SPAM_ME
 	DBG_NET_EX(
-		tracePGMlnNet(mNetDebug_NRREG);
+		tracePGMlnNet(mDebugNet_NRREG);
 		tracenum(address);
 	)
 #endif
@@ -109,53 +108,64 @@ void netInit(void)
 {
 	uint8_t i;
 
-	// Set up outputs to communicate with W5100 chip
-	// Set pins as output
-	DDRB = _BV(SCK) | _BV(MOSI) | _BV(SS);
-	// Set pins high
-	PORTB = _BV(SCK) | _BV(MISO) | _BV(MOSI) | _BV(SS);
-#ifdef ARDUINO_ETHERNET
-	DDRB |= _BV(LED);
-	PORTB |= _BV(LED);
+	/* Set up pins to communicate with W5100 chip */
+	/* Set SPI pins high */
+	SPI_PORT = _BV(SCK) | _BV(MISO) | _BV(MOSI) | _BV(SS);
+	/* Set SPI pins as output */
+	SPI_DDR = _BV(SCK) | _BV(MOSI) | _BV(SS);
+#if defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
+	SPI_PORT |= _BV(ESS);
+	SPI_DDR |= _BV(ESS);
 #endif
 
-	// Set up SPI
-	// Set the Double SPI Speed Bit
+	/* Disable SD card */
+	/* Set SD SS pin high */
+	SD_PORT |= _BV(SD_SS);
+	/* Set SD SS pin as output */
+	SD_DDR |= _BV(SD_SS);
+
+	/* Set up pins to flash the onboard led */
+	/* Set led pin to high */
+	LED_PORT |= _BV(LED);
+	/* Set led pin as output */
+	LED_DDR |= _BV(LED);
+
+	/* Set up SPI
+	 * Set the Double SPI Speed Bit */
 	SPSR = (1 << SPI2X);
 
 	/* Pull in altered network settings
-	 * if available from AVR EEPROM (if signature bytes are set)
-	 */
+	 * if available from AVR EEPROM (if signature bytes are set) */
 	if((eeprom_read_byte(EEPROM_SIG_1) == EEPROM_SIG_1_VALUE)
-			&& (eeprom_read_byte(EEPROM_SIG_2) == EEPROM_SIG_2_VALUE)) {
+		&& (eeprom_read_byte(EEPROM_SIG_2) == EEPROM_SIG_2_VALUE)) {
 
 		for(i = 0; i < EEPROM_SETTINGS_SIZE; i++)
 			registerBuffer[i + 1] = eeprom_read_byte(EEPROM_DATA + i);
 
-		DBG_NET(tracePGMlnNet(mNetDebug_EEPROM);)
+		DBG_NET(tracePGMlnNet(mDebugNet_EEPROM);)
 
-	} else {
-		DBG_NET(tracePGMlnNet(mNetDebug_BUILTIN);)
-	}
+	} DBG_NET(
+		else tracePGMlnNet(mDebugNet_BUILTIN);
+	)
 
 
 	DBG_NET(
-		tracePGMlnNet(mNetDebug_ADDR);
+		tracePGMlnNet(mDebugNet_ADDR);
 		for(i = 15; i < 19; i++) {
 			tracenet(registerBuffer[i]);
 			if(i != 18) putch(0x2E);
 		}
-		tracePGMlnNet(mNetDebug_SUBN);
+		tracePGMlnNet(mDebugNet_SUBN);
 		for(i = 5; i < 9; i++) {
 			tracenet(registerBuffer[i]);
 			if(i != 8) putch(0x2E);
 		}
-		tracePGMlnNet(mNetDebug_GW);
+		tracePGMlnNet(mDebugNet_GW);
 		for(i = 1; i < 5; i++) {
 			tracenet(registerBuffer[i]);
 			if(i != 4) putch(0x2E);
 		}
-		tracePGMlnNet(mNetDebug_MAC);
+		tracePGMlnNet(mDebugNet_MAC);
 		for(i = 9; i < 15; i++) {
 			tracenet(registerBuffer[i]);
 			if(i != 14) putch(0x2E);
@@ -166,7 +176,8 @@ void netInit(void)
 	for(i = 0; i < REGISTER_BLOCK_SIZE; i++)
 		netWriteReg(i, registerBuffer[i]);
 
-	DBG_NET(tracePGMlnNet(mNetDebug_DONE);)
+	DBG_NET(tracePGMlnNet(mDebugNet_DONE);)
 }
 
-// kate: indent-mode cstyle; indent-width 4; replace-tabs off; tab-width 4; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs off; tab-width 4;
+
