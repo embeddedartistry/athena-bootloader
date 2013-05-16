@@ -1,95 +1,61 @@
 #ifndef pin_defs_h
 #define pin_defs_h
 
-#if defined(__AVR_ATmega168__) || defined(__AVR_ATmega328__) || defined(__AVR_ATmega328P__) \
-|| defined(__AVR_ATmega88) || defined(__AVR_ATmega8__) || defined(__AVR_ATmega88__)
-	/* Onboard LED is connected to pin PB5 in Arduino NG, Diecimila, Duemilanove and Uno */
+/* Uno and Deumilanove */
+#if defined(__AVR_ATmega328__) || defined(__AVR_ATmega328P__)
+	/* Onboard LED is connected to pin PB5 in Duemilanove and Uno or to PB1 in Ethernet */
 	#define LED_DDR     DDRB
 	#define LED_PORT    PORTB
 	#define LED_PIN     PINB
-	#ifdef _ARDUINO_ETHERNET
+	#if defined(ARDUINO_ETHERNET)
 		#define LED     PINB1  //Pin 9
 	#else
 		#define LED     PINB5  //Pin 13
 	#endif
-	/* SPI pins */
+
+	/* SPI port and pins */
+	#define SPI_DDR		DDRB
+	#define SPI_PORT	PORTB
+	#define SPI_PIN		PINB
+
 	#define SCK     PINB5  //Pin 13
 	#define MISO    PINB4  //Pin 12
 	#define MOSI    PINB3  //Pin 11
 	#define SS      PINB2  //Pin 10
-	/* Ports for soft UART */
-	#ifdef SOFT_UART
-		#define UART_PORT   PORTD
-		#define UART_PIN    PIND
-		#define UART_DDR    DDRD
-		#define UART_TX_BIT 1
-		#define UART_RX_BIT 0
-	#endif
+	#define ESS		PINB2  //Pin 10
 
-#elif defined(__AVR_ATmega8__)
-	//Name conversion R.Wiersma
-	#define UCSR0A  UCSRA
-	#define UDR0    UDR
-	#define UDRE0   UDRE
-	#define RXC0    RXC
-	#define FE0     FE
-	#define TIFR1   TIFR
-	#define WDTCSR  WDTCR
+	/* SD card SS pin */
+	#define SD_DDR	DDRD
+	#define SD_PORT	PORTD
+	#define SS_PIN	PIND
+	#define SD_SS	PIND4  //Pin 04
 
-/* Luminet support */
-#elif defined(__AVR_ATtiny84__)
-	/* Red LED is connected to pin PA4 */
-	#define LED_DDR     DDRA
-	#define LED_PORT    PORTA
-	#define LED_PIN     PINA
-	#define LED         PINA4
-/* Ports for soft UART - left port only for now. TX/RX on PA2/PA3 */
-	#ifdef SOFT_UART
-		#define UART_PORT   PORTA
-		#define UART_PIN    PINA
-		#define UART_DDR    DDRA
-		#define UART_TX_BIT 2
-		#define UART_RX_BIT 3
-	#endif
-
-/* Sanguino support */
-#elif defined(__AVR_ATmega644P__)
-/* Onboard LED is connected to pin PB0 on Sanguino */
-	#define LED_DDR     DDRB
-	#define LED_PORT    PORTB
-	#define LED_PIN     PINB
-	#define LED         PINB0
-/* Ports for soft UART */
-	#ifdef SOFT_UART
-		#define UART_PORT   PORTD
-		#define UART_PIN    PIND
-		#define UART_DDR    DDRD
-		#define UART_TX_BIT 1
-		#define UART_RX_BIT 0
-	#endif
-
-/* Mega support */
+/* Mega1280 and Mega2560 */
 #elif defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
 	/* Onboard LED is connected to pin PB7 on Arduino Mega */
 	#define LED_DDR     DDRB
 	#define LED_PORT    PORTB
 	#define LED_PIN     PINB
 	#define LED         PINB7
-	/* SPI pins */
-	#define SCK     PINB7  //Pin 13
-	#define MISO    PINB6  //Pin 12
-	#define MOSI    PINB5  //Pin 11
-	#define SS      PINB4  //Pin 10
-	/* Ports for soft UART */
-	#ifdef SOFT_UART
-		#define UART_PORT   PORTE
-		#define UART_PIN    PINE
-		#define UART_DDR    DDRE
-		#define UART_TX_BIT 1
-		#define UART_RX_BIT 0
-	#endif
 
-/* Leonardo support */
+	/* SPI port and pins */
+	#define SPI_DDR		DDRB
+	#define SPI_PORT	PORTB
+	#define SPI_PIN		PINB
+
+	#define SCK		PINB1  //Pin 52
+	#define MISO	PINB3  //Pin 50
+	#define MOSI	PINB2  //Pin 51
+	#define SS      PINB0  //Pin 53
+	#define ESS		PINB4  //Pin 10
+
+	/* SD card SS pin */
+	#define SD_DDR	DDRG
+	#define SD_PORT	PORTG
+	#define SD_PIN	PING
+	#define SD_SS	PING5  //Pin 04
+
+/* Leonardo */
 #elif defined(__AVR_ATmega32U4__)
 
 #else
