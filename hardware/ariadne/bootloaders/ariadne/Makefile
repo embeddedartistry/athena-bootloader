@@ -38,7 +38,7 @@ PROGRAM    = ariadne
 ISPTOOL    = avrispmkii
 #ISPTOOL   = usbtiny
 ISPPORT	   = usb
-ISPSPEED   = -b19200
+ISPSPEED   = -b38400
 
 MCU_TARGET = atmega328p
 LDSECTIONS = -Wl,--section-start=.text=0x7000 #-Wl,--section-start=.version=0x7ffe
@@ -133,10 +133,10 @@ SIZE    = $(GCCROOT)avr-size
 
 
 # Build with the debug messages enabled
-# Use it only if you have already seen the source
+# Use it only if you have already seen the source code
 debug328: TARGET = debug328
 debug328: MCU_TARGET = atmega328p
-debug328: CFLAGS += '-DDEBUG=1' '-DDEBUG_TFTP' '-DDEBUG_NET' '-DBAUD_RATE=115200'
+debug328: CFLAGS += '-DDEBUG_MAIN=1' '-DDEBUG_NET=1' '-DDEBUG_TFTP=1' '-DBAUD_RATE=115200'
 debug328: AVR_FREQ = 16000000L
 debug328: LDSECTIONS = -Wl,--section-start=.text=0x7000 #-Wl,--section-start=.version=0x7ffe
 debug328: $(PROGRAM)_debug328.hex
@@ -155,7 +155,7 @@ debug328_isp: isp
 # Debug build for Arduino Mega2560
 debug2560: TARGET = debug2560
 debug2560: MCU_TARGET = atmega2560
-debug2560: CFLAGS += '-DDEBUG=1' '-DDEBUG_ALL' '-DBAUD_RATE=115200'
+debug2560: CFLAGS += '-DDEBUG_MAIN=1' '-DDEBUG_NET=1' '-DDEBUG_TFTP=1' '-DDEBUG_VALD=1' '-DBAUD_RATE=115200'
 debug2560: AVR_FREQ = 16000000L
 debug2560: LDSECTIONS  = -Wl,--section-start=.text=0x3e000
 debug2560: $(PROGRAM)_debug2560.hex
