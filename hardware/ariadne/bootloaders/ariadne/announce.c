@@ -10,15 +10,13 @@
 #include <avr/pgmspace.h>
 #include <string.h>
 
-#include "announce.h"
-#include "net.h"
-#include "w5100_reg.h"
-#include "tftp.h"
-#include "validate.h"
-#include "debug.h"
+#include	"announce.h"
+#include	"net.h"
+#include	"w5100_reg.h"
+#include	"debug.h"
+#include	"debug_ann.h"
 
-
-#ifdef _ANNOUNCE
+#if defined(ANNOUNCE)
 uint16_t readPointer;
 char* hex = "0123456789ABCDEF";
 const char bootloaderIdentString[] PROGMEM = "Ethernet 1.0";
@@ -122,9 +120,9 @@ void announceInit()
 			netWriteReg(REG_S2_CR, CR_CLOSE);
 	} while(netReadReg(REG_S2_SR) != SOCK_UDP);
 
-#ifdef _VERBOSE
-	traceln(" Ann: Network broadcast init done");
-#endif
+
+	DBG_ANN(tracePGMlnAnn(mDebugAnn_DONE);)
+
 }
 
 void announcePoll()
