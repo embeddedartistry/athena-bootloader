@@ -533,8 +533,9 @@ uint8_t processStk500boot(void)
 	 */
 	//TODO: find out what this does
 	//UART_STATUS_REG	&=	0xfd;
+#if defined(RWWSRE)
 	boot_rww_enable();				// enable application section
-
+#endif
 	eeprom_write_byte(EEPROM_IMG_STAT, EEPROM_IMG_OK_VALUE);
 	return(0);
 }

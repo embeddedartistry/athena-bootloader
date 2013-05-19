@@ -31,7 +31,7 @@
  * (adjust BOOTSIZE below and BOOTLOADER_ADDRESS in Makefile if you want to change the size of the bootloader)
  */
 //#define BOOTSIZE 1024
-#if FLASHEND > 0x0F000
+#if (FLASHEND > 0x0F000)
 	#define BOOTSIZE 8192
 #else
 	#define BOOTSIZE 4096

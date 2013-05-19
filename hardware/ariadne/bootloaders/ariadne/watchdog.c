@@ -16,7 +16,7 @@
 
 
  /* Disable the watchdog timer to prevent
-  * iternal reset loop of doom and despair */
+  * eternal reset loop of doom and despair */
 uint8_t watchdogDisable(void)
 {
 	uint8_t mcusr_mirror;

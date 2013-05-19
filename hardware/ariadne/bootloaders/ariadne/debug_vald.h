@@ -1,4 +1,4 @@
-/* Name: debug_msg.h
+/* Name: debug_vald.h
  * Author: Stelios Tsampas
  * Copyright: codebender.cc
  * License: GPL http://www.gnu.org/licenses/gpl-2.0.html

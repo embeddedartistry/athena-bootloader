@@ -12,6 +12,7 @@
 #include <util/delay.h>
 
 #include "serial.h"
+#include "util.h"
 #include "debug.h"
 
 
