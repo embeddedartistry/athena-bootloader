@@ -29,6 +29,15 @@
 	typedef uint16_t address_t;
 #endif
 
+#if (FLASHEND > 0x10000)
+	#if defined(__AVR_ATmega2560__)
+		#define PROGMEM_OFFSET 0x30000
+	#elif defined(__AVR_ATmega1280__)
+		#define PROGMEM_OFFSET 0x10000
+	#else
+		#error "Unknown MCU. Cannot define PROGMEM_OFFSET"
+	#endif
+#endif
 
 void updateLed(void);
 void resetTick(void);

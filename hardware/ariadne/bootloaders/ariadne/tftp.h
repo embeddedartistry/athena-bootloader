@@ -1,10 +1,10 @@
 #ifndef tftp_h
 #define tftp_h
 
-/* TFTP port settings */
+/** TFTP port settings */
 #define TFTP_PORT 69
 #define TFTP_DATA_PORT 46969
-/* Define this if you want random port generation */
+/** Define this if you want random port generation */
 //#define RANDOM_TFTP_DATA_PORT
 
 #define TFTP_OPCODE_UKN   0
@@ -30,17 +30,16 @@
 #define ERROR_INVALID 1
 #define ACK           2
 #define ERROR_FULL    3
-///Like an ACK, but for the final data packet.
-#define FINAL_ACK     4
+#define FINAL_ACK     4 /// Like an ACK, but for the final data packet. Internal use only.
 #define INVALID_IMAGE 5
 
 
 #if defined(__AVR_ATmega328P__)
-	#define MAX_ADDR	0x7000	// For 328p with 2Kword bootloader
+	#define MAX_ADDR	0x7000	/// For 328p with 2Kword bootloader
 #elif defined(__AVR_ATmega1280__)
-	#define MAX_ADDR	0x1F000	// For 1280 with 2Kword bootloader
+	#define MAX_ADDR	0x1F000	/// For 1280 with 2Kword bootloader
 #elif defined(__AVR_ATmega2560__)
-	#define MAX_ADDR	0x3F000	// For 2560 with 2Kword bootloader
+	#define MAX_ADDR	0x3F000	/// For 2560 with 2Kword bootloader
 #endif
 
 #define TFTP_DATA_SIZE   	512
@@ -53,7 +52,8 @@
 
 #define TFTP_PACKET_DELAY	400
 
-/* Tftp status flag, it is set to TRUE if flashing from
+/**
+ * Tftp status flag, it is set to TRUE if flashing from
  * tftp is currently active */
 uint8_t tftpFlashing;
 

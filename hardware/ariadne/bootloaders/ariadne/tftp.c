@@ -357,19 +357,31 @@ static void sendResponse(uint16_t response)
 		case ERROR_UNKNOWN:
 			// Send unknown error packet
 			packetLength = TFTP_UNKNOWN_ERROR_LEN;
+#if (FLASHEND > 0x10000)
+			memcpy_PF(txBuffer, PROGMEM_OFFSET + (uint32_t)(uint16_t)tftp_unknown_error_packet, packetLength);
+#else
 			memcpy_P(txBuffer, tftp_unknown_error_packet, packetLength);
+#endif
 			break;
 
 		case ERROR_INVALID:
 			// Send invalid opcode packet
 			packetLength = TFTP_OPCODE_ERROR_LEN;
+#if (FLASHEND > 0x10000)
+			memcpy_PF(txBuffer, PROGMEM_OFFSET + (uint32_t)(uint16_t)tftp_opcode_error_packet, packetLength);
+#else
 			memcpy_P(txBuffer, tftp_opcode_error_packet, packetLength);
+#endif
 			break;
 
 		case ERROR_FULL:
 			// Send unknown error packet
 			packetLength = TFTP_FULL_ERROR_LEN;
+#if (FLASHEND > 0x10000)
+			memcpy_PF(txBuffer, PROGMEM_OFFSET + (uint32_t)(uint16_t)tftp_full_error_packet, packetLength);
+#else
 			memcpy_P(txBuffer, tftp_full_error_packet, packetLength);
+#endif
 			break;
 
 		case ACK:

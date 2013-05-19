@@ -51,7 +51,11 @@ void resetTick(void)
 uint8_t timedOut(void)
 {
 	// Never timeout if there is no code in Flash
-	if(pgm_read_word(0x0000) == 0xFFFF) return(0);
+#if (FLASHEND > 0x10000)
+	if(pgm_read_word_far(0x0000) == 0xFFFF) return(0);
+#else
+	if(pgm_read_word_near(0x0000) == 0xFFFF) return(0);
+#endif
 
 	if(tick > TIMEOUT) return(1);
 	else return(0);
