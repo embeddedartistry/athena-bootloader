@@ -33,7 +33,7 @@ int main(void)
 	// Watchdog timer disable
 	watchdogDisable();
 	// Wait to ensure startup
-	_delay_ms(300);
+	_delay_ms(200);
 
 	/* This code makes the following assumptions:
 	 * No interrupts will execute
@@ -85,9 +85,7 @@ int main(void)
 	DBG_MAIN(tracePGMlnMain(mDebugMain_ANN);)
 	announceInit();
 #endif
-
-	_delay_ms(300);
-
+	
 	serialFlashing = FALSE;
 	tftpFlashing = FALSE;
 
