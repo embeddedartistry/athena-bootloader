@@ -249,11 +249,11 @@ static uint8_t processPacket(void)
 				if(writeAddr == 0) {
 					// First sector - validate
 					if(!validImage(pageBase)) {
+
+#if defined(__AVR_ATmega328__) || defined(__AVR_ATmega328P__)
 						/* FIXME: Validity checks. Small programms (under 512 bytes?) don't
 						 * have the the JMP sections and that is why app.bin was failing.
 						 * When flashing big binaries is fixed, uncomment the break below.*/
-#if (DEBUG_TFTP > 0)
-#else
 						returnCode = INVALID_IMAGE;
 						break;
 #endif

@@ -959,11 +959,11 @@ static uint8_t processPacket(void)
     74e0:	ec 91       	ld	r30, X
     74e2:	4e 2b       	or	r20, r30
     74e4:	f8 01       	movw	r30, r16
+
+#if defined(__AVR_ATmega328__) || defined(__AVR_ATmega328P__)
 						/* FIXME: Validity checks. Small programms (under 512 bytes?) don't
 						 * have the the JMP sections and that is why app.bin was failing.
 						 * When flashing big binaries is fixed, uncomment the break below.*/
-#if (DEBUG_TFTP > 0)
-#else
 						returnCode = INVALID_IMAGE;
     74e6:	0a 01       	movw	r0, r20
     74e8:	80 93 57 00 	sts	0x0057, r24
