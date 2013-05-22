@@ -8,8 +8,9 @@
  */
 
 #include <avr/eeprom.h>
-#include <util/delay.h>
 #include <avr/boot.h>
+#include <avr/wdt.h>
+#include <util/delay.h>
 
 #include "util.h"
 #include "net.h"
@@ -25,14 +26,17 @@
 
 
 int main(void) __attribute__((naked)) __attribute__((section(".init9")));
-void (*appStart)(void) __attribute__((naked)) = 0x0000;
-
+//void (*appStart)(void) __attribute__((naked)) = 0x0000;
+//void (*appStart)(void) = 0x0000;
 
 int main(void)
 {
-	// Watchdog timer disable
-	watchdogDisable();
-	// Wait to ensure startup
+	/* Disable the watchdog timer to prevent
+	 * eternal reset loop of doom and despair */
+	MCUSR = 0;
+	wdt_disable();
+
+	// Wait to ensure startup of W5100
 	_delay_ms(200);
 
 	/* This code makes the following assumptions:
@@ -85,7 +89,7 @@ int main(void)
 	DBG_MAIN(tracePGMlnMain(mDebugMain_ANN);)
 	announceInit();
 #endif
-	
+
 	serialFlashing = FALSE;
 	tftpFlashing = FALSE;
 
@@ -128,7 +132,12 @@ int main(void)
 
 	/* Exit to user application */
 	DBG_MAIN(tracePGMlnMain(mDebugMain_EXIT);)
-	appStart();
-	return(0); /* never reached */
+	asm volatile(
+		"clr	r30		\n\t"
+		"clr	r31		\n\t"
+		"ijmp	\n\t"
+	);
+	//appStart();
+	//return(0); /* never reached */
 }
 
