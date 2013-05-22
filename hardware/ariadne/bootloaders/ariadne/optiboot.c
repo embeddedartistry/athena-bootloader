@@ -11,6 +11,7 @@
 #include <avr/io.h>
 #include <avr/pgmspace.h>
 #include <avr/boot.h>
+#include <avr/wdt.h>
 
 #include "util.h"
 #include "serial.h"
@@ -19,20 +20,17 @@
 #include "optiboot.h"
 #include "optiboot_stk500.h"
 
-#if _DEBUG > 0
-	#include "debug.h"
-#endif
-	
+
 static uint16_t address = 0;
 static uint8_t  length;
-
 
 static void verifySpace(void)
 {
 	if(getch() != CRC_EOP) {
-		watchdogConfig(WATCHDOG_16MS);	// shorten WD timeout
-		while(1)						// and busy-loop so that WD causes
-			;							// a reset and app start.
+		WDTCSR = _BV(WDCE) | _BV(WDE);
+		WDTCSR = WATCHDOG_16MS;	// shorten WD timeout
+		while(1)				// and busy-loop so that WD causes
+			;					// a reset and app start.
 	}
 	putch(STK_INSYNC);
 }

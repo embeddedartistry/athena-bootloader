@@ -9,6 +9,7 @@
 
 #include <avr/io.h>
 #include <avr/pgmspace.h>
+#include <avr/wdt.h>
 #include <util/delay.h>
 
 #include "serial.h"
@@ -77,7 +78,7 @@ uint8_t getch(void)
 		 * the application "soon", if it keeps happening.  (Note that we
 		 * don't care that an invalid char is returned...)
 		 */
-		watchdogReset();
+		wdt_reset();
 	}
 
 	//ch = UART_DATA_REG;

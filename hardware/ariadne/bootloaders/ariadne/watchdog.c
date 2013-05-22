@@ -14,7 +14,6 @@
 #include "debug.h"
 
 
-
  /* Disable the watchdog timer to prevent
   * eternal reset loop of doom and despair */
 uint8_t watchdogDisable(void)
