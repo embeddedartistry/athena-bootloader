@@ -2,7 +2,7 @@
 # Author: Stelios Tsampas, from work by optiboot
 # Copyright: optiboot
 # License: GPL http://www.gnu.org/licenses/gpl-2.0.html
-# Project: tftpboot
+# Project: ariadne bootloader
 # Function: tftp implementation and flasher
 # Version: 0.2 tftp flashing functional, serial flashing
 
