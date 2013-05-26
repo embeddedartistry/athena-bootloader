@@ -245,28 +245,61 @@ forwarding for a vast number of routers.
 
 Codebender
 -------------
-One of the best ways and easiest ways to use this bootloader is along with [codebender.cc](http://codebender.cc).
+One of the best and easiest ways to use this bootloader is along with [codebender.cc](http://codebender.cc).
 Just register, enter your Arduino's IP (external IP for those in corporate or home networks behind NAT) and flash.
+
+
+Helper Libraries
+----------------
+* [NewEEPROM](https://github.com/codebendercc/Ariadne-Bootloader/tree/mega/libraries/NewEEPROM)
+
+    Patched EEPROM library to protect the memory space used by the bootloader 
+       
+* [NetEEPROM](https://github.com/codebendercc/Ariadne-Bootloader/tree/mega/libraries/NetEEPROM)
+
+    Library to manipulate the network settings of the bootloader
+    
+* [ResetServer](https://github.com/codebendercc/Ariadne-Bootloader/tree/mega/libraries/EthernetReset)
+
+    Library used to create an HTTP server on the Arduino to enable remote resetting of the microcontroller
 
 
 Supported Boards
 ----------------
-Right now the __ATmega328__ processor and the __WizNet W5100__ ethernet controller are supported. That means
-that your Arduino Uno, Arduino Duemilanove, Arduino Ethernet or any Arduino compatible board using these chipsets
-can be burned with the Ariadne bootloader. If you have the know-how you can probably compile the bootloader for other
-processors but note that we haven't tested it. The following list will be updated over time.
+Supported MCUs:
+
+* __ATmega328__
+* __ATmega2560__
+
+Supported ethernet controllers:
+
+* __WizNet W5100__
+
+Tested Arduino Boards:
+
 * [Arduino Ethernet](www.arduino.cc/en/Main/ArduinoBoardEthernet)
 * [Arduino Uno](http://www.arduino.cc/en/Main/ArduinoBoardUno)
 * [Arduino Duemilanove w/ ATmega328](http://www.arduino.cc/en/Main/ArduinoBoardDuemilanove)
+* [Arduino Mega 2560](http://arduino.cc/en/Main/arduinoBoardMega2560)
 
 Other Tested Boards
 -------------------
 These boards have been also tested and found to be working with Ariadne Bootloader. I don't have any of these so
 a big ___thank you___ goes to the people that took their time to test them.
+
 * [ITead Studio IBoard](http://imall.iteadstudio.com/im120410001.html)
 * [Sparkfun Ethernet Pro](https://www.sparkfun.com/products/10536)
 
-Roadmap
+
+Contributors
+------------
+[Hachi Manzur](hemanzur@gmail.com) (AVRISP mkII programmer, testing)
+
+Over the time I will add more people that have helped in this list.
+If you feel that you should be in this list, please contact me via email.
+
+
+Roadmap (outdated)
 -------
 Right now the main focus for the first packaged release is bug fixing and improve existing functionality. That is why we
 encourage you to use the bootloader and report any bugs, misbehaviours or feature requests here on github. There is
@@ -276,11 +309,13 @@ other ethernet or wifi controllers is being discussed but after the bootloader h
 
 Acknoledgements
 ---------------
-__Ariadne__ bootloader is built upon some great open source projects. First of all is the [TFTP-Bootloader](https://github.com/arduino/TFTP-Bootloader) from the
-*Arduino Team*. This is our base and we tried to stay on path with what they wanted to make. Serial flashing was made
-possible by [Optiboot](https://code.google.com/p/optiboot/) project's bootloader. Credit should also go to [mharizanov](https://github.com/mharizanov) for
-commenting some of the initial *Arduino* code, making it easy for me to start and [follower](https://github.com/follower)
-who's sketches served as a starting point for the included __NetEEPROM__ and __EthernetReset__ libraries.
+__Ariadne__ bootloader is built upon some great open source projects.
+
+* [TFTP-Bootloader](https://github.com/arduino/TFTP-Bootloader) (The base of this project)
+* [Optiboot](https://code.google.com/p/optiboot/) (Serial flashing for __ATmega328__)
+* [Arduino-stk500v2-bootloader](https://github.com/msproul/Arduino-stk500v2-bootloader) (Serial flashing for __ATmega2560__)
+
+Credit should also go to [mharizanov](https://github.com/mharizanov) for commenting some of the initial *Arduino* code, making it easy for me to start and [follower](https://github.com/follower) who's sketches served as a starting point for the included __NetEEPROM__ and __EthernetReset__ libraries.
 
 
 License
