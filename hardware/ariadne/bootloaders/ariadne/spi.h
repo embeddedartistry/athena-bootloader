@@ -1,6 +1,7 @@
-#ifndef pin_defs_h
-#define pin_defs_h
+#ifndef spi_h
+#define spi_h
 
+/** Pin definitions for SPI and leds */
 /** Uno and Deumilanove */
 #if defined(__AVR_ATmega328__) || defined(__AVR_ATmega328P__)
 	/** SPI port and pins */
@@ -62,5 +63,19 @@
 #else
 	#error "No pin definitions for MCU available"
 #endif
+
+#define SPI_WRITE (0xF0)
+#define SPI_READ  (0x0F)
+
+#define SS_LOW()	ETH_PORT &= ~_BV(ETH_SS)
+#define SS_HIGH()	ETH_PORT |= _BV(ETH_SS)
+
+void spiInit(void);
+
+void spiWriteReg(uint16_t address, uint8_t value);
+void spiWriteWord(uint16_t address, uint16_t value);
+
+uint8_t  spiReadReg(uint16_t address);
+uint16_t spiReadWord(uint16_t address);
 
 #endif

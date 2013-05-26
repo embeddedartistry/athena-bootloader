@@ -14,7 +14,6 @@
 
 #include "serial.h"
 #include "watchdog.h"
-#include "pin_defs.h"
 #include "util.h"
 #if defined(__AVR_ATmega328__) || defined(__AVR_ATmega328P__)
 	#include "optiboot.h"

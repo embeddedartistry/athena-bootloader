@@ -13,6 +13,7 @@
 #include <util/delay.h>
 
 #include "util.h"
+#include "spi.h"
 #include "net.h"
 #include "tftp.h"
 #include "serial.h"
@@ -70,23 +71,26 @@ int main(void)
 	DBG_MAIN(tracePGMlnMain(mDebugMain_TITLE);)
 
 	DBG_BTN(
-		DBG_MAIN(tracePGMlnMain(mDebugMain_BTN);)
+		DBG_MAIN_EX(tracePGMlnMain(mDebugMain_BTN);)
 		buttonInit();
 	)
 
-	// Initialize W5100 chip
-	DBG_MAIN(tracePGMlnMain(mDebugMain_NET);)
+	/** Initalize SPI communication */
+	DBG_MAIN_EX(tracePGMlnMain(mDebugMain_SPI);)
+	spiInit();
+	/** Initialize networking */
+	DBG_MAIN_EX(tracePGMlnMain(mDebugMain_NET);)
 	netInit();
 
 	// Initialize the UDP socket for tftp
-	DBG_MAIN(tracePGMlnMain(mDebugMain_TFTP);)
+	DBG_MAIN_EX(tracePGMlnMain(mDebugMain_TFTP);)
 	tftpInit();
 
 	/* This code is to be used with the java-client inherited from the
 	 * Arduino project. We don't support it and it adds about
 	 * 600 bytes to the binary. So off it goes */
 #if defined(ANNOUNCE)
-	DBG_MAIN(tracePGMlnMain(mDebugMain_ANN);)
+	DBG_MAIN_EX(tracePGMlnMain(mDebugMain_ANN);)
 	announceInit();
 #endif
 

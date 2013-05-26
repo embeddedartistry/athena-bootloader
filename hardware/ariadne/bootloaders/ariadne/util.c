@@ -12,7 +12,7 @@
 #include <util/delay.h>
 
 #include "util.h"
-#include "pin_defs.h"
+#include "spi.h"
 #include "debug.h"
 #include "debug_util.h"
 

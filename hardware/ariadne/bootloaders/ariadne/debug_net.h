@@ -28,9 +28,6 @@ const unsigned char mDebugNet_DONE[]	PROGMEM =	"Network init done";
 	#if (DEBUG_NET > 1)
 		#undef DBG_NET_EX
 		#define DBG_NET_EX(block) block
-const unsigned char mDebugNet_COMMA[]	PROGMEM =	", ";
-const unsigned char mDebugNet_NWREG[]	PROGMEM =	"netWriteReg: ";
-const unsigned char mDebugNet_NRREG[]	PROGMEM =	"netReadReg: ";
 	#endif
 #endif
 

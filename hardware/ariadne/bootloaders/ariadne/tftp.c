@@ -12,12 +12,11 @@
 #include <avr/boot.h>
 
 #include "util.h"
+#include "spi.h"
 #include "neteeprom.h"
-#include "net.h"
 #include "w5100_reg.h"
 #include "tftp.h"
 #include "validate.h"
-#include "watchdog.h"
 #include "serial.h"
 #include "debug.h"
 #include "debug_tftp.h"
@@ -48,23 +47,23 @@ static void sockInit(uint16_t port)
 		tracenum(port);
 	)
 
-	netWriteReg(REG_S3_CR, CR_CLOSE);
+	spiWriteReg(REG_S3_CR, CR_CLOSE);
 
 	do {
 		// Write TFTP Port
-		netWriteWord(REG_S3_PORT0, port);
+		spiWriteWord(REG_S3_PORT0, port);
 		// Write mode
-		netWriteReg(REG_S3_MR, MR_UDP);
+		spiWriteReg(REG_S3_MR, MR_UDP);
 		// Open Socket
-		netWriteReg(REG_S3_CR, CR_OPEN);
+		spiWriteReg(REG_S3_CR, CR_OPEN);
 
 		// Read Status
-		if(netReadReg(REG_S3_SR) != SOCK_UDP)
+		if(spiReadReg(REG_S3_SR) != SOCK_UDP)
 			// Close Socket if it wasn't initialized correctly
-			netWriteReg(REG_S3_CR, CR_CLOSE);
+			spiWriteReg(REG_S3_CR, CR_CLOSE);
 
 		// If socket correctly opened continue
-	} while(netReadReg(REG_S3_SR) != SOCK_UDP);
+	} while(spiReadReg(REG_S3_SR) != SOCK_UDP);
 }
 
 
@@ -92,7 +91,7 @@ static uint8_t processPacket(void)
 	)
 
 	// Read data from chip to buffer
-	readPointer = netReadWord(REG_S3_RX_RD0);
+	readPointer = spiReadWord(REG_S3_RX_RD0);
 
 	DBG_TFTP_EX(
 		tracePGMlnTftp(mDebugTftp_RPTR);
@@ -110,19 +109,19 @@ static uint8_t processPacket(void)
 			}
 		)
 
-		*bufPtr++ = netReadReg(readPointer++);
+		*bufPtr++ = spiReadReg(readPointer++);
 
 		if(readPointer == S3_RX_END) readPointer = S3_RX_START;
 	}
 
-	netWriteWord(REG_S3_RX_RD0, readPointer);     // Write back new pointer
-	netWriteReg(REG_S3_CR, CR_RECV);
+	spiWriteWord(REG_S3_RX_RD0, readPointer);     // Write back new pointer
+	spiWriteReg(REG_S3_CR, CR_RECV);
 
-	while(netReadReg(REG_S3_CR));
+	while(spiReadReg(REG_S3_CR));
 
 	DBG_TFTP_EX(
 		tracePGMlnTftp(mDebugTftp_BLEFT);
-		tracenum(netReadWord(REG_S3_RX_RSR0));
+		tracenum(spiReadWord(REG_S3_RX_RSR0));
 	)
 
 	// Dump packet
@@ -143,7 +142,7 @@ static uint8_t processPacket(void)
 	// Set up return IP address and port
 	uint8_t i;
 
-	for(i = 0; i < 6; i++) netWriteReg(REG_S3_DIPR0 + i, buffer[i]);
+	for(i = 0; i < 6; i++) spiWriteReg(REG_S3_DIPR0 + i, buffer[i]);
 
 	DBG_TFTP(tracePGMlnTftp(mDebugTftp_RADDR);)
 
@@ -349,7 +348,7 @@ static void sendResponse(uint16_t response)
 	uint8_t packetLength;
 	uint16_t writePointer;
 
-	writePointer = netReadWord(REG_S3_TX_WR0) + S3_TX_START;
+	writePointer = spiReadWord(REG_S3_TX_WR0) + S3_TX_START;
 
 	switch(response) {
 		default:
@@ -409,15 +408,15 @@ static void sendResponse(uint16_t response)
 	txPtr = txBuffer;
 
 	while(packetLength--) {
-		netWriteReg(writePointer++, *txPtr++);
+		spiWriteReg(writePointer++, *txPtr++);
 
 		if(writePointer == S3_TX_END) writePointer = S3_TX_START;
 	}
 
-	netWriteWord(REG_S3_TX_WR0, writePointer - S3_TX_START);
-	netWriteReg(REG_S3_CR, CR_SEND);
+	spiWriteWord(REG_S3_TX_WR0, writePointer - S3_TX_START);
+	spiWriteReg(REG_S3_CR, CR_SEND);
 
-	while(netReadReg(REG_S3_CR));
+	while(spiReadReg(REG_S3_CR));
 
 	DBG_TFTP(tracePGMlnTftp(mDebugTftp_RESP);)
 }
@@ -457,22 +456,22 @@ uint8_t tftpPoll(void)
 {
 	uint8_t response = ACK;
 	// Get the size of the recieved data
-	uint16_t packetSize = netReadWord(REG_S3_RX_RSR0);
+	uint16_t packetSize = spiReadWord(REG_S3_RX_RSR0);
 //	uint16_t packetSize = 0, incSize = 0;
 
 // 	do {
-// 		incSize = netReadWord(REG_S3_RX_RSR0);
+// 		incSize = spiReadWord(REG_S3_RX_RSR0);
 // 		if(incSize != 0) {
 // 			_delay_ms(400);
-// 			packetSize = netReadWord(REG_S3_RX_RSR0);
+// 			packetSize = spiReadWord(REG_S3_RX_RSR0);
 // 		}
 // 	} while (packetSize != incSize);
 
 	if(packetSize) {
 		tftpFlashing = TRUE;
 
-		while((netReadReg(REG_S3_IR) & IR_RECV)) {
-			netWriteReg(REG_S3_IR, IR_RECV);
+		while((spiReadReg(REG_S3_IR) & IR_RECV)) {
+			spiWriteReg(REG_S3_IR, IR_RECV);
 			//FIXME: is this right after all? smaller delay but
 			//still a delay and it still breaks occasionally
 			_delay_ms(TFTP_PACKET_DELAY);
@@ -480,7 +479,7 @@ uint8_t tftpPoll(void)
 
 		// Process Packet and get TFTP response code
 #if (DEBUG_TFTP > 0)
-		packetSize = netReadWord(REG_S3_RX_RSR0);
+		packetSize = spiReadWord(REG_S3_RX_RSR0);
 		response = processPacket(packetSize);
 #else
 		response = processPacket();
@@ -490,7 +489,7 @@ uint8_t tftpPoll(void)
 	}
 
 	if(response == FINAL_ACK) {
-		netWriteReg(REG_S3_CR, CR_CLOSE);
+		spiWriteReg(REG_S3_CR, CR_CLOSE);
 		// Complete
 		return(0);
 	}

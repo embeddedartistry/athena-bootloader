@@ -29,15 +29,19 @@ const unsigned char mDebugMain_TITLE[]	PROGMEM = 	"Ariadne for Arduino Mega2560,
 	#else
 const unsigned char mDebugMain_TITLE[]	PROGMEM = 	"Unknown MCU with ariadne, Version 0.5";
 	#endif
+const unsigned char mDebugMain_EXIT[]	PROGMEM = 	"Start user app";
+	#if (DEBUG_MAIN > 1)
+		#undef DBG_MAIN_EX
+		#define DBG_MAIN_EX(block) block
+const unsigned char mDebugMain_SPI[]	PROGMEM =	"Init spi comm";
 const unsigned char mDebugMain_NET[]	PROGMEM =	"Init network layer";
 const unsigned char mDebugMain_TFTP[]	PROGMEM =	"Init tftp server";
-const unsigned char mDebugMain_EXIT[]	PROGMEM = 	"Start user app";
-
-	#if defined(DEBUG_BTN)
+		#if defined(DEBUG_BTN)
 const unsigned char mDebugMain_BTN[]	PROGMEM =	"Init button debugging";
-	#endif
-	#if defined(ANNOUNCE)
+		#endif
+		#if defined(ANNOUNCE)
 const unsigned char mDebugMain_ANN[]	PROGMEM =	"Init network announce";
+		#endif
 	#endif
 #endif
 
