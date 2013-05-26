@@ -42,6 +42,13 @@ void spiWriteReg(uint16_t address, uint8_t value)
 	SPCR = 0; // Turn off SPI
 }
 
+void spiWriteWord(uint16_t address, uint16_t value)
+{
+	// Write uint16_t to Ethernet controller
+	spiWriteReg(address++, value >> 8);
+	spiWriteReg(address, value & 0xff);
+}
+
 /** Read uint8_t from Ethernet controller */
 uint8_t spiReadReg(uint16_t address)
 {
@@ -80,13 +87,6 @@ uint16_t spiReadWord(uint16_t address)
 {
 	// Read uint16_t from Ethernet controller
 	return((spiReadReg(address) << 8) | spiReadReg(address + 1));
-}
-
-void spiWriteWord(uint16_t address, uint16_t value)
-{
-	// Write uint16_t to Ethernet controller
-	spiWriteReg(address++, value >> 8);
-	spiWriteReg(address, value & 0xff);
 }
 
 void spiInit(void)
