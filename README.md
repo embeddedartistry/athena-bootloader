@@ -253,12 +253,12 @@ Helper Libraries
 ----------------
 * [NewEEPROM](https://github.com/codebendercc/Ariadne-Bootloader/tree/mega/libraries/NewEEPROM)
 
-    Patched EEPROM library to protect the memory space used by the bootloader 
-       
+    Patched EEPROM library to protect the memory space used by the bootloader
+
 * [NetEEPROM](https://github.com/codebendercc/Ariadne-Bootloader/tree/mega/libraries/NetEEPROM)
 
     Library to manipulate the network settings of the bootloader
-    
+
 * [ResetServer](https://github.com/codebendercc/Ariadne-Bootloader/tree/mega/libraries/EthernetReset)
 
     Library used to create an HTTP server on the Arduino to enable remote resetting of the microcontroller
@@ -295,7 +295,7 @@ Contributors
 ------------
 [Hachi Manzur](hemanzur@gmail.com) (AVRISP mkII programmer, testing)
 
-Over the time I will add more people that have helped in this list.
+Over the time I will add more people who have helped in this list.
 If you feel that you should be in this list, please contact me via email.
 
 
