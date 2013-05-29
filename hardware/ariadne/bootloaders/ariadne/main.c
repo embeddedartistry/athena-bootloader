@@ -14,7 +14,7 @@
 
 #include "util.h"
 #include "spi.h"
-#include "net.h"
+#include "w5100.h"
 #include "tftp.h"
 #include "serial.h"
 #include "neteeprom.h"

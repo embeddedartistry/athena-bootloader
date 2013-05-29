@@ -1,4 +1,4 @@
-/* Name: net.c
+/* Name: net_w5100.c
  * Author: .
  * Copyright: Arduino
  * License: GPL http://www.gnu.org/licenses/gpl-2.0.html
@@ -11,7 +11,7 @@
 #include <avr/eeprom.h>
 
 #include "spi.h"
-#include "net.h"
+#include "w5100.h"
 #include "neteeprom.h"
 #include "serial.h"
 #include "debug.h"

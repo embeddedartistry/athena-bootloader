@@ -11,9 +11,9 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   ALLOC
   3 .stab         00004a04  00000000  00000000  00000f54  2**2
                   CONTENTS, READONLY, DEBUGGING
-  4 .stabstr      000015b4  00000000  00000000  00005958  2**0
+  4 .stabstr      000015b2  00000000  00000000  00005958  2**0
                   CONTENTS, READONLY, DEBUGGING
-  5 .comment      00000011  00000000  00000000  00006f0c  2**0
+  5 .comment      00000011  00000000  00000000  00006f0a  2**0
                   CONTENTS, READONLY
 
 Disassembly of section .text:
@@ -330,113 +330,114 @@ Disassembly of section .text:
    3e252:	1c bc       	out	0x2c, r1	; 44
    3e254:	08 95       	ret
 
-0003e256 <spiReadReg>:
+0003e256 <spiWriteWord>:
+}
+
+void spiWriteWord(uint16_t address, uint16_t value)
+{
+   3e256:	0f 93       	push	r16
+   3e258:	1f 93       	push	r17
+   3e25a:	cf 93       	push	r28
+   3e25c:	df 93       	push	r29
+   3e25e:	8c 01       	movw	r16, r24
+   3e260:	eb 01       	movw	r28, r22
+	// Write uint16_t to Ethernet controller
+	spiWriteReg(address++, value >> 8);
+   3e262:	67 2f       	mov	r22, r23
+   3e264:	77 27       	eor	r23, r23
+   3e266:	de df       	rcall	.-68     	; 0x3e224 <spiWriteReg>
+   3e268:	6c 2f       	mov	r22, r28
+	spiWriteReg(address, value & 0xff);
+   3e26a:	c8 01       	movw	r24, r16
+   3e26c:	01 96       	adiw	r24, 0x01	; 1
+   3e26e:	df 91       	pop	r29
+}
+   3e270:	cf 91       	pop	r28
+   3e272:	1f 91       	pop	r17
+   3e274:	0f 91       	pop	r16
+   3e276:	d6 cf       	rjmp	.-84     	; 0x3e224 <spiWriteReg>
+
+0003e278 <spiReadReg>:
 	)
 	#endif
 
 	uint8_t returnValue;
 
 	SPCR = _BV(SPE) | _BV(MSTR);
-   3e256:	20 e5       	ldi	r18, 0x50	; 80
-   3e258:	2c bd       	out	0x2c, r18	; 44
+   3e278:	20 e5       	ldi	r18, 0x50	; 80
+   3e27a:	2c bd       	out	0x2c, r18	; 44
 	SS_LOW();
-   3e25a:	2c 98       	cbi	0x05, 4	; 5
+   3e27c:	2c 98       	cbi	0x05, 4	; 5
 
 	SPDR = SPI_READ;
-   3e25c:	2f e0       	ldi	r18, 0x0F	; 15
-   3e25e:	2e bd       	out	0x2e, r18	; 46
+   3e27e:	2f e0       	ldi	r18, 0x0F	; 15
+   3e280:	2e bd       	out	0x2e, r18	; 46
 	while(!(SPSR & _BV(SPIF)));
-   3e260:	0d b4       	in	r0, 0x2d	; 45
-   3e262:	07 fe       	sbrs	r0, 7
-   3e264:	fd cf       	rjmp	.-6      	; 0x3e260 <spiReadReg+0xa>
+   3e282:	0d b4       	in	r0, 0x2d	; 45
+   3e284:	07 fe       	sbrs	r0, 7
+   3e286:	fd cf       	rjmp	.-6      	; 0x3e282 <spiReadReg+0xa>
 
 	SPDR = address >> 8;
-   3e266:	29 2f       	mov	r18, r25
-   3e268:	33 27       	eor	r19, r19
-   3e26a:	2e bd       	out	0x2e, r18	; 46
+   3e288:	29 2f       	mov	r18, r25
+   3e28a:	33 27       	eor	r19, r19
+   3e28c:	2e bd       	out	0x2e, r18	; 46
 	while(!(SPSR & _BV(SPIF)));
-   3e26c:	0d b4       	in	r0, 0x2d	; 45
-   3e26e:	07 fe       	sbrs	r0, 7
-   3e270:	fd cf       	rjmp	.-6      	; 0x3e26c <spiReadReg+0x16>
+   3e28e:	0d b4       	in	r0, 0x2d	; 45
+   3e290:	07 fe       	sbrs	r0, 7
+   3e292:	fd cf       	rjmp	.-6      	; 0x3e28e <spiReadReg+0x16>
 
 	SPDR = address & 0xff;
-   3e272:	8e bd       	out	0x2e, r24	; 46
+   3e294:	8e bd       	out	0x2e, r24	; 46
 	while(!(SPSR & _BV(SPIF)));
-   3e274:	0d b4       	in	r0, 0x2d	; 45
-   3e276:	07 fe       	sbrs	r0, 7
-   3e278:	fd cf       	rjmp	.-6      	; 0x3e274 <spiReadReg+0x1e>
+   3e296:	0d b4       	in	r0, 0x2d	; 45
+   3e298:	07 fe       	sbrs	r0, 7
+   3e29a:	fd cf       	rjmp	.-6      	; 0x3e296 <spiReadReg+0x1e>
 
 	SPDR = 0;
-   3e27a:	1e bc       	out	0x2e, r1	; 46
+   3e29c:	1e bc       	out	0x2e, r1	; 46
 	while(!(SPSR & _BV(SPIF)));
-   3e27c:	0d b4       	in	r0, 0x2d	; 45
-   3e27e:	07 fe       	sbrs	r0, 7
-   3e280:	fd cf       	rjmp	.-6      	; 0x3e27c <spiReadReg+0x26>
+   3e29e:	0d b4       	in	r0, 0x2d	; 45
+   3e2a0:	07 fe       	sbrs	r0, 7
+   3e2a2:	fd cf       	rjmp	.-6      	; 0x3e29e <spiReadReg+0x26>
 
 	SS_HIGH();
-   3e282:	2c 9a       	sbi	0x05, 4	; 5
+   3e2a4:	2c 9a       	sbi	0x05, 4	; 5
 	returnValue = SPDR;
-   3e284:	8e b5       	in	r24, 0x2e	; 46
+   3e2a6:	8e b5       	in	r24, 0x2e	; 46
 	SPCR = 0;
-   3e286:	1c bc       	out	0x2c, r1	; 44
+   3e2a8:	1c bc       	out	0x2c, r1	; 44
 
 	return(returnValue);
 }
-   3e288:	08 95       	ret
+   3e2aa:	08 95       	ret
 
-0003e28a <spiReadWord>:
+0003e2ac <spiReadWord>:
 
 uint16_t spiReadWord(uint16_t address)
 {
-   3e28a:	1f 93       	push	r17
-   3e28c:	cf 93       	push	r28
-   3e28e:	df 93       	push	r29
-   3e290:	ec 01       	movw	r28, r24
+   3e2ac:	1f 93       	push	r17
+   3e2ae:	cf 93       	push	r28
+   3e2b0:	df 93       	push	r29
+   3e2b2:	ec 01       	movw	r28, r24
 	// Read uint16_t from Ethernet controller
 	return((spiReadReg(address) << 8) | spiReadReg(address + 1));
-   3e292:	e1 df       	rcall	.-62     	; 0x3e256 <spiReadReg>
-   3e294:	18 2f       	mov	r17, r24
-   3e296:	ce 01       	movw	r24, r28
-   3e298:	01 96       	adiw	r24, 0x01	; 1
-   3e29a:	dd df       	rcall	.-70     	; 0x3e256 <spiReadReg>
-   3e29c:	21 2f       	mov	r18, r17
-   3e29e:	30 e0       	ldi	r19, 0x00	; 0
-   3e2a0:	32 2f       	mov	r19, r18
-   3e2a2:	22 27       	eor	r18, r18
-   3e2a4:	a9 01       	movw	r20, r18
-   3e2a6:	48 2b       	or	r20, r24
+   3e2b4:	e1 df       	rcall	.-62     	; 0x3e278 <spiReadReg>
+   3e2b6:	18 2f       	mov	r17, r24
+   3e2b8:	ce 01       	movw	r24, r28
+   3e2ba:	01 96       	adiw	r24, 0x01	; 1
+   3e2bc:	dd df       	rcall	.-70     	; 0x3e278 <spiReadReg>
+   3e2be:	21 2f       	mov	r18, r17
+   3e2c0:	30 e0       	ldi	r19, 0x00	; 0
+   3e2c2:	32 2f       	mov	r19, r18
+   3e2c4:	22 27       	eor	r18, r18
+   3e2c6:	a9 01       	movw	r20, r18
+   3e2c8:	48 2b       	or	r20, r24
 }
-   3e2a8:	ca 01       	movw	r24, r20
-   3e2aa:	df 91       	pop	r29
-   3e2ac:	cf 91       	pop	r28
-   3e2ae:	1f 91       	pop	r17
-   3e2b0:	08 95       	ret
-
-0003e2b2 <spiWriteWord>:
-
-void spiWriteWord(uint16_t address, uint16_t value)
-{
-   3e2b2:	0f 93       	push	r16
-   3e2b4:	1f 93       	push	r17
-   3e2b6:	cf 93       	push	r28
-   3e2b8:	df 93       	push	r29
-   3e2ba:	8c 01       	movw	r16, r24
-   3e2bc:	eb 01       	movw	r28, r22
-	// Write uint16_t to Ethernet controller
-	spiWriteReg(address++, value >> 8);
-   3e2be:	67 2f       	mov	r22, r23
-   3e2c0:	77 27       	eor	r23, r23
-   3e2c2:	b0 df       	rcall	.-160    	; 0x3e224 <spiWriteReg>
-   3e2c4:	6c 2f       	mov	r22, r28
-	spiWriteReg(address, value & 0xff);
-   3e2c6:	c8 01       	movw	r24, r16
-   3e2c8:	01 96       	adiw	r24, 0x01	; 1
-   3e2ca:	df 91       	pop	r29
-}
-   3e2cc:	cf 91       	pop	r28
-   3e2ce:	1f 91       	pop	r17
-   3e2d0:	0f 91       	pop	r16
-   3e2d2:	a8 cf       	rjmp	.-176    	; 0x3e224 <spiWriteReg>
+   3e2ca:	ca 01       	movw	r24, r20
+   3e2cc:	df 91       	pop	r29
+   3e2ce:	cf 91       	pop	r28
+   3e2d0:	1f 91       	pop	r17
+   3e2d2:	08 95       	ret
 
 0003e2d4 <spiInit>:
 	 * At this stage all pins are set to HIGH. This in fact DISABLES SPI for both Ethernet and SD.
@@ -600,7 +601,7 @@ static void sockInit(uint16_t port)
 		spiWriteWord(REG_S3_PORT0, port);
    3e35c:	84 e0       	ldi	r24, 0x04	; 4
    3e35e:	97 e0       	ldi	r25, 0x07	; 7
-   3e360:	a8 df       	rcall	.-176    	; 0x3e2b2 <spiWriteWord>
+   3e360:	7a df       	rcall	.-268    	; 0x3e256 <spiWriteWord>
    3e362:	62 e0       	ldi	r22, 0x02	; 2
    3e364:	80 e0       	ldi	r24, 0x00	; 0
 		// Write mode
@@ -615,7 +616,7 @@ static void sockInit(uint16_t port)
    3e370:	59 df       	rcall	.-334    	; 0x3e224 <spiWriteReg>
    3e372:	83 e0       	ldi	r24, 0x03	; 3
    3e374:	97 e0       	ldi	r25, 0x07	; 7
-   3e376:	6f df       	rcall	.-290    	; 0x3e256 <spiReadReg>
+   3e376:	80 df       	rcall	.-256    	; 0x3e278 <spiReadReg>
    3e378:	82 32       	cpi	r24, 0x22	; 34
 
 		// Read Status
@@ -629,7 +630,7 @@ static void sockInit(uint16_t port)
 			// Close Socket if it wasn't initialized correctly
 			spiWriteReg(REG_S3_CR, CR_CLOSE);
    3e386:	97 e0       	ldi	r25, 0x07	; 7
-   3e388:	66 df       	rcall	.-308    	; 0x3e256 <spiReadReg>
+   3e388:	77 df       	rcall	.-274    	; 0x3e278 <spiReadReg>
    3e38a:	82 32       	cpi	r24, 0x22	; 34
    3e38c:	31 f7       	brne	.-52     	; 0x3e35a <sockInit+0xe>
    3e38e:	df 91       	pop	r29
@@ -678,7 +679,7 @@ static uint8_t processPacket(void)
 	readPointer = spiReadWord(REG_S3_RX_RD0);
    3e3c4:	88 e2       	ldi	r24, 0x28	; 40
    3e3c6:	97 e0       	ldi	r25, 0x07	; 7
-   3e3c8:	60 df       	rcall	.-320    	; 0x3e28a <spiReadWord>
+   3e3c8:	71 df       	rcall	.-286    	; 0x3e2ac <spiReadWord>
    3e3ca:	00 97       	sbiw	r24, 0x00	; 0
 	DBG_TFTP_EX(
 		tracePGMlnTftp(mDebugTftp_RPTR);
@@ -713,7 +714,7 @@ static uint8_t processPacket(void)
    3e3ec:	ef ef       	ldi	r30, 0xFF	; 255
    3e3ee:	ee 1a       	sub	r14, r30
    3e3f0:	fe 0a       	sbc	r15, r30
-   3e3f2:	31 df       	rcall	.-414    	; 0x3e256 <spiReadReg>
+   3e3f2:	42 df       	rcall	.-380    	; 0x3e278 <spiReadReg>
    3e3f4:	f8 01       	movw	r30, r16
    3e3f6:	81 93       	st	Z+, r24
    3e3f8:	8f 01       	movw	r16, r30
@@ -734,7 +735,7 @@ static uint8_t processPacket(void)
 
 	spiWriteWord(REG_S3_RX_RD0, readPointer);     // Write back new pointer
    3e410:	97 e0       	ldi	r25, 0x07	; 7
-   3e412:	4f df       	rcall	.-354    	; 0x3e2b2 <spiWriteWord>
+   3e412:	21 df       	rcall	.-446    	; 0x3e256 <spiWriteWord>
    3e414:	60 e4       	ldi	r22, 0x40	; 64
    3e416:	81 e0       	ldi	r24, 0x01	; 1
    3e418:	97 e0       	ldi	r25, 0x07	; 7
@@ -742,7 +743,7 @@ static uint8_t processPacket(void)
    3e41a:	04 df       	rcall	.-504    	; 0x3e224 <spiWriteReg>
    3e41c:	81 e0       	ldi	r24, 0x01	; 1
    3e41e:	97 e0       	ldi	r25, 0x07	; 7
-   3e420:	1a df       	rcall	.-460    	; 0x3e256 <spiReadReg>
+   3e420:	2b df       	rcall	.-426    	; 0x3e278 <spiReadReg>
    3e422:	81 11       	cpse	r24, r1
 
 	while(spiReadReg(REG_S3_CR));
@@ -1254,7 +1255,7 @@ uint8_t tftpPoll(void)
 	uint16_t packetSize = spiReadWord(REG_S3_RX_RSR0);
    3e6a6:	86 e2       	ldi	r24, 0x26	; 38
    3e6a8:	97 e0       	ldi	r25, 0x07	; 7
-   3e6aa:	ef dd       	rcall	.-1058   	; 0x3e28a <spiReadWord>
+   3e6aa:	00 de       	rcall	.-1024   	; 0x3e2ac <spiReadWord>
    3e6ac:	89 2b       	or	r24, r25
 // 			_delay_ms(400);
 // 			packetSize = spiReadWord(REG_S3_RX_RSR0);
@@ -1283,7 +1284,7 @@ uint8_t tftpPoll(void)
 
 		while((spiReadReg(REG_S3_IR) & IR_RECV)) {
    3e6bc:	97 e0       	ldi	r25, 0x07	; 7
-   3e6be:	cb dd       	rcall	.-1130   	; 0x3e256 <spiReadReg>
+   3e6be:	dc dd       	rcall	.-1096   	; 0x3e278 <spiReadReg>
    3e6c0:	82 ff       	sbrs	r24, 2
    3e6c2:	0e c0       	rjmp	.+28     	; 0x3e6e0 <tftpPoll+0x5a>
    3e6c4:	64 e0       	ldi	r22, 0x04	; 4
@@ -1317,7 +1318,7 @@ uint8_t tftpPoll(void)
 #else
 		response = processPacket();
    3e6e6:	97 e0       	ldi	r25, 0x07	; 7
-   3e6e8:	d0 dd       	rcall	.-1120   	; 0x3e28a <spiReadWord>
+   3e6e8:	e1 dd       	rcall	.-1086   	; 0x3e2ac <spiReadWord>
    3e6ea:	8c 01       	movw	r16, r24
 	uint8_t txBuffer[100];
 	uint8_t* txPtr = txBuffer;
@@ -1500,7 +1501,7 @@ uint8_t tftpPoll(void)
    3e7c0:	78 55       	subi	r23, 0x58	; 88
    3e7c2:	84 e2       	ldi	r24, 0x24	; 36
    3e7c4:	97 e0       	ldi	r25, 0x07	; 7
-   3e7c6:	75 dd       	rcall	.-1302   	; 0x3e2b2 <spiWriteWord>
+   3e7c6:	47 dd       	rcall	.-1394   	; 0x3e256 <spiWriteWord>
    3e7c8:	60 e2       	ldi	r22, 0x20	; 32
    3e7ca:	81 e0       	ldi	r24, 0x01	; 1
 			break;
@@ -1519,7 +1520,7 @@ uint8_t tftpPoll(void)
 	spiWriteWord(REG_S3_TX_WR0, writePointer - S3_TX_START);
    3e7d0:	81 e0       	ldi	r24, 0x01	; 1
    3e7d2:	97 e0       	ldi	r25, 0x07	; 7
-   3e7d4:	40 dd       	rcall	.-1408   	; 0x3e256 <spiReadReg>
+   3e7d4:	51 dd       	rcall	.-1374   	; 0x3e278 <spiReadReg>
    3e7d6:	81 11       	cpse	r24, r1
    3e7d8:	fb cf       	rjmp	.-10     	; 0x3e7d0 <tftpPoll+0x14a>
    3e7da:	34 e0       	ldi	r19, 0x04	; 4

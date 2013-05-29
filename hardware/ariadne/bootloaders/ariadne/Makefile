@@ -112,7 +112,7 @@ STK500-1 = $(STK500) -e -d$(MCU_TARGET) -pf -vf -if$(PROGRAM)_$(TARGET).hex \
 	   -lFF -LFF -f$(HFUSE)$(LFUSE) -EF8 -ms -q -cUSB -I200kHz -s -wt
 STK500-2 = $(STK500) -d$(MCU_TARGET) -ms -q -lCF -LCF -cUSB -I200kHz -s -wt
 
-OBJ      = main.o spi.o net.o tftp.o validate.o debug.o watchdog.o serial.o util.o announce.o optiboot.o stk500boot.o
+OBJ      = main.o spi.o w5100.o tftp.o validate.o debug.o watchdog.o serial.o util.o announce.o optiboot.o stk500boot.o
 OPTIMIZE = -Os -fno-inline-small-functions -fno-split-wide-types -mno-interrupts -mrelax
 OPTIMIZE += -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums -fno-jump-tables -std=gnu99 #-save-temps
 

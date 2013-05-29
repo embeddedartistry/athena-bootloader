@@ -13,8 +13,8 @@
 
 #include "util.h"
 #include "spi.h"
+#include "w5100.h"
 #include "neteeprom.h"
-#include "w5100_reg.h"
 #include "tftp.h"
 #include "validate.h"
 #include "serial.h"

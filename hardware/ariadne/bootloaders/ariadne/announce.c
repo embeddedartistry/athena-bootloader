@@ -11,8 +11,8 @@
 #include <string.h>
 
 #include	"announce.h"
-#include	"net.h"
-#include	"w5100_reg.h"
+#include	"spi.h"
+#include	"w5100.h"
 #include	"debug.h"
 #include	"debug_ann.h"
 
