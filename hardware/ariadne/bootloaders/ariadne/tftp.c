@@ -148,8 +148,8 @@ static uint8_t processPacket(void)
 
 	// Parse packet
 	uint16_t tftpDataLen = (buffer[6] << 8) + buffer[7];
-	uint16_t tftpOpcode = (buffer[8] << 8) + buffer[9];
-	uint16_t tftpBlock = (buffer[10] << 8) + buffer[11];
+	uint16_t tftpOpcode  = (buffer[8] << 8) + buffer[9];
+	uint16_t tftpBlock   = (buffer[10] << 8) + buffer[11];
 
 	DBG_TFTP(
 		tracePGMlnTftp(mDebugTftp_BLOCK);
@@ -213,7 +213,11 @@ static uint8_t processPacket(void)
 
 			packetLength = tftpDataLen - (TFTP_OPCODE_SIZE + TFTP_BLOCKNO_SIZE);
 			lastPacket = tftpBlock;
-			writeAddr = (tftpBlock - 1) << 9; // Flash write address for this block
+#if defined(RAMPZ)
+			writeAddr = (((address_t)((tftpBlock - 1)/0x80) << 16) | ((address_t)((tftpBlock - 1)%0x80) << 9));
+#else
+			writeAddr = (address_t)((address_t)(tftpBlock - 1) << 9); // Flash write address for this block
+#endif
 
 			if((writeAddr + packetLength) > MAX_ADDR) {
 				// Flash is full - abort with an error before a bootloader overwrite occurs
@@ -226,7 +230,7 @@ static uint8_t processPacket(void)
 
 				DBG_TFTP(
 					tracePGMlnTftp(mDebugTftp_WRADDR);
-					tracenum(writeAddr);
+					traceadd(writeAddr);
 				)
 
 				uint8_t* pageBase = buffer + (UDP_HEADER_SIZE + TFTP_OPCODE_SIZE + TFTP_BLOCKNO_SIZE); // Start of block data
@@ -260,8 +264,9 @@ static uint8_t processPacket(void)
 				}
 
 				// Flash packets
+				uint16_t writeValue;
 				for(offset = 0; offset < packetLength;) {
-					uint16_t writeValue = (pageBase[offset]) | (pageBase[offset + 1] << 8);
+					writeValue = (pageBase[offset]) | (pageBase[offset + 1] << 8);
 					boot_page_fill(writeAddr + offset, writeValue);
 
 					DBG_TFTP_EX(

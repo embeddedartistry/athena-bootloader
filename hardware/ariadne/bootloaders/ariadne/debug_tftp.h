@@ -38,17 +38,17 @@ const unsigned char mDebugTftp_SACK[]	PROGMEM =	"Sent ACK";
 const unsigned char mDebugTftp_SFACK[]	PROGMEM =	"Sent Final ACK";
 const unsigned char mDebugTftp_RESP[]	PROGMEM =	"Response sent";
 const unsigned char mDebugTftp_INIT[]	PROGMEM =	"TFTP server init done";
-const unsigned char mDebugTftp_PORT[]	PROGMEM =	"\tData Port: ";
+const unsigned char mDebugTftp_PORT[]	PROGMEM =	"\tDataPort: ";
 const unsigned char mDebugTftp_SOCK[]	PROGMEM =	"Init socket to port ";
 	#if (DEBUG_TFTP > 1)
 		#undef DBG_TFTP_EX
 		#define DBG_TFTP_EX(block) block
 const unsigned char mDebugTftp_NEWLINE[]	PROGMEM =	"\r\n";
-const unsigned char mDebugTftp_RPTR[]	PROGMEM =	"readPointer at position ";
-const unsigned char mDebugTftp_RPOS[]	PROGMEM =	"Reading from position ";
-const unsigned char mDebugTftp_BLEFT[]	PROGMEM =	"Bytes left ";
-const unsigned char mDebugTftp_WRITE[]	PROGMEM =	"Writing ";
-const unsigned char mDebugTftp_OFFSET[]	PROGMEM =	" at offset ";
+const unsigned char mDebugTftp_RPTR[]		PROGMEM =	"readPointer at position ";
+const unsigned char mDebugTftp_RPOS[]		PROGMEM =	"Reading from position ";
+const unsigned char mDebugTftp_BLEFT[]		PROGMEM =	"Bytes left ";
+const unsigned char mDebugTftp_WRITE[]		PROGMEM =	"Writing ";
+const unsigned char mDebugTftp_OFFSET[]		PROGMEM =	" at offset ";
 	#endif
 #endif
 

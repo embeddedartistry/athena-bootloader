@@ -70,7 +70,7 @@ void traceln(const void* p_prefix, char* msg)
 }
 
 
-void tracehex(uint16_t num, uint8_t len)
+void tracehex(uint32_t num, uint8_t len)
 {
 	tracePGM(mDebug_HEXPREF);
 

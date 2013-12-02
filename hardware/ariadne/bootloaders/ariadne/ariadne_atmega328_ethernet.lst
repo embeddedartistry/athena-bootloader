@@ -11,9 +11,9 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   ALLOC
   3 .stab         000043e0  00000000  00000000  00000b08  2**2
                   CONTENTS, READONLY, DEBUGGING
-  4 .stabstr      000015be  00000000  00000000  00004ee8  2**0
+  4 .stabstr      000015c2  00000000  00000000  00004ee8  2**0
                   CONTENTS, READONLY, DEBUGGING
-  5 .comment      00000011  00000000  00000000  000064a6  2**0
+  5 .comment      00000011  00000000  00000000  000064aa  2**0
                   CONTENTS, READONLY
 
 Disassembly of section .text:
@@ -702,7 +702,7 @@ static uint8_t processPacket(void)
     73b8:	88 27       	eor	r24, r24
     73ba:	2a 85       	ldd	r18, Y+10	; 0x0a
     73bc:	82 0f       	add	r24, r18
-	uint16_t tftpOpcode = (buffer[8] << 8) + buffer[9];
+	uint16_t tftpOpcode  = (buffer[8] << 8) + buffer[9];
     73be:	91 1d       	adc	r25, r1
     73c0:	0b 85       	ldd	r16, Y+11	; 0x0b
     73c2:	10 e0       	ldi	r17, 0x00	; 0
@@ -710,7 +710,7 @@ static uint8_t processPacket(void)
     73c6:	00 27       	eor	r16, r16
     73c8:	2c 85       	ldd	r18, Y+12	; 0x0c
     73ca:	02 0f       	add	r16, r18
-	uint16_t tftpBlock = (buffer[10] << 8) + buffer[11];
+	uint16_t tftpBlock   = (buffer[10] << 8) + buffer[11];
     73cc:	11 1d       	adc	r17, r1
     73ce:	83 30       	cpi	r24, 0x03	; 3
     73d0:	91 05       	cpc	r25, r1
@@ -868,12 +868,16 @@ static uint8_t processPacket(void)
     7476:	81 30       	cpi	r24, 0x01	; 1
     7478:	90 47       	sbci	r25, 0x70	; 112
     747a:	08 f0       	brcs	.+2      	; 0x747e <processPacket+0x178>
-			writeAddr = (tftpBlock - 1) << 9; // Flash write address for this block
+#if defined(RAMPZ)
+			writeAddr = (((address_t)((tftpBlock - 1)/0x80) << 16) | ((address_t)((tftpBlock - 1)%0x80) << 9));
+#else
+			writeAddr = (address_t)((address_t)(tftpBlock - 1) << 9); // Flash write address for this block
     747c:	6d c0       	rjmp	.+218    	; 0x7558 <processPacket+0x252>
     747e:	e1 14       	cp	r14, r1
     7480:	f2 e0       	ldi	r31, 0x02	; 2
     7482:	ff 06       	cpc	r15, r31
     7484:	10 f4       	brcc	.+4      	; 0x748a <processPacket+0x184>
+#endif
 
 			if((writeAddr + packetLength) > MAX_ADDR) {
     7486:	74 e0       	ldi	r23, 0x04	; 4
@@ -920,15 +924,15 @@ static uint8_t processPacket(void)
     74b8:	ce 01       	movw	r24, r28
     74ba:	0d 96       	adiw	r24, 0x0d	; 13
     74bc:	c3 5f       	subi	r28, 0xF3	; 243
-#endif
 					}
 				}
 
 				// Flash packets
+				uint16_t writeValue;
 				for(offset = 0; offset < packetLength;) {
     74be:	dd 4f       	sbci	r29, 0xFD	; 253
     74c0:	78 83       	st	Y, r23
-					uint16_t writeValue = (pageBase[offset]) | (pageBase[offset + 1] << 8);
+					writeValue = (pageBase[offset]) | (pageBase[offset + 1] << 8);
 					boot_page_fill(writeAddr + offset, writeValue);
     74c2:	cd 50       	subi	r28, 0x0D	; 13
 					)
@@ -947,11 +951,11 @@ static uint8_t processPacket(void)
 						boot_rww_enable();
     74c8:	c3 5f       	subi	r28, 0xF3	; 243
     74ca:	dd 4f       	sbci	r29, 0xFD	; 253
-#endif
 					}
 				}
 
 				// Flash packets
+				uint16_t writeValue;
 				for(offset = 0; offset < packetLength;) {
     74cc:	78 81       	ld	r23, Y
 					tracenum(packetLength);
@@ -986,12 +990,12 @@ static uint8_t processPacket(void)
     74f0:	80 93 57 00 	sts	0x0057, r24
     74f4:	e8 95       	spm
     74f6:	11 24       	eor	r1, r1
-					}
 				}
 
 				// Flash packets
+				uint16_t writeValue;
 				for(offset = 0; offset < packetLength;) {
-					uint16_t writeValue = (pageBase[offset]) | (pageBase[offset + 1] << 8);
+					writeValue = (pageBase[offset]) | (pageBase[offset + 1] << 8);
     74f8:	2e 5f       	subi	r18, 0xFE	; 254
     74fa:	3f 4f       	sbci	r19, 0xFF	; 255
     74fc:	a9 01       	movw	r20, r18
@@ -1045,11 +1049,11 @@ static uint8_t processPacket(void)
     7542:	dd 4f       	sbci	r29, 0xFD	; 253
     7544:	78 83       	st	Y, r23
     7546:	cd 50       	subi	r28, 0x0D	; 13
-#endif
 					}
 				}
 
 				// Flash packets
+				uint16_t writeValue;
 				for(offset = 0; offset < packetLength;) {
     7548:	d2 40       	sbci	r29, 0x02	; 2
     754a:	76 d2       	rcall	.+1260   	; 0x7a38 <__eewr_byte_m328p>
