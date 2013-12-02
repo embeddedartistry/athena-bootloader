@@ -1854,7 +1854,6 @@ const char ff[] PROGMEM =
 "01234567890123456789012345678901234567890123456789"
 "01234567890123456789012345678901234567890123456789"
 ;
-
 const char aa[] PROGMEM =
 "01234567890123456789012345678901234567890123456789"
 "01234567890123456789012345678901234567890123456789"
@@ -5047,17 +5046,17 @@ const char ee[] PROGMEM =
 
 const char check[] PROGMEM = "A nice string!\n";
 
-void setup() {                
+void setup() {
   // initialize the digital pin as an output.
   // Pin 13 has an LED connected on most Arduino boards:
   pinMode(13, OUTPUT);
-  //Serial.begin(115200);
+//   Serial.begin(115200);
 }
 
 void SendSTR_P(const char *pFlashSTR) {
-  uint8_t i;  
+  uint8_t i;
   for (i = 0; pgm_read_byte(&pFlashSTR[i]); i++)
-    //Serial.print(pgm_read_byte(&pFlashSTR[i]));
+//     Serial.print(pgm_read_byte(&pFlashSTR[i]));
   ;
 }
 
@@ -5069,13 +5068,13 @@ void loop() {
   if (millis()<10) {
     SendSTR_P(aa);
     SendSTR_P(bb);
-    SendSTR_P(cc);
-    SendSTR_P(dd);
-    SendSTR_P(ee);
-    SendSTR_P(ff);
-    SendSTR_P(gg);
-    SendSTR_P(hh);
-    SendSTR_P(ii);
+//     SendSTR_P(cc);
+//     SendSTR_P(dd);
+//     SendSTR_P(ee);
+//     SendSTR_P(ff);
+//     SendSTR_P(gg);
+//     SendSTR_P(hh);
+//     SendSTR_P(ii);
   }
   SendSTR_P(check);
 }
