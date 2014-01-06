@@ -52,7 +52,8 @@ void netInit(void)
 
 		DBG_NET(tracePGMlnNet(mDebugNet_EEPROM);)
 
-	} DBG_NET(
+	}
+	DBG_NET(
 		else tracePGMlnNet(mDebugNet_BUILTIN);
 	)
 

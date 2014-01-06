@@ -171,6 +171,16 @@ debug2560_isp: HFUSE = D0
 debug2560_isp: EFUSE = FD
 debug2560_isp: isp
 
+# Build with the debug messages enabled
+# Use it only if you have already seen the source code
+debug32u4: TARGET = debug32u4
+debug32u4: MCU_TARGET = atmega32u4
+debug32u4: CFLAGS += '-DDEBUG_MAIN=1' '-DDEBUG_NET=1' '-DDEBUG_TFTP=1' '-DBAUD_RATE=115200'
+debug32u4: AVR_FREQ = 16000000L
+debug32u4: LDSECTIONS = -Wl,--section-start=.text=0x7000 #-Wl,--section-start=.version=0x7ffe
+debug32u4: $(PROGRAM)_debug32u4.hex
+debug32u4: $(PROGRAM)_debug32u4.lst
+
 #
 #
 # # 20MHz clocked platforms

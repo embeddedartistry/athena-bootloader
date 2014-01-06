@@ -66,7 +66,7 @@ int main(void)
 	if(eeprom_read_byte(EEPROM_MINVER) != ARIADNE_MINVER)
 		eeprom_write_byte(EEPROM_MINVER, ARIADNE_MINVER);
 
-	//Initialize UART communication
+	/* Initialize UART communication */
 	serialInit();
 	DBG_MAIN(tracePGMlnMain(mDebugMain_TITLE);)
 
@@ -75,14 +75,14 @@ int main(void)
 		buttonInit();
 	)
 
-	/** Initalize SPI communication */
+	/* Initalize SPI communication */
 	DBG_MAIN_EX(tracePGMlnMain(mDebugMain_SPI);)
 	spiInit();
-	/** Initialize networking */
+	/* Initialize networking */
 	DBG_MAIN_EX(tracePGMlnMain(mDebugMain_NET);)
 	netInit();
 
-	// Initialize the UDP socket for tftp
+	/* Initialize the UDP socket for tftp */
 	DBG_MAIN_EX(tracePGMlnMain(mDebugMain_TFTP);)
 	tftpInit();
 
