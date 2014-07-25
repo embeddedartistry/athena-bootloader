@@ -362,11 +362,18 @@ of these so a big ___thank you___ goes to the people that took their time to tes
 [22]: https://www.sparkfun.com/products/10536
 
 ## Contributors
+
+## Donators
 [Hachi Manzur](hemanzur@gmail.com) (AVRISP mkII programmer, testing)
 
-Over the time I will add more people who have helped in this list. If you feel that you should be in
-this list, please contact me via email.
+If you feel that you should be in this list, please contact me via email.
 
+<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+<input type="hidden" name="cmd" value="_s-xclick">
+<input type="hidden" name="hosted_button_id" value="6RBAQPJ77X9BG">
+<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+<img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
+</form>
 
 ## Roadmap (outdated)
 Right now the main focus for the first packaged release is bug fixing and improve existing functionality.
