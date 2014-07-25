@@ -1,6 +1,7 @@
 # [Ariadne Bootloader for Arduino][1]
 [1]: http://codebendercc.github.com/Ariadne-Bootloader/
 
+[![PayPayl donate button](http://img.shields.io/paypal/donate.png?color=yellow)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=6RBAQPJ77X9BG "Donate once-off to Ariadne bootloader developer using Paypal")
 
 ## Bootloader for Arduino with Ethernet
 This is a beta stage bootloader for Arduino Ethernet board and the regular Arduino with Ethernet Shield.
@@ -362,19 +363,11 @@ of these so a big ___thank you___ goes to the people that took their time to tes
 [22]: https://www.sparkfun.com/products/10536
 
 ## Contributors
+
+## Donators [![PayPayl donate button](http://img.shields.io/paypal/donate.png?color=yellow)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=6RBAQPJ77X9BG "Donate once-off to Ariadne bootloader developer using Paypal")
 [Hachi Manzur](hemanzur@gmail.com) (AVRISP mkII programmer, testing)
 
-Over the time I will add more people who have helped in this list. If you feel that you should be in
-this list, please contact me via email.
-
-
-## Roadmap (outdated)
-Right now the main focus for the first packaged release is bug fixing and improve existing functionality.
-That is why we encourage you to use the bootloader and report any bugs, misbehaviours or feature requests
-here on github. There is also on going work to work on the Arduino Mega and support for Arduino Leonardo
-is planned after that. Support for other ethernet or wifi controllers is being discussed but after the
-bootloader has been stabilized.
-
+If you feel that you should be in this list, please contact me via email.
 
 ## Acknoledgements
 __Ariadne__ bootloader is built upon some great open source projects.
