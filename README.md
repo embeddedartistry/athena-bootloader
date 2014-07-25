@@ -1,6 +1,7 @@
 # [Ariadne Bootloader for Arduino][1]
 [1]: http://codebendercc.github.com/Ariadne-Bootloader/
 
+[![PayPayl donate button](http://img.shields.io/paypal/donate.png?color=yellow)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=6RBAQPJ77X9BG "Donate once-off to Ariadne bootloader developer using Paypal")
 
 ## Bootloader for Arduino with Ethernet
 This is a beta stage bootloader for Arduino Ethernet board and the regular Arduino with Ethernet Shield.
@@ -364,24 +365,9 @@ of these so a big ___thank you___ goes to the people that took their time to tes
 ## Contributors
 
 ## Donators
-[Hachi Manzur](hemanzur@gmail.com) (AVRISP mkII programmer, testing)
+* [Hachi Manzur](hemanzur@gmail.com) (AVRISP mkII programmer, testing)
 
 If you feel that you should be in this list, please contact me via email.
-
-<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
-<input type="hidden" name="cmd" value="_s-xclick">
-<input type="hidden" name="hosted_button_id" value="6RBAQPJ77X9BG">
-<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
-<img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
-</form>
-
-## Roadmap (outdated)
-Right now the main focus for the first packaged release is bug fixing and improve existing functionality.
-That is why we encourage you to use the bootloader and report any bugs, misbehaviours or feature requests
-here on github. There is also on going work to work on the Arduino Mega and support for Arduino Leonardo
-is planned after that. Support for other ethernet or wifi controllers is being discussed but after the
-bootloader has been stabilized.
-
 
 ## Acknoledgements
 __Ariadne__ bootloader is built upon some great open source projects.
