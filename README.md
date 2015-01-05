@@ -328,9 +328,9 @@ enter your Arduino's IP (external IP for those in corporate or home networks beh
 * [NetEEPROM][15] (Library to manipulate the network settings of the bootloader)
 * [ResetServer][16] (Library used to create an HTTP server on the Arduino to enable remote resetting
 of the microcontroller)
-[14]: https://github.com/codebendercc/Ariadne-Bootloader/tree/mega/libraries/NewEEPROM
-[15]: https://github.com/codebendercc/Ariadne-Bootloader/tree/mega/libraries/NetEEPROM
-[16]: https://github.com/codebendercc/Ariadne-Bootloader/tree/mega/libraries/EthernetReset
+[14]: https://github.com/codebendercc/Ariadne-Bootloader/tree/master/libraries/NewEEPROM
+[15]: https://github.com/codebendercc/Ariadne-Bootloader/tree/master/libraries/NetEEPROM
+[16]: https://github.com/codebendercc/Ariadne-Bootloader/tree/master/libraries/EthernetReset
 
 ## Supported Boards
 Supported MCUs:
