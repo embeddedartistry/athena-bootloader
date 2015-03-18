@@ -2,7 +2,7 @@ menu.version=Version
 
 ##############################################################
 
-ariadne328D.name=Arduino Duemilanove w/ ATmega328 (Ariadne Bootloader)
+ariadne328D.name=Arduino Duemilanove w/ ATmega328
 ariadne328D.upload.tool=arduino:avrdude
 ariadne328D.upload.maximum_data_size=2048
 ariadne328D.upload.protocol=arduino
@@ -34,7 +34,7 @@ ariadne328D.menu.version.debug.bootloader.file=ariadne/ariadne_debug328.hex
 
 ##############################################################
 
-ariadne328U.name=Arduino Uno (Ariadne Bootloader)
+ariadne328U.name=Arduino Uno
 
 ariadne328U.upload.tool=arduino:avrdude
 ariadne328U.upload.maximum_data_size=2048
@@ -68,7 +68,7 @@ ariadne328U.menu.version.debug.bootloader.file=ariadne/ariadne_debug328.hex
 
 ##############################################################
 
-ariadne328E.name=Arduino Ethernet (Ariadne Bootloader)
+ariadne328E.name=Arduino Ethernet
 
 ariadne328E.upload.tool=arduino:avrdude
 ariadne328E.upload.maximum_data_size=2048
@@ -92,7 +92,7 @@ ariadne328E.build.board=AVR_ETHERNET
 
 ##############################################################
 
-ariadne2560M.name=Arduino Mega 2560 (Ariadne Bootloader)
+ariadne2560M.name=Arduino Mega 2560
 
 ariadne2560M.upload.tool=arduino:avrdude
 ariadne2560M.upload.maximum_data_size=8192
