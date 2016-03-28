@@ -10,6 +10,7 @@
 #include <avr/io.h>
 #include <avr/pgmspace.h>
 #include <util/delay.h>
+#include <avr/wdt.h>
 
 #include "util.h"
 #include "spi.h"
@@ -46,6 +47,7 @@ void resetTick(void)
 {
 	TCNT1 = 0;
 	tick = 0;
+	wdt_reset(); //Added so can use wdt
 }
 
 uint8_t timedOut(void)

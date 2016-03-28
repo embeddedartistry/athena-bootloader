@@ -36,6 +36,7 @@ int main(void)
 	 * eternal reset loop of doom and despair */
 	MCUSR = 0;
 	wdt_disable();
+	wdt_enable(WDTO_8S);
 
 	// Wait to ensure startup of W5100
 	_delay_ms(200);
@@ -128,6 +129,7 @@ int main(void)
 				resetTick();
 				// Unset tftp flag
 				tftpFlashing = FALSE;
+				wdt_reset();
 			}
 		}
 		/* Blink the notification led */
@@ -135,6 +137,7 @@ int main(void)
 	}
 
 	/* Exit to user application */
+	wdt_reset(); // Just to give time for the user app to start
 	DBG_MAIN(tracePGMlnMain(mDebugMain_EXIT);)
 	asm volatile(
 		"clr	r30		\n\t"
