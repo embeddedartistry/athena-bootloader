@@ -1,4 +1,4 @@
-/* Name: net_w5100.c
+/* Name: net_w5200.c
  * Author: .
  * Copyright: Arduino
  * License: GPL http://www.gnu.org/licenses/gpl-2.0.html
@@ -7,21 +7,6 @@
  * Version: 0.1 tftp / flashing functional
  */
 
-#include <avr/io.h>
-#include <avr/eeprom.h>
-
-#include "spi.h"
-#include "w5100.h"
-#include "neteeprom.h"
-#include "serial.h"
-#include "debug.h"
-#include "debug_net.h"
-
-#if (W5200 > 0)
-#include "w5200.c"
-#elif (W5500 > 0)
-#include "w5500.c"
-#else
 
 
 uint8_t registerBuffer[REGISTER_BLOCK_SIZE] = {
@@ -38,9 +23,9 @@ uint8_t registerBuffer[REGISTER_BLOCK_SIZE] = {
 	0,            // IR Interrupt Register
 	0,            // IMR Interrupt Mask Register
 	0x07, 0xd0,   // RTR Retry Time-value Register
-	0x80,         // RCR Retry Count Register
-	0x55,         // RMSR Rx Memory Size Register, 2K per socket
-	0x55          // TMSR Tx Memory Size Register, 2K per socket
+	0x08,         // RCR Retry Count Register
+	0,            // Reserved in w5200
+	0             // Reserved in w5200
 };
 
 
@@ -58,8 +43,7 @@ void netInit(void)
 
 		DBG_NET(tracePGMlnNet(mDebugNet_EEPROM);)
 
-	}
-	DBG_NET(
+	} DBG_NET(
 		else tracePGMlnNet(mDebugNet_BUILTIN);
 	)
 
@@ -88,13 +72,13 @@ void netInit(void)
 	)
 
 	/** Configure Wiznet chip. Network settings */
-	for(i = 0; i < REGISTER_BLOCK_SIZE; i++)
+	for(i = 0; i < REGISTER_BLOCK_SIZE-2; i++)
 		spiWriteReg(i, 0, registerBuffer[i]);
+
+        for (i=0; i<8; i++) {
+        	spiWriteReg((0x4000 + i * 0x100 + 0x001F), 0, 0x02);
+                spiWriteReg((0x4000 + i * 0x100 + 0x001E), 0, 0x02);
+        }
 
 	DBG_NET(tracePGMlnNet(mDebugNet_DONE);)
 }
-
-#endif
-
-// kate: indent-mode cstyle; indent-width 4; replace-tabs off; tab-width 4;
-

@@ -72,10 +72,10 @@
 
 void spiInit(void);
 
-void spiWriteReg(uint16_t address, uint8_t value);
-void spiWriteWord(uint16_t address, uint16_t value);
+void spiWriteReg(uint16_t address, uint8_t cb, uint8_t value);
+void spiWriteWord(uint16_t address, uint8_t cb, uint16_t value);
 
-uint8_t  spiReadReg(uint16_t address);
-uint16_t spiReadWord(uint16_t address);
+uint8_t  spiReadReg(uint16_t address, uint8_t cb);
+uint16_t spiReadWord(uint16_t address, uint8_t cb);
 
 #endif
