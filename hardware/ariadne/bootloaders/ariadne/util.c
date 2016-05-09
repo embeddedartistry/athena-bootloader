@@ -9,8 +9,8 @@
 
 #include <avr/io.h>
 #include <avr/pgmspace.h>
-#include <util/delay.h>
 #include <avr/wdt.h>
+#include <util/delay.h>
 
 #include "util.h"
 #include "spi.h"

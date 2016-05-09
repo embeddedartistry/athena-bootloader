@@ -137,7 +137,7 @@ int main(void)
 	}
 
 	/* Exit to user application */
-	wdt_reset(); // Just to give time for the user app to start
+	wdt_disable(); // Disable wdt again just before user app starts
 	DBG_MAIN(tracePGMlnMain(mDebugMain_EXIT);)
 	asm volatile(
 		"clr	r30		\n\t"
