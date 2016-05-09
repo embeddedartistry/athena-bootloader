@@ -164,3 +164,40 @@ ariadne2560MW.menu.version.debugw5500=Debug w/ Wiznet W5500
 ariadne2560MW.menu.version.debugw5500.bootloader.file=ariadne/ariadne_debug2560_w5500.hex
 
 ##############################################################
+
+ariadne1284W.name=Atmega 1284p
+
+ariadne1284W.upload.tool=arduino:avrdude
+ariadne1284W.upload.maximum_data_size=16384
+ariadne1284W.upload.maximum_size=126976
+ariadne1284W.upload.protocol=arduino
+ariadne1284W.upload.speed=115200
+
+ariadne1284W.bootloader.tool=arduino:avrdude
+ariadne1284W.bootloader.low_fuses=0xFF
+ariadne1284W.bootloader.high_fuses=0xD8
+ariadne1284W.bootloader.extended_fuses=0xFD
+ariadne1284W.bootloader.unlock_bits=0x3F
+ariadne1284W.bootloader.lock_bits=0x0F
+
+ariadne1284W.build.mcu=atmega1284p
+ariadne1284W.build.f_cpu=16000000L
+ariadne1284W.build.core=arduino:arduino
+ariadne1284W.build.variant=standard
+ariadne1284W.build.board=1284P_STANDARD
+
+## Bootloader for 1284p with Wiznet W5100 chip
+## ---------------------------------------------
+ariadne1284W.menu.version.standardw5100=w/ Wiznet W5100
+ariadne1284W.menu.version.standardw5100.bootloader.file=ariadne/ariadne_atmega1284_w5100.hex
+
+## Bootloader for 1284p with Wiznet W5200 chip
+## ---------------------------------------------
+ariadne1284W.menu.version.standardw5200=w/ Wiznet W5200
+ariadne1284W.menu.version.standardw5200.bootloader.file=ariadne/ariadne_atmega1284_w5200.hex
+
+## Bootloader for 1284p with Wiznet W5500 chip
+## ---------------------------------------------
+ariadne1284W.menu.version.standardw5500=w/ Wiznet W5500
+ariadne1284W.menu.version.standardw5500.bootloader.file=ariadne/ariadne_atmega1284_w5500.hex
+

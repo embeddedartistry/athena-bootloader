@@ -9,6 +9,9 @@ make atmega328_ethernet
 make atmega2560_w5100
 make atmega2560_w5200
 make atmega2560_w5500
+make atmega1284_w5100
+make atmega1284_w5200
+make atmega1284_w5500
 #make atmega8
 #make atmega168
 #make debug328_w5100
@@ -17,6 +20,9 @@ make atmega2560_w5500
 #make debug2560_w5100
 #make debug2560_w5200
 #make debug2560_w5500
+#make debug1284_w5100
+#make debug1284_w5200
+#make debug1284_w5500
 #
 # additional buildable platforms of
 #  somewhat questionable support level

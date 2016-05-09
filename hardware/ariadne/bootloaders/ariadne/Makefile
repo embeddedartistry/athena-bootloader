@@ -249,6 +249,66 @@ debug2560_isp_w5500: HFUSE = D0
 debug2560_isp_w5500: EFUSE = FD
 debug2560_isp_w5500: isp
 
+# Debug build for Atmega1284
+debug1284_w5100: TARGET = debug1284_w5100
+debug1284_w5100: MCU_TARGET = atmega1284p
+debug1284_w5100: CFLAGS += '-DBAUD_RATE=115200'
+debug1284_w5100: AVR_FREQ = 16000000L
+debug1284_w5100: LDSECTIONS  = -Wl,--section-start=.text=0x1f000
+debug1284_w5100: $(PROGRAM)_debug1284_w5100.hex
+debug1284_w5100: $(PROGRAM)_debug1284_w5100.lst
+
+debug1284_w5100_isp: debug1284_w5100
+debug1284_w5100_isp: TARGET = debug1284_w5100
+debug1284_w5100_isp: MCU_TARGET = atmega1284p
+# 4096 word boot
+debug1284_w5100_isp: HFUSE = D8
+# External power xtal (16MHz) 16KCK/14CK+65ms
+debug1284_w5100_isp: LFUSE = FF
+# 2.7V brownout
+debug1284_w5100_isp: EFUSE = FD
+debug1284_w5100_isp: isp
+
+# Debug build for Atmega1284
+debug1284_w5200: TARGET = debug1284_w5200
+debug1284_w5200: MCU_TARGET = atmega1284p
+debug1284_w5200: CFLAGS += '-DW5200=1' '-DDEBUG_MAIN=1' '-DDEBUG_NET=1' '-DDEBUG_TFTP=1' '-DDEBUG_VALD=1' '-DBAUD_RATE=115200'
+debug1284_w5200: AVR_FREQ = 16000000L
+debug1284_w5200: LDSECTIONS  = -Wl,--section-start=.text=0x1f000
+debug1284_w5200: $(PROGRAM)_debug1284_w5200.hex
+debug1284_w5200: $(PROGRAM)_debug1284_w5200.lst
+
+debug1284_w5200_isp: debug1284_w5200
+debug1284_w5200_isp: TARGET = debug1284_w5200
+debug1284_w5200_isp: MCU_TARGET = atmega1284p
+# 4096 word boot
+debug1284_w5200_isp: HFUSE = D8
+# External power xtal (16MHz) 16KCK/14CK+65ms
+debug1284_w5200_isp: LFUSE = FF
+# 2.7V brownout
+debug1284_w5200_isp: EFUSE = FD
+debug1284_w5200_isp: isp
+
+# Debug build for Atmega1284
+debug1284_w5500: TARGET = debug1284_w5500
+debug1284_w5500: MCU_TARGET = atmega1284p
+debug1284_w5500: CFLAGS += '-DW5500=1' '-DDEBUG_MAIN=1' '-DDEBUG_NET=1' '-DDEBUG_TFTP=1' '-DDEBUG_VALD=1' '-DBAUD_RATE=115200'
+debug1284_w5500: AVR_FREQ = 16000000L
+debug1284_w5500: LDSECTIONS  = -Wl,--section-start=.text=0x1f000
+debug1284_w5500: $(PROGRAM)_debug1284_w5500.hex
+debug1284_w5500: $(PROGRAM)_debug1284_w5500.lst
+
+debug1284_w5500_isp: debug1284_w5500
+debug1284_w5500_isp: TARGET = debug1284_w5500
+debug1284_w5500_isp: MCU_TARGET = atmega1284p
+# 4096 word boot
+debug1284_w5500_isp: HFUSE = D8
+# External power xtal (16MHz) 16KCK/14CK+65ms
+debug1284_w5500_isp: LFUSE = FF
+# 2.7V brownout
+debug1284_w5500_isp: EFUSE = FD
+debug1284_w5500_isp: isp
+
 # Build with the debug messages enabled
 # Use it only if you have already seen the source code
 debug32u4: TARGET = debug32u4
@@ -510,6 +570,87 @@ atmega2560_w5500_isp: HFUSE = D8
 # 2.7V brownout
 atmega2560_w5500_isp: EFUSE = FD
 atmega2560_w5500_isp: isp
+
+
+# Atmega1284
+atmega1284_w5100: TARGET = atmega1284_w5100
+atmega1284_w5100: MCU_TARGET = atmega1284p
+atmega1284_w5100: CFLAGS += '-DBAUD_RATE=115200'
+atmega1284_w5100: AVR_FREQ = 16000000L
+atmega1284_w5100: LDSECTIONS  = -Wl,--section-start=.text=0x1f000
+atmega1284_w5100: $(PROGRAM)_atmega1284_w5100.hex
+atmega1284_w5100: $(PROGRAM)_atmega1284_w5100.lst
+
+atmega1284_w5100_isp: atmega1284_w5100
+atmega1284_w5100_isp: TARGET = atmega1284_w5100
+atmega1284_w5100_isp: MCU_TARGET = atmega1284p
+# 4096 word boot
+atmega1284_w5100_isp: HFUSE = D8
+# External power xtal (16MHz) 16KCK/14CK+65ms
+atmega1284_w5100_isp: LFUSE = FF
+# 2.7V brownout
+atmega1284_w5100_isp: EFUSE = FD
+atmega1284_w5100_isp: isp
+
+atmega1284_w5200: TARGET = atmega1284_w5200
+atmega1284_w5200: MCU_TARGET = atmega1284p
+atmega1284_w5200: CFLAGS += '-DW5200=1' '-DBAUD_RATE=115200'
+atmega1284_w5200: AVR_FREQ = 16000000L
+atmega1284_w5200: LDSECTIONS  = -Wl,--section-start=.text=0x1f000
+atmega1284_w5200: $(PROGRAM)_atmega1284_w5200.hex
+atmega1284_w5200: $(PROGRAM)_atmega1284_w5200.lst
+
+atmega1284_w5200_isp: atmega1284_w5200
+atmega1284_w5200_isp: TARGET = atmega1284_w5200
+atmega1284_w5200_isp: MCU_TARGET = atmega1284p
+# 4096 word boot
+atmega1284_w5200_isp: HFUSE = D8
+# External power xtal (16MHz) 16KCK/14CK+65ms
+atmega1284_w5200_isp: LFUSE = FF
+# 2.7V brownout
+atmega1284_w5200_isp: EFUSE = FD
+atmega1284_w5200_isp: isp
+
+
+
+atmega1284_w5500: TARGET = atmega1284_w5500
+atmega1284_w5500: MCU_TARGET = atmega1284p
+atmega1284_w5500: CFLAGS += '-DW5500=1' '-DBAUD_RATE=115200'
+atmega1284_w5500: AVR_FREQ = 16000000L
+atmega1284_w5500: LDSECTIONS  = -Wl,--section-start=.text=0x1f000
+atmega1284_w5500: $(PROGRAM)_atmega1284_w5500.hex
+atmega1284_w5500: $(PROGRAM)_atmega1284_w5500.lst
+
+atmega1284_w5500_isp: atmega1284_w5500
+atmega1284_w5500_isp: TARGET = atmega1284_w5500
+atmega1284_w5500_isp: MCU_TARGET = atmega1284p
+# 4096 word boot
+atmega1284_w5500_isp: HFUSE = D8
+# External power xtal (16MHz) 16KCK/14CK+65ms
+atmega1284_w5500_isp: LFUSE = FF
+# 2.7V brownout
+atmega1284_w5500_isp: EFUSE = FD
+atmega1284_w5500_isp: isp
+
+
+debug1284_w5100: TARGET = debug1284_w5100
+debug1284_w5100: MCU_TARGET = atmega1284p
+debug1284_w5100: CFLAGS += '-DDEBUG_MAIN=1' '-DBAUD_RATE=115200'
+debug1284_w5100: AVR_FREQ = 16000000L
+debug1284_w5100: LDSECTIONS  = -Wl,--section-start=.text=0x1f000
+debug1284_w5100: $(PROGRAM)_debug1284_w5100.hex
+debug1284_w5100: $(PROGRAM)_debug1284_w5100.lst
+
+debug1284_w5100_isp: debug1284_w5100
+debug1284_w5100_isp: TARGET = debug1284_w5100
+debug1284_w5100_isp: MCU_TARGET = atmega1284p
+# 4096 word boot
+debug1284_w5100_isp: HFUSE = D8
+# External power xtal (16MHz) 16KCK/14CK+65ms
+debug1284_w5100_isp: LFUSE = FF
+# 2.7V brownout
+debug1284_w5100_isp: EFUSE = FD
+debug1284_w5100_isp: isp
 
 # # ATmega8
 # atmega8: TARGET = atmega8
