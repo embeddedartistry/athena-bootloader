@@ -337,6 +337,7 @@ Supported MCUs:
 
 * __ATmega328__
 * __ATmega2560__
+* __ATmega1284__
 
 Supported ethernet controllers:
 
