@@ -1,4 +1,4 @@
-/* Name: net_w5100.c
+/* Name: net_w5500.c
  * Author: .
  * Copyright: Arduino
  * License: GPL http://www.gnu.org/licenses/gpl-2.0.html
@@ -7,21 +7,6 @@
  * Version: 0.1 tftp / flashing functional
  */
 
-#include <avr/io.h>
-#include <avr/eeprom.h>
-
-#include "spi.h"
-#include "w5100.h"
-#include "neteeprom.h"
-#include "serial.h"
-#include "debug.h"
-#include "debug_net.h"
-
-#if (W5200 > 0)
-#include "w5200.c"
-#elif (W5500 > 0)
-#include "w5500.c"
-#else
 
 
 uint8_t registerBuffer[REGISTER_BLOCK_SIZE] = {
@@ -34,13 +19,13 @@ uint8_t registerBuffer[REGISTER_BLOCK_SIZE] = {
 	IP_ADDR,      // SIPR Source IP Address Register
 	// EEPROM block ends here
 
-	0, 0,         // Reserved locations
-	0,            // IR Interrupt Register
-	0,            // IMR Interrupt Mask Register
-	0x07, 0xd0,   // RTR Retry Time-value Register
-	0x80,         // RCR Retry Count Register
-	0x55,         // RMSR Rx Memory Size Register, 2K per socket
-	0x55          // TMSR Tx Memory Size Register, 2K per socket
+	0, 0,         // Interrupt Low Level Timer (INTLEVEL0), (INTLEVEL1) (0x0013, 0x0014)
+	0,            // IR Interrupt Register (0x0015)
+	0,            // IMR Interrupt Mask Register (0x0016)
+	0,            // Socket Interrupt (SIR) (0x0017)
+	0,            // Socket Interrupt Mask (SIMR) (0x0018)
+	0x07, 0xd0,   // RTR Retry Time-value Register ((RTR0),(RTR0)) (0x0019,0x001A)
+	0x08,         // RCR Retry Count Register (0x001B)
 };
 
 
@@ -58,8 +43,7 @@ void netInit(void)
 
 		DBG_NET(tracePGMlnNet(mDebugNet_EEPROM);)
 
-	}
-	DBG_NET(
+	} DBG_NET(
 		else tracePGMlnNet(mDebugNet_BUILTIN);
 	)
 
@@ -89,12 +73,13 @@ void netInit(void)
 
 	/** Configure Wiznet chip. Network settings */
 	for(i = 0; i < REGISTER_BLOCK_SIZE; i++)
-		spiWriteReg(i, 0, registerBuffer[i]);
+		spiWriteReg(i, 0x04, registerBuffer[i]);
+	
+	for (int i=0; i<8; i++) {
+        	uint8_t cntl_byte = (0x0C + (i<<5));
+        	spiWriteReg(0x1E, cntl_byte, 2);//0x1E - Sn_RXBUF_SIZE
+        	spiWriteReg(0x1F, cntl_byte, 2);//0x1F - Sn_TXBUF_SIZE
+    	}
 
 	DBG_NET(tracePGMlnNet(mDebugNet_DONE);)
 }
-
-#endif
-
-// kate: indent-mode cstyle; indent-width 4; replace-tabs off; tab-width 4;
-
