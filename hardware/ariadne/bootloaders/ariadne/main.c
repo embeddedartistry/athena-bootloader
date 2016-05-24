@@ -14,7 +14,7 @@
 
 #include "util.h"
 #include "spi.h"
-#include "w5100.h"
+#include "net.h"
 #include "tftp.h"
 #include "serial.h"
 #include "neteeprom.h"
@@ -26,7 +26,7 @@
 #endif
 
 
-int main(void) __attribute__((naked)) __attribute__((section(".init9")));
+//int main(void) __attribute__((naked)) __attribute__((section(".init9")));
 //void (*appStart)(void) __attribute__((naked)) = 0x0000;
 //void (*appStart)(void) = 0x0000;
 
