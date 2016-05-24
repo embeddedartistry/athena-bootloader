@@ -26,7 +26,10 @@ void spiWriteReg(uint16_t address, uint8_t cb, uint8_t value)
 	SPCR = _BV(SPE) | _BV(MSTR); // Set SPI as master
 	SS_LOW();
 
-#if (W5200 > 0)
+#if defined(__WIZ_W5100__)
+	SPDR = SPI_WRITE;
+	while(!(SPSR & _BV(SPIF)));
+#endif
 
 	SPDR = address >> 8;
 	while(!(SPSR & _BV(SPIF)));
@@ -34,34 +37,16 @@ void spiWriteReg(uint16_t address, uint8_t cb, uint8_t value)
 	SPDR = address & 0xff;
 	while(!(SPSR & _BV(SPIF)));
 
+#if defined(__WIZ_W5200__)
 	SPDR = 0x80;
 	while(!(SPSR & _BV(SPIF)));
 
 	SPDR = 0x01;
 	while(!(SPSR & _BV(SPIF)));
-
-#elif (W5500 > 0)
-
-	SPDR = address >> 8;
-	while(!(SPSR & _BV(SPIF)));
-
-	SPDR = address & 0xff;
-	while(!(SPSR & _BV(SPIF)));
-
+#endif
+#if defined(_WIZ_W5500__)
 	SPDR = cb;  //Socket 3 BSB Write 0x6D Selects Socket 3 Register, write mode, 1 byte data length
 	while(!(SPSR & _BV(SPIF)));
-
-#else //Standard W5100 Code
-
-	SPDR = SPI_WRITE;
-	while(!(SPSR & _BV(SPIF)));
-
-	SPDR = address >> 8;
-	while(!(SPSR & _BV(SPIF)));
-
-	SPDR = address & 0xff;
-	while(!(SPSR & _BV(SPIF)));
-
 #endif
 
 	SPDR = value;
@@ -69,8 +54,7 @@ void spiWriteReg(uint16_t address, uint8_t cb, uint8_t value)
 
 	SS_HIGH();
 	cb = 0; //prevents compiler whining about unused cb variable
-	SPCR = cb; // Turn off SPI	
-
+	SPCR = cb; // Turn off SPI
 }
 
 void spiWriteWord(uint16_t address, uint8_t cb, uint16_t value)
@@ -95,7 +79,10 @@ uint8_t spiReadReg(uint16_t address, uint8_t cb)
 	SPCR = _BV(SPE) | _BV(MSTR);
 	SS_LOW();
 
-#if (W5200 > 0)
+#if defined(__WIZ_W5100__)
+	SPDR = SPI_READ;
+	while(!(SPSR & _BV(SPIF)));
+#endif
 
 	SPDR = address >> 8;
 	while(!(SPSR & _BV(SPIF)));
@@ -103,35 +90,16 @@ uint8_t spiReadReg(uint16_t address, uint8_t cb)
 	SPDR = address & 0xff;
 	while(!(SPSR & _BV(SPIF)));
 
+#if defined(__WIZ_W5200__)
 	SPDR = 0x00;
 	while(!(SPSR & _BV(SPIF)));
 
 	SPDR = 0x01;
 	while(!(SPSR & _BV(SPIF)));
-
-#elif (W5500 > 0)
-//W5500 code
-
-	SPDR = address >> 8;
-	while(!(SPSR & _BV(SPIF)));
-
-	SPDR = address & 0xff;
-	while(!(SPSR & _BV(SPIF)));
-
+#endif
+#if defined(_WIZ_W5500__)
 	SPDR = cb;  //Socket 3 BSB Read 0x69 Selects Socket 3 Register, read mode, 1 byte data length
 	while(!(SPSR & _BV(SPIF)));
-
-#else //Standard W5100 Code
-
-	SPDR = SPI_READ;
-	while(!(SPSR & _BV(SPIF)));
-
-	SPDR = address >> 8;
-	while(!(SPSR & _BV(SPIF)));
-
-	SPDR = address & 0xff;
-	while(!(SPSR & _BV(SPIF)));
-
 #endif
 
 	SPDR = 0;

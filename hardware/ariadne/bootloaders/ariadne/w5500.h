@@ -1,6 +1,5 @@
-#ifndef w5100_h
-#define w5100_h
-#endif
+#ifndef w5500_h
+#define w5500_h
 
 //Mode
 #define REG_MR          0x0000
@@ -46,7 +45,6 @@
 //#define REG_PTIMER      0x0028
 //PPP LCP Magic Number
 //#define REG_PMAGIC      0x0029
-/*
 //Unreachable IP Address
 #define REG_UIPR0       0x02A
 #define REG_UIPR1       0x02B
@@ -55,7 +53,6 @@
 //Unreachable Port
 #define REG_UPORT0      0x02E
 #define REG_UPORT1      0x02F
-*/
 /**
  * Socket 0 addresses */
 //Mode
@@ -279,6 +276,21 @@
 #define IR_CON       0x01
 //#define IR_CLR       0x00
 
+/**
+  * W5500 SPI OP Codes
+  * These are not used for W5100 or W5200. They are here to satisfy the compiler*/
+//Socket Read BSB:
+#define S2_R_CB 0x48
+#define S3_R_CB 0x68
+//Socket Write BSB:
+#define S2_W_CB 0x4C
+#define S3_W_CB 0x6C
+//Socket RXbuf BSB:
+#define S2_RXBUF_CB 0x58
+#define S3_RXBUF_CB 0x78
+//Socket TXbuf BSB:
+#define S2_TXBUF_CB 0x54
+#define S3_TXBUF_CB 0x74
+/*end W5500 SPI OP Codes*/
 
-void netInit(void);
-
+#endif

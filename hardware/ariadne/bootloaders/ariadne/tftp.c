@@ -6,26 +6,6 @@
  * Function: tftp implementation and flasher
  * Version: 0.2 tftp / flashing functional
  */
- 
-/*W5500 SPI OP Codes*/
-
-//Socket Read BSB:
-#define S2_R_CB 0x48
-#define S3_R_CB 0x68
-
-//Socket Write BSB:
-#define S2_W_CB 0x4C
-#define S3_W_CB 0x6C
-
-//Socket RXbuf BSB:
-#define S2_RXBUF_CB 0x58
-#define S3_RXBUF_CB 0x78
-
-//Socket TXbuf BSB:
-#define S2_TXBUF_CB 0x54
-#define S3_TXBUF_CB 0x74
-
-/*end W5500 SPI OP Codes*/
 
 #include <avr/pgmspace.h>
 #include <util/delay.h>
@@ -33,7 +13,7 @@
 
 #include "util.h"
 #include "spi.h"
-#include "w5100.h"
+#include "net.h"
 #include "neteeprom.h"
 #include "tftp.h"
 #include "validate.h"
@@ -69,9 +49,9 @@ static void sockInit(uint16_t port)
 
 	spiWriteReg(REG_S3_CR, S3_W_CB, CR_CLOSE);
     while(spiReadReg(REG_S3_CR, S3_R_CB)) {
-		//wait for command to complete	
-	}  
-        
+		//wait for command to complete
+	}
+
 	do {
         // Write interrupt
 		spiWriteReg(REG_S3_IR, S3_W_CB, 0xFF);
@@ -82,8 +62,8 @@ static void sockInit(uint16_t port)
 		// Open Socket
 		spiWriteReg(REG_S3_CR, S3_W_CB, CR_OPEN);
 		while(spiReadReg(REG_S3_CR, S3_R_CB)) {
-			//wait for command to complete	
- 		} 
+			//wait for command to complete
+ 		}
 		// Read Status
 		if(spiReadReg(REG_S3_SR, S3_R_CB) != SOCK_UDP)
 			// Close Socket if it wasn't initialized correctly
@@ -398,7 +378,7 @@ static void sendResponse(uint16_t response)
 	uint8_t* txPtr = txBuffer;
 	uint8_t packetLength;
 	uint16_t writePointer;
-	
+
 #if (W5500 > 0)
 	writePointer = spiReadWord(REG_S3_TX_WR0, S3_R_CB);
 #else

@@ -1,20 +1,6 @@
 #ifndef w5100_h
 #define w5100_h
 
-
-/* Network settings */
-#define IP_ADDR     192,168,1,128
-#define SUB_MASK    255,255,255,0
-#define GW_ADDR     192,168,1,254
-#define MAC_ADDR    0xDE,0xAD,0xBE,0xEF,0xFE,0xED
-
-
-#if (W5200 > 0)
-#include "w5200.h"
-#elif (W5500 > 0)
-#include "w5500.h"
-#else
-
 //Mode
 #define REG_MR          0x000
 //GW Address
@@ -293,11 +279,23 @@
 #define IR_RECV      0x04
 #define IR_DISCON    0x02
 #define IR_CON       0x01
-#define IR_CLR       0x00
+//#define IR_CLR       0x00
 
-
-void netInit(void);
-
-#endif
+/**
+  * W5500 SPI OP Codes
+  * These are not used for W5100 or W5200. They are here to satisfy the compiler*/
+//Socket Read BSB:
+#define S2_R_CB 0x48
+#define S3_R_CB 0x68
+//Socket Write BSB:
+#define S2_W_CB 0x4C
+#define S3_W_CB 0x6C
+//Socket RXbuf BSB:
+#define S2_RXBUF_CB 0x58
+#define S3_RXBUF_CB 0x78
+//Socket TXbuf BSB:
+#define S2_TXBUF_CB 0x54
+#define S3_TXBUF_CB 0x74
+/*end W5500 SPI OP Codes*/
 
 #endif
