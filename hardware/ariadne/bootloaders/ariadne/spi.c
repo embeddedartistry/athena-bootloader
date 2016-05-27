@@ -44,7 +44,7 @@ void spiWriteReg(uint16_t address, uint8_t cb, uint8_t value)
 	SPDR = 0x01;
 	while(!(SPSR & _BV(SPIF)));
 #endif
-#if defined(_WIZ_W5500__)
+#if defined(__WIZ_W5500__)
 	SPDR = cb;  //Socket 3 BSB Write 0x6D Selects Socket 3 Register, write mode, 1 byte data length
 	while(!(SPSR & _BV(SPIF)));
 #endif
@@ -97,7 +97,7 @@ uint8_t spiReadReg(uint16_t address, uint8_t cb)
 	SPDR = 0x01;
 	while(!(SPSR & _BV(SPIF)));
 #endif
-#if defined(_WIZ_W5500__)
+#if defined(__WIZ_W5500__)
 	SPDR = cb;  //Socket 3 BSB Read 0x69 Selects Socket 3 Register, read mode, 1 byte data length
 	while(!(SPSR & _BV(SPIF)));
 #endif
