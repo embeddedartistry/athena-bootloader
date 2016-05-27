@@ -23,11 +23,11 @@
 
 /** Opcode?: tftp operation is unsupported. The bootloader only supports 'put' */
 #define TFTP_OPCODE_ERROR_LEN 12
-const unsigned char tftp_opcode_error_packet[] PROGMEM = "\12" "\0\5" "\0\0" "Opcode?";
+const unsigned char tftp_opcode_error_packet[]  PROGMEM = "\12" "\0\5" "\0\0" "Opcode?";
 
 /** Full: Binary image file is larger than the available space. */
 #define TFTP_FULL_ERROR_LEN 9
-const unsigned char tftp_full_error_packet[] PROGMEM = "\x09" "\0\5" "\0\3" "Full";
+const unsigned char tftp_full_error_packet[]    PROGMEM = "\x09" "\0\5" "\0\3" "Full";
 
 /** General catch-all error for unknown errors */
 #define TFTP_UNKNOWN_ERROR_LEN 10
@@ -105,14 +105,10 @@ static uint8_t processPacket(void)
 		tracenum(readPointer);
 	)
 
-#if (W5500 > 0)
-
+#if defined(__WIZ_W5500__)
 	//W5500 auto increments the readpointer by memory mapping a 16bit addr
-
 #else
-
 	if(readPointer == 0) readPointer += S3_RX_START;
-
 #endif
 
 	for(count = TFTP_PACKET_MAX_SIZE; count--;) {
@@ -124,18 +120,13 @@ static uint8_t processPacket(void)
 			}
 		)
 
-#if (W5500 > 0)
-
+#if defined(__WIZ_W5500__)
 		*bufPtr++ = spiReadReg(readPointer++, S3_RXBUF_CB);
-
 		//W5500 auto increments the readpointer by memory mapping a 16bit addr
 		//Use uint16_t overflow from 0xFFFF to 0x10000 to follow W5500 internal pointer
 #else
-
 		*bufPtr++ = spiReadReg(readPointer++, 0);
-
 		if(readPointer == S3_RX_END) readPointer = S3_RX_START;
-
 #endif
 
 	}
@@ -379,7 +370,7 @@ static void sendResponse(uint16_t response)
 	uint8_t packetLength;
 	uint16_t writePointer;
 
-#if (W5500 > 0)
+#if defined(__WIZ_W5500__)
 	writePointer = spiReadWord(REG_S3_TX_WR0, S3_R_CB);
 #else
 	writePointer = spiReadWord(REG_S3_TX_WR0, 0) + S3_TX_START;
@@ -444,16 +435,14 @@ static void sendResponse(uint16_t response)
 
 	while(packetLength--) {
 		spiWriteReg(writePointer++, S3_TXBUF_CB, *txPtr++);
-#if (W5500 > 0)
+#if defined(__WIZ_W5500__)
 		//W5500 auto increments the readpointer by memory mapping a 16bit addr
 		//Use uint16_t overflow from 0xFFFF to 0x10000 to follow W5500 internal pointer
 	}
-
 	spiWriteWord(REG_S3_TX_WR0, S3_W_CB, writePointer);
 #else
 		if(writePointer == S3_TX_END) writePointer = S3_TX_START;
 	}
-
 	spiWriteWord(REG_S3_TX_WR0, S3_W_CB, writePointer - S3_TX_START);
 #endif
 
