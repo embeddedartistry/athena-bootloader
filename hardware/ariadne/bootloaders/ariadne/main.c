@@ -129,9 +129,9 @@ int main(void)
 				resetTick();
 				// Unset tftp flag
 				tftpFlashing = FALSE;
-				wdt_reset();
 			}
 		}
+		wdt_reset();
 		/* Blink the notification led */
 		updateLed();
 	}
