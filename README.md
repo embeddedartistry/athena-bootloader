@@ -71,7 +71,7 @@ USB cable and select the serial port and the appropriate board from the __Tools_
 that you must press the reset button and the indication LED on __pin 13__ or __pin 9__, in case of Arduino
 Ethernet, will start blinking rapidly. This means that the bootloader is running and the Arduino is ready
 to be programmed. If there is a __valid__ program already flashed on the Arduino, you have to reprogram
-the device in the next __5 seconds__. If you don't, the bootloader will initiate the program that is
+the device in the next __10 seconds__. If you don't, the bootloader will initiate the program that is
 already in the Arduino. In case there is no program flashed or the program has been marked as __invalid__,
 the bootloader will never time out and you can reprogram it at any time.
 
@@ -259,12 +259,12 @@ not needed.
 tftp> trace
 tftp> verbose
 ```
-Now to actually upload the binary file all you have to do is __reset__ the board and in the next __5
+Now to actually upload the binary file all you have to do is __reset__ the board and in the next __10
 seconds__ run the following command.
 ```
 tftp> put [sketch].bin
 ```
-The __5 second__ time frame is in case you already have a valid program uploaded on the Arduino. In case
+The __10 second__ time frame is in case you already have a valid program uploaded on the Arduino. In case
 you don't have a program loaded or it has been marked invalid, you don't have any time constraints.
 
 Now you should see your tftp client sending packets and the indication LED on __pin 13__ or __pin 9__
@@ -295,7 +295,7 @@ After a successful upload the bootloader will start the uploaded application ins
 
 In case that for some reason the upload fails, first of all stop your TFTP client from sending any more
 packets. After that you should wait for the upload process on the bootloader to timeout. That takes about
-__5 seconds__ too. For this period you should witness the indication led doing some random blinking.
+__10 seconds__ too. For this period you should witness the indication led doing some random blinking.
 After the timeout and since there is no valid program in the memory, the TFTP server should restart itself
 and wait for a new upload.
 
