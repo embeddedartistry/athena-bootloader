@@ -206,7 +206,7 @@ ariadne1284W5100.bootloader.lock_bits=0x0F
 ariadne1284W5100.build.mcu=atmega1284p
 ariadne1284W5100.build.f_cpu=16000000L
 ariadne1284W5100.build.core=arduino:arduino
-ariadne1284W5100.build.variant=standard
+ariadne1284W5100.build.variant=bobuino
 
 ##############################################################
 
@@ -227,7 +227,7 @@ ariadne1284W5200.bootloader.lock_bits=0x0F
 ariadne1284W5200.build.mcu=atmega1284p
 ariadne1284W5200.build.f_cpu=16000000L
 ariadne1284W5200.build.core=arduino:arduino
-ariadne1284W5200.build.variant=standard
+ariadne1284W5200.build.variant=bobuino
 
 ##############################################################
 
@@ -248,7 +248,7 @@ ariadne1284W5500.bootloader.lock_bits=0x0F
 ariadne1284W5500.build.mcu=atmega1284p
 ariadne1284W5500.build.f_cpu=16000000L
 ariadne1284W5500.build.core=arduino:arduino
-ariadne1284W5500.build.variant=standard
+ariadne1284W5500.build.variant=bobuino
 
 ##############################################################
 
