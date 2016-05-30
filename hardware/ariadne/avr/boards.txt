@@ -165,7 +165,7 @@ ariadne2560MW.menu.version.debugw5500.bootloader.file=ariadne/ariadne_debug2560_
 
 ##############################################################
 
-ariadne1284W.name=Atmega 1284p
+ariadne1284W.name=ATmega1284P
 
 ariadne1284W.upload.tool=arduino:avrdude
 ariadne1284W.upload.maximum_data_size=16384
