@@ -189,7 +189,7 @@ ariadne2560MW5500.build.variant=arduino:mega
 
 ##############################################################
 
-ariadne1284W5100.name=Atmega 1284p (Ariadne Bootloader, W5100)
+ariadne1284W5100.name=ATmega1284P (Ariadne Bootloader, W5100)
 
 ariadne1284W5100.upload.protocol=arduino
 ariadne1284W5100.upload.maximum_size=126976
@@ -210,7 +210,7 @@ ariadne1284W5100.build.variant=bobuino
 
 ##############################################################
 
-ariadne1284W5200.name=Atmega 1284p (Ariadne Bootloader, W5200)
+ariadne1284W5200.name=ATmega1284P (Ariadne Bootloader, W5200)
 
 ariadne1284W5200.upload.protocol=arduino
 ariadne1284W5200.upload.maximum_size=126976
@@ -231,7 +231,7 @@ ariadne1284W5200.build.variant=bobuino
 
 ##############################################################
 
-ariadne1284W5500.name=Atmega 1284p (Ariadne Bootloader, W5500)
+ariadne1284W5500.name=ATmega1284P (Ariadne Bootloader, W5500)
 
 ariadne1284W5500.upload.protocol=arduino
 ariadne1284W5500.upload.maximum_size=126976
