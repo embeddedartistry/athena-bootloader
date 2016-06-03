@@ -7,22 +7,18 @@
 	/** SPI port and pins */
 	#define SPI_DDR		DDRB
 	#define SPI_PORT	PORTB
-
 	#define SCK     PINB5  //Pin 13
 	#define MISO    PINB4  //Pin 12
 	#define MOSI    PINB3  //Pin 11
 	#define SS      PINB2  //Pin 10
-
 	/** Ethernet Shield SS pin */
 	#define ETH_DDR		DDRB
 	#define ETH_PORT	PORTB
 	#define ETH_SS		PINB2  //Pin 10
-
 	/** SD card SS pin */
 	#define SD_DDR	DDRD
 	#define SD_PORT	PORTD
 	#define SD_SS	PIND4  //Pin 04
-
 	/** Onboard LED is connected to pin PB5 in Duemilanove and Uno or to PB1 in Ethernet */
 	#define LED_DDR		DDRB
 	#define LED_PORT	PORTB
@@ -41,17 +37,14 @@
 	#define MISO	PINB3  //Pin 50
 	#define MOSI	PINB2  //Pin 51
 	#define SS      PINB0  //Pin 53
-
 	/** Ethernet Shield SS pin */
 	#define ETH_DDR		DDRB
 	#define ETH_PORT	PORTB
 	#define ETH_SS		PINB4  //Pin 10
-
 	/** SD card SS pin */
 	#define SD_DDR	DDRG
 	#define SD_PORT	PORTG
 	#define SD_SS	PING5  //Pin 04
-
 	/** Onboard LED is connected to pin PB7 on Arduino Mega */
 	#define LED_DDR     DDRB
 	#define LED_PORT    PORTB
@@ -66,17 +59,14 @@
 	#define MISO	PINB6  //Pin 7
 	#define MOSI	PINB5  //Pin 6
 	#define SS      PINB4  //Pin 5
-
 	/** Ethernet Shield SS pin */
 	#define ETH_DDR		DDRB
 	#define ETH_PORT	PORTB
 	#define ETH_SS		PINB4  //Pin 5
-
 	/** SD card SS pin */
 	#define SD_DDR	DDRC
 	#define SD_PORT	PORTC
 	#define SD_SS	PINC7  //Pin 04
-
 	/** Onboard RED LED is connected to pin PD7 on SEM 1284P board */
 	#define LED_DDR     DDRD
 	#define LED_PORT    PORTD
