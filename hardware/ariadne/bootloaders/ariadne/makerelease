@@ -18,7 +18,7 @@ make atmega328_w5500
 
 make debug1284_w5100
 make debug1284_w5200
-make debug1284_w5200
+make debug1284_w5500
 
 make debug2560_w5100
 make debug2560_w5200
