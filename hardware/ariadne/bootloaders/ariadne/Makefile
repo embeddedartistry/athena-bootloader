@@ -141,16 +141,16 @@ debug328_w5100: AVR_FREQ = 16000000L
 debug328_w5100: LDSECTIONS = -Wl,--section-start=.text=0x7000 #-Wl,--section-start=.version=0x7ffe
 debug328_w5100: $(PROGRAM)_debug328_w5100.hex
 debug328_w5100: $(PROGRAM)_debug328_w5100.lst
-debug328_isp_w5100: debug328_w5100
-debug328_isp_w5100: TARGET = debug328_w5100
-debug328_isp_w5100: MCU_TARGET = atmega328p
+debug328_w5100_isp: debug328_w5100
+debug328_w5100_isp: TARGET = debug328_w5100
+debug328_w5100_isp: MCU_TARGET = atmega328p
 # Low power xtal (16MHz) 16KCK/14CK+65ms
-debug328_isp_w5100: LFUSE = FF
+debug328_w5100_isp: LFUSE = FF
 # 4096 byte boot, SPIEN
-debug328_isp_w5100: HFUSE = D0
+debug328_w5100_isp: HFUSE = D0
 # 2.7V brownout
-debug328_isp_w5100: EFUSE = 05
-debug328_isp_w5100: isp
+debug328_w5100_isp: EFUSE = 05
+debug328_w5100_isp: isp
 
 # Build with the debug messages enabled
 # Use it only if you have already seen the source code
@@ -161,16 +161,16 @@ debug328_w5200: AVR_FREQ = 16000000L
 debug328_w5200: LDSECTIONS = -Wl,--section-start=.text=0x7000 #-Wl,--section-start=.version=0x7ffe
 debug328_w5200: $(PROGRAM)_debug328_w5200.hex
 debug328_w5200: $(PROGRAM)_debug328_w5200.lst
-debug328_isp_w5200: debug328_w5200
-debug328_isp_w5200: TARGET = debug328_w5200
-debug328_isp_w5200: MCU_TARGET = atmega328p
+debug328_w5200_isp: debug328_w5200
+debug328_w5200_isp: TARGET = debug328_w5200
+debug328_w5200_isp: MCU_TARGET = atmega328p
 # Low power xtal (16MHz) 16KCK/14CK+65ms
-debug328_isp_w5200: LFUSE = FF
+debug328_w5200_isp: LFUSE = FF
 # 4096 byte boot, SPIEN
-debug328_isp_w5200: HFUSE = D0
+debug328_w5200_isp: HFUSE = D0
 # 2.7V brownout
-debug328_isp_w5200: EFUSE = 05
-debug328_isp_w5200: isp
+debug328_w5200_isp: EFUSE = 05
+debug328_w5200_isp: isp
 
 # Build with the debug messages enabled
 # Use it only if you have already seen the source code
@@ -181,16 +181,16 @@ debug328_w5500: AVR_FREQ = 16000000L
 debug328_w5500: LDSECTIONS = -Wl,--section-start=.text=0x7000 #-Wl,--section-start=.version=0x7ffe
 debug328_w5500: $(PROGRAM)_debug328_w5500.hex
 debug328_w5500: $(PROGRAM)_debug328_w5500.lst
-debug328_isp_w5500: debug328_w5500
-debug328_isp_w5500: TARGET = debug328_w5500
-debug328_isp_w5500: MCU_TARGET = atmega328p
+debug328_w5500_isp: debug328_w5500
+debug328_w5500_isp: TARGET = debug328_w5500
+debug328_w5500_isp: MCU_TARGET = atmega328p
 # Low power xtal (16MHz) 16KCK/14CK+65ms
-debug328_isp_w5500: LFUSE = FF
+debug328_w5500_isp: LFUSE = FF
 # 4096 byte boot, SPIEN
-debug328_isp_w5500: HFUSE = D0
+debug328_w5500_isp: HFUSE = D0
 # 2.7V brownout
-debug328_isp_w5500: EFUSE = 05
-debug328_isp_w5500: isp
+debug328_w5500_isp: EFUSE = 05
+debug328_w5500_isp: isp
 
 # Debug build for Arduino Mega2560
 debug2560_w5100: TARGET = debug2560_w5100
@@ -200,16 +200,16 @@ debug2560_w5100: AVR_FREQ = 16000000L
 debug2560_w5100: LDSECTIONS  = -Wl,--section-start=.text=0x3e000
 debug2560_w5100: $(PROGRAM)_debug2560_w5100.hex
 debug2560_w5100: $(PROGRAM)_debug2560_w5100.lst
-debug2560_isp_w5100: debug2560_w5100
-debug2560_isp_w5100: TARGET = debug2560_w5100
-debug2560_isp_w5100: MCU_TARGET = atmega2560
+debug2560_w5100_isp: debug2560_w5100
+debug2560_w5100_isp: TARGET = debug2560_w5100
+debug2560_w5100_isp: MCU_TARGET = atmega2560
 # Low power xtal (16MHz) 16KCK/14CK+65ms
-debug2560_isp_w5100: LFUSE = FF
+debug2560_w5100_isp: LFUSE = FF
 # 4069 byte boot
-debug2560_isp_w5100: HFUSE = D0
+debug2560_w5100_isp: HFUSE = D0
 # 2.7V brownout
-debug2560_isp_w5100: EFUSE = FD
-debug2560_isp_w5100: isp
+debug2560_w5100_isp: EFUSE = FD
+debug2560_w5100_isp: isp
 
 # Debug build for Arduino Mega2560
 debug2560_w5200: TARGET = debug2560_w5200
@@ -219,16 +219,16 @@ debug2560_w5200: AVR_FREQ = 16000000L
 debug2560_w5200: LDSECTIONS  = -Wl,--section-start=.text=0x3e000
 debug2560_w5200: $(PROGRAM)_debug2560_w5200.hex
 debug2560_w5200: $(PROGRAM)_debug2560_w5200.lst
-debug2560_isp_w5200: debug2560_w5200
-debug2560_isp_w5200: TARGET = debug2560_w5200
-debug2560_isp_w5200: MCU_TARGET = atmega2560
+debug2560_w5200_isp: debug2560_w5200
+debug2560_w5200_isp: TARGET = debug2560_w5200
+debug2560_w5200_isp: MCU_TARGET = atmega2560
 # Low power xtal (16MHz) 16KCK/14CK+65ms
-debug2560_isp_w5200: LFUSE = FF
+debug2560_w5200_isp: LFUSE = FF
 # 4069 byte boot
-debug2560_isp_w5200: HFUSE = D0
+debug2560_w5200_isp: HFUSE = D0
 # 2.7V brownout
-debug2560_isp_w5200: EFUSE = FD
-debug2560_isp_w5200: isp
+debug2560_w5200_isp: EFUSE = FD
+debug2560_w5200_isp: isp
 
 # Debug build for Arduino Mega2560
 debug2560_w5500: TARGET = debug2560_w5500
@@ -238,16 +238,16 @@ debug2560_w5500: AVR_FREQ = 16000000L
 debug2560_w5500: LDSECTIONS  = -Wl,--section-start=.text=0x3e000
 debug2560_w5500: $(PROGRAM)_debug2560_w5500.hex
 debug2560_w5500: $(PROGRAM)_debug2560_w5500.lst
-debug2560_isp_w5500: debug2560_w5500
-debug2560_isp_w5500: TARGET = debug2560_w5500
-debug2560_isp_w5500: MCU_TARGET = atmega2560
+debug2560_w5500_isp: debug2560_w5500
+debug2560_w5500_isp: TARGET = debug2560_w5500
+debug2560_w5500_isp: MCU_TARGET = atmega2560
 # Low power xtal (16MHz) 16KCK/14CK+65ms
-debug2560_isp_w5500: LFUSE = FF
+debug2560_w5500_isp: LFUSE = FF
 # 4069 byte boot
-debug2560_isp_w5500: HFUSE = D0
+debug2560_w5500_isp: HFUSE = D0
 # 2.7V brownout
-debug2560_isp_w5500: EFUSE = FD
-debug2560_isp_w5500: isp
+debug2560_w5500_isp: EFUSE = FD
+debug2560_w5500_isp: isp
 
 # Debug build for Atmega1284
 debug1284_w5100: TARGET = debug1284_w5100
