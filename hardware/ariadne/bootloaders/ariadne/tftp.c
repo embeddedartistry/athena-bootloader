@@ -23,19 +23,19 @@
 
 /** Opcode?: tftp operation is unsupported. The bootloader only supports 'put' */
 #define TFTP_OPCODE_ERROR_LEN 12
-const unsigned char tftp_opcode_error_packet[]  PROGMEM = "\12" "\0\5" "\0\0" "Opcode?";
+const unsigned char tftp_opcode_error_packet[]  PROGMEM = "\0\5" "\0\4" "Opcode?";
 
 /** Full: Binary image file is larger than the available space. */
 #define TFTP_FULL_ERROR_LEN 9
-const unsigned char tftp_full_error_packet[]    PROGMEM = "\x09" "\0\5" "\0\3" "Full";
+const unsigned char tftp_full_error_packet[]    PROGMEM = "\0\5" "\0\3" "Full";
 
 /** General catch-all error for unknown errors */
 #define TFTP_UNKNOWN_ERROR_LEN 10
-const unsigned char tftp_unknown_error_packet[] PROGMEM = "\10" "\0\5" "\0\0" "Error";
+const unsigned char tftp_unknown_error_packet[] PROGMEM = "\0\5" "\0\0" "Error";
 
 /** Invalid image file: Doesn't look like a binary image file */
-#define TFTP_INVALID_IMAGE 23
-const unsigned char tftp_invalid_image_packet[] PROGMEM = "\23" "\0\5" "\0\0" "Invalid image file";
+#define TFTP_INVALID_IMAGE_LEN 23
+const unsigned char tftp_invalid_image_packet[] PROGMEM = "\0\5" "\0\0" "Invalid image file";
 
 uint16_t lastPacket = 0, highPacket = 0;
 
