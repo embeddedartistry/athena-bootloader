@@ -26,30 +26,37 @@
 #endif
 
 
-int main(void) __attribute__ ((OS_main)) __attribute__ ((section (".init9")));
-//void (*appStart)(void) __attribute__((naked)) = 0x0000;
-//void (*appStart)(void) = 0x0000;
+int  main(void) __attribute__ ((OS_main)) __attribute__ ((section (".init9")));
+void appStart(void) __attribute__ ((naked));
 
 int main(void)
 {
-	/* Disable the watchdog timer to prevent
+    uint8_t ch;
+
+    /* This code makes the following assumptions:
+     * No interrupts will execute
+     * SP points to RAMEND
+     * r1 contains zero
+     * If not, uncomment the following instructions. */
+    //cli();
+    asm volatile("clr __zero_reg__");
+#if defined(__AVR_ATmega8__)
+    SP = RAMEND;  // This is done by hardware reset
+#endif
+
+    /* Disable the watchdog timer to prevent
 	 * eternal reset loop of doom and despair */
-	MCUSR = 0;
-	wdt_disable();
+    ch = MCUSR;
+    MCUSR = 0;
+    if(ch & (_BV(WDRF) | _BV(BORF) | _BV(PORF)))
+        if(eeprom_read_byte(EEPROM_IMG_STAT) == EEPROM_IMG_OK_VALUE)
+            appStart();
 	wdt_enable(WDTO_8S);
 
 	// Wait to ensure startup of W5100
 	_delay_ms(200);
 
-	/* This code makes the following assumptions:
-	 * No interrupts will execute
-	 * SP points to RAMEND
-	 * r1 contains zero */
-	//cli();
-	asm volatile("clr __zero_reg__");
-#if defined(__AVR_ATmega8__)
-	SP = RAMEND;  // This is done by hardware reset
-#endif
+
 
 	// Prescaler=0, ClkIO Period = 62,5ns
 	// TCCR1B values:
@@ -114,7 +121,7 @@ int main(void)
 		announcePoll();
 #endif
 
-		if(timedOut()) {
+        if(timedOut()) {
 			if(eeprom_read_byte(EEPROM_IMG_STAT) == EEPROM_IMG_OK_VALUE) break;
 
 			//TODO: determine the conditions for reseting server OR reseting socket
@@ -135,14 +142,15 @@ int main(void)
 	}
 
 	/* Exit to user application */
-	wdt_disable(); // Disable wdt again just before user app starts
-	DBG_MAIN(tracePGMlnMain(mDebugMain_EXIT);)
-	asm volatile(
-		"clr	r30		\n\t"
-		"clr	r31		\n\t"
-		"ijmp	\n\t"
-	);
-	//appStart();
+	appStart();
 	//return(0); /* never reached */
 }
 
+void appStart(void) {
+    wdt_disable();
+    asm volatile(
+        "clr    r30     \n\t"
+        "clr    r31     \n\t"
+        "ijmp   \n\t"
+    );
+}
