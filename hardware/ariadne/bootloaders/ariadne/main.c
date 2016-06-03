@@ -26,7 +26,7 @@
 #endif
 
 
-//int main(void) __attribute__((naked)) __attribute__((section(".init9")));
+int main(void) __attribute__ ((OS_main)) __attribute__ ((section (".init9")));
 //void (*appStart)(void) __attribute__((naked)) = 0x0000;
 //void (*appStart)(void) = 0x0000;
 
@@ -102,14 +102,12 @@ int main(void)
 		// If there is no serial flashing under way, poll tftp
 		if(!serialFlashing)
 			// If tftp recieved a FINAL_ACK, break
-			if(tftpPoll() == 0)
-				break;
+			if(tftpPoll() == 0) break;
 
 		// If there is no tftp flashing, poll serial
 		if(!tftpFlashing)
 			// If flashing is done exit
-			if(serialPoll() == 0)
-				break;
+			if(serialPoll() == 0) break;
 
 		/* As explained above this goes out */
 #if defined(ANNOUNCE)
