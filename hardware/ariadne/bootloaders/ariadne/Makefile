@@ -34,9 +34,9 @@ PROGRAM    = ariadne
 # OS ?= windows
 
 # enter the parameters for the avrdude isp tool
-# for now they default to the arduinoISP on linux
-ISPTOOL    = avrispmkii
-#ISPTOOL   = usbtiny
+# for now they default to the AVRISP MKII on linux
+#ISPTOOL    = avrispmkii
+ISPTOOL    = usbtiny
 ISPPORT	   = usb
 ISPSPEED   = -b38400
 
@@ -149,7 +149,7 @@ debug328_w5100_isp: LFUSE = FF
 # 4096 byte boot, SPIEN
 debug328_w5100_isp: HFUSE = D0
 # 2.7V brownout
-debug328_w5100_isp: EFUSE = 05
+debug328_w5100_isp: EFUSE = FD
 debug328_w5100_isp: isp
 
 # Build with the debug messages enabled
@@ -169,7 +169,7 @@ debug328_w5200_isp: LFUSE = FF
 # 4096 byte boot, SPIEN
 debug328_w5200_isp: HFUSE = D0
 # 2.7V brownout
-debug328_w5200_isp: EFUSE = 05
+debug328_w5200_isp: EFUSE = FD
 debug328_w5200_isp: isp
 
 # Build with the debug messages enabled
@@ -189,7 +189,7 @@ debug328_w5500_isp: LFUSE = FF
 # 4096 byte boot, SPIEN
 debug328_w5500_isp: HFUSE = D0
 # 2.7V brownout
-debug328_w5500_isp: EFUSE = 05
+debug328_w5500_isp: EFUSE = FD
 debug328_w5500_isp: isp
 
 # Debug build for Arduino Mega2560
@@ -409,7 +409,7 @@ atmega328_w5100_isp: LFUSE = FF
 # 4096 byte boot, SPIEN
 atmega328_w5100_isp: HFUSE = D8
 # 2.7V brownout
-atmega328_w5100_isp: EFUSE = 05
+atmega328_w5100_isp: EFUSE = FD
 atmega328_w5100_isp: isp
 
 # Atmega328 used on Arduino UNO and Arduino Ethernet
@@ -429,7 +429,7 @@ atmega328_w5200_isp: LFUSE = FF
 # 4096 byte boot, SPIEN
 atmega328_w5200_isp: HFUSE = D8
 # 2.7V brownout
-atmega328_w5200_isp: EFUSE = 05
+atmega328_w5200_isp: EFUSE = FD
 atmega328_w5200_isp: isp
 
 # Atmega328 used on Arduino UNO and Arduino Ethernet
@@ -449,7 +449,7 @@ atmega328_w5500_isp: LFUSE = FF
 # 4096 byte boot, SPIEN
 atmega328_w5500_isp: HFUSE = D8
 # 2.7V brownout
-atmega328_w5500_isp: EFUSE = 05
+atmega328_w5500_isp: EFUSE = FD
 atmega328_w5500_isp: isp
 
 atmega328_ethernet: TARGET = atmega328_ethernet
@@ -467,7 +467,7 @@ atmega328_ethernet_isp: LFUSE = FF
 # 4096 byte boot, SPIEN
 atmega328_ethernet_isp: HFUSE = D8
 # 2.7V brownout
-atmega328_ethernet_isp: EFUSE = 05
+atmega328_ethernet_isp: EFUSE = FD
 atmega328_ethernet_isp: isp
 
 
