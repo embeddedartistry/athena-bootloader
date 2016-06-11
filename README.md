@@ -1,4 +1,6 @@
 # [Ariadne Bootloader for Arduino][1]
+
+[![Join the chat at https://gitter.im/LoathingKernel/Ariadne-Bootloader](https://badges.gitter.im/LoathingKernel/Ariadne-Bootloader.svg)](https://gitter.im/LoathingKernel/Ariadne-Bootloader?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [1]: http://codebendercc.github.com/Ariadne-Bootloader/
 
 [![PayPayl donate button](http://img.shields.io/paypal/donate.png?color=yellow)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=6RBAQPJ77X9BG "Donate once-off to Ariadne bootloader developer using Paypal")
