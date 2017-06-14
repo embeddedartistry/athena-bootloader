@@ -366,8 +366,8 @@ of these so a big ___thank you___ goes to the people that took their time to tes
 
 ## Contributors
 
-## Donators [![PayPayl donate button](http://img.shields.io/paypal/donate.png?color=yellow)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=6RBAQPJ77X9BG "Donate once-off to Ariadne bootloader developer using Paypal")
-[Hachi Manzur](hemanzur@gmail.com) (AVRISP mkII programmer, testing)
+## Donators 
+[Hachi Manzur] (AVRISP mkII programmer, testing)
 
 If you feel that you should be in this list, please contact me via email.
 
