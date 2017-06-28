@@ -1,7 +1,3 @@
-# [Ariadne Bootloader for Arduino][1]
-
-[1]: http://codebendercc.github.com/Ariadne-Bootloader/
-
 ## Bootloader for Arduino with Ethernet
 This is a beta stage bootloader for Arduino Ethernet board and the regular Arduino with Ethernet Shield.
 It is based on previous unfinished work by the Arduino developers. The bootloader implements a TFTP
