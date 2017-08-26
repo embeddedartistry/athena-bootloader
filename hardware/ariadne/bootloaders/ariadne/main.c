@@ -48,9 +48,12 @@ int main(void)
 	 * eternal reset loop of doom and despair */
     ch = MCUSR;
     MCUSR = 0;
-    if(ch & (_BV(WDRF) | _BV(BORF) | _BV(PORF)))
-        if(eeprom_read_byte(EEPROM_IMG_STAT) == EEPROM_IMG_OK_VALUE)
+    if(ch & (_BV(WDRF) | _BV(BORF) | _BV(PORF))) {
+        if(eeprom_read_byte(EEPROM_IMG_STAT) == EEPROM_IMG_OK_VALUE) {
+            wdt_disable();
             appStart();
+        }
+    }
 	wdt_enable(WDTO_8S);
 
 	// Wait to ensure startup of W5100
@@ -127,7 +130,7 @@ int main(void)
 			//TODO: determine the conditions for reseting server OR reseting socket
 			if(tftpFlashing == TRUE) {
 				// Delete first page of flash memory
-				boot_page_erase(0);
+                boot_page_erase(0);
 				// Reinitialize TFTP
 				tftpInit();
 				// Reset the timeout counter
@@ -143,12 +146,12 @@ int main(void)
 	}
 
 	/* Exit to user application */
-	appStart();
+    wdt_disable();
+    appStart();
 	//return(0); /* never reached */
 }
 
 void appStart(void) {
-    wdt_disable();
     asm volatile(
         "clr    r30     \n\t"
         "clr    r31     \n\t"
