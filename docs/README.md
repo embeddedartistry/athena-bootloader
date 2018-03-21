@@ -9,7 +9,8 @@ The structure of this repository is made to follow the standarts of the Arduino 
 simply copy the folders in your sketchbook and be ready
 
 * hardware: This is where the bootloader resides.
-* java-client: Demo client for the bootloader. Inherited by the initial project. Untested and probably non-functional
+* java-client: Demo client for the bootloader. Inherited by the initial project. Untested and
+  probably non-functional
 * libraries: Helper libraries to support functions of the bootloader
 * utilities: Various stuff used for development and debugging
 
@@ -87,7 +88,7 @@ but they still need refinement.
 ## Default Network Settings
 The default built-in network settings of the bootloader are listed below.
 
-`
+```
 * IP Address:  192.168.1.128
 * Subnet Mask: 255.255.255.0
 * Gateway:     192.168.1.1
@@ -95,7 +96,7 @@ The default built-in network settings of the bootloader are listed below.
 
 * TFTP Negotiation Port: 69
 * TFTP Data Port: 46969
-`
+```
 
 ___NOTE:___ The Arduino Ethernet that were sent as Indiegogo Perks were flashed with different network
 settings. Their bootloader still defaults to the previous settings __but__ the current values are on
@@ -322,7 +323,7 @@ enter your Arduino's IP (external IP for those in corporate or home networks beh
 * [NewEEPROM][14] (Patched EEPROM library to protect the memory space used by the bootloader)
 * [NetEEPROM][15] (Library to manipulate the network settings of the bootloader)
 * [ResetServer][16] (Library used to create an HTTP server on the Arduino to enable remote resetting
-of the microcontroller)
+  of the microcontroller)
 [14]: https://github.com/codebendercc/Ariadne-Bootloader/tree/master/libraries/NewEEPROM
 [15]: https://github.com/codebendercc/Ariadne-Bootloader/tree/master/libraries/NetEEPROM
 [16]: https://github.com/codebendercc/Ariadne-Bootloader/tree/master/libraries/EthernetReset
@@ -361,6 +362,8 @@ of these so a big ___thank you___ goes to the people that took their time to tes
 [22]: https://www.sparkfun.com/products/10536
 
 ## Contributors
+[Arjen Hiemstra] (Support for W5200 and W5500)
+[per1234] (Testing and tech support in Arduino Forums)
 
 ## Donators 
 [Hachi Manzur] (AVRISP mkII programmer, testing)
