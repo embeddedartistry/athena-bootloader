@@ -28,4 +28,4 @@ make debug328_w5100
 make debug328_w5200
 make debug328_w5500
 
-cp *.hex ../../avr/bootloaders/ariadne/
+#cp *.hex ../../avr/bootloaders/ariadne/

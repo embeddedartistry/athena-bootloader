@@ -1,0 +1,12 @@
+os: linux
+dist: trusty
+language: c
+
+before_install:
+  - sudo apt-get update -qq
+install:
+  - sudo apt-get install -qq gcc-avr binutils-avr avr-libc
+script:
+  - cd hardware/ariadne/bootloaders/ariadne
+  - makerelease
+  - cd -
