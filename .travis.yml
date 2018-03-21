@@ -8,12 +8,12 @@ install:
 script:
 - "(cd bootloaders/ariadne/src && ./makerelease)"
 before_deploy:
-- tar --transform "s|^|ariadne-bootloader-$TRAVIS_TAG/|" -zcf ariadne-bootloader-$TRAVIS_TAG.tar.gz boards.txt bootloaders libraries platform.txt variants
+- tar --transform "s|^|ariadne-bootloader-${TRAVIS_TAG#v}/|" -zcf ariadne-bootloader-${TRAVIS_TAG#v}.tar.gz boards.txt bootloaders libraries platform.txt variants
 deploy:
   provider: releases
   api_key:
     secure: HcAqpnLt2HRuqlsPS4z5pismeZZ832qgk2NO4y3bDx966HcI3RhbC++QS+AGyrxijIkZ2p7+wi3f7yEcXrdlbIwNjbJ54EurJbuTJpnm5ixK6ChdJwrpkq9fkK9LYiD2HyDOLkg8bYGUM6usdyb+yPQrWwvm4fhgrpXcg6JFUDrPzHk7prA0NLOs9/pvqNJVXS6VvZWKBllTe/xKv0147KIdI7fk/HOPRP+R3NS4/Ox9oJU8g08XHcuUkIvtopqsToIC5F2hPCNThHWvvD94WSP5BBgMB//shuIK4nnfoY4PCy55EigOP775/bDZGpOZ7JLM45BdaQ6/6qPQjxDwSsjYbDpnB024QLY/ScV2jkvvwynVx3GhcV1vFkRF5a672wbYSFhFsvp1mj/Sf898q81eEXmE/U77Mzn2edXjv1ptUZyCX6mP0C7RsR6AYOZh9EuAozYckWn7wT0Xg53zyi2tDllhiM0RbUyDRf/abZ5TEu2sc3Nl3qcj3yZE0xBbHCSLuz7XqSAyFGwXH+HtTDUqjWBuPAgt6uphXASi3GEifo4sTXCoqKZylG4QKKzBuAC17Avua5lRfaaex6vWRnznneLy1CxOKMGeCSoecKOJHvvSSjVUihLxGcNHMm87a2fsdZ6XUlOSF7i+GLg40xwaD4Y8DvE63zT0lZ9g/Q8=
-  file: ariadne-bootloader-$TRAVIS_TAG.tar.gz
+  file: ariadne-bootloader-${TRAVIS_TAG#v}.tar.gz
   skip_cleanup: true
   on:
     repo: loathingKernel/ariadne-bootloader
