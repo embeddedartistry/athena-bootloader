@@ -35,10 +35,6 @@ or you can build a [ParallelProgrammer][4] or an [ArduinoISP][5]. The first thre
 be connected to the ICSP pins (the 2 by 3 pin header) and make sure you plug it in the right way. The
 board must be powered by an external power supply or the USB port. In the case of _ArduinoISP_ you
 should consult the above link for further instructions on how to build and use.
-[2]: http://www.atmel.com/dyn/products/tools_card.asp?tool_id=2726
-[3]: http://www.ladyada.net/make/usbtinyisp/
-[4]: http://arduino.cc/en/Hacking/ParallelProgrammer
-[5]: http://arduino.cc/en/Tutorial/ArduinoISP
 
 After you have connected the Arduino board and the programmer to your computer launch the Arduino IDE.
 Navigate to the __Tools__ > __Board__ menu and select `Arduino Duemilanove/Uno(ATmega328) w/ Ariadne Bootloader`
@@ -55,9 +51,6 @@ like [Atmel's AVRISP mkII][6], [Olimex's AVR-ISP-MK2][7] or another similar prog
 have any compatible programmer but more than one Arduinos available, you can use Nick Gammon's
 excellent [guide][8] on how to use one to program the other. This method has been reported to work
 for flashing __Ariadne__ on _Arduino Mega_.
-[6]: http://www.atmel.com/tools/AVRISPMKII.aspx
-[7]: https://www.olimex.com/Products/AVR/Programmers/AVR-ISP-MK2/
-[8]: http://www.gammon.com.au/forum/?id=11635
 
 
 ## Serial Flashing
@@ -116,7 +109,7 @@ If you set the network settings you also have to set the TFTP data transfer port
 enough but you may need to change it for the reasons that are listed below in the
 [Configuring your Router for Remote Flashing][9] section. There is also documentation on how use
 these sketches in the form of comments so be sure to read them.
-[9]: https://github.com/codebendercc/Ariadne-Bootloader#configuring-your-router-for-remote-flashing
+
 
 ## TFTP Flashing
 Now for the real reason we made this bootloader and why you should use it. First of all you can watch
@@ -124,7 +117,6 @@ __Ariadne__ in action in this how-to video for remote flashing using TFTP [here]
 may notice that the board is being reset by hand. In the next couple of weeks we are going to release
 the library that will allow remote resetting through a simple web server with some security measures.
 More on that as the library progresses.
-[10]: http://youtu.be/KCHqhV6xPMg
 
 ### Converting your sketch to the right format
 Unlike serial flashing that uses __HEX__ files to flash the Arduino, the TFTP server implemented in the
@@ -304,7 +296,6 @@ to forward __50232__ port instead of __46969__. This is particularly useful when
 Arduinos, that you want to flash, behind your router. In addition to this you are going to have to translate
 an external port of your choice on the router to the internal port and ip of the Arduino in the local
 network.
-[11]: http://en.wikipedia.org/wiki/Port_forwarding
 
 An example is that you have 2 devices, one at *192.168.1.128* and one at *192.168.1.129*. They both listen
 to port __69__ for the initial connection. In this case you can translate external port __6969__(any
@@ -312,21 +303,17 @@ random port will do) on your router to `192.168.1.128:`__69__ and external port 
 `192.168.1.129:`__69__ and specify these in the tftp client you are using.
 
 Port Forward has [excellent guides][12] on how to enable port forwarding for a vast number of routers.
-[12]: http://portforward.com/english/routers/port_forwarding/
 
 ## Codebender
 One of the best and easiest ways to use this bootloader is along with [codebender.cc][13]. Just register,
 enter your Arduino's IP (external IP for those in corporate or home networks behind NAT) and flash.
-[13]: http://codebender.cc
 
 ## Helper Libraries
 * [NewEEPROM][14] (Patched EEPROM library to protect the memory space used by the bootloader)
 * [NetEEPROM][15] (Library to manipulate the network settings of the bootloader)
 * [ResetServer][16] (Library used to create an HTTP server on the Arduino to enable remote resetting
   of the microcontroller)
-[14]: https://github.com/codebendercc/Ariadne-Bootloader/tree/master/libraries/NewEEPROM
-[15]: https://github.com/codebendercc/Ariadne-Bootloader/tree/master/libraries/NetEEPROM
-[16]: https://github.com/codebendercc/Ariadne-Bootloader/tree/master/libraries/EthernetReset
+
 
 ## Supported Boards
 Supported MCUs:
@@ -343,14 +330,11 @@ Supported ethernet controllers:
 
 Tested Arduino Boards:
 
-* [Arduino Ethernet][17]
+* [Arduino Ethernet](17)
 * [Arduino Uno][18]
 * [Arduino Duemilanove w/ ATmega328][19]
 * [Arduino Mega 2560][20]
-[17]: www.arduino.cc/en/Main/ArduinoBoardEthernet
-[18]: http://www.arduino.cc/en/Main/ArduinoBoardUno
-[19]: http://www.arduino.cc/en/Main/ArduinoBoardDuemilanove
-[20]: http://arduino.cc/en/Main/arduinoBoardMega2560
+
 
 ## Other Tested Boards
 These boards have been also tested and found to be working with Ariadne Bootloader. I don't have any
@@ -358,15 +342,14 @@ of these so a big ___thank you___ goes to the people that took their time to tes
 
 * [ITead Studio IBoard][21]
 * [Sparkfun Ethernet Pro][22]
-[21]: http://imall.iteadstudio.com/im120410001.html
-[22]: https://www.sparkfun.com/products/10536
+
 
 ## Contributors
-[Arjen Hiemstra] (Support for W5200 and W5500)
-[per1234] (Testing and tech support in Arduino Forums)
+* [Arjen Hiemstra] (Support for W5200 and W5500)
+* [per1234] (Testing and tech support in Arduino Forums)
 
 ## Donators 
-[Hachi Manzur] (AVRISP mkII programmer, testing)
+* [Hachi Manzur] (AVRISP mkII programmer, testing)
 
 If you feel that you should be in this list, please contact me via email.
 
@@ -376,15 +359,40 @@ __Ariadne__ bootloader is built upon some great open source projects.
 * [TFTP-Bootloader][23] (The base of this project)
 * [Optiboot][24] (Serial flashing for __ATmega328__)
 * [Arduino-stk500v2-bootloader][25] (Serial flashing for __ATmega2560__)
-[23]: https://github.com/arduino/TFTP-Bootloader
-[24]: https://code.google.com/p/optiboot/
-[25]: https://github.com/msproul/Arduino-stk500v2-bootloader
 
-Credit should also go to [mharizanov](https://github.com/mharizanov) for commenting some of the initial
-*Arduino* code, making it easy for me to start and [follower](https://github.com/follower) who's sketches
+
+Credit should also go to [mharizanov][26] for commenting some of the initial
+*Arduino* code, making it easy for me to start and [follower][27] who's sketches
 served as a starting point for the included __NetEEPROM__ and __EthernetReset__ libraries.
 
 
 ## License
 This is free software and it is released under the [GPLv2, GNU General Public License][99]
+
+[2]: http://www.atmel.com/dyn/products/tools_card.asp?tool_id=2726
+[3]: http://www.ladyada.net/make/usbtinyisp/
+[4]: http://arduino.cc/en/Hacking/ParallelProgrammer
+[5]: http://arduino.cc/en/Tutorial/ArduinoISP
+[6]: http://www.atmel.com/tools/AVRISPMKII.aspx
+[7]: https://www.olimex.com/Products/AVR/Programmers/AVR-ISP-MK2/
+[8]: http://www.gammon.com.au/forum/?id=11635
+[9]: https://github.com/codebendercc/Ariadne-Bootloader#configuring-your-router-for-remote-flashing
+[10]: http://youtu.be/KCHqhV6xPMg
+[11]: http://en.wikipedia.org/wiki/Port_forwarding
+[12]: http://portforward.com/english/routers/port_forwarding/
+[13]: http://codebender.cc
+[14]: https://github.com/codebendercc/Ariadne-Bootloader/tree/master/libraries/NewEEPROM
+[15]: https://github.com/codebendercc/Ariadne-Bootloader/tree/master/libraries/NetEEPROM
+[16]: https://github.com/codebendercc/Ariadne-Bootloader/tree/master/libraries/EthernetReset
+[17]: www.arduino.cc/en/Main/ArduinoBoardEthernet
+[18]: http://www.arduino.cc/en/Main/ArduinoBoardUno
+[19]: http://www.arduino.cc/en/Main/ArduinoBoardDuemilanove
+[20]: http://arduino.cc/en/Main/arduinoBoardMega2560
+[21]: http://imall.iteadstudio.com/im120410001.html
+[22]: https://www.sparkfun.com/products/10536
+[23]: https://github.com/arduino/TFTP-Bootloader
+[24]: https://code.google.com/p/optiboot/
+[25]: https://github.com/msproul/Arduino-stk500v2-bootloader
+[26]: https://github.com/mharizanov
+[27]: https://github.com/follower
 [99]: https://www.gnu.org/licenses/gpl-2.0.html

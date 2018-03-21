@@ -8,5 +8,5 @@ install:
   - sudo apt-get install -qq gcc-avr binutils-avr avr-libc
 script:
   - cd hardware/ariadne/bootloaders/ariadne
-  - makerelease
+  - ./makerelease
   - cd -
