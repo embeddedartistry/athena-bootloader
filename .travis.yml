@@ -8,7 +8,7 @@ install:
 script:
 - "(cd bootloaders/ariadne/src && ./makerelease)"
 before_deploy:
-- tar --transform "s|^|ariadne-bootloader-${TRAVIS_TAG#v}/|" -zcf ariadne-bootloader-${TRAVIS_TAG#v}.tar.gz boards.txt bootloaders libraries platform.txt variants
+- tar --transform "s|^|ariadne-bootloader-${TRAVIS_TAG#v}/hardware/ariadne/avr/|" -zcf ariadne-bootloader-${TRAVIS_TAG#v}.tar.gz boards.txt bootloaders libraries platform.txt variants
 deploy:
   provider: releases
   api_key:
