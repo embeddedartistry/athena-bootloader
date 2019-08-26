@@ -201,3 +201,44 @@ ariadne1284W.menu.version.standardw5200.bootloader.file=ariadne/ariadne_atmega12
 ariadne1284W.menu.version.standardw5500=w/ Wiznet W5500
 ariadne1284W.menu.version.standardw5500.bootloader.file=ariadne/ariadne_atmega1284_w5500.hex
 
+##############################################################
+
+ariadne32U4.name=ATmega32U4
+
+ariadne32U4.upload.tool=arduino:avrdude
+ariadne32U4.upload.maximum_data_size=2560
+ariadne32U4.upload.maximum_size=28672
+ariadne32U4.upload.protocol=avr109
+ariadne32U4.upload.speed=57600
+ariadne32U4.upload.disable_flushing=true
+ariadne32U4.upload.use_1200bps_touch=true
+ariadne32U4.upload.wait_for_upload_port=true
+
+ariadne32U4.bootloader.tool=arduino:avrdude
+ariadne32U4.bootloader.low_fuses=0xFF
+ariadne32U4.bootloader.high_fuses=0xD8
+ariadne32U4.bootloader.extended_fuses=0xCB
+ariadne32U4.bootloader.unlock_bits=0x3F
+ariadne32U4.bootloader.lock_bits=0x0F
+
+ariadne32U4.build.mcu=atmega32u4
+ariadne32U4.build.f_cpu=16000000L
+ariadne32U4.build.core=arduino
+ariadne32U4.build.variant=leonardo
+ariadne32U4.build.board=AVR_LEONARDO
+
+## Bootloader for 32u4 with Wiznet W5100 chip
+## ---------------------------------------------
+ariadne32U4.menu.version.standardw5100=w/ Wiznet W5100
+ariadne32U4.menu.version.standardw5100.bootloader.file=ariadne/ariadne_atmega32u4_w5100.hex
+
+## Bootloader for 32u4 with Wiznet W5200 chip
+## ---------------------------------------------
+ariadne32U4.menu.version.standardw5200=w/ Wiznet W5200
+ariadne32U4.menu.version.standardw5200.bootloader.file=ariadne/ariadne_atmega32u4_w5200.hex
+
+## Bootloader for 32u4 with Wiznet W5500 chip
+## ---------------------------------------------
+ariadne32U4.menu.version.standardw5500=w/ Wiznet W5500
+ariadne32U4.menu.version.standardw5500.bootloader.file=ariadne/ariadne_atmega32u4_w5500.hex
+

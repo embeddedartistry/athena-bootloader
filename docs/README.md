@@ -321,6 +321,7 @@ Supported MCUs:
 * __ATmega328__
 * __ATmega2560__
 * __ATmega1284__
+* __ATmega32U4__ (but see notes below)
 
 Supported ethernet controllers:
 
@@ -335,6 +336,13 @@ Tested Arduino Boards:
 * [Arduino Duemilanove w/ ATmega328][19]
 * [Arduino Mega 2560][20]
 
+### Notes on ATmega32U4 support
+ATmega32U4 is supported, but the ability to upload sketches over USB is lost. It
+should be possible to upload sketches over the serial port (non-USB), but this
+has not been tested. The Caterina bootloader already requires almost the entire
+bootloader space for USB support, so it is unclear if it is possible to fit both
+USB and ethernet support in a single bootloader.
+
 
 ## Other Tested Boards
 These boards have been also tested and found to be working with Ariadne Bootloader. I don't have any
@@ -342,6 +350,7 @@ of these so a big ___thank you___ goes to the people that took their time to tes
 
 * [ITead Studio IBoard][21]
 * [Sparkfun Ethernet Pro][22]
+* [XBoard Relay][28]
 
 
 ## Contributors
@@ -395,4 +404,5 @@ This is free software and it is released under the [GPLv2, GNU General Public Li
 [25]: https://github.com/msproul/Arduino-stk500v2-bootloader
 [26]: https://github.com/mharizanov
 [27]: https://github.com/follower
+[28]: https://wiki.dfrobot.com/X-Board_Relay_SKU_DFR0222_
 [99]: https://www.gnu.org/licenses/gpl-2.0.html

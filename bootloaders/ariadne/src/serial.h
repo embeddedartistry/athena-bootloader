@@ -104,6 +104,22 @@
 	#define	UART_DOUBLE_SPEED			U2X0
 	#define UART_FRAME_ERROR            FE0
 
+#elif defined(__AVR_ATmega32U4__)
+	#define	UART_BAUD_RATE_LOW			UBRR1L
+	#define	UART_STATUS_REG				UCSR1A
+	#define	UART_CONTROL_REG			UCSR1B
+	#define UART_MODE_REG               UCSR1C
+	#define	UART_ENABLE_TRANSMITTER		TXEN1
+	#define	UART_ENABLE_RECEIVER		RXEN1
+	#define UART_CHAR_SIZE_LOW          UCSZ10
+	#define UART_CHAR_SIZE_MID          UCSZ11
+	#define	UART_TRANSMIT_COMPLETE		TXC1
+	#define	UART_RECEIVE_COMPLETE		RXC1
+	#define	UART_DATA_REG				UDR1
+	#define UART_DATA_REG_EMPTY         UDRE1
+	#define	UART_DOUBLE_SPEED			U2X1
+	#define UART_FRAME_ERROR            FE1
+
 #elif defined(UBRR0L) && defined(UCSR0A) && defined(TXEN0)
 /* ATMega with two USART, use UART0 */
 	#define	UART_BAUD_RATE_LOW			UBRR0L
