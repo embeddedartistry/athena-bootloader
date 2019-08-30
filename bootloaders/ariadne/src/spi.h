@@ -74,7 +74,29 @@
 
 /** Leonardo */
 #elif defined(__AVR_ATmega32U4__)
-	#error "Leonardo not supported yet"
+	/** SPI port and pins */
+	#define SPI_DDR		DDRB
+	#define SPI_PORT	PORTB
+	#define SCK		PINB1  //Pin 15
+	#define MISO	PINB3  //Pin 14
+	#define MOSI	PINB2  //Pin 16
+	#define SS      PINB0  //Pin 17
+
+	/** Ethernet Shield SS pin */
+	#define ETH_DDR		DDRB
+	#define ETH_PORT	PORTB
+	#define ETH_SS		PINB6  //Pin 10
+
+	/** SD card SS pin */
+	#define SD_DDR	DDRD
+	#define SD_PORT	PORTD
+
+	#define SD_SS	PIND4  //Pin 04
+
+	/** Onboard LED is connected to pin PC7 on Arduino Leonardo Ethernet */
+	#define LED_DDR     DDRC
+	#define LED_PORT    PORTC
+	#define LED         PINC7
 #else
 	#error "No pin definitions for MCU available"
 #endif
