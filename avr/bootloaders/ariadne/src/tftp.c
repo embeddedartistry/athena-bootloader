@@ -44,9 +44,22 @@ static void sockInit(uint16_t port)
 		tracenum(port);
 	)
 
+	uint8_t error = 1;
+	uint8_t err_count = 0;
+
 	spiWriteReg(REG_S3_CR, S3_W_CB, CR_CLOSE);
-    while(spiReadReg(REG_S3_CR, S3_R_CB)) {
+    while(error) {
 		//wait for command to complete
+		error = spiReadReg(REG_S3_CR, S3_R_CB);
+		err_count++;
+
+		if(err_count > 128)
+		{
+			DBG_TFTP(tracePGMlnTftp(mDebugTftp_OPERR);)
+
+ 			tftpInitError = TRUE;
+ 			return;
+		}
 	}
 
 	do {
@@ -456,6 +469,8 @@ static void sendResponse(uint16_t response)
  */
 void tftpInit(void)
 {
+	tftpInitError = FALSE;
+
 	// Open socket
 	sockInit(TFTP_PORT);
 

@@ -98,7 +98,7 @@ int main(void)
 
 	for(;;) {
 		// If there is no serial flashing under way, poll tftp
-		if(!serialFlashing)
+		if(!serialFlashing && !tftpInitError)
 			// If tftp recieved a FINAL_ACK, break
 			if(tftpPoll() == 0) break;
 
