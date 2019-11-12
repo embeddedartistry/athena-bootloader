@@ -41,9 +41,6 @@ const unsigned char mDebugMain_TFTP[]	PROGMEM =	"Init tftp server";
 		#if defined(DEBUG_BTN)
 const unsigned char mDebugMain_BTN[]	PROGMEM =	"Init button debugging";
 		#endif
-		#if defined(ANNOUNCE)
-const unsigned char mDebugMain_ANN[]	PROGMEM =	"Init network announce";
-		#endif
 	#endif
 #endif
 

@@ -21,10 +21,6 @@
 #include "watchdog.h"
 #include "debug.h"
 #include "debug_main.h"
-#if defined(ANNOUNCE)
-	#include "announce.h"
-#endif
-
 
 int  main(void) __attribute__ ((OS_main)) __attribute__ ((section (".init9")));
 void appStart(void) __attribute__ ((naked));
@@ -97,14 +93,6 @@ int main(void)
 	DBG_MAIN_EX(tracePGMlnMain(mDebugMain_TFTP);)
 	tftpInit();
 
-	/* This code is to be used with the java-client inherited from the
-	 * Arduino project. We don't support it and it adds about
-	 * 600 bytes to the binary. So off it goes */
-#if defined(ANNOUNCE)
-	DBG_MAIN_EX(tracePGMlnMain(mDebugMain_ANN);)
-	announceInit();
-#endif
-
 	serialFlashing = FALSE;
 	tftpFlashing = FALSE;
 
@@ -118,11 +106,6 @@ int main(void)
 		if(!tftpFlashing)
 			// If flashing is done exit
 			if(serialPoll() == 0) break;
-
-		/* As explained above this goes out */
-#if defined(ANNOUNCE)
-		announcePoll();
-#endif
 
         if(timedOut()) {
 			if(eeprom_read_byte(EEPROM_IMG_STAT) == EEPROM_IMG_OK_VALUE) break;
