@@ -8,3 +8,5 @@
 *.geany
 *.pdf
 Doxyfile
+cscope*
+.DS_Store
