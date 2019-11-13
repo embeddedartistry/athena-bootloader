@@ -83,8 +83,7 @@ This will place the bootloader variants in the `avr/bootloaders/ariadne/` direct
 
 ## Flashing the Bootloader
 
-To flash the bootloader to a device, you will need an ISP (in-system programmer). Examples include the [AVR-ISP][2], [USBtinyISP][3] or you can build a [ParallelProgrammer][4] or an [ArduinoISP][5]. The first three programmers should be connected to the ICSP pins (the 2 by 3 pin header). Make sure you plug it in the right way. The
-board must be powered by an external power supply or the USB port. In the case of _ArduinoISP_ you should consult the above link for further instructions.
+To flash the bootloader to a device, you will need an ISP (in-system programmer). Examples include the [AVR-ISP][2], [USBtinyISP][3] or you can build a [ParallelProgrammer][4] or an [ArduinoISP][5]. The first three programmers should be connected to the ICSP pins (the 2 by 3 pin header). Make sure you plug it in the right way. The board must be powered by an external power supply or the USB port. In the case of _ArduinoISP_ you should consult the above link for further instructions.
 
 After you have connected the Arduino board and the programmer to your computer launch the Arduino IDE.
 
@@ -94,7 +93,7 @@ Next, go to __Tools__ > __Programmer__ and select the programmer you are using.
 
 In case you are using _ArduinoISP_, make sure that the selected port in the __Tools__ > __Serial Port__ menu refers to the _ArduinoISP_ and not the board that you want to burn the bootloader on.
 
-Run thhe __Tools__ > __Burn Bootloader__ command and wait for about 15 seconds for the operation to complete.
+Run the __Tools__ > __Burn Bootloader__ command and wait for about 15 seconds for the operation to complete.
 
 In the case of _Arduino Mega_ the previous ISPs do not reliably work because of design differences. To install the bootloader in these boards you will need one of the more expensive models, like [Atmel's AVRISP mkII][6], [Olimex's AVR-ISP-MK2][7] or another similar programmer. If you don't have any compatible programmer but more than one Arduino available, you can use Nick Gammon's excellent [guide][8] on how to use one to program the other. This method has been reported to work for flashing __Ariadne__ on the _Arduino Mega_.
 
@@ -110,9 +109,9 @@ After a successful flashing:
 * _Arduino Uno_ will do a reset cycle and start the program after the bootloader times out.
 * _Arduino Mega_ will behave in a similar way as _Arduino Uno_
 
-This happens because _Uno_ has the autoreset feature that resets the board after a serial connection.
+This happens because _Uno_ has the auto-reset feature that resets the board after a serial connection.
 
-Due to the fact that "autoreset" for remote tftp programming is implemented using a watchdog timer timeout, the bootloader will do a full cycle after every reset, physical or software. For those who miss the _Adaboot
+Due to the fact that "auto-reset" for remote tftp programming is implemented using a watchdog timer timeout, the bootloader will do a full cycle after every reset, physical or software. For those who miss the _Adaboot
 No-Wait Mod_-like functionality, we have been testing some options on how to circumvent these limitations, but they still need refinement.
 
 
@@ -215,10 +214,7 @@ C:\Documents and Settings\Administrator>tftp -i 192.168.1.128 PUT sketch.bin
 
 #### Linux
 
-On some __Linux__ distributions, like __Fedora/RedHat__, before you use `tftp`, you should load the `ip_conntrack_tftp`
-module or the tftp client won't be able to acknowledge(__ACK__) the incoming packets. That is needed
-because TFTP is insecure and it is not enabled by default. Other distributions like __Arch__, don't need
-this step. To do that, open a terminal and run the following as __root__ using `su` or `sudo`.
+On some __Linux__ distributions, like __Fedora/RedHat__, before you use `tftp`, you should load the `ip_conntrack_tftp` module or the tftp client won't be able to acknowledge(__ACK__) the incoming packets. That is needed because TFTP is insecure and it is not enabled by default. Other distributions like __Arch__, don't need this step. To do that, open a terminal and run the following as __root__ using `su` or `sudo`.
 
 ```
 modprobe ip_conntrack_tftp
