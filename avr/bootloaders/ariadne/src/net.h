@@ -12,9 +12,9 @@
 #endif
 
 /* Network settings */
-#define IP_ADDR     192,168,1,128
+#define IP_ADDR     10,0,1,199
 #define SUB_MASK    255,255,255,0
-#define GW_ADDR     192,168,1,254
+#define GW_ADDR     10,0,1,1
 #define MAC_ADDR    0xDE,0xAD,0xBE,0xEF,0xFE,0xED
 
 void netInit(void);

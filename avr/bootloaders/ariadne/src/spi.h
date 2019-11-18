@@ -14,7 +14,7 @@
 	/** Ethernet Shield SS pin */
 	#define ETH_DDR		DDRB
 	#define ETH_PORT	PORTB
-	#define ETH_SS		PINB4  //Pin 10
+	#define ETH_SS		PINB2  //Pin 10
 	/** SD card SS pin */
 	#define SD_DDR	DDRD
 	#define SD_PORT	PORTD

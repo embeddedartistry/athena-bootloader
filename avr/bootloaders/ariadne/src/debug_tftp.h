@@ -40,6 +40,9 @@ const unsigned char mDebugTftp_RESP[]	PROGMEM =	"Response sent";
 const unsigned char mDebugTftp_INIT[]	PROGMEM =	"TFTP server init done";
 const unsigned char mDebugTftp_PORT[]	PROGMEM =	"\tDataPort: ";
 const unsigned char mDebugTftp_SOCK[]	PROGMEM =	"Init socket to port ";
+const unsigned char mDebugTftp_SOCKDONE[]   PROGMEM =   "Init socket done";
+const unsigned char mDebugTftp_SOCKCLOSEERR[]	PROGMEM =	"Socket close error";
+const unsigned char mDebugTftp_SOCKOPENERR[]	PROGMEM =	"Socket open error";
 	#if (DEBUG_TFTP > 1)
 		#undef DBG_TFTP_EX
 		#define DBG_TFTP_EX(block) block

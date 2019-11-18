@@ -44,23 +44,25 @@ static void sockInit(uint16_t port)
 		tracenum(port);
 	)
 
-	uint8_t error = 1;
+	uint8_t error = 0;
 	uint8_t err_count = 0;
 
 	spiWriteReg(REG_S3_CR, S3_W_CB, CR_CLOSE);
-    while(error) {
+    do {
 		//wait for command to complete
 		error = spiReadReg(REG_S3_CR, S3_R_CB);
 		err_count++;
 
-		if(err_count > 128)
+		if(err_count > 32)
 		{
-			DBG_TFTP(tracePGMlnTftp(mDebugTftp_OPERR);)
+			DBG_TFTP(tracePGMlnTftp(mDebugTftp_SOCKCLOSEERR);)
 
  			tftpInitError = TRUE;
  			return;
 		}
-	}
+	} while(error);
+
+	err_count = 0;
 
 	do {
         // Write interrupt
@@ -71,16 +73,24 @@ static void sockInit(uint16_t port)
 		spiWriteWord(REG_S3_PORT0, S3_W_CB, port);
 		// Open Socket
 		spiWriteReg(REG_S3_CR, S3_W_CB, CR_OPEN);
-		while(spiReadReg(REG_S3_CR, S3_R_CB)) {
-			//wait for command to complete
- 		}
-		// Read Status
-		if(spiReadReg(REG_S3_SR, S3_R_CB) != SOCK_UDP)
-			// Close Socket if it wasn't initialized correctly
-			spiWriteReg(REG_S3_CR, S3_W_CB, CR_CLOSE);
 
+		while(spiReadReg(REG_S3_CR, S3_R_CB)); // Wait for command to complete
+
+		err_count++;
+
+		if(err_count > 32)
+		{
+			DBG_TFTP(tracePGMlnTftp(mDebugTftp_SOCKOPENERR);)
+
+ 			tftpInitError = TRUE;
+ 			return;
+		}
 		// If socket correctly opened continue
 	} while(spiReadReg(REG_S3_SR, S3_R_CB) != SOCK_UDP);
+
+	DBG_TFTP(
+		tracePGMlnTftp(mDebugTftp_SOCKDONE);
+	)
 }
 
 
