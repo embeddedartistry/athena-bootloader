@@ -128,6 +128,10 @@ void spiInit(void)
 	 * SS pin for ethernet is pulled low just in time for reading or writing data inside those
 	 * functions. */
 
+	/**
+	* Why not |= here?
+	* We need to set Pins 11..13 to inputs if ATMega2560, because the shield pinout conflicts
+	*/
 	/** Set SPI pins high */
 	SPI_PORT = _BV(SCK) | _BV(MISO) | _BV(MOSI) | _BV(SS);
 	/** Set SPI pins as output */
@@ -158,6 +162,9 @@ void spiInit(void)
 	/** Set up SPI
 	 ** Set the Double SPI Speed Bit */
 	SPSR = (1 << SPI2X);
+
+	SPCR |= _BV(MSTR);
+    SPCR |= _BV(SPE);
 
 	DBG_SPI(tracePGMlnSpi(mDebugSpi_DONE);)
 }
