@@ -10,12 +10,17 @@
 #include <avr/io.h>
 
 #include "spi.h"
+#define ENABLE_DEBUG
 #include "debug.h"
 #include "debug_spi.h"
 
 /** Send uint8_t to Ethernet controller */
 void spiWriteReg(uint16_t address, uint8_t cb, uint8_t value)
 {
+#ifndef __WIZ_W5500__
+	(void) cb;
+#endif
+
 	DBG_SPI_EX(
 		tracePGMlnSpi(mDebugSpi_NWREG);
 		tracenum(address);
@@ -23,7 +28,6 @@ void spiWriteReg(uint16_t address, uint8_t cb, uint8_t value)
 		tracenum(value);
 	)
 
-	SPCR = _BV(SPE) | _BV(MSTR); // Set SPI as master
 	SS_LOW();
 
 #if defined(__WIZ_W5100__)
@@ -53,8 +57,6 @@ void spiWriteReg(uint16_t address, uint8_t cb, uint8_t value)
 	while(!(SPSR & _BV(SPIF)));
 
 	SS_HIGH();
-	cb = 0; //prevents compiler whining about unused cb variable
-	SPCR = cb; // Turn off SPI
 }
 
 void spiWriteWord(uint16_t address, uint8_t cb, uint16_t value)
@@ -67,6 +69,10 @@ void spiWriteWord(uint16_t address, uint8_t cb, uint16_t value)
 /** Read uint8_t from Ethernet controller */
 uint8_t spiReadReg(uint16_t address, uint8_t cb)
 {
+#ifndef __WIZ_W5500__
+	(void) cb;
+#endif
+
 	#if defined(SPAM_ME)
 	DBG_SPI_EX(
 		tracePGMlnSpi(mDebugSpi_NRREG);
@@ -76,7 +82,6 @@ uint8_t spiReadReg(uint16_t address, uint8_t cb)
 
 	uint8_t returnValue;
 
-	SPCR = _BV(SPE) | _BV(MSTR);
 	SS_LOW();
 
 #if defined(__WIZ_W5100__)
@@ -108,9 +113,6 @@ uint8_t spiReadReg(uint16_t address, uint8_t cb)
 	SS_HIGH();
 	returnValue = SPDR;
 
-	cb = 0; //prevents compiler whining about unused cb variable
-	SPCR = cb; // Turn off SPI
-
 	return(returnValue);
 }
 
@@ -128,12 +130,18 @@ void spiInit(void)
 	 * SS pin for ethernet is pulled low just in time for reading or writing data inside those
 	 * functions. */
 
+	SPCR = 0;
+
 	/**
+	*
+	* Note that the primary SS pin must be set as output high before setting `MSTR`
+	* in SPCR. If the CS line is low input, the device automatically sets you into slave mode.
+	*
 	* Why not |= here?
 	* We need to set Pins 11..13 to inputs if ATMega2560, because the shield pinout conflicts
 	*/
 	/** Set SPI pins high */
-	SPI_PORT = _BV(SCK) | _BV(MISO) | _BV(MOSI) | _BV(SS);
+	SPI_PORT = _BV(SS);
 	/** Set SPI pins as output */
 	SPI_DDR = _BV(SCK) | _BV(MOSI) | _BV(SS);
 
@@ -151,20 +159,20 @@ void spiInit(void)
 	/** Set SD SS pin as output */
 	SD_DDR |= _BV(SD_SS);
 
-	#if (LED != SCK)
+#if !defined(__AVR_ATmega1280__) && !defined(__AVR_ATmega2560__)
+#if (LED != SCK)
 	/** Set up pins to flash the onboard led */
 	/** Set led pin to high */
 	LED_PORT |= _BV(LED);
 	/** Set led pin as output */
 	LED_DDR |= _BV(LED);
-	#endif
+#endif
+#endif
 
-	/** Set up SPI
+	/** Set up SPI as master, mode 0
 	 ** Set the Double SPI Speed Bit */
+	SPCR = _BV(SPE) | _BV(MSTR);
 	SPSR = (1 << SPI2X);
-
-	SPCR |= _BV(MSTR);
-    SPCR |= _BV(SPE);
 
 	DBG_SPI(tracePGMlnSpi(mDebugSpi_DONE);)
 }

@@ -53,7 +53,7 @@ static void sockInit(uint16_t port)
 		error = spiReadReg(REG_S3_CR, S3_R_CB);
 		err_count++;
 
-		if(err_count > 32)
+		if(err_count > 128)
 		{
 			DBG_TFTP(tracePGMlnTftp(mDebugTftp_SOCKCLOSEERR);)
 
@@ -78,7 +78,7 @@ static void sockInit(uint16_t port)
 
 		err_count++;
 
-		if(err_count > 32)
+		if(err_count > 128)
 		{
 			DBG_TFTP(tracePGMlnTftp(mDebugTftp_SOCKOPENERR);)
 

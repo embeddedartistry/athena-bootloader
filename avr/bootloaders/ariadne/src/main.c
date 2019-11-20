@@ -52,11 +52,6 @@ int main(void)
     }
 	wdt_enable(WDTO_8S);
 
-	// Wait to ensure startup of W5100
-	_delay_ms(200);
-
-
-
 	// Prescaler=0, ClkIO Period = 62,5ns
 	// TCCR1B values:
 	// 0x01 -> ClkIO/1 -> 62,5ns period, 4ms max
@@ -85,6 +80,7 @@ int main(void)
 	/* Initalize SPI communication */
 	DBG_MAIN_EX(tracePGMlnMain(mDebugMain_SPI);)
 	spiInit();
+
 	/* Initialize networking */
 	DBG_MAIN_EX(tracePGMlnMain(mDebugMain_NET);)
 	netInit();

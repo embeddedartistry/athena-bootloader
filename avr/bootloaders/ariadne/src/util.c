@@ -13,7 +13,7 @@
 #include <util/delay.h>
 
 #include "util.h"
-#include "spi.h"
+#include "spi.h" // TODO: refactor this out, need a pin header instead
 #include "debug.h"
 #include "debug_util.h"
 
@@ -25,8 +25,10 @@ void updateLed(void)
 {
 	uint16_t next_timer_1 = TCNT1;
 
+#if !defined(__AVR_ATmega1280__) && !defined(__AVR_ATmega2560__)
 	if(next_timer_1 & 0x1000) LED_PORT ^= _BV(LED); // Led pin high
 	else LED_PORT &= ~_BV(LED); // Led pin low
+#endif
 
 	if(next_timer_1 < last_timer_1) {
 		tick++;
