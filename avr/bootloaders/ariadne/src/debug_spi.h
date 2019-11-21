@@ -4,14 +4,12 @@
  * License: GPL http://www.gnu.org/licenses/gpl-2.0.html
  * Project: ariadne
  * Function: debugging progmem strings for SPI subsystem
- * Version: 0.5 "Mega2560"
  */
 
 #ifndef debug_spi_h
 #define debug_spi_h
 
 #include <avr/pgmspace.h>
-
 
 #if (DEBUG_SPI > 0)
 	#undef DBG_SPI

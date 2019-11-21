@@ -4,7 +4,6 @@
  * License: GPL http://www.gnu.org/licenses/gpl-2.0.html
  * Project: ariadne bootloader
  * Function: SPI functions
- * Version: 0.5 "Mega2560"
  */
 
 #include <avr/io.h>

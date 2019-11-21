@@ -4,7 +4,6 @@
  * License: GPL http://www.gnu.org/licenses/gpl-2.0.html
  * Project: ariadne
  * Function: debugging progmem strings
- * Version: 0.5 "Mega2560"
  */
 
 #ifndef debug_tftp_h
