@@ -23,7 +23,7 @@
  * Definitions
  ******************************************************************************/
 
-void EthernetReset::stdResponce(char* msg)
+void EthernetReset::stdResponse(const char* msg)
 {
 	_client.println("HTTP/1.1 200 OK");
 	_client.println("Content-Type: text/html");
@@ -65,7 +65,7 @@ void EthernetReset::begin()
 					   NetEEPROM.readGW(), NetEEPROM.readSN());
 
 		_server->begin();
-		DBG(
+		ETHERNET_DEBUG(
 			Serial.print("Server is at ");
 			Serial.println(Ethernet.localIP());
 			Serial.print("Gw at ");
@@ -76,13 +76,13 @@ void EthernetReset::begin()
 }
 
 void EthernetReset::check()
-{	
+{
 	/* 25 is the the maximum command lenth plus
 	 * the standart GET and HTTP prefix and postfix */
 	char http_req[strlen(_path) + 25];
 	_client = _server->available();
 	if(_client) {
-		DBG(Serial.println("new reset client");)
+		ETHERNET_DEBUG(Serial.println("new reset client");)
 		while(_client.connected()) {
 			if(_client.available()) {
 				char c;
@@ -91,26 +91,26 @@ void EthernetReset::check()
 					*url = c;
 					url++;
 				}
-				DBG(*url = '\0';)
+				ETHERNET_DEBUG(*url = '\0';)
 				url = http_req + 5;
 				_client.flush();
-				DBG(Serial.println(url);)
+				ETHERNET_DEBUG(Serial.println(url);)
 				if(!strncmp(url, _path,strlen(_path))) {
 					url += (strlen(_path) + 1);
 					if(!strncmp(url, "reset", 5)) {
-						stdResponce("Arduino will be doing a normal reset in 2 seconds");
+						stdResponse("Arduino will be doing a normal reset in 2 seconds");
 						watchdogReset();
 					} else if(!strncmp(url,"reprogram", 9)) {
-						stdResponce("Arduino will reset for reprogramming in 2 seconds");
+						stdResponse("Arduino will reset for reprogramming in 2 seconds");
 						NetEEPROM.writeImgBad();
 						watchdogReset();
-					} else stdResponce("Wrong command");
-				} else stdResponce("Wrong path");
+					} else stdResponse("Wrong command");
+				} else stdResponse("Wrong path");
 				break;
 			}
 		}
 		delay(10);
 		_client.stop();
-		DBG(Serial.println("reset client disonnected");)
+		ETHERNET_DEBUG(Serial.println("reset client disonnected");)
 	}
 }

@@ -12,13 +12,14 @@
 #include <EthernetServer.h>
 #include <EthernetClient.h>
 
-#define pgm_uchar(name)   static const prog_uchar name[] PROGMEM
-
+#ifndef ETHERNETRESET_DEBUG
 #define ETHERNETRESET_DEBUG 0
-#ifdef ETHERNETRESET_DEBUG > 0
-	#define DBG(c) c
+#endif
+
+#if ETHERNETRESET_DEBUG > 0
+	#define ETHERNET_DEBUG(c) c
 #else
-	#define DBG(c)
+	#define ETHERNET_DEBUG(c)
 #endif
 
 class EthernetReset
@@ -28,13 +29,13 @@ class EthernetReset
 		EthernetClient _client;
 		char _path[20];
 
-		void stdResponce(char* msg);
+		void stdResponse(const char* msg);
 		void watchdogReset();
 		void stop(void);
 
 	public:
 		EthernetReset(int port);
-		//~EthernetReset();
+		~EthernetReset() = default;
 
 		void begin(void);
 		void check(void);
