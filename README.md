@@ -17,12 +17,14 @@ Ariadne is implemented for AVR chips. ARM chips cannot use this bootloader.
 1. [Quickstart Checklist](#quickstart-checklist)
 1. [Downloading the Bootloader](#downloading-the-bootloader)
 1. [Arduino SDK Installation](#arduino-sdk-installation)
+1. [Atmel Studio Installation](#atmel-studio-installation)
 1. [Compiling the Bootloader](#compiling-the-bootloader)
 1. [Flashing the Bootloader](#flashing-the-bootloader)
 	1. [Programming Hardware Requirements](#programming-harware-requirements)
 	2. [Connecting Pins](#connecting-pins)
 	3. [Programming with Arduino IDE](#programming-with-arduino-ide)
 	4. [Programming with AVRDUDE](#programming-with-avrdude)
+1. [Compiling Applications](#compiling-applications)
 1. [Flashing Applications via Serial](#flashing-applications-via-serial)
 1. [Flashing Applications via TFTP](#flashing-applications-via-tftp)
 	1. [Device Network Settings](#device-network-settings)
@@ -164,6 +166,7 @@ This is the abbreviated checklist for installing and using the bootloader:
 1. [Download the bootloader](#download-the-bootloader) and [install it to the proper location](#arduino-sdk-installation)
 1. [Flash the bootloader to the device](flashing-the-bootloader)
 2. **DO NOT SKIP:** Program network settings for the device using the [`NetEEPROM`](#supporting-libraries) library or examples
+3. [Compile the application using a bootloader board definition](#compiling-applications)
 3. Include the [`EthernetReset`](#supporting-libraries) library in your application (or use the example sketch)
 	1. Create a reset server and specify a port
 	2. Call `.begin()` on the server object in `setup()`
@@ -212,6 +215,14 @@ $ ln -s ~/src/ariadne-bootloader/ ./ariadne
 Once the `ariadne-bootloader` folder is placed in the `hardware/` folder, Arduino will detect it. Restart the IDE if it is already open. You should now see the Ariadne bootloader show up in the board list.
 
 ![Image showing the Ariadne bootloader in boards](docs/boards.png "Ariadne Listed in Boards")
+
+## Atmel Studio Installation
+
+If you are using Atmel Studio, our recommendation is to use the Visual Micro extension. When you are using the Visual Micro add-on, the standard installation instructions will apply. Then, use the Visual Micro board manager to select the proper Ariadne board definition for your target. 
+
+For more information, see this link:
+
+* [Visual Micro: The Board Manager](https://www.visualmicro.com/page/User-Guide.aspx?doc=Board-Manager.html)
 
 ## Compiling the Bootloader
 
@@ -279,6 +290,14 @@ Check the Arduino console output to confirm that the bootloader was flashed succ
 ### Programming with AVRDUDE
 
 COMING SOON
+
+## Compiling Applications
+
+When compiling applications for a board using the Ariadne bootloader, you need to select the proper board configuration in the Arduino IDE. 
+
+If you are using Atmel Studio, you also need to select the proper board configuration using the Visual Micro board manager. Use the board manager to select the proper Ariadne board definition for your target. For more information, see this link:
+
+* [Visual Micro: The Board Manager](https://www.visualmicro.com/page/User-Guide.aspx?doc=Board-Manager.html)
 
 ## Flashing Applications via Serial
 
