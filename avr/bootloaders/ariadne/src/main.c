@@ -7,49 +7,51 @@
  * Version: 0.2 support for USB flashing
  */
 
-#include <avr/eeprom.h>
 #include <avr/boot.h>
+#include <avr/eeprom.h>
 #include <avr/wdt.h>
 #include <util/delay.h>
 
-#include "util.h"
-#include "spi.h"
-#include "net.h"
-#include "tftp.h"
-#include "serial.h"
-#include "neteeprom.h"
-#include "watchdog.h"
 #include "debug.h"
 #include "debug_main.h"
+#include "net.h"
+#include "neteeprom.h"
+#include "serial.h"
+#include "spi.h"
+#include "tftp.h"
+#include "util.h"
+#include "watchdog.h"
 
-int  main(void) __attribute__ ((OS_main)) __attribute__ ((section (".init9")));
-void appStart(void) __attribute__ ((naked));
+int main(void) __attribute__((OS_main)) __attribute__((section(".init9")));
+void appStart(void) __attribute__((naked));
 
 int main(void)
 {
-    uint8_t ch;
+	uint8_t ch;
 
-    /* This code makes the following assumptions:
-     * No interrupts will execute
-     * SP points to RAMEND
-     * r1 contains zero
-     * If not, uncomment the following instructions. */
-    //cli();
-    asm volatile("clr __zero_reg__");
+	/* This code makes the following assumptions:
+	 * No interrupts will execute
+	 * SP points to RAMEND
+	 * r1 contains zero
+	 * If not, uncomment the following instructions. */
+	// cli();
+	asm volatile("clr __zero_reg__");
 #if defined(__AVR_ATmega8__)
-    SP = RAMEND;  // This is done by hardware reset
+	SP = RAMEND; // This is done by hardware reset
 #endif
 
-    /* Disable the watchdog timer to prevent
+	/* Disable the watchdog timer to prevent
 	 * eternal reset loop of doom and despair */
-    ch = MCUSR;
-    MCUSR = 0;
-    if(ch & (_BV(WDRF) | _BV(BORF) | _BV(PORF))) {
-        if(eeprom_read_byte(EEPROM_IMG_STAT) == EEPROM_IMG_OK_VALUE) {
-            wdt_disable();
-            appStart();
-        }
-    }
+	ch = MCUSR;
+	MCUSR = 0;
+	if(ch & (_BV(WDRF) | _BV(BORF) | _BV(PORF)))
+	{
+		if(eeprom_read_byte(EEPROM_IMG_STAT) == EEPROM_IMG_OK_VALUE)
+		{
+			wdt_disable();
+			appStart();
+		}
+	}
 	wdt_enable(WDTO_8S);
 
 	// Prescaler=0, ClkIO Period = 62,5ns
@@ -72,10 +74,7 @@ int main(void)
 	serialInit();
 	DBG_MAIN(tracePGMlnMain(mDebugMain_TITLE);)
 
-	DBG_BTN(
-		DBG_MAIN_EX(tracePGMlnMain(mDebugMain_BTN);)
-		buttonInit();
-	)
+	DBG_BTN(DBG_MAIN_EX(tracePGMlnMain(mDebugMain_BTN);) buttonInit();)
 
 	/* Initalize SPI communication */
 	DBG_MAIN_EX(tracePGMlnMain(mDebugMain_SPI);)
@@ -92,24 +91,30 @@ int main(void)
 	serialFlashing = FALSE;
 	tftpFlashing = FALSE;
 
-	for(;;) {
+	for(;;)
+	{
 		// If there is no serial flashing under way, poll tftp
 		if(!serialFlashing && !tftpInitError)
 			// If tftp recieved a FINAL_ACK, break
-			if(tftpPoll() == 0) break;
+			if(tftpPoll() == 0)
+				break;
 
 		// If there is no tftp flashing, poll serial
 		if(!tftpFlashing)
 			// If flashing is done exit
-			if(serialPoll() == 0) break;
+			if(serialPoll() == 0)
+				break;
 
-        if(timedOut()) {
-			if(eeprom_read_byte(EEPROM_IMG_STAT) == EEPROM_IMG_OK_VALUE) break;
+		if(timedOut())
+		{
+			if(eeprom_read_byte(EEPROM_IMG_STAT) == EEPROM_IMG_OK_VALUE)
+				break;
 
-			//TODO: determine the conditions for reseting server OR reseting socket
-			if(tftpFlashing == TRUE) {
+			// TODO: determine the conditions for reseting server OR reseting socket
+			if(tftpFlashing == TRUE)
+			{
 				// Delete first page of flash memory
-                boot_page_erase(0);
+				boot_page_erase(0);
 				// Reinitialize TFTP
 				tftpInit();
 				// Reset the timeout counter
@@ -120,20 +125,19 @@ int main(void)
 		}
 		wdt_reset();
 		/* Blink the notification led */
-		wdt_reset(); //Required so it doesn`t hang.
+		wdt_reset(); // Required so it doesn`t hang.
 		updateLed();
 	}
 
 	/* Exit to user application */
-    wdt_disable();
-    appStart();
-	//return(0); /* never reached */
+	wdt_disable();
+	appStart();
+	// return(0); /* never reached */
 }
 
-void appStart(void) {
-    asm volatile(
-        "clr    r30     \n\t"
-        "clr    r31     \n\t"
-        "ijmp   \n\t"
-    );
+void appStart(void)
+{
+	asm volatile("clr    r30     \n\t"
+				 "clr    r31     \n\t"
+				 "ijmp   \n\t");
 }

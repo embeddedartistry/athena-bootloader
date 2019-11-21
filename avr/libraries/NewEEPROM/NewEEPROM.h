@@ -27,21 +27,21 @@
 #define ARIADNE_SIGPOS (0x02)
 #define ARIADNE_SIGVAL (0xEE)
 #define ARIADNE_OFFSET (0x40)
-#define NO_OFFSET      (0x00)
+#define NO_OFFSET (0x00)
 
-class NewEEPROMClass {
+class NewEEPROMClass
+{
+  private:
+	uint8_t _offset;
 
-	private:
-		uint8_t _offset;
+  protected:
+	uint8_t read(int, uint8_t);
+	void write(int, uint8_t, uint8_t);
 
-	protected:
-		uint8_t read(int, uint8_t);
-		void write(int, uint8_t, uint8_t);
-
-	public:
-		NewEEPROMClass(void);
-		uint8_t read(int);
-		void write(int, uint8_t);
+  public:
+	NewEEPROMClass(void);
+	uint8_t read(int);
+	void write(int, uint8_t);
 };
 
 extern NewEEPROMClass EEPROM;

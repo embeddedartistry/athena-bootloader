@@ -11,15 +11,14 @@
 
 #include <avr/pgmspace.h>
 
-#if (DEBUG_UTIL > 0)
-	#undef DBG_UTIL
-	#define DBG_UTIL(block) block
-	#define tracePGMlnUtil(msg) tracePGMln(mDebugUtil_PREFIX, msg)
-const unsigned char mDebugUtil_PREFIX[]	PROGMEM =	"Util: ";
-const unsigned char mDebugUtil_TICK[]	PROGMEM =	"Tick ";
-const unsigned char mDebugUtil_NEXT[]	PROGMEM =	"nTM ";
-const unsigned char mDebugUtil_LAST[]	PROGMEM =	"lTM ";
+#if(DEBUG_UTIL > 0)
+#undef DBG_UTIL
+#define DBG_UTIL(block) block
+#define tracePGMlnUtil(msg) tracePGMln(mDebugUtil_PREFIX, msg)
+const unsigned char mDebugUtil_PREFIX[] PROGMEM = "Util: ";
+const unsigned char mDebugUtil_TICK[] PROGMEM = "Tick ";
+const unsigned char mDebugUtil_NEXT[] PROGMEM = "nTM ";
+const unsigned char mDebugUtil_LAST[] PROGMEM = "lTM ";
 #endif
-
 
 #endif

@@ -9,9 +9,9 @@
  *
  * Modified:  Worapoht Kornkaewwattanakul <dev@avride.com>   http://www.avride.com
  * Date:      17 October 2007
- * Update:    1st, 29 Dec 2007 : Enable CMD_SPI_MULTI but ignore unused command by return 0x00 byte response..
- * Compiler:  WINAVR20060421
- * Description: add timeout feature like previous Wiring bootloader
+ * Update:    1st, 29 Dec 2007 : Enable CMD_SPI_MULTI but ignore unused command by return 0x00 byte
+ * response.. Compiler:  WINAVR20060421 Description: add timeout feature like previous Wiring
+ * bootloader
  *
  * Modified:  Stelios Tsampas <loathingkernel@gmail.com>  http://codebender.cc
  * Date:      14 April 2013
@@ -36,12 +36,12 @@
 //*	Nov  9,	2010	<MLS> Issue 392:Fixed bug that 3 !!! in code would cause it to jump to monitor
 //*	Jun 24,	2011	<MLS> Removed analogRead (was not used)
 //*	Dec 29,	2011	<MLS> Issue 181: added watch dog timmer support
-//*	Dec 29,	2011	<MLS> Issue 505:  bootloader is comparing the seqNum to 1 or the current sequence
-//*	Jan  1,	2012	<MLS> Issue 543: CMD_CHIP_ERASE_ISP now returns STATUS_CMD_FAILED instead of STATUS_CMD_OK
-//*	Jan  1,	2012	<MLS> Issue 543: Write EEPROM now does something (NOT TESTED)
+//*	Dec 29,	2011	<MLS> Issue 505:  bootloader is comparing the seqNum to 1 or the current
+//sequence
+//*	Jan  1,	2012	<MLS> Issue 543: CMD_CHIP_ERASE_ISP now returns STATUS_CMD_FAILED instead of
+//STATUS_CMD_OK *	Jan  1,	2012	<MLS> Issue 543: Write EEPROM now does something (NOT TESTED)
 //*	Jan  1,	2012	<MLS> Issue 544: stk500v2 bootloader doesn't support reading fuses
 //************************************************************************
-
 
 //#include	<inttypes.h>
 //#include	<avr/io.h>
@@ -53,19 +53,18 @@
 //#include	<stdlib.h>
 //#include	<avr/sfr_defs.h>
 
-#include	<inttypes.h>
-#include	<avr/io.h>
-#include	<avr/pgmspace.h>
-#include	<avr/boot.h>
-#include	<avr/eeprom.h>
+#include <avr/boot.h>
+#include <avr/eeprom.h>
+#include <avr/io.h>
+#include <avr/pgmspace.h>
+#include <inttypes.h>
 
-#include	"util.h"
-#include	"serial.h"
-#include	"watchdog.h"
-#include	"neteeprom.h"
-#include	"stk500boot.h"
-#include	"stk500boot_command.h"
-
+#include "neteeprom.h"
+#include "serial.h"
+#include "stk500boot.h"
+#include "stk500boot_command.h"
+#include "util.h"
+#include "watchdog.h"
 
 // #define	MAX_TIME_COUNT	(F_CPU >> 1)
 // static unsigned char recchar_timeout(void)
@@ -99,396 +98,454 @@
 // 	return UART_DATA_REG;
 // }
 
-
 uint8_t processStk500boot(void)
 {
-	address_t		address			=	0;
-	address_t		eraseAddress	=	0;
-	unsigned char	msgParseState;
-	unsigned int	ii				=	0;
-	unsigned char	checksum		=	0;
-	unsigned char	seqNum			=	0;
-	unsigned int	msgLength		=	0;
-	unsigned char	msgBuffer[285];
-	unsigned char	c, *p;
-	unsigned char   isLeave = 0;
+	address_t address = 0;
+	address_t eraseAddress = 0;
+	unsigned char msgParseState;
+	unsigned int ii = 0;
+	unsigned char checksum = 0;
+	unsigned char seqNum = 0;
+	unsigned int msgLength = 0;
+	unsigned char msgBuffer[285];
+	unsigned char c, *p;
+	unsigned char isLeave = 0;
 
-	while(!isLeave) {
+	while(!isLeave)
+	{
 		/*
 		 * Collect received bytes to a complete message
 		 */
-		msgParseState	=	ST_START;
+		msgParseState = ST_START;
 
-		while(msgParseState != ST_PROCESS) {
-// 			if(boot_state == 1) {
-// 				boot_state	=	0;
- 				c			=	getch();
-// 			} else {
-// 				//	c	=	recchar();
-// 				c = recchar_timeout();
-// 			}
+		while(msgParseState != ST_PROCESS)
+		{
+			// 			if(boot_state == 1) {
+			// 				boot_state	=	0;
+			c = getch();
+			// 			} else {
+			// 				//	c	=	recchar();
+			// 				c = recchar_timeout();
+			// 			}
 
-			switch(msgParseState) {
+			switch(msgParseState)
+			{
 				case ST_START:
 
-					if(c == MESSAGE_START) {
-						msgParseState	=	ST_GET_SEQ_NUM;
-						checksum		=	MESSAGE_START ^ 0;
+					if(c == MESSAGE_START)
+					{
+						msgParseState = ST_GET_SEQ_NUM;
+						checksum = MESSAGE_START ^ 0;
 					}
 
 					break;
 
 				case ST_GET_SEQ_NUM:
 #ifdef _FIX_ISSUE_505_
-					seqNum			=	c;
-					msgParseState	=	ST_MSG_SIZE_1;
-					checksum		^=	c;
+					seqNum = c;
+					msgParseState = ST_MSG_SIZE_1;
+					checksum ^= c;
 #else
 
-					if((c == 1) || (c == seqNum)) {
-						seqNum			=	c;
-						msgParseState	=	ST_MSG_SIZE_1;
-						checksum		^=	c;
-					} else {
-						msgParseState	=	ST_START;
+					if((c == 1) || (c == seqNum))
+					{
+						seqNum = c;
+						msgParseState = ST_MSG_SIZE_1;
+						checksum ^= c;
+					}
+					else
+					{
+						msgParseState = ST_START;
 					}
 
 #endif
 					break;
 
 				case ST_MSG_SIZE_1:
-					msgLength		=	c << 8;
-					msgParseState	=	ST_MSG_SIZE_2;
-					checksum		^=	c;
+					msgLength = c << 8;
+					msgParseState = ST_MSG_SIZE_2;
+					checksum ^= c;
 					break;
 
 				case ST_MSG_SIZE_2:
-					msgLength		|=	c;
-					msgParseState	=	ST_GET_TOKEN;
-					checksum		^=	c;
+					msgLength |= c;
+					msgParseState = ST_GET_TOKEN;
+					checksum ^= c;
 					break;
 
 				case ST_GET_TOKEN:
 
-					if(c == TOKEN) {
-						msgParseState	=	ST_GET_DATA;
-						checksum		^=	c;
-						ii				=	0;
-					} else {
-						msgParseState	=	ST_START;
+					if(c == TOKEN)
+					{
+						msgParseState = ST_GET_DATA;
+						checksum ^= c;
+						ii = 0;
+					}
+					else
+					{
+						msgParseState = ST_START;
 					}
 
 					break;
 
 				case ST_GET_DATA:
-					msgBuffer[ii++]	=	c;
-					checksum		^=	c;
+					msgBuffer[ii++] = c;
+					checksum ^= c;
 
-					if(ii == msgLength) {
-						msgParseState	=	ST_GET_CHECK;
+					if(ii == msgLength)
+					{
+						msgParseState = ST_GET_CHECK;
 					}
 
 					break;
 
 				case ST_GET_CHECK:
 
-					if(c == checksum) {
-						msgParseState	=	ST_PROCESS;
-					} else {
-						msgParseState	=	ST_START;
+					if(c == checksum)
+					{
+						msgParseState = ST_PROCESS;
+					}
+					else
+					{
+						msgParseState = ST_START;
 					}
 
 					break;
-			}	//	switch
-		}	//	while(msgParseState)
+			} //	switch
+		} //	while(msgParseState)
 
 		/*
 		 * Now process the STK500 commands, see Atmel Appnote AVR068
 		 */
 
-		switch(msgBuffer[0]) {
+		switch(msgBuffer[0])
+		{
 #ifndef REMOVE_CMD_SPI_MULTI
-			case CMD_SPI_MULTI: {
+			case CMD_SPI_MULTI:
+			{
 				unsigned char answerByte;
 				unsigned char flag = 0;
 
-				if(msgBuffer[4] == 0x30) {
-					unsigned char signatureIndex	=	msgBuffer[6];
+				if(msgBuffer[4] == 0x30)
+				{
+					unsigned char signatureIndex = msgBuffer[6];
 
-					if(signatureIndex == 0) {
-						//answerByte	=	(SIGNATURE_BYTES >> 16) & 0x000000FF;
-						answerByte	=	SIGNATURE_0;
-					} else if(signatureIndex == 1) {
-						//answerByte	=	(SIGNATURE_BYTES >> 8) & 0x000000FF;
-						answerByte	=	SIGNATURE_1;
-					} else {
-						//answerByte	=	SIGNATURE_BYTES & 0x000000FF;
-						answerByte	=	SIGNATURE_2;
+					if(signatureIndex == 0)
+					{
+						// answerByte	=	(SIGNATURE_BYTES >> 16) & 0x000000FF;
+						answerByte = SIGNATURE_0;
 					}
-				} else if(msgBuffer[4] & 0x50) {
+					else if(signatureIndex == 1)
+					{
+						// answerByte	=	(SIGNATURE_BYTES >> 8) & 0x000000FF;
+						answerByte = SIGNATURE_1;
+					}
+					else
+					{
+						// answerByte	=	SIGNATURE_BYTES & 0x000000FF;
+						answerByte = SIGNATURE_2;
+					}
+				}
+				else if(msgBuffer[4] & 0x50)
+				{
 					//*	Issue 544: 	stk500v2 bootloader doesn't support reading fuses
-					//*	I cant find the docs that say what these are supposed to be but this was figured out by trial and error
-					//	answerByte	=	boot_lock_fuse_bits_get(GET_LOW_FUSE_BITS);
-					//	answerByte	=	boot_lock_fuse_bits_get(GET_HIGH_FUSE_BITS);
-					//	answerByte	=	boot_lock_fuse_bits_get(GET_EXTENDED_FUSE_BITS);
-					if(msgBuffer[4] == 0x50) {
-						answerByte	=	boot_lock_fuse_bits_get(GET_LOW_FUSE_BITS);
-					} else if(msgBuffer[4] == 0x58) {
-						answerByte	=	boot_lock_fuse_bits_get(GET_HIGH_FUSE_BITS);
-					} else {
-						answerByte	=	0;
+					//*	I cant find the docs that say what these are supposed to be but this was
+					//figured out by trial and error 	answerByte	=
+					//boot_lock_fuse_bits_get(GET_LOW_FUSE_BITS); 	answerByte	=
+					//boot_lock_fuse_bits_get(GET_HIGH_FUSE_BITS); 	answerByte	=
+					//boot_lock_fuse_bits_get(GET_EXTENDED_FUSE_BITS);
+					if(msgBuffer[4] == 0x50)
+					{
+						answerByte = boot_lock_fuse_bits_get(GET_LOW_FUSE_BITS);
 					}
-				} else {
-					answerByte	=	0; // for all others command are not implemented, return dummy value for AVRDUDE happy <Worapoht>
+					else if(msgBuffer[4] == 0x58)
+					{
+						answerByte = boot_lock_fuse_bits_get(GET_HIGH_FUSE_BITS);
+					}
+					else
+					{
+						answerByte = 0;
+					}
+				}
+				else
+				{
+					answerByte = 0; // for all others command are not implemented, return dummy
+									// value for AVRDUDE happy <Worapoht>
 				}
 
-				if(!flag) {
-					msgLength		=	7;
-					msgBuffer[1]	=	STATUS_CMD_OK;
-					msgBuffer[2]	=	0;
-					msgBuffer[3]	=	msgBuffer[4];
-					msgBuffer[4]	=	0;
-					msgBuffer[5]	=	answerByte;
-					msgBuffer[6]	=	STATUS_CMD_OK;
+				if(!flag)
+				{
+					msgLength = 7;
+					msgBuffer[1] = STATUS_CMD_OK;
+					msgBuffer[2] = 0;
+					msgBuffer[3] = msgBuffer[4];
+					msgBuffer[4] = 0;
+					msgBuffer[5] = answerByte;
+					msgBuffer[6] = STATUS_CMD_OK;
 				}
 			}
 			break;
 #endif
 			case CMD_SIGN_ON:
-				msgLength		=	11;
-				msgBuffer[1] 	=	STATUS_CMD_OK;
-				msgBuffer[2] 	=	8;
-				msgBuffer[3] 	=	'A';
-				msgBuffer[4] 	=	'V';
-				msgBuffer[5] 	=	'R';
-				msgBuffer[6] 	=	'I';
-				msgBuffer[7] 	=	'S';
-				msgBuffer[8] 	=	'P';
-				msgBuffer[9] 	=	'_';
-				msgBuffer[10]	=	'2';
+				msgLength = 11;
+				msgBuffer[1] = STATUS_CMD_OK;
+				msgBuffer[2] = 8;
+				msgBuffer[3] = 'A';
+				msgBuffer[4] = 'V';
+				msgBuffer[5] = 'R';
+				msgBuffer[6] = 'I';
+				msgBuffer[7] = 'S';
+				msgBuffer[8] = 'P';
+				msgBuffer[9] = '_';
+				msgBuffer[10] = '2';
 				break;
 
-			case CMD_GET_PARAMETER: {
+			case CMD_GET_PARAMETER:
+			{
 				unsigned char value;
 
-				switch(msgBuffer[1]) {
+				switch(msgBuffer[1])
+				{
 					case PARAM_BUILD_NUMBER_LOW:
-						value	=	CONFIG_PARAM_BUILD_NUMBER_LOW;
+						value = CONFIG_PARAM_BUILD_NUMBER_LOW;
 						break;
 					case PARAM_BUILD_NUMBER_HIGH:
-						value	=	CONFIG_PARAM_BUILD_NUMBER_HIGH;
+						value = CONFIG_PARAM_BUILD_NUMBER_HIGH;
 						break;
 					case PARAM_HW_VER:
-						value	=	CONFIG_PARAM_HW_VER;
+						value = CONFIG_PARAM_HW_VER;
 						break;
 					case PARAM_SW_MAJOR:
-						value	=	CONFIG_PARAM_SW_MAJOR;
+						value = CONFIG_PARAM_SW_MAJOR;
 						break;
 					case PARAM_SW_MINOR:
-						value	=	CONFIG_PARAM_SW_MINOR;
+						value = CONFIG_PARAM_SW_MINOR;
 						break;
 					default:
-						value	=	0;
+						value = 0;
 						break;
 				}
 
-				msgLength		=	3;
-				msgBuffer[1]	=	STATUS_CMD_OK;
-				msgBuffer[2]	=	value;
+				msgLength = 3;
+				msgBuffer[1] = STATUS_CMD_OK;
+				msgBuffer[2] = value;
 			}
 			break;
 
 			case CMD_LEAVE_PROGMODE_ISP:
-				isLeave	=	1;
+				isLeave = 1;
 				//*	fall thru
 
 			case CMD_SET_PARAMETER:
 			case CMD_ENTER_PROGMODE_ISP:
-				msgLength		=	2;
-				msgBuffer[1]	=	STATUS_CMD_OK;
+				msgLength = 2;
+				msgBuffer[1] = STATUS_CMD_OK;
 				break;
 
-			case CMD_READ_SIGNATURE_ISP: {
-				unsigned char signatureIndex	=	msgBuffer[4];
+			case CMD_READ_SIGNATURE_ISP:
+			{
+				unsigned char signatureIndex = msgBuffer[4];
 				unsigned char signature;
 
 				if(signatureIndex == 0)
-					//signature	=	(SIGNATURE_BYTES >> 16) & 0x000000FF;
-					signature	=	SIGNATURE_0;
+					// signature	=	(SIGNATURE_BYTES >> 16) & 0x000000FF;
+					signature = SIGNATURE_0;
 				else if(signatureIndex == 1)
-					//signature	=	(SIGNATURE_BYTES >> 8) & 0x000000FF;
-					signature	=	SIGNATURE_1;
+					// signature	=	(SIGNATURE_BYTES >> 8) & 0x000000FF;
+					signature = SIGNATURE_1;
 				else
-					//signature	=	SIGNATURE_BYTES & 0x000000FF;
-					signature	=	SIGNATURE_2;
+					// signature	=	SIGNATURE_BYTES & 0x000000FF;
+					signature = SIGNATURE_2;
 
-				msgLength		=	4;
-				msgBuffer[1]	=	STATUS_CMD_OK;
-				msgBuffer[2]	=	signature;
-				msgBuffer[3]	=	STATUS_CMD_OK;
+				msgLength = 4;
+				msgBuffer[1] = STATUS_CMD_OK;
+				msgBuffer[2] = signature;
+				msgBuffer[3] = STATUS_CMD_OK;
 			}
 			break;
 
 			case CMD_READ_LOCK_ISP:
-				msgLength		=	4;
-				msgBuffer[1]	=	STATUS_CMD_OK;
-				msgBuffer[2]	=	boot_lock_fuse_bits_get(GET_LOCK_BITS);
-				msgBuffer[3]	=	STATUS_CMD_OK;
+				msgLength = 4;
+				msgBuffer[1] = STATUS_CMD_OK;
+				msgBuffer[2] = boot_lock_fuse_bits_get(GET_LOCK_BITS);
+				msgBuffer[3] = STATUS_CMD_OK;
 				break;
 
-			case CMD_READ_FUSE_ISP: {
+			case CMD_READ_FUSE_ISP:
+			{
 				unsigned char fuseBits;
 
-				if(msgBuffer[2] == 0x50) {
+				if(msgBuffer[2] == 0x50)
+				{
 					if(msgBuffer[3] == 0x08)
-						fuseBits	=	boot_lock_fuse_bits_get(GET_EXTENDED_FUSE_BITS);
+						fuseBits = boot_lock_fuse_bits_get(GET_EXTENDED_FUSE_BITS);
 					else
-						fuseBits	=	boot_lock_fuse_bits_get(GET_LOW_FUSE_BITS);
-				} else {
-					fuseBits	=	boot_lock_fuse_bits_get(GET_HIGH_FUSE_BITS);
+						fuseBits = boot_lock_fuse_bits_get(GET_LOW_FUSE_BITS);
+				}
+				else
+				{
+					fuseBits = boot_lock_fuse_bits_get(GET_HIGH_FUSE_BITS);
 				}
 
-				msgLength		=	4;
-				msgBuffer[1]	=	STATUS_CMD_OK;
-				msgBuffer[2]	=	fuseBits;
-				msgBuffer[3]	=	STATUS_CMD_OK;
+				msgLength = 4;
+				msgBuffer[1] = STATUS_CMD_OK;
+				msgBuffer[2] = fuseBits;
+				msgBuffer[3] = STATUS_CMD_OK;
 			}
 			break;
 
 #ifndef REMOVE_PROGRAM_LOCK_BIT_SUPPORT
-			case CMD_PROGRAM_LOCK_ISP: {
-				unsigned char lockBits	=	msgBuffer[4];
+			case CMD_PROGRAM_LOCK_ISP:
+			{
+				unsigned char lockBits = msgBuffer[4];
 
-				lockBits	=	(~lockBits) & 0x3C;	// mask BLBxx bits
-				boot_lock_bits_set(lockBits);		// and program it
+				lockBits = (~lockBits) & 0x3C; // mask BLBxx bits
+				boot_lock_bits_set(lockBits); // and program it
 				boot_spm_busy_wait();
 
-				msgLength		=	3;
-				msgBuffer[1]	=	STATUS_CMD_OK;
-				msgBuffer[2]	=	STATUS_CMD_OK;
+				msgLength = 3;
+				msgBuffer[1] = STATUS_CMD_OK;
+				msgBuffer[2] = STATUS_CMD_OK;
 			}
 			break;
 #endif
 			case CMD_CHIP_ERASE_ISP:
-				eraseAddress	=	0;
-				msgLength		=	2;
+				eraseAddress = 0;
+				msgLength = 2;
 				//	msgBuffer[1]	=	STATUS_CMD_OK;
-				msgBuffer[1]	=	STATUS_CMD_FAILED;	//*	isue 543, return FAILED instead of OK
+				msgBuffer[1] = STATUS_CMD_FAILED; //*	isue 543, return FAILED instead of OK
 				break;
 
 			case CMD_LOAD_ADDRESS:
 #if defined(RAMPZ)
-				address	=	(((address_t)(msgBuffer[1]) << 24) | ((address_t)(msgBuffer[2]) << 16) | ((address_t)(msgBuffer[3]) << 8) | (msgBuffer[4])) << 1;
+				address = (((address_t)(msgBuffer[1]) << 24) | ((address_t)(msgBuffer[2]) << 16) |
+						   ((address_t)(msgBuffer[3]) << 8) | (msgBuffer[4]))
+						  << 1;
 #else
-				address	=	(((msgBuffer[3]) << 8) | (msgBuffer[4])) << 1;		//convert word to byte address
+				address = (((msgBuffer[3]) << 8) | (msgBuffer[4]))
+						  << 1; // convert word to byte address
 #endif
-				msgLength		=	2;
-				msgBuffer[1]	=	STATUS_CMD_OK;
+				msgLength = 2;
+				msgBuffer[1] = STATUS_CMD_OK;
 				break;
 
 			case CMD_PROGRAM_FLASH_ISP:
-			case CMD_PROGRAM_EEPROM_ISP: {
-				unsigned int	size	=	((msgBuffer[1]) << 8) | msgBuffer[2];
-				unsigned char*	p	=	msgBuffer + 10;
-				unsigned int	data;
-				unsigned char	highByte, lowByte;
-				address_t		tempaddress	=	address;
+			case CMD_PROGRAM_EEPROM_ISP:
+			{
+				unsigned int size = ((msgBuffer[1]) << 8) | msgBuffer[2];
+				unsigned char* p = msgBuffer + 10;
+				unsigned int data;
+				unsigned char highByte, lowByte;
+				address_t tempaddress = address;
 
-
-				if(msgBuffer[0] == CMD_PROGRAM_FLASH_ISP) {
+				if(msgBuffer[0] == CMD_PROGRAM_FLASH_ISP)
+				{
 					// erase only main section (bootloader protection)
-					if(eraseAddress < APP_END) {
-						boot_page_erase(eraseAddress);	// Perform page erase
-						boot_spm_busy_wait();		// Wait until the memory is erased.
-						eraseAddress += SPM_PAGESIZE;	// point to next page to be erase
+					if(eraseAddress < APP_END)
+					{
+						boot_page_erase(eraseAddress); // Perform page erase
+						boot_spm_busy_wait(); // Wait until the memory is erased.
+						eraseAddress += SPM_PAGESIZE; // point to next page to be erase
 					}
 
 					/* Write FLASH */
-					do {
-						lowByte		=	*p++;
-						highByte 	=	*p++;
+					do
+					{
+						lowByte = *p++;
+						highByte = *p++;
 
-						data		=	(highByte << 8) | lowByte;
+						data = (highByte << 8) | lowByte;
 						boot_page_fill(address, data);
 
-						address	=	address + 2;	// Select next word in memory
-						size	-=	2;				// Reduce number of bytes to write by two
-					} while(size);					// Loop until all bytes written
+						address = address + 2; // Select next word in memory
+						size -= 2; // Reduce number of bytes to write by two
+					} while(size); // Loop until all bytes written
 
 					boot_page_write(tempaddress);
 					boot_spm_busy_wait();
-					boot_rww_enable();				// Re-enable the RWW section
-				} else {
+					boot_rww_enable(); // Re-enable the RWW section
+				}
+				else
+				{
 					//*	issue 543, this should work, It has not been tested.
-					//	#if (!defined(__AVR_ATmega1280__) && !defined(__AVR_ATmega2560__)  && !defined(__AVR_ATmega2561__)  && !defined(__AVR_ATmega1284P__)  && !defined(__AVR_ATmega640__))
-#if (defined(EEARL) && defined(EEARH)  && defined(EEMWE)  && defined(EEWE)  && defined(EEDR))
+					//	#if (!defined(__AVR_ATmega1280__) && !defined(__AVR_ATmega2560__)  &&
+					//!defined(__AVR_ATmega2561__)  && !defined(__AVR_ATmega1284P__)  &&
+					//!defined(__AVR_ATmega640__))
+#if(defined(EEARL) && defined(EEARH) && defined(EEMWE) && defined(EEWE) && defined(EEDR))
 					/* write EEPROM */
-					do {
-						EEARL	=	address;			// Setup EEPROM address
-						EEARH	=	(address >> 8);
-						address++;						// Select next EEPROM byte
+					do
+					{
+						EEARL = address; // Setup EEPROM address
+						EEARH = (address >> 8);
+						address++; // Select next EEPROM byte
 
-						EEDR	=	*p++;				// get byte from buffer
-						EECR	|=	(1 << EEMWE);			// Write data into EEPROM
-						EECR	|=	(1 << EEWE);
+						EEDR = *p++; // get byte from buffer
+						EECR |= (1 << EEMWE); // Write data into EEPROM
+						EECR |= (1 << EEWE);
 
 						while(EECR & (1 << EEWE))
-							;	// Wait for write operation to finish
+							; // Wait for write operation to finish
 
-						size--;						// Decrease number of bytes to write
-					} while(size);					// Loop until all bytes written
+						size--; // Decrease number of bytes to write
+					} while(size); // Loop until all bytes written
 
 #endif
 				}
 
-				msgLength	=	2;
-				msgBuffer[1]	=	STATUS_CMD_OK;
+				msgLength = 2;
+				msgBuffer[1] = STATUS_CMD_OK;
 			}
 			break;
 
 			case CMD_READ_FLASH_ISP:
-			case CMD_READ_EEPROM_ISP: {
-				unsigned int	size	=	((msgBuffer[1]) << 8) | msgBuffer[2];
-				unsigned char*	p		=	msgBuffer + 1;
-				msgLength				=	size + 3;
+			case CMD_READ_EEPROM_ISP:
+			{
+				unsigned int size = ((msgBuffer[1]) << 8) | msgBuffer[2];
+				unsigned char* p = msgBuffer + 1;
+				msgLength = size + 3;
 
-				*p++	=	STATUS_CMD_OK;
+				*p++ = STATUS_CMD_OK;
 
-				if(msgBuffer[0] == CMD_READ_FLASH_ISP) {
+				if(msgBuffer[0] == CMD_READ_FLASH_ISP)
+				{
 					unsigned int data;
 
 					// Read FLASH
-					do {
+					do
+					{
 						//#if defined(RAMPZ)
-#if (FLASHEND > 0x10000)
-						data	=	pgm_read_word_far(address);
+#if(FLASHEND > 0x10000)
+						data = pgm_read_word_far(address);
 #else
-						data	=	pgm_read_word_near(address);
+						data = pgm_read_word_near(address);
 #endif
-						*p++	=	(unsigned char)data;		//LSB
-						*p++	=	(unsigned char)(data >> 8);	//MSB
-						address	+=	2;							// Select next word in memory
-						size	-=	2;
+						*p++ = (unsigned char)data; // LSB
+						*p++ = (unsigned char)(data >> 8); // MSB
+						address += 2; // Select next word in memory
+						size -= 2;
 					} while(size);
-				} else {
+				}
+				else
+				{
 					/* Read EEPROM */
-					do {
-						EEARL	=	address;			// Setup EEPROM address
-						EEARH	=	((address >> 8));
-						address++;					// Select next EEPROM byte
-						EECR	|=	(1 << EERE);			// Read EEPROM
-						*p++	=	EEDR;				// Send EEPROM data
+					do
+					{
+						EEARL = address; // Setup EEPROM address
+						EEARH = ((address >> 8));
+						address++; // Select next EEPROM byte
+						EECR |= (1 << EERE); // Read EEPROM
+						*p++ = EEDR; // Send EEPROM data
 						size--;
 					} while(size);
 				}
 
-				*p++	=	STATUS_CMD_OK;
+				*p++ = STATUS_CMD_OK;
 			}
 			break;
 
 			default:
-				msgLength		=	2;
-				msgBuffer[1]	=	STATUS_CMD_FAILED;
+				msgLength = 2;
+				msgBuffer[1] = STATUS_CMD_FAILED;
 				break;
 		}
 
@@ -496,26 +553,27 @@ uint8_t processStk500boot(void)
 		 * Now send answer message back
 		 */
 		putch(MESSAGE_START);
-		checksum	=	MESSAGE_START ^ 0;
+		checksum = MESSAGE_START ^ 0;
 
 		putch(seqNum);
-		checksum	^=	seqNum;
+		checksum ^= seqNum;
 
-		c			=	((msgLength >> 8) & 0xFF);
+		c = ((msgLength >> 8) & 0xFF);
 		putch(c);
-		checksum	^=	c;
+		checksum ^= c;
 
-		c			=	msgLength & 0x00FF;
+		c = msgLength & 0x00FF;
 		putch(c);
 		checksum ^= c;
 
 		putch(TOKEN);
 		checksum ^= TOKEN;
 
-		p	=	msgBuffer;
+		p = msgBuffer;
 
-		while(msgLength) {
-			c	=	*p++;
+		while(msgLength)
+		{
+			c = *p++;
 			putch(c);
 			checksum ^= c;
 			msgLength--;
@@ -523,19 +581,18 @@ uint8_t processStk500boot(void)
 
 		putch(checksum);
 		seqNum++;
-
 	}
 
-	asm volatile("nop");			// wait until port has changed
+	asm volatile("nop"); // wait until port has changed
 
 	/*
 	 * Now leave bootloader
 	 */
-	//TODO: find out what this does
-	//UART_STATUS_REG	&=	0xfd;
+	// TODO: find out what this does
+	// UART_STATUS_REG	&=	0xfd;
 #if defined(RWWSRE)
-	boot_rww_enable();				// enable application section
+	boot_rww_enable(); // enable application section
 #endif
 	eeprom_write_byte(EEPROM_IMG_STAT, EEPROM_IMG_OK_VALUE);
-	return(0);
+	return (0);
 }

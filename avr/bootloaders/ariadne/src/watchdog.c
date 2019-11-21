@@ -7,15 +7,14 @@
  * Version: 0.2 tftp / flashing functional
  */
 
-#include <stdint.h>
 #include <avr/wdt.h>
+#include <stdint.h>
 
-#include "watchdog.h"
 #include "debug.h"
+#include "watchdog.h"
 
-
- /* Disable the watchdog timer to prevent
-  * eternal reset loop of doom and despair */
+/* Disable the watchdog timer to prevent
+ * eternal reset loop of doom and despair */
 uint8_t watchdogDisable(void)
 {
 	uint8_t mcusr_mirror;
@@ -24,7 +23,7 @@ uint8_t watchdogDisable(void)
 	MCUSR = 0;
 	wdt_disable();
 
-	return(mcusr_mirror);
+	return (mcusr_mirror);
 }
 
 void watchdogReset(void)

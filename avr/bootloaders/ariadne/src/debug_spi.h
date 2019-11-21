@@ -11,18 +11,18 @@
 
 #include <avr/pgmspace.h>
 
-#if (DEBUG_SPI > 0)
-	#undef DBG_SPI
-	#define DBG_SPI(block) block
-	#define tracePGMlnSpi(msg) tracePGMln(mDebugSpi_PREFIX, msg)
-const unsigned char mDebugSpi_PREFIX[]	PROGMEM =	" Spi: ";
-const unsigned char mDebugSpi_DONE[]	PROGMEM =	"SPI init done";
-	#if (DEBUG_SPI > 1)
-		#undef DBG_SPI_EX
-		#define DBG_SPI_EX(block) block
-const unsigned char mDebugSpi_COMMA[]	PROGMEM =	", ";
-const unsigned char mDebugSpi_NWREG[]	PROGMEM =	"spiWriteReg: ";
-const unsigned char mDebugSpi_NRREG[]	PROGMEM =	"spiReadReg: ";
+#if(DEBUG_SPI > 0)
+#undef DBG_SPI
+#define DBG_SPI(block) block
+#define tracePGMlnSpi(msg) tracePGMln(mDebugSpi_PREFIX, msg)
+const unsigned char mDebugSpi_PREFIX[] PROGMEM = " Spi: ";
+const unsigned char mDebugSpi_DONE[] PROGMEM = "SPI init done";
+#if(DEBUG_SPI > 1)
+#undef DBG_SPI_EX
+#define DBG_SPI_EX(block) block
+const unsigned char mDebugSpi_COMMA[] PROGMEM = ", ";
+const unsigned char mDebugSpi_NWREG[] PROGMEM = "spiWriteReg: ";
+const unsigned char mDebugSpi_NRREG[] PROGMEM = "spiReadReg: ";
 #endif
 #endif
 

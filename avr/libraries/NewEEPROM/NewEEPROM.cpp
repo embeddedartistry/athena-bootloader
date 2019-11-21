@@ -23,9 +23,9 @@
  * Includes
  ******************************************************************************/
 
-#include <avr/eeprom.h>
-#include "Arduino.h"
 #include "NewEEPROM.h"
+#include "Arduino.h"
+#include <avr/eeprom.h>
 
 /******************************************************************************
  * Definitions
@@ -33,12 +33,12 @@
 
 uint8_t NewEEPROMClass::read(int address, uint8_t offset)
 {
-	return eeprom_read_byte((unsigned char*) address + offset);
+	return eeprom_read_byte((unsigned char*)address + offset);
 }
 
 void NewEEPROMClass::write(int address, uint8_t value, uint8_t offset)
 {
-	eeprom_write_byte((unsigned char*) address + offset, value);
+	eeprom_write_byte((unsigned char*)address + offset, value);
 }
 
 /******************************************************************************
@@ -47,8 +47,10 @@ void NewEEPROMClass::write(int address, uint8_t value, uint8_t offset)
 
 NewEEPROMClass::NewEEPROMClass(void)
 {
-	if(read(ARIADNE_SIGPOS, 0) == ARIADNE_SIGVAL) _offset = ARIADNE_OFFSET;
-	else _offset = NO_OFFSET;
+	if(read(ARIADNE_SIGPOS, 0) == ARIADNE_SIGVAL)
+		_offset = ARIADNE_OFFSET;
+	else
+		_offset = NO_OFFSET;
 }
 
 /******************************************************************************
@@ -60,7 +62,7 @@ uint8_t NewEEPROMClass::read(int address)
 	return read(address, _offset);
 }
 
-void NewEEPROMClass::write(int address , uint8_t value)
+void NewEEPROMClass::write(int address, uint8_t value)
 {
 	write(address, value, _offset);
 }

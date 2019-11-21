@@ -41,7 +41,8 @@ void EthernetReset::watchdogReset()
 	_client.stop();
 	wdt_disable();
 	wdt_enable(WDTO_2S);
-	while(1);
+	while(1)
+		;
 }
 
 /******************************************************************************
@@ -49,7 +50,7 @@ void EthernetReset::watchdogReset()
  ******************************************************************************/
 EthernetReset::EthernetReset(int port)
 {
-	_server =  new EthernetServer(port);
+	_server = new EthernetServer(port);
 	String path = NetEEPROM.readPass();
 	path.toCharArray(_path, 20);
 }
@@ -60,18 +61,15 @@ EthernetReset::EthernetReset(int port)
 
 void EthernetReset::begin()
 {
-	if(NetEEPROM.netSigIsSet()) {
+	if(NetEEPROM.netSigIsSet())
+	{
 		Ethernet.begin(NetEEPROM.readMAC(), NetEEPROM.readIP(), NetEEPROM.readGW(),
 					   NetEEPROM.readGW(), NetEEPROM.readSN());
 
 		_server->begin();
-		ETHERNET_DEBUG(
-			Serial.print("Server is at ");
-			Serial.println(Ethernet.localIP());
-			Serial.print("Gw at ");
-			Serial.println(NetEEPROM.readGW());
-			Serial.print("Password: ");
-			Serial.println(_path);)
+		ETHERNET_DEBUG(Serial.print("Server is at "); Serial.println(Ethernet.localIP());
+					   Serial.print("Gw at "); Serial.println(NetEEPROM.readGW());
+					   Serial.print("Password: "); Serial.println(_path);)
 	}
 }
 
@@ -81,13 +79,17 @@ void EthernetReset::check()
 	 * the standart GET and HTTP prefix and postfix */
 	char http_req[strlen(_path) + 25];
 	_client = _server->available();
-	if(_client) {
+	if(_client)
+	{
 		ETHERNET_DEBUG(Serial.println("new reset client");)
-		while(_client.connected()) {
-			if(_client.available()) {
+		while(_client.connected())
+		{
+			if(_client.available())
+			{
 				char c;
 				char* url = http_req;
-				while(( c = _client.read()) != '\n'){
+				while((c = _client.read()) != '\n')
+				{
 					*url = c;
 					url++;
 				}
@@ -95,17 +97,25 @@ void EthernetReset::check()
 				url = http_req + 5;
 				_client.flush();
 				ETHERNET_DEBUG(Serial.println(url);)
-				if(!strncmp(url, _path,strlen(_path))) {
+				if(!strncmp(url, _path, strlen(_path)))
+				{
 					url += (strlen(_path) + 1);
-					if(!strncmp(url, "reset", 5)) {
+					if(!strncmp(url, "reset", 5))
+					{
 						stdResponse("Arduino will be doing a normal reset in 2 seconds");
 						watchdogReset();
-					} else if(!strncmp(url,"reprogram", 9)) {
+					}
+					else if(!strncmp(url, "reprogram", 9))
+					{
 						stdResponse("Arduino will reset for reprogramming in 2 seconds");
 						NetEEPROM.writeImgBad();
 						watchdogReset();
-					} else stdResponse("Wrong command");
-				} else stdResponse("Wrong path");
+					}
+					else
+						stdResponse("Wrong command");
+				}
+				else
+					stdResponse("Wrong path");
 				break;
 			}
 		}

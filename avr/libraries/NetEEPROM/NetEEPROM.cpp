@@ -20,7 +20,6 @@
 #include "NetEEPROM.h"
 #include "NetEEPROM_defs.h"
 
-
 /****************************************************
  * Definitions                                      *
  ****************************************************/
@@ -36,7 +35,8 @@ void NetEEPROMClass::writeNetSig(void)
 
 void NetEEPROMClass::writeAddr(IPAddress addr, byte start)
 {
-	for(byte i = 0; i < 4; i++)	write(i + start, addr[i], 0);
+	for(byte i = 0; i < 4; i++)
+		write(i + start, addr[i], 0);
 }
 
 void NetEEPROMClass::writeIP(IPAddress ip)
@@ -57,9 +57,10 @@ void NetEEPROMClass::writeSN(IPAddress sn)
 IPAddress NetEEPROMClass::readAddr(byte start)
 {
 	byte octet[4];
-	for(byte i = 0; i < 4; i++) octet[i] = read(i, start);
+	for(byte i = 0; i < 4; i++)
+		octet[i] = read(i, start);
 	IPAddress Addr(octet);
-	return(Addr);
+	return (Addr);
 }
 
 /*
@@ -78,8 +79,6 @@ void NetEEPROMClass::writePassSig()
 	write(NETEEPROM_SIG_4, NETEEPROM_SIG_4_VALUE, 0);
 }
 
-
-
 /****************************************************
  * User API                                         *
  ****************************************************/
@@ -97,7 +96,6 @@ void NetEEPROMClass::writeImgOk(void)
 	write(NETEEPROM_IMG_STAT, NETEEPROM_IMG_OK_VALUE, 0); // Image status set to valid
 }
 
-
 /* Netowork functions */
 void NetEEPROMClass::eraseNetSig(void)
 {
@@ -107,7 +105,8 @@ void NetEEPROMClass::eraseNetSig(void)
 
 void NetEEPROMClass::writeMAC(byte* mac)
 {
-	for(byte i = 0; i < 6; i++)	write(i + NETEEPROM_MAC, mac[i], 0);
+	for(byte i = 0; i < 6; i++)
+		write(i + NETEEPROM_MAC, mac[i], 0);
 }
 
 void NetEEPROMClass::writeNet(byte* mac, IPAddress ip, IPAddress gw, IPAddress sn)
@@ -122,9 +121,11 @@ void NetEEPROMClass::writeNet(byte* mac, IPAddress ip, IPAddress gw, IPAddress s
 
 bool NetEEPROMClass::netSigIsSet(void)
 {
-	if((read(NETEEPROM_SIG_1, 0) == NETEEPROM_SIG_1_VALUE)
-	        && (read(NETEEPROM_SIG_2, 0) == NETEEPROM_SIG_2_VALUE)) return(true);
-	else return(false);
+	if((read(NETEEPROM_SIG_1, 0) == NETEEPROM_SIG_1_VALUE) &&
+	   (read(NETEEPROM_SIG_2, 0) == NETEEPROM_SIG_2_VALUE))
+		return (true);
+	else
+		return (false);
 }
 
 byte* NetEEPROMClass::readMAC(void)
@@ -135,30 +136,34 @@ byte* NetEEPROMClass::readMAC(void)
 	memcpy((void*)mac, (void*)default_mac, 6);
 
 	if(netSigIsSet())
-		for(byte i = 0; i < 6; i++) mac[i] = read(i, NETEEPROM_MAC);
+		for(byte i = 0; i < 6; i++)
+			mac[i] = read(i, NETEEPROM_MAC);
 
-	return(mac);
+	return (mac);
 }
 
 IPAddress NetEEPROMClass::readIP(void)
 {
 	IPAddress ip(DEFAULT_IP_ADDR);
-	if(netSigIsSet()) ip = readAddr(NETEEPROM_IP);
+	if(netSigIsSet())
+		ip = readAddr(NETEEPROM_IP);
 	return ip;
 }
 
 IPAddress NetEEPROMClass::readGW(void)
 {
 	IPAddress gw(DEFAULT_GW_ADDR);
-	if(netSigIsSet()) gw = readAddr(NETEEPROM_GW);
-	return(gw);
+	if(netSigIsSet())
+		gw = readAddr(NETEEPROM_GW);
+	return (gw);
 }
 
 IPAddress NetEEPROMClass::readSN(void)
 {
 	IPAddress sn(DEFAULT_SUB_MASK);
-	if(netSigIsSet()) sn = readAddr(NETEEPROM_SN);
-	return(sn);
+	if(netSigIsSet())
+		sn = readAddr(NETEEPROM_SN);
+	return (sn);
 }
 
 void NetEEPROMClass::printNet(HardwareSerial* serial)
@@ -167,11 +172,14 @@ void NetEEPROMClass::printNet(HardwareSerial* serial)
 
 	byte* mac = readMAC();
 	serial->print("    MAC: ");
-	for(uint8_t i = 0; i < 6; i++) {
+	for(uint8_t i = 0; i < 6; i++)
+	{
 		serial->print("0x");
 		serial->print(mac[i], HEX);
-		if(i != 5) serial->print(".");
-		else serial->println();
+		if(i != 5)
+			serial->print(".");
+		else
+			serial->println();
 	}
 	free(mac);
 
@@ -203,17 +211,22 @@ void NetEEPROMClass::writePort(word port)
 
 bool NetEEPROMClass::portSigIsSet(void)
 {
-	if(read(NETEEPROM_SIG_3, 0) == NETEEPROM_SIG_3_VALUE) return(true);
-	else return(false);
+	if(read(NETEEPROM_SIG_3, 0) == NETEEPROM_SIG_3_VALUE)
+		return (true);
+	else
+		return (false);
 }
 
 word NetEEPROMClass::readPort(void)
 {
-	if(portSigIsSet()) {
+	if(portSigIsSet())
+	{
 		byte loByte = read(NETEEPROM_PORT, 0);
 		byte hiByte = read(NETEEPROM_PORT + 1, 0);
-		return(makeWord(hiByte, loByte));
-	} else return(46969);
+		return (makeWord(hiByte, loByte));
+	}
+	else
+		return (46969);
 }
 
 void NetEEPROMClass::printPort(HardwareSerial* serial)
@@ -249,25 +262,29 @@ void NetEEPROMClass::writePass(String passwd)
 
 bool NetEEPROMClass::passSigIsSet(void)
 {
-	if(read(NETEEPROM_SIG_4, 0) == NETEEPROM_SIG_4_VALUE) return(true);
-	else return(false);
+	if(read(NETEEPROM_SIG_4, 0) == NETEEPROM_SIG_4_VALUE)
+		return (true);
+	else
+		return (false);
 }
 
 String NetEEPROMClass::readPass(void)
 {
 	String password;
 
-	if(passSigIsSet()) {
-
+	if(passSigIsSet())
+	{
 		uint8_t c, i = 0;
 		char passwd[NETEEPROM_END - NETEEPROM_PASS + 1];
 
-		while((c = read(i, NETEEPROM_PASS)) != '\0') passwd[i++] = c;
+		while((c = read(i, NETEEPROM_PASS)) != '\0')
+			passwd[i++] = c;
 		passwd[i] = '\0';
 
 		password = passwd;
-
-	} else password = "ariadne";
+	}
+	else
+		password = "ariadne";
 
 	return password;
 }
@@ -288,21 +305,27 @@ void NetEEPROMClass::printPass(HardwareSerial* serial)
  */
 void NetEEPROMClass::print(HardwareSerial* serial)
 {
-	if(netSigIsSet()) printNet(serial);
-	if(portSigIsSet()) printPort(serial);
-	if(passSigIsSet()) printPass(serial);
+	if(netSigIsSet())
+		printNet(serial);
+	if(portSigIsSet())
+		printPort(serial);
+	if(passSigIsSet())
+		printPass(serial);
 }
 
 void NetEEPROMClass::printAll(HardwareSerial* serial)
 {
 	printNet(serial);
-	if(!netSigIsSet()) serial->println("(Defaults)");
+	if(!netSigIsSet())
+		serial->println("(Defaults)");
 
 	printPort(serial);
-	if(!portSigIsSet()) serial->println("(Default)");
+	if(!portSigIsSet())
+		serial->println("(Default)");
 
 	printPass(serial);
-	if(!passSigIsSet()) serial->println("(No password)");
+	if(!passSigIsSet())
+		serial->println("(No password)");
 }
 
 NetEEPROMClass NetEEPROM;

@@ -17,43 +17,46 @@
 void spiWriteReg(uint16_t address, uint8_t cb, uint8_t value)
 {
 #ifndef __WIZ_W5500__
-	(void) cb;
+	(void)cb;
 #endif
 
-	DBG_SPI_EX(
-		tracePGMlnSpi(mDebugSpi_NWREG);
-		tracenum(address);
-		tracePGM(mDebugSpi_COMMA);
-		tracenum(value);
-	)
+	DBG_SPI_EX(tracePGMlnSpi(mDebugSpi_NWREG); tracenum(address); tracePGM(mDebugSpi_COMMA);
+			   tracenum(value);)
 
 	SS_LOW();
 
 #if defined(__WIZ_W5100__)
 	SPDR = SPI_WRITE;
-	while(!(SPSR & _BV(SPIF)));
+	while(!(SPSR & _BV(SPIF)))
+		;
 #endif
 
 	SPDR = address >> 8;
-	while(!(SPSR & _BV(SPIF)));
+	while(!(SPSR & _BV(SPIF)))
+		;
 
 	SPDR = address & 0xff;
-	while(!(SPSR & _BV(SPIF)));
+	while(!(SPSR & _BV(SPIF)))
+		;
 
 #if defined(__WIZ_W5200__)
 	SPDR = 0x80;
-	while(!(SPSR & _BV(SPIF)));
+	while(!(SPSR & _BV(SPIF)))
+		;
 
 	SPDR = 0x01;
-	while(!(SPSR & _BV(SPIF)));
+	while(!(SPSR & _BV(SPIF)))
+		;
 #endif
 #if defined(__WIZ_W5500__)
-	SPDR = cb;  //Socket 3 BSB Write 0x6D Selects Socket 3 Register, write mode, 1 byte data length
-	while(!(SPSR & _BV(SPIF)));
+	SPDR = cb; // Socket 3 BSB Write 0x6D Selects Socket 3 Register, write mode, 1 byte data length
+	while(!(SPSR & _BV(SPIF)))
+		;
 #endif
 
 	SPDR = value;
-	while(!(SPSR & _BV(SPIF)));
+	while(!(SPSR & _BV(SPIF)))
+		;
 
 	SS_HIGH();
 }
@@ -69,15 +72,12 @@ void spiWriteWord(uint16_t address, uint8_t cb, uint16_t value)
 uint8_t spiReadReg(uint16_t address, uint8_t cb)
 {
 #ifndef __WIZ_W5500__
-	(void) cb;
+	(void)cb;
 #endif
 
-	#if defined(SPAM_ME)
-	DBG_SPI_EX(
-		tracePGMlnSpi(mDebugSpi_NRREG);
-		tracenum(address);
-	)
-	#endif
+#if defined(SPAM_ME)
+	DBG_SPI_EX(tracePGMlnSpi(mDebugSpi_NRREG); tracenum(address);)
+#endif
 
 	uint8_t returnValue;
 
@@ -85,40 +85,47 @@ uint8_t spiReadReg(uint16_t address, uint8_t cb)
 
 #if defined(__WIZ_W5100__)
 	SPDR = SPI_READ;
-	while(!(SPSR & _BV(SPIF)));
+	while(!(SPSR & _BV(SPIF)))
+		;
 #endif
 
 	SPDR = address >> 8;
-	while(!(SPSR & _BV(SPIF)));
+	while(!(SPSR & _BV(SPIF)))
+		;
 
 	SPDR = address & 0xff;
-	while(!(SPSR & _BV(SPIF)));
+	while(!(SPSR & _BV(SPIF)))
+		;
 
 #if defined(__WIZ_W5200__)
 	SPDR = 0x00;
-	while(!(SPSR & _BV(SPIF)));
+	while(!(SPSR & _BV(SPIF)))
+		;
 
 	SPDR = 0x01;
-	while(!(SPSR & _BV(SPIF)));
+	while(!(SPSR & _BV(SPIF)))
+		;
 #endif
 #if defined(__WIZ_W5500__)
-	SPDR = cb;  //Socket 3 BSB Read 0x69 Selects Socket 3 Register, read mode, 1 byte data length
-	while(!(SPSR & _BV(SPIF)));
+	SPDR = cb; // Socket 3 BSB Read 0x69 Selects Socket 3 Register, read mode, 1 byte data length
+	while(!(SPSR & _BV(SPIF)))
+		;
 #endif
 
 	SPDR = 0;
-	while(!(SPSR & _BV(SPIF)));
+	while(!(SPSR & _BV(SPIF)))
+		;
 
 	SS_HIGH();
 	returnValue = SPDR;
 
-	return(returnValue);
+	return (returnValue);
 }
 
 uint16_t spiReadWord(uint16_t address, uint8_t cb)
 {
 	// Read uint16_t from Ethernet controller
-	return((spiReadReg(address, cb) << 8) | spiReadReg(address + 1, cb));
+	return ((spiReadReg(address, cb) << 8) | spiReadReg(address + 1, cb));
 }
 
 void spiInit(void)
@@ -132,25 +139,25 @@ void spiInit(void)
 	SPCR = 0;
 
 	/**
-	*
-	* Note that the primary SS pin must be set as output high before setting `MSTR`
-	* in SPCR. If the CS line is low input, the device automatically sets you into slave mode.
-	*
-	* Why not |= here?
-	* We need to set Pins 11..13 to inputs if ATMega2560, because the shield pinout conflicts
-	*/
+	 *
+	 * Note that the primary SS pin must be set as output high before setting `MSTR`
+	 * in SPCR. If the CS line is low input, the device automatically sets you into slave mode.
+	 *
+	 * Why not |= here?
+	 * We need to set Pins 11..13 to inputs if ATMega2560, because the shield pinout conflicts
+	 */
 	/** Set SPI pins high */
 	SPI_PORT = _BV(SS);
 	/** Set SPI pins as output */
 	SPI_DDR = _BV(SCK) | _BV(MOSI) | _BV(SS);
 
-	#if (ETH_SS != SS)
+#if(ETH_SS != SS)
 	/** Initialize extra SS pin used in some boards (mega) */
 	/** Set ethernet SS high */
 	ETH_PORT |= _BV(ETH_SS);
 	/** Set ethernet SS as output */
 	ETH_DDR |= _BV(ETH_SS);
-	#endif
+#endif
 
 	/** Disable SD card */
 	/** Set SD SS pin high */
@@ -159,7 +166,7 @@ void spiInit(void)
 	SD_DDR |= _BV(SD_SS);
 
 #if !defined(__AVR_ATmega1280__) && !defined(__AVR_ATmega2560__)
-#if (LED != SCK)
+#if(LED != SCK)
 	/** Set up pins to flash the onboard led */
 	/** Set led pin to high */
 	LED_PORT |= _BV(LED);
