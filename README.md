@@ -61,9 +61,7 @@ $ ln -s ~/src/ariadne-bootloader/ ./ariadne
 
 Restart your Arduino IDE, and then you should see the Ariadne bootloader show up in the board list.
 
-<center>
 ![Image showing the Ariadne bootloader in boards](docs/boards.png "Ariadne Listed in Boards")
-</center>
 
 ## Compiling the Bootloader
 
