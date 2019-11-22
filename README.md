@@ -52,6 +52,8 @@ Ariadne is implemented for AVR chips. ARM chips cannot use this bootloader.
 
 ## Dependencies
 
+This project requires Arduino SDK 1.15 or later due to the project's source layout.
+
 The following dependencies are required to compile and use this bootloader:
 
 * [git-lfs](#git-lfs)
