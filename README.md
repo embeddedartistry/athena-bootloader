@@ -20,7 +20,7 @@ Ariadne is implemented for AVR chips. ARM chips cannot use this bootloader.
 1. [Atmel Studio Installation](#atmel-studio-installation)
 1. [Compiling the Bootloader](#compiling-the-bootloader)
 1. [Flashing the Bootloader](#flashing-the-bootloader)
-	1. [Programming Hardware Requirements](#programming-harware-requirements)
+	1. [Programming Hardware Requirements](#programming-hardware-requirements)
 	2. [Connecting Pins](#connecting-pins)
 	3. [Programming with Arduino IDE](#programming-with-arduino-ide)
 	4. [Programming with AVRDUDE](#programming-with-avrdude)
@@ -246,7 +246,7 @@ Targets can be individually built within the [`avr/bootloaders/ariadne/src`](avr
 
 ## Flashing the Bootloader
 
-1. [Programming Hardware Requirements](#programming-harware-requirements)
+1. [Programming Hardware Requirements](#programming-hardware-requirements)
 2. [Connecting Pins](#connecting-pins)
 3. [Programming with Arduino IDE](#programming-with-arduino-ide)
 4. [Programming with AVRDUDE](#programming-with-avrdude)
