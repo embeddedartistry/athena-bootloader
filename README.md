@@ -186,7 +186,7 @@ This is the abbreviated checklist for installing and using the bootloader:
 You can clone the repository from GitHub:
 
 ```
-$ git clone git@github.com:embeddedartistry/ariadne-bootloader.git
+$ git clone https://github.com/embeddedartistry/ariadne-bootloader
 ```
 
 You can also download a zip archive of the repository from [the GitHub repository page](https://github.com/embeddedartistry/ariadne-bootloader).
