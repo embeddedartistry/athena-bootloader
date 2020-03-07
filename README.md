@@ -186,6 +186,12 @@ This is the abbreviated checklist for installing and using the bootloader:
 You can clone the repository from GitHub:
 
 ```
+$ git clone https://github.com/embeddedartistry/ariadne-bootloader
+```
+
+If you have configured your GitHub account with SSH keys, you can also use the SSH checkout:
+
+```
 $ git clone git@github.com:embeddedartistry/ariadne-bootloader.git
 ```
 
@@ -666,6 +672,8 @@ The Ariadne bootloader is built upon these open source projects:
 * [Arduino-stk500v2-bootloader][25] (Bootloader for the __ATmega2560__)
 
 ### Contributors
+
+* [AkhileshThorat](https://github.com/AkhileshThorat)
 
 The following contributors were listed in the [original project](https://github.com/loathingKernel/ariadne-bootloader) README:
 
