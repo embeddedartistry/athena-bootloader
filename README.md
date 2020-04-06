@@ -167,9 +167,9 @@ This is the abbreviated checklist for installing and using the bootloader:
 
 1. [Download the bootloader](#download-the-bootloader) and [install it to the proper location](#arduino-sdk-installation)
 1. [Flash the bootloader to the device](flashing-the-bootloader)
-2. **DO NOT SKIP:** Program network settings for the device using the [`NetEEPROM`](#supporting-libraries) library or examples
+2. **DO NOT SKIP:** Program network settings for the device using the [`NetEEPROM`](#supporting-libraries) library or [example sketches](avr/libraries/NetEEPROM/examples)
 3. [Compile the application using a bootloader board definition](#compiling-applications)
-3. Include the [`EthernetReset`](#supporting-libraries) library in your application (or use the example sketch)
+3. Include the [`EthernetReset`](#supporting-libraries) library in your application (or use the [`ResetServer` example sketch](avr/libraries/EthernetReset/examples/))
 	1. Create a reset server and specify a port
 	2. Call `.begin()` on the server object in `setup()`
 	3. Call `.check()` on the server object in `loop()`
