@@ -1,11 +1,17 @@
-*~
+# Generated Build Files
+buildresults/
 *.o
-*.lst
-*.class
 *.elf
 *.hex
+
+# Tool Files
+*.sublime-workspace
+cscope*
+
+# Misc
+*~
+*.lst
+*.class
 *.kdev*
 *.geany
-cscope*
 .DS_Store
-*.sublime-workspace
