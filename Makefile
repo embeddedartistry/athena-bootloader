@@ -18,6 +18,10 @@ all: makerelease
 makerelease:
 	$(Q)cd avr/bootloaders/ariadne/src/; ./makerelease
 
+.PHONY: clean
+clean:
+	$(Q)make -C avr/bootloaders/ariadne/src/ clean
+
 .PHONY: package
 package:
 	$(Q)tools/package.sh
