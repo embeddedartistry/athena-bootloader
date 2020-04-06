@@ -56,22 +56,22 @@ pipeline
   {
     success
     {
-      setGithubStatus('continuous-integration/jenkins/ariadne', 'ariadne CI Build Successful', 'SUCCESS')
+      setGithubStatus('continuous-integration/jenkins/athena', 'athena CI Build Successful', 'SUCCESS')
     }
     failure
     {
-      setGithubStatus('continuous-integration/jenkins/ariadne', 'ariadne CI Build Failed', 'FAILURE')
+      setGithubStatus('continuous-integration/jenkins/athena', 'athena CI Build Failed', 'FAILURE')
     }
     unstable
     {
       // Unstable occurs when there are failing tests
-      setGithubStatus('continuous-integration/jenkins/ariadne', 'ariadne CI build has test or warning failures', 'FAILURE')
+      setGithubStatus('continuous-integration/jenkins/athena', 'athena CI build has test or warning failures', 'FAILURE')
     }
     aborted
     {
       echo "Build manually aborted on Jenkins"
       slackNotify('ABORTED')
-      setGithubStatus('continuous-integration/jenkins/ariadne', 'ariadne CI Build Aborted', 'ERROR')
+      setGithubStatus('continuous-integration/jenkins/athena', 'athena CI Build Aborted', 'ERROR')
     }
     always
     {
