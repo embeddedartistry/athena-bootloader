@@ -83,13 +83,13 @@ pipeline
         referenceJobName: 'ea-nightly/libmemory/master',
         qualityGates: [
           // 3 new issue: unstable
-          [threshold: 3, type: 'DELTA', unstable: true],
+          [threshold: 15, type: 'DELTA', unstable: true],
           // 5 new issues: failed build
-          [threshold: 5, type: 'DELTA', unstable: false],
+          [threshold: 15, type: 'DELTA', unstable: false],
           // 10 total issues: unstable
-          [threshold: 55, type: 'TOTAL', unstable: true],
+          [threshold: 15, type: 'TOTAL', unstable: true],
           // 20 total issues: fail
-          [threshold: 75, type: 'TOTAL', unstable: false]
+          [threshold: 15, type: 'TOTAL', unstable: false]
         ],
         tools: [
           // TODO: Re-enable: clang(),
