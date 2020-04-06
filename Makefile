@@ -18,6 +18,10 @@ all: makerelease
 makerelease:
 	$(Q)cd avr/bootloaders/ariadne/src/; ./makerelease
 
+.PHONY: package
+package:
+	$(Q)tools/package.sh
+
 .PHONY: format
 format:
 	$(Q)tools/format/clang-format-all.sh
