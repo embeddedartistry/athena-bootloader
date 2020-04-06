@@ -37,18 +37,18 @@ pipeline
         sh 'make clean'
       }
     }
-    stage('Build')
-    {
-      steps
-      {
-        sh 'make'
-      }
-    }
     stage('Format')
     {
       steps
       {
         clangFormat()
+      }
+    }
+    stage('Build')
+    {
+      steps
+      {
+        sh 'make'
       }
     }
   }
