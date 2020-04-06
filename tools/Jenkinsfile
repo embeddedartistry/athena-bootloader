@@ -84,7 +84,7 @@ pipeline
           [threshold: 75, type: 'TOTAL', unstable: false]
         ],
         tools: [
-          clang(),
+          // TODO: re-enable: clang(),
           taskScanner(
             excludePattern: 'buildresults/**, dependencies/**, build/**',
             includePattern: '**/*.c, **/*.cpp, **/*.h, **/*.hpp, **/*.lua, **/*.sh, **/*.build',
@@ -92,9 +92,9 @@ pipeline
             highTags: 'FIXME, FIX',
             ignoreCase: true,
           ),
-          cppCheck(
-            pattern: 'buildresults/**/cppcheck.xml',
-          ),
+          //cppCheck(
+          //  pattern: 'buildresults/**/cppcheck.xml',
+          //),
         ]
       )
 
