@@ -37,9 +37,9 @@
 //*	Jun 24,	2011	<MLS> Removed analogRead (was not used)
 //*	Dec 29,	2011	<MLS> Issue 181: added watch dog timmer support
 //*	Dec 29,	2011	<MLS> Issue 505:  bootloader is comparing the seqNum to 1 or the current
-//sequence
+// sequence
 //*	Jan  1,	2012	<MLS> Issue 543: CMD_CHIP_ERASE_ISP now returns STATUS_CMD_FAILED instead of
-//STATUS_CMD_OK *	Jan  1,	2012	<MLS> Issue 543: Write EEPROM now does something (NOT TESTED)
+// STATUS_CMD_OK *	Jan  1,	2012	<MLS> Issue 543: Write EEPROM now does something (NOT TESTED)
 //*	Jan  1,	2012	<MLS> Issue 544: stk500v2 bootloader doesn't support reading fuses
 //************************************************************************
 
@@ -221,8 +221,7 @@ uint8_t processStk500boot(void)
 		switch(msgBuffer[0])
 		{
 #ifndef REMOVE_CMD_SPI_MULTI
-			case CMD_SPI_MULTI:
-			{
+			case CMD_SPI_MULTI: {
 				unsigned char answerByte;
 				unsigned char flag = 0;
 
@@ -250,10 +249,10 @@ uint8_t processStk500boot(void)
 				{
 					//*	Issue 544: 	stk500v2 bootloader doesn't support reading fuses
 					//*	I cant find the docs that say what these are supposed to be but this was
-					//figured out by trial and error 	answerByte	=
-					//boot_lock_fuse_bits_get(GET_LOW_FUSE_BITS); 	answerByte	=
-					//boot_lock_fuse_bits_get(GET_HIGH_FUSE_BITS); 	answerByte	=
-					//boot_lock_fuse_bits_get(GET_EXTENDED_FUSE_BITS);
+					// figured out by trial and error 	answerByte	=
+					// boot_lock_fuse_bits_get(GET_LOW_FUSE_BITS); 	answerByte	=
+					// boot_lock_fuse_bits_get(GET_HIGH_FUSE_BITS); 	answerByte	=
+					// boot_lock_fuse_bits_get(GET_EXTENDED_FUSE_BITS);
 					if(msgBuffer[4] == 0x50)
 					{
 						answerByte = boot_lock_fuse_bits_get(GET_LOW_FUSE_BITS);
@@ -300,8 +299,7 @@ uint8_t processStk500boot(void)
 				msgBuffer[10] = '2';
 				break;
 
-			case CMD_GET_PARAMETER:
-			{
+			case CMD_GET_PARAMETER: {
 				unsigned char value;
 
 				switch(msgBuffer[1])
@@ -342,8 +340,7 @@ uint8_t processStk500boot(void)
 				msgBuffer[1] = STATUS_CMD_OK;
 				break;
 
-			case CMD_READ_SIGNATURE_ISP:
-			{
+			case CMD_READ_SIGNATURE_ISP: {
 				unsigned char signatureIndex = msgBuffer[4];
 				unsigned char signature;
 
@@ -371,8 +368,7 @@ uint8_t processStk500boot(void)
 				msgBuffer[3] = STATUS_CMD_OK;
 				break;
 
-			case CMD_READ_FUSE_ISP:
-			{
+			case CMD_READ_FUSE_ISP: {
 				unsigned char fuseBits;
 
 				if(msgBuffer[2] == 0x50)
@@ -395,8 +391,7 @@ uint8_t processStk500boot(void)
 			break;
 
 #ifndef REMOVE_PROGRAM_LOCK_BIT_SUPPORT
-			case CMD_PROGRAM_LOCK_ISP:
-			{
+			case CMD_PROGRAM_LOCK_ISP: {
 				unsigned char lockBits = msgBuffer[4];
 
 				lockBits = (~lockBits) & 0x3C; // mask BLBxx bits
@@ -430,8 +425,7 @@ uint8_t processStk500boot(void)
 				break;
 
 			case CMD_PROGRAM_FLASH_ISP:
-			case CMD_PROGRAM_EEPROM_ISP:
-			{
+			case CMD_PROGRAM_EEPROM_ISP: {
 				unsigned int size = ((msgBuffer[1]) << 8) | msgBuffer[2];
 				unsigned char* p = msgBuffer + 10;
 				unsigned int data;
@@ -469,8 +463,8 @@ uint8_t processStk500boot(void)
 				{
 					//*	issue 543, this should work, It has not been tested.
 					//	#if (!defined(__AVR_ATmega1280__) && !defined(__AVR_ATmega2560__)  &&
-					//!defined(__AVR_ATmega2561__)  && !defined(__AVR_ATmega1284P__)  &&
-					//!defined(__AVR_ATmega640__))
+					//! defined(__AVR_ATmega2561__)  && !defined(__AVR_ATmega1284P__)  &&
+					//! defined(__AVR_ATmega640__))
 #if(defined(EEARL) && defined(EEARH) && defined(EEMWE) && defined(EEWE) && defined(EEDR))
 					/* write EEPROM */
 					do
@@ -498,8 +492,7 @@ uint8_t processStk500boot(void)
 			break;
 
 			case CMD_READ_FLASH_ISP:
-			case CMD_READ_EEPROM_ISP:
-			{
+			case CMD_READ_EEPROM_ISP: {
 				unsigned int size = ((msgBuffer[1]) << 8) | msgBuffer[2];
 				unsigned char* p = msgBuffer + 1;
 				msgLength = size + 3;

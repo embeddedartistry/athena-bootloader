@@ -8,7 +8,7 @@
 //*	The STK500V2 bootloader is comparing the seqNum to 1 or the current sequence
 //*	(IE: Requiring the sequence to be 1 or match seqNum before continuing).
 //*	The correct behavior is for the STK500V2 to accept the PC's sequence number, and echo it back
-//for the reply message.
+// for the reply message.
 #define _FIX_ISSUE_505_
 
 #ifndef EEWE
