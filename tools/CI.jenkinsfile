@@ -51,6 +51,13 @@ pipeline
         sh 'make'
       }
     }
+    stage('Package')
+    {
+      steps
+      {
+        sh 'make package'
+      }
+    }
   }
   post
   {
