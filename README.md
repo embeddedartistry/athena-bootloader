@@ -2,7 +2,11 @@
 
 Ariadne is an Ethernet- and Serial-capable bootloader for Arduino. Using an Arduino Ethernet board or Wiznet W5x00 shield, you can upload programs to your Arduino over Ethernet. Ariadne starts a TFTP server on the Arduino board, and files can be transferred using any TFTP client.
 
+Embedded Artistry has forked this bootloader version from the [original project](https://github.com/loathingKernel/ariadne-bootloader), which seems to be no longer actively maintained. We are making many improvements and enhancements to the previous implementation.
+
 Ariadne is implemented for AVR chips. ARM chips cannot use this bootloader.
+
+Bootloader binary files for different versions can be found on the [Releases](https://github.com/embeddedartistry/ariadne-bootloader/releases) page.
 
 **Table of Contents:**
 
@@ -166,6 +170,7 @@ This repository is structured to follow the [latest Arduino IDE standard for 3rd
 This is the abbreviated checklist for installing and using the bootloader:
 
 1. [Download the bootloader](#download-the-bootloader) and [install it to the proper location](#arduino-sdk-installation)
+	1. Just need the bootloader binaries? Check the [releases page](https://github.com/embeddedartistry/ariadne-bootloader/releases) for a tarball.
 1. [Flash the bootloader to the device](flashing-the-bootloader)
 2. **DO NOT SKIP:** Program network settings for the device using the [`NetEEPROM`](#supporting-libraries) library or [example sketches](avr/libraries/NetEEPROM/examples)
 3. [Compile the application using a bootloader board definition](#compiling-applications)
