@@ -104,9 +104,6 @@ pipeline
     }
     success
     {
-      githubSetConfig('69e4682e-2951-492f-b828-da06364c322d')
-      githubUploadRelease(tag: "${params.MAJOR_VERSION}.${params.MINOR_VERSION}.${BUILD_NUMBER}",
-        artifactPattern: '*.tgz')
       gitTagSuccess "${params.MAJOR_VERSION}.${params.MINOR_VERSION}.${BUILD_NUMBER}"
     }
     failure
