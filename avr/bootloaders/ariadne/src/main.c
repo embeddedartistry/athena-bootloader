@@ -66,9 +66,14 @@ int main(void)
 
 	/* Write version information in the EEPROM */
 	if(eeprom_read_byte(EEPROM_MAJVER) != ARIADNE_MAJVER)
+	{
 		eeprom_write_byte(EEPROM_MAJVER, ARIADNE_MAJVER);
+	}
+
 	if(eeprom_read_byte(EEPROM_MINVER) != ARIADNE_MINVER)
+	{
 		eeprom_write_byte(EEPROM_MINVER, ARIADNE_MINVER);
+	}
 
 	/* Initialize UART communication */
 	serialInit();
@@ -97,18 +102,24 @@ int main(void)
 		if(!serialFlashing && !tftpInitError)
 			// If tftp recieved a FINAL_ACK, break
 			if(tftpPoll() == 0)
+			{
 				break;
+			}
 
 		// If there is no tftp flashing, poll serial
 		if(!tftpFlashing)
 			// If flashing is done exit
 			if(serialPoll() == 0)
+			{
 				break;
+			}
 
 		if(timedOut())
 		{
 			if(eeprom_read_byte(EEPROM_IMG_STAT) == EEPROM_IMG_OK_VALUE)
+			{
 				break;
+			}
 
 			// TODO: determine the conditions for reseting server OR reseting socket
 			if(tftpFlashing == TRUE)
