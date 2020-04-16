@@ -61,16 +61,13 @@ EthernetReset::EthernetReset(int port)
 
 void EthernetReset::begin()
 {
-	if(NetEEPROM.netSigIsSet())
-	{
-		Ethernet.begin(NetEEPROM.readMAC(), NetEEPROM.readIP(), NetEEPROM.readGW(),
-					   NetEEPROM.readGW(), NetEEPROM.readSN());
+	Ethernet.begin(NetEEPROM.readMAC(), NetEEPROM.readIP(), NetEEPROM.readGW(), NetEEPROM.readGW(),
+				   NetEEPROM.readSN());
 
-		_server->begin();
-		ETHERNET_DEBUG(Serial.print("Server is at "); Serial.println(Ethernet.localIP());
-					   Serial.print("Gw at "); Serial.println(NetEEPROM.readGW());
-					   Serial.print("Password: "); Serial.println(_path);)
-	}
+	_server->begin();
+	ETHERNET_DEBUG(Serial.print("Server is at "); Serial.println(Ethernet.localIP());
+				   Serial.print("Gw at "); Serial.println(NetEEPROM.readGW());
+				   Serial.print("Password: "); Serial.println(_path);)
 }
 
 void EthernetReset::check()
