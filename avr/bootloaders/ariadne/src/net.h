@@ -11,21 +11,24 @@
 #error "Unknown PHY. Cannot find the proper network driver."
 #endif
 
+// Included for default networking address definitions
+#include <NetEEPROM/NetEEPROM_defs.h>
+
 /* Network settings */
 #ifndef IP_ADDR
-#define IP_ADDR 10, 0, 1, 199
+#define IP_ADDR DEFAULT_IP_ADDR
 #endif
 
 #ifndef SUB_MASK
-#define SUB_MASK 255, 255, 255, 0
+#define SUB_MASK DEFAULT_SUB_MASK
 #endif
 
 #ifndef GW_ADDR
-#define GW_ADDR 10, 0, 1, 1
+#define GW_ADDR DEFAULT_GW_ADDR
 #endif
 
 #ifndef MAC_ADDR
-#define MAC_ADDR 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED
+#define MAC_ADDR DEFAULT_MAC_ADDR
 #endif
 
 void netInit(void);
