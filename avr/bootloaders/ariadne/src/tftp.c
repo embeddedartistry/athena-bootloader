@@ -209,7 +209,7 @@ static uint8_t processPacket(void)
 			DBG_TFTP(tracePGMlnTftp(mDebugTftp_OPWRQ);)
 
 			// Flagging image as invalid since the flashing process has started
-			eeprom_write_byte(EEPROM_IMG_STAT, EEPROM_IMG_BAD_VALUE);
+			eeprom_write_byte((uint8_t*)NETEEPROM_IMG_STAT, NETEEPROM_IMG_BAD_VALUE);
 
 #if defined(RANDOM_TFTP_DATA_PORT)
 			sockInit((buffer[4] << 8) | ~buffer[5]); // Generate a 'random' TID (RFC1350)
@@ -326,7 +326,7 @@ static uint8_t processPacket(void)
 					DBG_TFTP(tracePGMlnTftp(mDebugTftp_DONE);)
 
 					// Flag the image as valid since we received the last packet
-					eeprom_write_byte(EEPROM_IMG_STAT, EEPROM_IMG_OK_VALUE);
+					eeprom_write_byte((uint8_t*)NETEEPROM_IMG_STAT, NETEEPROM_IMG_OK_VALUE);
 				}
 			}
 
@@ -475,9 +475,10 @@ void tftpInit(void)
 
 #if defined(RANDOM_TFTP_DATA_PORT)
 #else
-	if(eeprom_read_byte(EEPROM_SIG_3) == EEPROM_SIG_3_VALUE)
+	if(eeprom_read_byte((uint8_t*)NETEEPROM_SIG_3) == NETEEPROM_SIG_3_VALUE)
 		tftpTransferPort =
-			((eeprom_read_byte(EEPROM_PORT + 1) << 8) + eeprom_read_byte(EEPROM_PORT));
+			((eeprom_read_byte((uint8_t*)NETEEPROM_PORT + 1) << 8) +
+				eeprom_read_byte((uint8_t*)NETEEPROM_PORT));
 	else
 		tftpTransferPort = TFTP_DATA_PORT;
 #endif

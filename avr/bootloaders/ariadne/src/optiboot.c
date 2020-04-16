@@ -109,7 +109,7 @@ uint8_t processOptiboot(void)
 	else if(ch == STK_PROG_PAGE)
 	{
 		// This should probably go somewhere but I don't yet know it's place
-		// eeprom_write_byte(EEPROM_IMG_STAT, EEPROM_IMG_BAD_VALUE);
+		// eeprom_write_byte((uint8_t*)NETEEPROM_IMG_STAT, NETEEPROM_IMG_BAD_VALUE);
 		// PROGRAM PAGE - we support flash programming only, not EEPROM
 		uint8_t buff[256];
 		uint8_t* bufPtr;
@@ -203,7 +203,7 @@ uint8_t processOptiboot(void)
 		// Adaboot no-wait mod
 		// watchdogConfig(WATCHDOG_16MS);
 		verifySpace();
-		eeprom_write_byte(EEPROM_IMG_STAT, EEPROM_IMG_OK_VALUE);
+		eeprom_write_byte((uint8_t*)NETEEPROM_IMG_STAT, NETEEPROM_IMG_OK_VALUE);
 		putch(STK_OK);
 		return (0);
 	}

@@ -46,7 +46,7 @@ int main(void)
 	MCUSR = 0;
 	if(ch & (_BV(WDRF) | _BV(BORF) | _BV(PORF)))
 	{
-		if(eeprom_read_byte(EEPROM_IMG_STAT) == EEPROM_IMG_OK_VALUE)
+		if(eeprom_read_byte((uint8_t*)NETEEPROM_IMG_STAT) == NETEEPROM_IMG_OK_VALUE)
 		{
 			wdt_disable();
 			appStart();
@@ -65,14 +65,14 @@ int main(void)
 	TCCR1B = _BV(CS12); // Same thing as TCCR1B = 0x04;
 
 	/* Write version information in the EEPROM */
-	if(eeprom_read_byte(EEPROM_MAJVER) != ARIADNE_MAJVER)
+	if(eeprom_read_byte((uint8_t*)NETEEPROM_MAJVER) != ARIADNE_MAJVER)
 	{
-		eeprom_write_byte(EEPROM_MAJVER, ARIADNE_MAJVER);
+		eeprom_write_byte((uint8_t*)NETEEPROM_MAJVER, ARIADNE_MAJVER);
 	}
 
-	if(eeprom_read_byte(EEPROM_MINVER) != ARIADNE_MINVER)
+	if(eeprom_read_byte((uint8_t*)NETEEPROM_MINVER) != ARIADNE_MINVER)
 	{
-		eeprom_write_byte(EEPROM_MINVER, ARIADNE_MINVER);
+		eeprom_write_byte((uint8_t*)NETEEPROM_MINVER, ARIADNE_MINVER);
 	}
 
 	/* Initialize UART communication */
@@ -116,7 +116,7 @@ int main(void)
 
 		if(timedOut())
 		{
-			if(eeprom_read_byte(EEPROM_IMG_STAT) == EEPROM_IMG_OK_VALUE)
+			if(eeprom_read_byte((uint8_t*)NETEEPROM_IMG_STAT) == NETEEPROM_IMG_OK_VALUE)
 			{
 				break;
 			}

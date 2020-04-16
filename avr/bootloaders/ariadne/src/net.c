@@ -60,11 +60,11 @@ void netInit(void)
 
 	/* Pull in altered network settings, if available,
 	 * from AVR EEPROM (if signature bytes are set) */
-	if((eeprom_read_byte(EEPROM_SIG_1) == EEPROM_SIG_1_VALUE) &&
-	   (eeprom_read_byte(EEPROM_SIG_2) == EEPROM_SIG_2_VALUE))
+	if((eeprom_read_byte((uint8_t*)NETEEPROM_SIG_1) == NETEEPROM_SIG_1_VALUE) &&
+	   (eeprom_read_byte((uint8_t*)NETEEPROM_SIG_2) == NETEEPROM_SIG_2_VALUE))
 	{
 		for(i = 0; i < EEPROM_SETTINGS_SIZE; i++)
-			registerBuffer[i + 1] = eeprom_read_byte(EEPROM_DATA + i);
+			registerBuffer[i + 1] = eeprom_read_byte((uint8_t*)NETEEPROM_DATA + i);
 
 		DBG_NET(tracePGMlnNet(mDebugNet_EEPROM);)
 	}

@@ -586,6 +586,6 @@ uint8_t processStk500boot(void)
 #if defined(RWWSRE)
 	boot_rww_enable(); // enable application section
 #endif
-	eeprom_write_byte(EEPROM_IMG_STAT, EEPROM_IMG_OK_VALUE);
+	eeprom_write_byte((uint8_t*)NETEEPROM_IMG_STAT, NETEEPROM_IMG_OK_VALUE);
 	return (0);
 }

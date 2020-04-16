@@ -115,7 +115,7 @@ STK500-2 = $(STK500) -d$(MCU_TARGET) -ms -q -lCF -LCF -cUSB -I200kHz -s -wt
 OBJ      = main.o spi.o net.o tftp.o validate.o debug.o watchdog.o serial.o util.o optiboot.o stk500boot.o
 OPTIMIZE = -Os -flto -fuse-linker-plugin -fno-inline-small-functions -fno-split-wide-types -mno-interrupts -mrelax
 OPTIMIZE += -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums -fno-jump-tables -std=gnu99 #-save-temps
-
+INCLUDES = -isystem ../../../libraries
 DEFS     =
 LIBS     =
 
@@ -123,7 +123,7 @@ CC       = $(GCCROOT)avr-gcc
 
 # Override is only needed by avr-lib build system.
 
-override CFLAGS  = -g -Wall -Wextra -Wstrict-prototypes $(OPTIMIZE) -mmcu=$(MCU_TARGET) -DF_CPU=$(AVR_FREQ) $(DEFS)
+override CFLAGS  = -g -Wall -Wextra -Wstrict-prototypes $(OPTIMIZE) $(INCLUDES) -mmcu=$(MCU_TARGET) -DF_CPU=$(AVR_FREQ) $(DEFS)
 override LDFLAGS = $(LDSECTIONS) -Wl,--relax -Wl,--gc-sections -flto -fuse-linker-plugin
 
 OBJCOPY = $(GCCROOT)avr-objcopy
