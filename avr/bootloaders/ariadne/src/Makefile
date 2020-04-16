@@ -147,6 +147,7 @@ debug328_w5100_isp: MCU_TARGET = atmega328p
 # Low power xtal (16MHz) 16KCK/14CK+65ms
 debug328_w5100_isp: LFUSE = FF
 # 4096 byte boot, SPIEN
+# D8 = Erase EEPROM, D0 = Save EEPROM
 debug328_w5100_isp: HFUSE = D0
 # 2.7V brownout
 debug328_w5100_isp: EFUSE = FD
@@ -167,6 +168,7 @@ debug328_w5200_isp: MCU_TARGET = atmega328p
 # Low power xtal (16MHz) 16KCK/14CK+65ms
 debug328_w5200_isp: LFUSE = FF
 # 4096 byte boot, SPIEN
+# D8 = Erase EEPROM, D0 = Save EEPROM
 debug328_w5200_isp: HFUSE = D0
 # 2.7V brownout
 debug328_w5200_isp: EFUSE = FD
@@ -187,6 +189,7 @@ debug328_w5500_isp: MCU_TARGET = atmega328p
 # Low power xtal (16MHz) 16KCK/14CK+65ms
 debug328_w5500_isp: LFUSE = FF
 # 4096 byte boot, SPIEN
+# D8 = Erase EEPROM, D0 = Save EEPROM
 debug328_w5500_isp: HFUSE = D0
 # 2.7V brownout
 debug328_w5500_isp: EFUSE = FD
@@ -206,6 +209,7 @@ debug2560_w5100_isp: MCU_TARGET = atmega2560
 # Low power xtal (16MHz) 16KCK/14CK+65ms
 debug2560_w5100_isp: LFUSE = FF
 # 4069 byte boot
+# D8 = Erase EEPROM, D0 = Save EEPROM
 debug2560_w5100_isp: HFUSE = D0
 # 2.7V brownout
 debug2560_w5100_isp: EFUSE = FD
@@ -225,6 +229,7 @@ debug2560_w5200_isp: MCU_TARGET = atmega2560
 # Low power xtal (16MHz) 16KCK/14CK+65ms
 debug2560_w5200_isp: LFUSE = FF
 # 4069 byte boot
+# D8 = Erase EEPROM, D0 = Save EEPROM
 debug2560_w5200_isp: HFUSE = D0
 # 2.7V brownout
 debug2560_w5200_isp: EFUSE = FD
@@ -244,6 +249,7 @@ debug2560_w5500_isp: MCU_TARGET = atmega2560
 # Low power xtal (16MHz) 16KCK/14CK+65ms
 debug2560_w5500_isp: LFUSE = FF
 # 4069 byte boot
+# D8 = Erase EEPROM, D0 = Save EEPROM
 debug2560_w5500_isp: HFUSE = D0
 # 2.7V brownout
 debug2560_w5500_isp: EFUSE = FD
@@ -263,7 +269,8 @@ debug1284_w5100_isp: MCU_TARGET = atmega1284p
 # External power xtal (16MHz) 16KCK/14CK+65ms
 debug1284_w5100_isp: LFUSE = FF
 # 4096 word boot
-debug1284_w5100_isp: HFUSE = D8
+# D8 = Erase EEPROM, D0 = Save EEPROM
+debug1284_w5100_isp: HFUSE = D0
 # 2.7V brownout
 debug1284_w5100_isp: EFUSE = FD
 debug1284_w5100_isp: isp
@@ -282,7 +289,8 @@ debug1284_w5200_isp: MCU_TARGET = atmega1284p
 # External power xtal (16MHz) 16KCK/14CK+65ms
 debug1284_w5200_isp: LFUSE = FF
 # 4096 word boot
-debug1284_w5200_isp: HFUSE = D8
+# D8 = Erase EEPROM, D0 = Save EEPROM
+debug1284_w5200_isp: HFUSE = D0
 # 2.7V brownout
 debug1284_w5200_isp: EFUSE = FD
 debug1284_w5200_isp: isp
@@ -301,7 +309,8 @@ debug1284_w5500_isp: MCU_TARGET = atmega1284p
 # External power xtal (16MHz) 16KCK/14CK+65ms
 debug1284_w5500_isp: LFUSE = FF
 # 4096 word boot
-debug1284_w5500_isp: HFUSE = D8
+# D8 = Erase EEPROM, D0 = Save EEPROM
+debug1284_w5500_isp: HFUSE = D0
 # 2.7V brownout
 debug1284_w5500_isp: EFUSE = FD
 debug1284_w5500_isp: isp
@@ -407,7 +416,8 @@ atmega328_w5100_isp: MCU_TARGET = atmega328p
 # Low power xtal (16MHz) 16KCK/14CK+65ms
 atmega328_w5100_isp: LFUSE = FF
 # 4096 byte boot, SPIEN
-atmega328_w5100_isp: HFUSE = D8
+# D8 = Erase EEPROM, D0 = Save EEPROM
+atmega328_w5100_isp: HFUSE = D0
 # 2.7V brownout
 atmega328_w5100_isp: EFUSE = FD
 atmega328_w5100_isp: isp
@@ -427,7 +437,8 @@ atmega328_w5200_isp: MCU_TARGET = atmega328p
 # Low power xtal (16MHz) 16KCK/14CK+65ms
 atmega328_w5200_isp: LFUSE = FF
 # 4096 byte boot, SPIEN
-atmega328_w5200_isp: HFUSE = D8
+# D8 = Erase EEPROM, D0 = Save EEPROM
+atmega328_w5200_isp: HFUSE = D0
 # 2.7V brownout
 atmega328_w5200_isp: EFUSE = FD
 atmega328_w5200_isp: isp
@@ -447,7 +458,8 @@ atmega328_w5500_isp: MCU_TARGET = atmega328p
 # Low power xtal (16MHz) 16KCK/14CK+65ms
 atmega328_w5500_isp: LFUSE = FF
 # 4096 byte boot, SPIEN
-atmega328_w5500_isp: HFUSE = D8
+# D8 = Erase EEPROM, D0 = Save EEPROM
+atmega328_w5500_isp: HFUSE = D0
 # 2.7V brownout
 atmega328_w5500_isp: EFUSE = FD
 atmega328_w5500_isp: isp
@@ -465,7 +477,8 @@ atmega328_ethernet_isp: MCU_TARGET = atmega328p
 # Low power xtal (16MHz) 16KCK/14CK+65ms
 atmega328_ethernet_isp: LFUSE = FF
 # 4096 byte boot, SPIEN
-atmega328_ethernet_isp: HFUSE = D8
+# D8 = Erase EEPROM, D0 = Save EEPROM
+atmega328_ethernet_isp: HFUSE = D0
 # 2.7V brownout
 atmega328_ethernet_isp: EFUSE = FD
 atmega328_ethernet_isp: isp
@@ -483,7 +496,8 @@ atmega32u4_w5100_isp: TARGET = atmega32u4_w5100
 atmega32u4_w5100_isp: MCU_TARGET = atmega32u4
 # Fuse settings from 32u4 Caterina bootloader
 atmega32u4_w5100_isp: LFUSE = FF
-atmega32u4_w5100_isp: HFUSE = D8
+# D8 = Erase EEPROM, D0 = Save EEPROM
+atmega32u4_w5100_isp: HFUSE = D0
 atmega32u4_w5100_isp: EFUSE = CB
 atmega32u4_w5100_isp: isp
 
@@ -500,7 +514,8 @@ atmega32u4_w5200_isp: TARGET = atmega32u4_w5200
 atmega32u4_w5200_isp: MCU_TARGET = atmega32u4
 # Fuse settings from 32u4 Caterina bootloader
 atmega32u4_w5200_isp: LFUSE = FF
-atmega32u4_w5200_isp: HFUSE = D8
+# D8 = Erase EEPROM, D0 = Save EEPROM
+atmega32u4_w5200_isp: HFUSE = D0
 atmega32u4_w5200_isp: EFUSE = CB
 atmega32u4_w5200_isp: isp
 
@@ -517,7 +532,8 @@ atmega32u4_w5500_isp: TARGET = atmega32u4_w5500
 atmega32u4_w5500_isp: MCU_TARGET = atmega32u4
 # Fuse settings from 32u4 Caterina bootloader
 atmega32u4_w5500_isp: LFUSE = FF
-atmega32u4_w5500_isp: HFUSE = D8
+# D8 = Erase EEPROM, D0 = Save EEPROM
+atmega32u4_w5500_isp: HFUSE = D0
 atmega32u4_w5500_isp: EFUSE = CB
 atmega32u4_w5500_isp: isp
 
@@ -575,7 +591,8 @@ atmega2560_w5100_isp: MCU_TARGET = atmega2560
 # Low power xtal (16MHz) 16KCK/14CK+65ms
 atmega2560_w5100_isp: LFUSE = FF
 # 4069 byte boot
-atmega2560_w5100_isp: HFUSE = D8
+# D8 = Erase EEPROM, D0 = Save EEPROM
+atmega2560_w5100_isp: HFUSE = D0
 # 2.7V brownout
 atmega2560_w5100_isp: EFUSE = FD
 atmega2560_w5100_isp: isp
@@ -595,7 +612,8 @@ atmega2560_w5200_isp: MCU_TARGET = atmega2560
 # Low power xtal (16MHz) 16KCK/14CK+65ms
 atmega2560_w5200_isp: LFUSE = FF
 # 4069 byte boot
-atmega2560_w5200_isp: HFUSE = D8
+# D8 = Erase EEPROM, D0 = Save EEPROM
+atmega2560_w5200_isp: HFUSE = D0
 # 2.7V brownout
 atmega2560_w5200_isp: EFUSE = FD
 atmega2560_w5200_isp: isp
@@ -615,7 +633,8 @@ atmega2560_w5500_isp: MCU_TARGET = atmega2560
 # Low power xtal (16MHz) 16KCK/14CK+65ms
 atmega2560_w5500_isp: LFUSE = FF
 # 4069 byte boot
-atmega2560_w5500_isp: HFUSE = D8
+# D8 = Erase EEPROM, D0 = Save EEPROM
+atmega2560_w5500_isp: HFUSE = D0
 # 2.7V brownout
 atmega2560_w5500_isp: EFUSE = FD
 atmega2560_w5500_isp: isp
@@ -635,7 +654,8 @@ atmega1284_w5100_isp: MCU_TARGET = atmega1284p
 # External power xtal (16MHz) 16KCK/14CK+65ms
 atmega1284_w5100_isp: LFUSE = FF
 # 4096 word boot
-atmega1284_w5100_isp: HFUSE = D8
+# D8 = Erase EEPROM, D0 = Save EEPROM
+atmega1284_w5100_isp: HFUSE = D0
 # 2.7V brownout
 atmega1284_w5100_isp: EFUSE = FD
 atmega1284_w5100_isp: isp
@@ -654,7 +674,8 @@ atmega1284_w5200_isp: MCU_TARGET = atmega1284p
 # External power xtal (16MHz) 16KCK/14CK+65ms
 atmega1284_w5200_isp: LFUSE = FF
 # 4096 word boot
-atmega1284_w5200_isp: HFUSE = D8
+# D8 = Erase EEPROM, D0 = Save EEPROM
+atmega1284_w5200_isp: HFUSE = D0
 # 2.7V brownout
 atmega1284_w5200_isp: EFUSE = FD
 atmega1284_w5200_isp: isp
@@ -673,7 +694,8 @@ atmega1284_w5500_isp: MCU_TARGET = atmega1284p
 # External power xtal (16MHz) 16KCK/14CK+65ms
 atmega1284_w5500_isp: LFUSE = FF
 # 4096 word boot
-atmega1284_w5500_isp: HFUSE = D8
+# D8 = Erase EEPROM, D0 = Save EEPROM
+atmega1284_w5500_isp: HFUSE = D0
 # 2.7V brownout
 atmega1284_w5500_isp: EFUSE = FD
 atmega1284_w5500_isp: isp
