@@ -40,9 +40,9 @@
 #define EEPROM_SETTINGS_SIZE 18
 #define REGISTER_BLOCK_SIZE 28
 
-/* EEPROM values */
-#define ARIADNE_MAJVER 0
-#define ARIADNE_MINVER 4
+/* Ariadne EEPROM values */
+#define ARIADNE_MAJVER 1
+#define ARIADNE_MINVER 0
 
 #define NETEEPROM_IMG_OK_VALUE (0xEE)
 #define NETEEPROM_IMG_BAD_VALUE (0xFF)
