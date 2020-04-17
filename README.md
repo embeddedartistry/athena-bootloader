@@ -283,7 +283,7 @@ By default, bootloader updates will erase the contents of the EEPROM. Because th
 
 Navigate to the __Tools__ > __Erase EEPROM?__ menu and select `Save` to prevent the EEPROM from being erased.
 
-![Image showing the Erase/Save EEPROM menu](docs/erase_eeprom/png "Erase Menu")
+![Image showing the Erase/Save EEPROM menu](docs/erase_eeprom.png "Erase Menu")
 
 > **Note:** If you are manually flashing the application or need to specify fuse settings, use a high_fuse setting of `0xD8` to erase, and `0xD0` to preserve.
 
