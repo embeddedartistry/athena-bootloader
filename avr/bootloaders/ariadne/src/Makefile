@@ -36,9 +36,9 @@ PROGRAM    = ariadne
 # enter the parameters for the avrdude isp tool
 # for now they default to the AVRISP MKII on linux
 #ISPTOOL    = avrispmkii
-ISPTOOL    = usbtiny
-ISPPORT	   = usb
-ISPSPEED   = -b38400
+ISPTOOL    ?= usbtiny
+ISPPORT	   ?= usb
+ISPSPEED   ?= -b38400
 
 MCU_TARGET = atmega328p
 LDSECTIONS = -Wl,--section-start=.text=0x7000 #-Wl,--section-start=.version=0x7ffe
