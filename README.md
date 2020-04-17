@@ -46,6 +46,7 @@ Bootloader binary files for different versions can be found on the [Releases](ht
 		1. [Linux and OS X Upload](#linux-and-os-x-upload)
 			1. [Linux TFTP Note](#linux-tftp-note)
 1. [Enabling Remote Reset and Reprogram Capabilities](#enabling-remote-reset-and-reprogram-capabilities)
+1. [Troubleshooting](#troubleshooting)
 1. [EEPROM Requirements](#eeprom-requirements)
 1. [Test Binaries](#test-binaries)
 1. [Supporting Libraries](#supporting-libraries)
@@ -184,8 +185,10 @@ This is the abbreviated checklist for installing and using the bootloader:
 		1. Example: `curl 10.0.1.199:8080/ariadne/reprogram`
 	2. The device will respond with:
 		1. "Arduino will reset for reprogramming in 2 seconds"
-	3. You must use the "password" programmed via the NetEEPROM library to successfully enter the programming mode
+	3. You must use the "password" programmed via the NetEEPROM library to successfully enter the programming mode. The default password is `ariadne`
 5. Follow the [TFTP Upload](#flashing-applications-via-tftp) instructions to send a new binary to the device
+
+Not able to connect to the device? Check out the [debugging guide](docs/Debugging.md).
 
 ## Downloading the Bootloader
 
@@ -635,12 +638,16 @@ The following steps must be used to implement a remote upload capability for you
 	2. Call `.begin()` on the server object in `setup()`
 	3. Call `.check()` on the server object in `loop()`
 4. Trigger a reset using curl or a web browser
-	1. URL Format: `http://{ip}:{port}/{reset_path}/reprogram`
+	1. URL Format: `http://{ip}:{port}/{password}/reprogram`
 		1. Example: `curl 10.0.1.199:8080/ariadne/reprogram`
 	2. The device will respond with:
 		1. "Arduino will reset for reprogramming in 2 seconds"
-	3. You must use the "password" programmed via the NetEEPROM library to successfully enter the programming mode
+	3. You must use the "password" programmed via the NetEEPROM library to successfully enter the programming mode. The default value is `ariadne`.
 5. Follow the [TFTP Upload](#flashing-applications-via-tftp) instructions to send a new binary to the device
+
+## Troubleshooting
+
+If you're having problems connecting to the device, check out [docs/Debugging.md](docs/Debugging.md) for troubleshooting tips.
 
 ## EEPROM Requirements
 
