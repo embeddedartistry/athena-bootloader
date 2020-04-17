@@ -27,6 +27,7 @@ Bootloader binary files for different versions can be found on the [Releases](ht
 	1. [Programming Hardware Requirements](#programming-hardware-requirements)
 	2. [Connecting Pins](#connecting-pins)
 	3. [Programming with Arduino IDE](#programming-with-arduino-ide)
+		1. [EEPROM Erase Settings](#eeprom-erase-settings)
 	4. [Programming with AVRDUDE](#programming-with-avrdude)
 1. [Compiling Applications](#compiling-applications)
 1. [Flashing Applications via Serial](#flashing-applications-via-serial)
@@ -228,6 +229,18 @@ $ ln -s ~/src/ariadne-bootloader/ ./ariadne
 Once the `ariadne-bootloader` folder is placed in the `hardware/` folder, Arduino will detect it. Restart the IDE if it is already open. You should now see the Ariadne bootloader show up in the board list.
 
 ![Image showing the Ariadne bootloader in boards](docs/boards.png "Ariadne Listed in Boards")
+
+### EEPROM Erase Settings
+
+By default, bootloader updates will erase the contents of the EEPROM. Because the Ariadne EEPROM layout is different from the default layout, this approach is advisable.
+
+The project now features support for preserving the contents of the EEPROM when updating the bootloader. This is desirable if you're already using Ariadne and need to update a previously configured device to a new version.
+
+In the Arduino IDE, there is an entry called "Erase EEPROM?" in the "Tools" menu. You can select "Erase" (default) to erase the EEPROM contents when the bootloader is flashed, or "Save" to preserve the contents.
+
+![Image showing the Erase/Save EEPROM menu](docs/erase_eeprom/png "Erase Menu")
+
+If you are manually flashing the application or need to specify fuse settings, use a high_fuse setting of `0xD8` to erase, and `0xD0` to preserve.
 
 ## Atmel Studio Installation
 

@@ -1,4 +1,5 @@
 menu.version=Version
+menu.eeprom=Erase EEPROM?
 
 ##############################################################
 
@@ -11,7 +12,6 @@ ariadne328D.upload.speed=115200
 
 ariadne328D.bootloader.tool=arduino:avrdude
 ariadne328D.bootloader.low_fuses=0xFF
-ariadne328D.bootloader.high_fuses=0xD8
 ariadne328D.bootloader.extended_fuses=0x05
 ariadne328D.bootloader.unlock_bits=0x3F
 ariadne328D.bootloader.lock_bits=0x0F
@@ -21,6 +21,13 @@ ariadne328D.build.f_cpu=16000000L
 ariadne328D.build.core=arduino:arduino
 ariadne328D.build.variant=arduino:standard
 ariadne328D.build.board=AVR_DUEMILANOVE
+
+## Save EEPROM Settings
+## --------------------
+ariadne328D.menu.eeprom.erase=Erase
+ariadne328D.menu.eeprom.erase.bootloader.high_fuses=0xD8
+ariadne328D.menu.eeprom.save=Save
+ariadne328D.menu.eeprom.save.bootloader.high_fuses=0xD0
 
 ## standard bootloader
 ## ---------------------------------------------
@@ -44,7 +51,6 @@ ariadne328UW.upload.speed=115200
 
 ariadne328UW.bootloader.tool=arduino:avrdude
 ariadne328UW.bootloader.low_fuses=0xFF
-ariadne328UW.bootloader.high_fuses=0xD8
 ariadne328UW.bootloader.extended_fuses=0x05
 ariadne328UW.bootloader.unlock_bits=0x3F
 ariadne328UW.bootloader.lock_bits=0x0F
@@ -55,6 +61,12 @@ ariadne328UW.build.core=arduino:arduino
 ariadne328UW.build.variant=arduino:standard
 ariadne328UW.build.board=AVR_UNO
 
+## Save EEPROM Settings
+## --------------------
+ariadne328UW.menu.eeprom.erase=Erase
+ariadne328UW.menu.eeprom.erase.bootloader.high_fuses=0xD8
+ariadne328UW.menu.eeprom.save=Save
+ariadne328UW.menu.eeprom.save.bootloader.high_fuses=0xD0
 
 ## standard bootloader for Arduino Uno with Wiznet W5100 chip
 ## ---------------------------------------------
@@ -98,7 +110,6 @@ ariadne328E.upload.speed=115200
 
 ariadne328E.bootloader.tool=arduino:avrdude
 ariadne328E.bootloader.low_fuses=0xFF
-ariadne328E.bootloader.high_fuses=0xD8
 ariadne328E.bootloader.extended_fuses=0x05
 ariadne328E.bootloader.unlock_bits=0x3F
 ariadne328E.bootloader.lock_bits=0x0F
@@ -109,6 +120,13 @@ ariadne328E.build.f_cpu=16000000L
 ariadne328E.build.core=arduino:arduino
 ariadne328E.build.variant=arduino:standard
 ariadne328E.build.board=AVR_ETHERNET
+
+## Save EEPROM Settings
+## --------------------
+ariadne328E.menu.eeprom.erase=Erase
+ariadne328E.menu.eeprom.erase.bootloader.high_fuses=0xD8
+ariadne328E.menu.eeprom.save=Save
+ariadne328E.menu.eeprom.save.bootloader.high_fuses=0xD0
 
 ##############################################################
 
@@ -122,7 +140,6 @@ ariadne2560MW.upload.speed=115200
 
 ariadne2560MW.bootloader.tool=arduino:avrdude
 ariadne2560MW.bootloader.low_fuses=0xFF
-ariadne2560MW.bootloader.high_fuses=0xD8
 ariadne2560MW.bootloader.extended_fuses=0xFD
 ariadne2560MW.bootloader.unlock_bits=0x3F
 ariadne2560MW.bootloader.lock_bits=0x0F
@@ -132,6 +149,13 @@ ariadne2560MW.build.f_cpu=16000000L
 ariadne2560MW.build.core=arduino:arduino
 ariadne2560MW.build.variant=arduino:mega
 ariadne2560MW.build.board=AVR_MEGA2560
+
+## Save EEPROM Settings
+## --------------------
+ariadne2560MW.menu.eeprom.erase=Erase
+ariadne2560MW.menu.eeprom.erase.bootloader.high_fuses=0xD8
+ariadne2560MW.menu.eeprom.save=Save
+ariadne2560MW.menu.eeprom.save.bootloader.high_fuses=0xD0
 
 ## standard bootloader for Mega 2560 with Wiznet W5100 chip
 ## ---------------------------------------------
@@ -175,7 +199,6 @@ ariadne1284W.upload.speed=115200
 
 ariadne1284W.bootloader.tool=arduino:avrdude
 ariadne1284W.bootloader.low_fuses=0xFF
-ariadne1284W.bootloader.high_fuses=0xD8
 ariadne1284W.bootloader.extended_fuses=0xFD
 ariadne1284W.bootloader.unlock_bits=0x3F
 ariadne1284W.bootloader.lock_bits=0x0F
@@ -185,6 +208,13 @@ ariadne1284W.build.f_cpu=16000000L
 ariadne1284W.build.core=arduino:arduino
 ariadne1284W.build.variant=bobuino
 ariadne1284W.build.board=1284P_STANDARD
+
+## Save EEPROM Settings
+## --------------------
+ariadne1284W.menu.eeprom.erase=Erase
+ariadne1284W.menu.eeprom.erase.bootloader.high_fuses=0xD8
+ariadne1284W.menu.eeprom.save=Save
+ariadne1284W.menu.eeprom.save.bootloader.high_fuses=0xD0
 
 ## Bootloader for 1284p with Wiznet W5100 chip
 ## ---------------------------------------------
@@ -216,7 +246,6 @@ ariadne32U4.upload.wait_for_upload_port=true
 
 ariadne32U4.bootloader.tool=arduino:avrdude
 ariadne32U4.bootloader.low_fuses=0xFF
-ariadne32U4.bootloader.high_fuses=0xD8
 ariadne32U4.bootloader.extended_fuses=0xCB
 ariadne32U4.bootloader.unlock_bits=0x3F
 ariadne32U4.bootloader.lock_bits=0x0F
@@ -226,6 +255,13 @@ ariadne32U4.build.f_cpu=16000000L
 ariadne32U4.build.core=arduino
 ariadne32U4.build.variant=leonardo
 ariadne32U4.build.board=AVR_LEONARDO
+
+## Save EEPROM Settings
+## --------------------
+ariadne32U4.menu.eeprom.erase=Erase
+ariadne32U4.menu.eeprom.erase.bootloader.high_fuses=0xD8
+ariadne32U4.menu.eeprom.save=Save
+ariadne32U4.menu.eeprom.save.bootloader.high_fuses=0xD0
 
 ## Bootloader for 32u4 with Wiznet W5100 chip
 ## ---------------------------------------------
