@@ -182,7 +182,7 @@ This is the abbreviated checklist for installing and using the bootloader:
 	3. Call `.check()` on the server object in `loop()`
 4. When your application is running, trigger a reset using curl or a web browser
 	1. URL Format: `http://{ip}:{port}/{reset_path}/reprogram`
-		1. Example: `curl 10.0.1.199:8080/ariadne/reprogram`
+		1. Example: `curl 192.168.1.128:8080/ariadne/reprogram`
 	2. The device will respond with:
 		1. "Arduino will reset for reprogramming in 2 seconds"
 	3. You must use the "password" programmed via the NetEEPROM library to successfully enter the programming mode. The default password is `ariadne`
@@ -318,7 +318,7 @@ Check the Arduino console output to confirm that the bootloader was flashed succ
 
 ### Programming with AVRDUDE
 
-COMING SOON
+Instructions on manually programming the bootloader with AVRDUDE are described in [docs/avrdude.md](docs/avrdude.md)
 
 ## Compiling Applications
 
@@ -639,7 +639,7 @@ The following steps must be used to implement a remote upload capability for you
 	3. Call `.check()` on the server object in `loop()`
 4. Trigger a reset using curl or a web browser
 	1. URL Format: `http://{ip}:{port}/{password}/reprogram`
-		1. Example: `curl 10.0.1.199:8080/ariadne/reprogram`
+		1. Example: `curl 192.168.1.128:8080/ariadne/reprogram`
 	2. The device will respond with:
 		1. "Arduino will reset for reprogramming in 2 seconds"
 	3. You must use the "password" programmed via the NetEEPROM library to successfully enter the programming mode. The default value is `ariadne`.
