@@ -19,3 +19,29 @@ If you cannot connect to the bootloader over TFTP, here are suggested debugging 
 In most cases, the problem is related to the network configuration. The device IP on the network does not have the programmed value. You will want to update the network settings with the NetEEPROM library example sketch.
 
 To see what values are being used by the bootloader, you can program the debug variant of the bootloader. MAC and IP information will be printed out during the boot process.
+
+## Timeout with "Sent WRQ"
+
+If you see this timeout error pattern, TFTP is not receiving a response from that device. Do not trust the tftp "Connected to" status response. You likely have a network configuration problem. Follow the debugging steps above.
+
+```
+$ tftp 10.0.1.199
+tftp> status
+Connected to 10.0.1.199.
+Mode: netascii Verbose: off Tracing: off
+Rexmt-interval: 5 seconds, Max-timeout: 25 seconds
+tftp> trace
+Packet tracing on.
+tftp> verbose
+Verbose mode on.
+tftp> mode octet
+mode set to octet
+tftp> put Blink2x.bin
+putting Blink2x.bin to 10.0.1.199:Blink2x.bin [octet]
+sent WRQ <file=Blink2x.bin, mode=octet>
+sent WRQ <file=Blink2x.bin, mode=octet>
+sent WRQ <file=Blink2x.bin, mode=octet>
+sent WRQ <file=Blink2x.bin, mode=octet>
+sent WRQ <file=Blink2x.bin, mode=octet>
+Transfer timed out.
+```
