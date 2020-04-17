@@ -38,7 +38,7 @@ PROGRAM    = ariadne
 #ISPTOOL    = avrispmkii
 ISPTOOL    ?= usbtiny
 ISPPORT	   ?= usb
-ISPSPEED   ?= -b38400
+ISPSPEED   ?= #-b38400
 
 MCU_TARGET = atmega328p
 LDSECTIONS = -Wl,--section-start=.text=0x7000 #-Wl,--section-start=.version=0x7ffe
@@ -101,11 +101,11 @@ endif
 
 ISPFUSES = $(GCCROOT)avrdude $(AVRDUDE_CONF) -c $(ISPTOOL) \
            -p $(MCU_TARGET) -P $(ISPPORT) $(ISPSPEED) \
-           -e -u -U lock:w:0x3F:m -U efuse:w:0x$(EFUSE):m \
-           -U hfuse:w:0x$(HFUSE):m -U lfuse:w:0x$(LFUSE):m
+           -e -Ulock:w:0x3F:m -Uefuse:w:0x$(EFUSE):m \
+           -Uhfuse:w:0x$(HFUSE):m -Ulfuse:w:0x$(LFUSE):m
 ISPFLASH = $(GCCROOT)avrdude $(AVRDUDE_CONF) -c $(ISPTOOL) \
            -p $(MCU_TARGET) -P $(ISPPORT) $(ISPSPEED) \
-           -U flash:w:$(PROGRAM)_$(TARGET).hex -U lock:w:0x0F:m
+           -Uflash:w:$(PROGRAM)_$(TARGET).hex -Ulock:w:0x0F:m
 
 STK500   = "C:\Program Files\Atmel\AVR Tools\STK500\Stk500.exe"
 STK500-1 = $(STK500) -e -d$(MCU_TARGET) -pf -vf -if$(PROGRAM)_$(TARGET).hex \
@@ -150,7 +150,7 @@ debug328_w5100_isp: LFUSE = FF
 # D8 = Erase EEPROM, D0 = Save EEPROM
 debug328_w5100_isp: HFUSE = D0
 # 2.7V brownout
-debug328_w5100_isp: EFUSE = FD
+debug328_w5100_isp: EFUSE = 05
 debug328_w5100_isp: isp
 
 # Build with the debug messages enabled
@@ -171,7 +171,7 @@ debug328_w5200_isp: LFUSE = FF
 # D8 = Erase EEPROM, D0 = Save EEPROM
 debug328_w5200_isp: HFUSE = D0
 # 2.7V brownout
-debug328_w5200_isp: EFUSE = FD
+debug328_w5200_isp: EFUSE = 05
 debug328_w5200_isp: isp
 
 # Build with the debug messages enabled
@@ -192,7 +192,7 @@ debug328_w5500_isp: LFUSE = FF
 # D8 = Erase EEPROM, D0 = Save EEPROM
 debug328_w5500_isp: HFUSE = D0
 # 2.7V brownout
-debug328_w5500_isp: EFUSE = FD
+debug328_w5500_isp: EFUSE = 05
 debug328_w5500_isp: isp
 
 # Debug build for Arduino Mega2560
@@ -334,7 +334,7 @@ atmega328_w5100_isp: LFUSE = FF
 # D8 = Erase EEPROM, D0 = Save EEPROM
 atmega328_w5100_isp: HFUSE = D0
 # 2.7V brownout
-atmega328_w5100_isp: EFUSE = FD
+atmega328_w5100_isp: EFUSE = 05
 atmega328_w5100_isp: isp
 
 # Atmega328 used on Arduino UNO and Arduino Ethernet
@@ -355,7 +355,7 @@ atmega328_w5200_isp: LFUSE = FF
 # D8 = Erase EEPROM, D0 = Save EEPROM
 atmega328_w5200_isp: HFUSE = D0
 # 2.7V brownout
-atmega328_w5200_isp: EFUSE = FD
+atmega328_w5200_isp: EFUSE = 05
 atmega328_w5200_isp: isp
 
 # Atmega328 used on Arduino UNO and Arduino Ethernet
@@ -376,7 +376,7 @@ atmega328_w5500_isp: LFUSE = FF
 # D8 = Erase EEPROM, D0 = Save EEPROM
 atmega328_w5500_isp: HFUSE = D0
 # 2.7V brownout
-atmega328_w5500_isp: EFUSE = FD
+atmega328_w5500_isp: EFUSE = 05
 atmega328_w5500_isp: isp
 
 atmega328_ethernet: TARGET = atmega328_ethernet
@@ -395,7 +395,7 @@ atmega328_ethernet_isp: LFUSE = FF
 # D8 = Erase EEPROM, D0 = Save EEPROM
 atmega328_ethernet_isp: HFUSE = D0
 # 2.7V brownout
-atmega328_ethernet_isp: EFUSE = FD
+atmega328_ethernet_isp: EFUSE = 05
 atmega328_ethernet_isp: isp
 
 atmega32u4_w5100: EXT_OBJ = optiboot.o
