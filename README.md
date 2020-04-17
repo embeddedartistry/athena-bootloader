@@ -19,28 +19,19 @@ Bootloader binary files for different versions can be found on the [Releases](ht
 	2. [Other Tested Boards](#other-tested-boards)
 1. [Repository Structure](#repository-structure)
 1. [Quickstart Checklist](#quickstart-checklist)
+2. [Related Documents](#related-documents)
 1. [Downloading the Bootloader](#downloading-the-bootloader)
-1. [Arduino SDK Installation](#arduino-sdk-installation)
-1. [Atmel Studio Installation](#atmel-studio-installation)
-1. [Compiling the Bootloader](#compiling-the-bootloader)
+1. [Installing the Bootloader](#installing-the-bootloader)
+	1. [Arduino SDK Installation](#arduino-sdk-installation)
+	1. [Atmel Studio Installation](#atmel-studio-installation)
 1. [Flashing the Bootloader](#flashing-the-bootloader)
 	1. [Programming Hardware Requirements](#programming-hardware-requirements)
 	2. [Connecting Pins](#connecting-pins)
 	3. [Programming with Arduino IDE](#programming-with-arduino-ide)
-		1. [EEPROM Erase Settings](#eeprom-erase-settings)
 	4. [Programming with AVRDUDE](#programming-with-avrdude)
-1. [Compiling Applications](#compiling-applications)
 1. [Flashing Applications via Serial](#flashing-applications-via-serial)
 1. [Flashing Applications via TFTP](#flashing-applications-via-tftp)
-	1. [Device Network Settings](#device-network-settings)
-		2. [Configuring Network Settings After Flashing](#configuring-network-settings-after-flashing)
-		1. [Overriding Default Settings](#overriding-default-settings)
-	1. [Configuring Your Router](#configuring-your-router)
-		1. [Supporting Multiple Arduino Devices Behind One Router](#supporting-multiple-arduino-devices-behind-one-router)
 	1. [Converting Your Sketch to the Right Format](#converting-your-sketch-to-the-right-format)
-		2. [Windows Conversion](#windows-conversion)
-		3. [Linux and OS X Conversion](#linux-and-wsl-conversion)
-		4. [OS X Conversion](#os-x-conversion)
 	1. [Using a TFTP Client to Upload the Sketch](#using-a-tftp-client-to-upload-the-sketch)
 		1. [Windows Upload](#windows-upload)
 		1. [Linux and OS X Upload](#linux-and-os-x-upload)
@@ -175,20 +166,28 @@ This is the abbreviated checklist for installing and using the bootloader:
 	1. Just need the bootloader binaries? Check the [releases page](https://github.com/embeddedartistry/ariadne-bootloader/releases) for a tarball.
 1. [Flash the bootloader to the device](flashing-the-bootloader)
 2. **DO NOT SKIP:** Program network settings for the device using the [`NetEEPROM`](#supporting-libraries) library or [example sketches](avr/libraries/NetEEPROM/examples)
-3. [Compile the application using a bootloader board definition](#compiling-applications)
+	1. More information available in [docs/network_configuration.md](docs/network_configuration.md)
 3. Include the [`EthernetReset`](#supporting-libraries) library in your application (or use the [`ResetServer` example sketch](avr/libraries/EthernetReset/examples/))
 	1. Create a reset server and specify a port
 	2. Call `.begin()` on the server object in `setup()`
 	3. Call `.check()` on the server object in `loop()`
-4. When your application is running, trigger a reset using curl or a web browser
+4. When your application is running, trigger a reprogramming mode using curl or a web browser
 	1. URL Format: `http://{ip}:{port}/{reset_path}/reprogram`
-		1. Example: `curl 192.168.1.128:8080/ariadne/reprogram`
+		1. Example using default settings: `curl 192.168.1.128:8080/ariadne/reprogram`
 	2. The device will respond with:
 		1. "Arduino will reset for reprogramming in 2 seconds"
 	3. You must use the "password" programmed via the NetEEPROM library to successfully enter the programming mode. The default password is `ariadne`
 5. Follow the [TFTP Upload](#flashing-applications-via-tftp) instructions to send a new binary to the device
 
 Not able to connect to the device? Check out the [debugging guide](docs/Debugging.md).
+
+## Related Documents
+
+* [Compiling Instructions](docs/compiling.md) for anyone looking to modify the bootloader
+* [AVRDUDE Instructions](docs/avrdude.md) for manually flashing outside of the Arduino IDE or Atmel Studio using AVRDUDE
+* [Debugging Guide](docs/Debugging.md) provides pointers for debugging failures to connect to the device
+* [Network Configuration](docs/network_configuration.md) provides pointers on configuring the network settings for your device
+* [Converting Binaries for TFTP Upload](docs/converting_binaries.md) provides more detailed instructions on the conversion process, with example locations for each OS when using the Arduino IDE
 
 ## Downloading the Bootloader
 
@@ -206,7 +205,12 @@ $ git clone git@github.com:embeddedartistry/ariadne-bootloader.git
 
 You can also download a zip archive of the repository from [the GitHub repository page](https://github.com/embeddedartistry/ariadne-bootloader).
 
-## Arduino SDK Installation
+## Installing the Bootloader
+
+1. [Arduino SDK Installation](#arduino-sdk-installation)
+1. [Atmel Studio Installation](#atmel-studio-installation)
+
+### Arduino SDK Installation
 
 In order for the Arduino IDE to access the information, you need to place the `ariadne-bootloader` repository within the `hardware/` folder of your "Sketchbook Location". You can find this location by viewing the Arduino IDE settings. The default location is often the `Arduino/` folder in your home directory or in `Documents/`.
 
@@ -233,43 +237,13 @@ Once the `ariadne-bootloader` folder is placed in the `hardware/` folder, Arduin
 
 ![Image showing the Ariadne bootloader in boards](docs/boards.png "Ariadne Listed in Boards")
 
-### EEPROM Erase Settings
-
-By default, bootloader updates will erase the contents of the EEPROM. Because the Ariadne EEPROM layout is different from the default layout, this approach is advisable.
-
-The project now features support for preserving the contents of the EEPROM when updating the bootloader. This is desirable if you're already using Ariadne and need to update a previously configured device to a new version.
-
-In the Arduino IDE, there is an entry called "Erase EEPROM?" in the "Tools" menu. You can select "Erase" (default) to erase the EEPROM contents when the bootloader is flashed, or "Save" to preserve the contents.
-
-![Image showing the Erase/Save EEPROM menu](docs/erase_eeprom/png "Erase Menu")
-
-If you are manually flashing the application or need to specify fuse settings, use a high_fuse setting of `0xD8` to erase, and `0xD0` to preserve.
-
-## Atmel Studio Installation
+### Atmel Studio Installation
 
 If you are using Atmel Studio, our recommendation is to use the Visual Micro extension. When you are using the Visual Micro add-on, the standard installation instructions will apply. Then, use the Visual Micro board manager to select the proper Ariadne board definition for your target. 
 
 For more information, see this link:
 
 * [Visual Micro: The Board Manager](https://www.visualmicro.com/page/User-Guide.aspx?doc=Board-Manager.html)
-
-## Compiling the Bootloader
-
-Precompiled bootloader binaries are provided within this repository. The files are stored using [git-lfs](#dependencies). If you do not have git-lfs installed, these files will not be true binaries. Instead, they will be text files with a git-lfs hash stored inside. To download them properly, please see [the dependencies section](#dependencies).
-
-To compile the bootloader, you will need to have [avr-gcc](#avr-gcc) installed on your computer. If you are using the Arduino IDE or Atmel Studio for AVR, the compiler is already installed.
-
-The bootloader files can be re-compiled from source by navigating to the [bootloader source directory: `avr/bootloaders/ariadne/src`](avr/bootloaders/ariadne/src).
-
-Within that directory, run the `makerelease` script to build all variants:
-
-```
-$ ./makerelease
-```
-
-The script will place the bootloader variants in the [`avr/bootloaders/ariadne/`](avr/bootloaders/ariadne/) directory. The files will be automatically picked up by the Arduino IDE in this location.
-
-Targets can be individually built within the [`avr/bootloaders/ariadne/src`](avr/bootloaders/ariadne/src) directory. A Makefile is provided in that directory. When using the Makefile, note that the `.hex` files which are produced stay in the `src/` directory. They are not automatically pushed up a level. You will need to manually move the file(s) to [`avr/bootloaders/ariadne/`](avr/bootloaders/ariadne) for the Arduino IDE to pick up the new version.
 
 ## Flashing the Bootloader
 
@@ -304,6 +278,14 @@ Next, navigate to the __Tools__ > __Version__ menu and select Wiznet chip from t
 
 ![Image showing the Ariadne bootloader versions](docs/version.png "Ariadne Bootloader Versions")
 
+By default, bootloader updates will erase the contents of the EEPROM. Because the Ariadne EEPROM layout is different from the default layout, this approach is advisable. If you're simply upgrading Ariadne bootloader versions, you probably want to keep your previously configured device to a new version.
+
+Navigate to the __Tools__ > __Erase EEPROM?__ menu and select `Save` to prevent the EEPROM from being erased.
+
+![Image showing the Erase/Save EEPROM menu](docs/erase_eeprom/png "Erase Menu")
+
+> **Note:** If you are manually flashing the application or need to specify fuse settings, use a high_fuse setting of `0xD8` to erase, and `0xD0` to preserve.
+
 Next, go to the __Tools__ > __Programmer__ menu and select the programmer you are using.
 
 ![Image showing the tools menu](docs/tools.png "Programming Tools Menu")
@@ -320,14 +302,6 @@ Check the Arduino console output to confirm that the bootloader was flashed succ
 
 Instructions on manually programming the bootloader with AVRDUDE are described in [docs/avrdude.md](docs/avrdude.md)
 
-## Compiling Applications
-
-When compiling applications for a board using the Ariadne bootloader, you need to select the proper board configuration in the Arduino IDE. 
-
-If you are using Atmel Studio, you also need to select the proper board configuration using the Visual Micro board manager. Use the board manager to select the proper Ariadne board definition for your target. For more information, see this link:
-
-* [Visual Micro: The Board Manager](https://www.visualmicro.com/page/User-Guide.aspx?doc=Board-Manager.html)
-
 ## Flashing Applications via Serial
 
 Ariadne is built off of the standard Arduino AVR bootloaders. Serial upload capabilities are preserved. Serial uploads work even when an Ethernet shield is not installed.
@@ -340,25 +314,15 @@ To flash an application over USB/Serial:
 
 If your device has auto-reset capabilities, such that a Serial connection resets the device, programming will work with a sketch is running.
 
-If your device does not have auto-reset capabilities, then you will need to press the reset button on the device to enter the bootloader mode.
+If your device does not have auto-reset capabilities, then you will need to press the reset button on the device to enter the bootloader mode. In this case, if there is a __valid__ program already flashed on the Arduino, you have to reprogram the device in the next __5 seconds__. If you don't, the bootloader will initiate the program that is already flashed onto the Arduino. In case there is no program flashed or the program has been marked as __invalid__, the bootloader will never time out and you can reprogram it at any time.
 
-If there is a __valid__ program already flashed on the Arduino, you have to reprogram the device in the next __10 seconds__. If you don't, the bootloader will initiate the program that is already flashed onto the Arduino. In case there is no program flashed or the program has been marked as __invalid__, the bootloader will never time out and you can reprogram it at any time.
+> **Note:** For boards other than the Arduino Mega, the primary LED will start blinking rapidly when the bootloader is running.
 
-For boards other than the Arduino Mega, the primary LED will start blinking rapidly when the bootloader is running.
-
-After a successful flashing, the bootloader will automatically start the application.
+After a successful flashing in either case, the bootloader will automatically start the application.
 
 ## Flashing Applications via TFTP
 
-Flashing applications via TFTP requires multiple moving parts. 
-
-Follow these instructions to configure your device:
-
-1. [Configure device network settings](#device-network-settings)
-
-### Device Network Settings
-
-When you flash the bootloader, default network settings are used:
+Flashing applications via TFTP requires multiple moving parts. This README references the default network settings and assumes that your network is configured so these settings will work.
 
 ```
 * IP Address:  192.168.1.128
@@ -370,129 +334,31 @@ When you flash the bootloader, default network settings are used:
 * TFTP Data Port: 46969
 ```
 
-These default settings are applied whenever the bootloader is flashed. If you have already programmed network settings in the EEPROM, they will be discarded when you re-flash the bootloader.
+For more information on network configuration, see [docs/network_configuration.md](docs/network_configuration.md)
 
-These settings can be [overridden during the build process](#overriding-default-settings), or they can be [changed after the bootloader is flashing using an application](#changing-network-settings-after-flashing).
-
-**You must configure the network settings for the TFTP server in the bootloader and the EthernetReset server to work correctly.**
-
-#### Configuring Network Settings After Flashing
-
-Network Settings can be changed after the bootloader is flashing using the [__NetEEPROM__ library](avr/libraries/NetEEPROM). This library is provided with the bootloader and will be automatically detected by the Arduino IDE.
-
-This library can be included in your application to support reading and writing network settings. Please refer to the library for documentation on its usage.
-
-You  also use the provided example sketches, [_WriteNetworkSettings_](avr/libraries/NetEEPROM/examples/WriteNetworkSettings/WriteNetworkSettings.ino) and [_ReadNetworkSettigns_](avr/libraries/NetEEPROM/examples/ReadNetworkSettings/ReadNetworkSettings.ino), to see how the NetEEPROM library is used. These sketches can be used to adjust the network settings of your device. The sketches are commented and also meant to serve as documentation.
-
-You can access these files [within this repository](avr/libraries/NetEEPROM/examples/), or by using the Arduino IDE. Inside of the IDE, navigate to navigate to the __File__ > __Examples__ > __NetEEPROM (Ariadne-Bootloader)__ menu and select the desired example.
-
-![Image showing the NetEEPROM example sketches](docs/neteeprom_sketches.png "Ariadne NetEEPROm example sketches")
-
-The settings array in the __WriteNetworkSettings__ sketch are placed in the order that Wiznet chips read them. Make sure to keep the values in this order.
-If you configure the network settings, you also need to configure the TFTP data transfer port. Default settings do not need to be changed if you want to use them.
-
-#### Overriding Default Settings
-
-The default settings can be modified by adjusting the values in [`net.h`](avr/bootloaders/ariadne/src/net.h):
-
-```
-#ifndef IP_ADDR
-#define IP_ADDR     10,0,1,199
-#endif
-
-#ifndef SUB_MASK
-#define SUB_MASK    255,255,255,0
-#endif
-
-#ifndef GW_ADDR
-#define GW_ADDR     10,0,1,1
-#endif
-
-#ifndef MAC_ADDR
-#define MAC_ADDR    0xDE,0xAD,0xBE,0xEF,0xFE,0xED
-#endif
-```
-
-The default values can also be overridden by the build system. You can adjust the [Makefile](avr/bootloaders/ariadne/src/Makefile) flags variables to include definitions for these values.
-
-### Configuring Your Router
-
-Ethernet updates may succeed while you are on the same network as the Arduino, but fail when you are connecting from a different network.
-
-If this happens to you, you likely need to enable [port forwarding][11] for ports __69__ and __46969__ (or your manually configured port). Port Forward has [excellent guides][12] on how to enable port forwarding for a vast number of routers.
-
-#### Supporting Multiple Arduino Devices Behind One Router
-
-If you have multiple Arduino devices behind the router, you may need to configure different port forwarding settings on your router for each Arduino. You will configure the port forwarding so that each Arduino device has a different external port on the router. Each external port is forwarded to the proper internal port and IP of the Arduino on the local network.
-
-For example, let's say you have 2 devices, one at *192.168.1.128* and one at *192.168.1.129*. They both listen to port __69__ for the initial connection. In this case you can forward an external port (e.g., __6969__) on the router to `192.168.1.128:69`. You'll forward another external port (e.g., __6970__) to `192.168.1.129:69`. 
-
-When you are connecting via TFTP, you will open the connection using the router's public IP address (e.g. `136.20.14.135`) and the external ports, __6969__ and __6970__.
+**If the default values will not work, you MUST configure the network settings for the TFTP server in the bootloader and the EthernetReset server to work correctly with your network configuration.**
 
 ### Converting Your Sketch to the Right Format
 
-While Arduino serial flashing uses __HEX__ files, the bootloader TFTP server only works with binary files. Y must manually convert your programs to the right format. 
+While Arduino serial flashing uses __HEX__ files, the bootloader TFTP server only works with binary files. You must manually convert your programs the `.bin` file format using `avr-objcopy`.
 
-First, build your sketch inside _Arduino IDE_ using the __Verify__ button. Next, without exiting the _Arduino IDE_, you need to navigate to the temporary directory where your project was built. On all platforms, you can find out the temporary build folder by checking `Show verbose output during compilation` in _Arduino IDE_'s preferences menu. The path for the temporary build output directory will be included at the end of the compilation output.
+For detailed instructions, see [docs/converting_binaries.md](docs/converting_binaries.md). Only brief notes are shown here.
 
-For example:
-
-```
-/Applications/Arduino.app/Contents/Java/hardware/tools/avr/bin/avr-size -A /var/folders/0h/_66m4dqj3p1b3j1xqg10r08w0000gn/T/arduino_build_678002/WebServer.ino.elf
-Sketch uses 12774 bytes (4%) of program storage space. Maximum is 258048 bytes.
-Global variables use 797 bytes (9%) of dynamic memory, leaving 7395 bytes for local variables. Maximum is 8192 bytes.
-```
-
-Look for a line mentioning a file in `.elf` or `.hex`. In the example above, we can see `/var/folders/0h/_66m4dqj3p1b3j1xqg10r08w0000gn/T/arduino_build_678002/WebServer.ino.elf`. The temporary folder the build output is stored in is `/var/folders/0h/_66m4dqj3p1b3j1xqg10r08w0000gn/T/arduino_build_678002/`.
-
-If we look at the contents of the folder, we can see there is a corresponding `.hex` file:
+The first step is to find the `.hex` file you want to flash to your device. If you're using the Arduino IDE, look for a line in the build output referencing a `.hex` file. It is placed in a temporary folder, such as this:
 
 ```
-$ ls /var/folders/0h/_66m4dqj3p1b3j1xqg10r08w0000gn/T/arduino_build_678002/
-WebServer.ino.eep                 core
-WebServer.ino.elf                 includes.cache
-WebServer.ino.hex                 libraries
-WebServer.ino.with_bootloader.hex preproc
-build.options.json                sketch
+/var/folders/0h/_66m4dqj3p1b3j1xqg10r08w0000gn/T/arduino_build_678002/WebServer.ino.hex 
 ```
 
-We'll convert that to a binary using `avr-objcopy`
+Copy that path and use it in with the following command structure:
 
-#### Windows Conversion
-
-On Windows, the temporary directory is often something like:
-
-```
-C:\Documents and Settings\Administrator\Local Settings\Temp\build5571819468326525374.tmp\Blink.cpp.hex
-```
-
-To convert the file to a binary, use the following `avr-objcopy` pattern:
+Windows:
 
 ```
 "C:\Program Files\Arduino\hardware\tools\avr\bin\avr-objcopy.exe" -I ihex "C:\path\to\your\program.hex" -O binary program.bin
 ```
 
-Using the example above, we would say:
-
-```
-"C:\Program Files\Arduino\hardware\tools\avr\bin\avr-objcopy.exe" -I ihex
-"C:\Documents and Settings\Administrator\Local Settings\Temp\build5571819468326525374.tmp\Blink.cpp.hex"
--O binary Blink.cpp.bin
-```
-
-The output will be placed int he current directory.
-
-#### Linux and WSL Conversion
-
-For Linux, the file is likely to be in your `/tmp` directory. The form of `avr-objcopy` to use is:
-
-```
-avr-objcopy -I ihex /path/to/sketch.hex -O binary sketch.bin
-```
-
-#### OS X Conversion
-
-For OS X, the file location is likely within `/var/folders/`. The form of `avr-objcopy` to use is:
+Linux, WSL, and OS X:
 
 ```
 avr-objcopy -I ihex /path/to/sketch.hex -O binary sketch.bin

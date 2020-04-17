@@ -33,7 +33,6 @@ Here are the supported build targets. Append `_isp` to invoke `avrdude` on the t
     - debug328_w5200
     - debug328_w5500
 
-
 ## Analyzing Arduino IDE Output
 
 If you're not sure about the proper settings to supply, check the Arduino debug output when burning a bootloader when the IDE is properly configured for your tool. You will be able to find the `ISPTOOL` value by looking for the `-c` flag (`-cstk500` below). The `ISPPORT` can be identified by finding the `-P` flag. (Note that the port will likely change every time you cycle the USB connection of the programmer. It is almost always listed as a USB serial device).
