@@ -21,13 +21,14 @@ Bootloader binary files for different versions can be found on the [Releases](ht
 1. [Quickstart Checklist](#quickstart-checklist)
 2. [Related Documents](#related-documents)
 1. [Downloading the Bootloader](#downloading-the-bootloader)
-1. [Installing the Bootloader](#installing-the-bootloader)
+1. [Installing the Bootloader Project](#installing-the-bootloader-project)
 	1. [Arduino SDK Installation](#arduino-sdk-installation)
 	1. [Atmel Studio Installation](#atmel-studio-installation)
 1. [Flashing the Bootloader](#flashing-the-bootloader)
 	1. [Programming Hardware Requirements](#programming-hardware-requirements)
 	2. [Connecting Pins](#connecting-pins)
 	3. [Programming with Arduino IDE](#programming-with-arduino-ide)
+	4. [Programming with Atmel Studio](#programming-with-atmel-studio)
 	4. [Programming with AVRDUDE](#programming-with-avrdude)
 1. [Flashing Applications via Serial](#flashing-applications-via-serial)
 1. [Flashing Applications via TFTP](#flashing-applications-via-tftp)
@@ -205,7 +206,7 @@ $ git clone git@github.com:embeddedartistry/ariadne-bootloader.git
 
 You can also download a zip archive of the repository from [the GitHub repository page](https://github.com/embeddedartistry/ariadne-bootloader).
 
-## Installing the Bootloader
+## Installing the Bootloader Project
 
 1. [Arduino SDK Installation](#arduino-sdk-installation)
 1. [Atmel Studio Installation](#atmel-studio-installation)
@@ -297,6 +298,12 @@ To flash the bootloader, select the __Tools__ > __Burn Bootloader__ menu option.
 ![Image showing the Burn Bootloader menu option](docs/burn.png "Burn Bootloader Menu Option")
 
 Check the Arduino console output to confirm that the bootloader was flashed successfully.
+
+### Programming with Atmel Studio
+
+If you have configured the [Visual Micro board manager](#atmel-studio-implementation), you can configure your programmer and burn in the bootloader in the [visual micro menu](https://www.visualmicro.com/page/User-Guide.aspx?doc=Visual-Micro-Menu.html) similarly to the Arduino IDE.
+
+You can also [manually flash the bootloader in Atmel Studio](https://wspublishing.net/avr-c/restoring-arduino-mega-bootloader/). For this, you will need to manually supply fuse settings for your configuration. These settings can be found in [boards.txt](avr/boards.txt).
 
 ### Programming with AVRDUDE
 
