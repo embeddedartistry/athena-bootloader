@@ -29,9 +29,9 @@ void loop()
   EEPROM.write(addr, val);
 
   // advance to the next address.  there are 512 bytes in
-  // the EEPROM, so go back to 0 when we hit 512.
+  // the EEPROM, but we can lose ARIADNE_OFFSET bytes.
   addr = addr + 1;
-  if (addr == 512)
+  if (addr == (512 - ARIADNE_OFFSET))
     addr = 0;
 
   delay(100);

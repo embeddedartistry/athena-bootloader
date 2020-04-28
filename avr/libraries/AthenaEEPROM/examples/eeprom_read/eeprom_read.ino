@@ -34,9 +34,8 @@ void loop()
   // advance to the next address of the EEPROM
   address = address + 1;
 
-  // there are only 512 bytes of EEPROM, from 0 to 511, so if we're
-  // on address 512, wrap around to address 0
-  if (address == 512)
+  // there are only 512 bytes of EEPROM, and we lose ARIADNE_OFFSET bytes
+  if (address == (512 - ARIADNE_OFFSET))
     address = 0;
 
   delay(500);
