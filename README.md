@@ -195,13 +195,19 @@ Not able to connect to the device? Check out the [debugging guide](docs/Debuggin
 You can clone the repository from GitHub:
 
 ```
-$ git clone https://github.com/embeddedartistry/athena-bootloader
+$ git clone https://github.com/embeddedartistry/athena-bootloader --recursive
 ```
 
 If you have configured your GitHub account with SSH keys, you can also use the SSH checkout:
 
 ```
-$ git clone git@github.com:embeddedartistry/athena-bootloader.git
+$ git clone git@github.com:embeddedartistry/athena-bootloader.git --recursive
+```
+
+Note that you must use the `--recursive` flag because the project contains submodules. If you cloned without the `--recursive` flag, perform:
+
+```
+$ git submodule update --init
 ```
 
 You can also download a zip archive of the repository from [the GitHub repository page](https://github.com/embeddedartistry/athena-bootloader).
