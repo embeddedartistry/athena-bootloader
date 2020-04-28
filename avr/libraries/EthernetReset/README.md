@@ -27,7 +27,7 @@ http://{ip}:{port}/{reset_path}/reset
 http://{ip}:{port}/{reset_path}/reprogram
 ```
 
-The `reset` URL will perform a normal reset of the program.
+The `reset` URL will perform a normal reset of the program. This endpoint does not provide a reprogramming opportunity.
 
 The `reprogram` URL will invalidate the existing sketch so the bootloader won't time out. The bootloader will wait until a new image is uploaded.
 

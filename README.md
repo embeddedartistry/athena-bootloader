@@ -515,6 +515,7 @@ The following steps must be used to implement a remote upload capability for you
 4. Trigger a reset using curl or a web browser
 	1. URL Format: `http://{ip}:{port}/{password}/reprogram`
 		1. Example: `curl 192.168.1.128:8080/ariadne/reprogram`
+		2. Note that the `reset` endpoint does not provide a reprogramming opportunity.
 	2. The device will respond with:
 		1. "Arduino will reset for reprogramming in 2 seconds"
 	3. You must use the "password" programmed via the NetEEPROM library to successfully enter the programming mode. The default value is `ariadne`.
