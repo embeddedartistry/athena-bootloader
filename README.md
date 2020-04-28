@@ -277,7 +277,7 @@ First, navigate to the __Tools__ > __Board__ menu and select your target board f
 
 ![Image showing the Ariadne bootloader in boards](docs/boards.png "Ariadne Listed in Boards")
 
-Next, navigate to the __Tools__ > __Version__ menu and select Wiznet chip from the list, as well as "Standard" or "Debug" mode. Debug binaries are larger, but contain helpful Serial output for seeing what the bootloader is doing.
+Next, navigate to the __Tools__ > __Version__ menu and select Wiznet chip from the list, as well as "Standard" or "Debug" mode. Debug binaries are larger, but contain helpful Serial output for seeing what the bootloader is doing. The *only* difference between Standard and Debug mode is the serial output.
 
 ![Image showing the Ariadne bootloader versions](docs/version.png "Ariadne Bootloader Versions")
 
