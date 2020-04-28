@@ -41,8 +41,8 @@
 #define REGISTER_BLOCK_SIZE 28
 
 /* Athena EEPROM values */
-#define ARIADNE_MAJVER 1
-#define ARIADNE_MINVER 0
+#define ATHENA_MAJVER 1
+#define ATHENA_MINVER 0
 
 #define NETEEPROM_IMG_OK_VALUE (0xEE)
 #define NETEEPROM_IMG_BAD_VALUE (0xFF)

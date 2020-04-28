@@ -58,11 +58,11 @@ uint8_t processOptiboot(void)
 			/*
 			 * Send tftpboot version as "minor SW version"
 			 */
-			putch(ARIADNE_MINVER);
+			putch(ATHENA_MINVER);
 		}
 		else if(which == 0x81)
 		{
-			putch(ARIADNE_MAJVER);
+			putch(ATHENA_MAJVER);
 		}
 		else
 		{

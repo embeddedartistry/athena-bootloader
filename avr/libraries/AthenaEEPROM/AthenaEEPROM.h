@@ -26,9 +26,9 @@
 #include <avr/pgmspace.h>
 #include <inttypes.h>
 
-#define ARIADNE_SIGPOS (0x02)
-#define ARIADNE_SIGVAL (0xEE)
-#define ARIADNE_OFFSET (0x40)
+#define ATHENA_SIGPOS (0x02)
+#define ATHENA_SIGVAL (0xEE)
+#define ATHENA_OFFSET (0x40)
 #define NO_OFFSET (0x00)
 
 #define pgm_uchar(name) static const unsigned char name[] PROGMEM

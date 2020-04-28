@@ -11,7 +11,7 @@
 void setup()
 {
   // write a 0 to all available bytes of the EEPROM
-  for (int i = 0; i < (512 - ARIADNE_OFFSET); i++)
+  for (int i = 0; i < (512 - ATHENA_OFFSET); i++)
     EEPROM.write(i, 0);
 
   // turn the LED on when we're done

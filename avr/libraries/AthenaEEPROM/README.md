@@ -38,7 +38,7 @@ And read a byte using the `read` API:
 byte value = EEPROM.read(address);
 ```
 
-This library automatically handles the offset that protects Athena-specific EEPROM data. The actual size of the EEPROM available to your program is reduced by `ARIADNE_OFFSET` bytes, defined in `AthenaEEPROM.h`.
+This library automatically handles the offset that protects Athena-specific EEPROM data. The actual size of the EEPROM available to your program is reduced by `ATHENA_OFFSET` bytes, defined in `AthenaEEPROM.h`.
 
 ## EEPROM Memory Requirements
 

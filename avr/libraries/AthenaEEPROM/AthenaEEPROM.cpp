@@ -26,9 +26,9 @@
 
 AthenaEEPROMClass::AthenaEEPROMClass()
 {
-	if(read(ARIADNE_SIGPOS, 0) == ARIADNE_SIGVAL)
+	if(read(ATHENA_SIGPOS, 0) == ATHENA_SIGVAL)
 	{
-		_offset = ARIADNE_OFFSET;
+		_offset = ATHENA_OFFSET;
 	}
 	else
 	{

@@ -29,9 +29,9 @@ void loop()
   EEPROM.write(addr, val);
 
   // advance to the next address.  there are 512 bytes in
-  // the EEPROM, but we can lose ARIADNE_OFFSET bytes.
+  // the EEPROM, but we can lose ATHENA_OFFSET bytes.
   addr = addr + 1;
-  if (addr == (512 - ARIADNE_OFFSET))
+  if (addr == (512 - ATHENA_OFFSET))
     addr = 0;
 
   delay(100);
