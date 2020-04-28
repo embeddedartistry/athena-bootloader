@@ -6,7 +6,6 @@
 #include <EthernetClient.h>
 #include <EthernetServer.h>
 #include <NetEEPROM.h>
-#include <NewEEPROM.h>
 #include <SPI.h>
 #include <avr/pgmspace.h>
 #include <avr/wdt.h>

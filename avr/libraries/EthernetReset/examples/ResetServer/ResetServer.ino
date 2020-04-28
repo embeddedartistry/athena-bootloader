@@ -20,9 +20,17 @@
  *  Ethernet shield attached to pins 10, 11, 12, 13
  *
  * Originally created 14 Sep 2012 by Stelios Tsampas
- * Updated on 21 November 2019 by Embedded Artistry LLC
+ * Updated in 2019 by Embedded Artistry LLC
  */
 
+// Dependencies - required here if you're using an older Arduino IDE which does
+// not automatically pick up dependencies from the library headers. In this case,
+// all libraries must be included in the Sketch.
+// For newer Arduino versions, you only need the library header.
+#include <Ethernet.h>
+#include <NetEEPROM.h>
+#include <SPI.h>
+// Library Header
 #include <EthernetReset.h>
 
 /* Create the reset server at the specified port.*/
