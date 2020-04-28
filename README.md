@@ -221,6 +221,8 @@ For our system, which is OS X, the Sketchbook location is:
 /Users/embeddedartistry/Documents/Arduino
 ```
 
+On Windows, it should be in `My Documents\Arduino\`.
+
 Our Sketchbook folder does not have a `hardware` directory by default. We created the folder ourselves:
 
 ```
