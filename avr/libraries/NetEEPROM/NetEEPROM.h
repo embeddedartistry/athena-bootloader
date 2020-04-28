@@ -82,13 +82,12 @@ class NetEEPROMClass
 	void writePassSig();
 
   public:
+	NetEEPROMClass();
 
-  	NetEEPROMClass();
-
-  	/*
-  	 * General EEPROM Interface
-  	 */
-  	uint8_t read(int);
+	/*
+	 * General EEPROM Interface
+	 */
+	uint8_t read(int);
 	void write(int, uint8_t);
 
 	/** @name Image Status
