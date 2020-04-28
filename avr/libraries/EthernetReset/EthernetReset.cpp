@@ -51,7 +51,7 @@ void EthernetReset::watchdogReset()
 EthernetReset::EthernetReset(int port)
 {
 	_server = new EthernetServer(port);
-	String path = NetEEPROM.readPass();
+	String path = EEPROM.readPass();
 	path.toCharArray(_path, 20);
 }
 
@@ -61,12 +61,12 @@ EthernetReset::EthernetReset(int port)
 
 void EthernetReset::begin()
 {
-	Ethernet.begin(NetEEPROM.readMAC(), NetEEPROM.readIP(), NetEEPROM.readGW(), NetEEPROM.readGW(),
-				   NetEEPROM.readSN());
+	Ethernet.begin(EEPROM.readMAC(), EEPROM.readIP(), EEPROM.readGW(), EEPROM.readGW(),
+				   EEPROM.readSN());
 
 	_server->begin();
 	ETHERNET_DEBUG(Serial.print("Server is at "); Serial.println(Ethernet.localIP());
-				   Serial.print("Gw at "); Serial.println(NetEEPROM.readGW());
+				   Serial.print("Gw at "); Serial.println(EEPROM.readGW());
 				   Serial.print("Password: "); Serial.println(_path);)
 }
 
@@ -105,7 +105,7 @@ void EthernetReset::check()
 					else if(!strncmp(url, "reprogram", 9))
 					{
 						stdResponse("Arduino will reset for reprogramming in 2 seconds");
-						NetEEPROM.writeImgBad();
+						EEPROM.writeImgBad();
 						watchdogReset();
 					}
 					else

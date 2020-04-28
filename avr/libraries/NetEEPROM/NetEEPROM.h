@@ -23,8 +23,13 @@
 #include <Arduino.h>
 #include <HardwareSerial.h>
 #include <IPAddress.h>
-#include <NewEEPROM.h>
 #include <avr/pgmspace.h>
+#include <inttypes.h>
+
+#define ARIADNE_SIGPOS (0x02)
+#define ARIADNE_SIGVAL (0xEE)
+#define ARIADNE_OFFSET (0x40)
+#define NO_OFFSET (0x00)
 
 #define pgm_uchar(name) static const unsigned char name[] PROGMEM
 
@@ -34,8 +39,12 @@
 #define DBG(c)
 #endif
 
-class NetEEPROMClass : NewEEPROMClass
+class NetEEPROMClass
 {
+  protected:
+	uint8_t read(int, uint8_t);
+	void write(int, uint8_t, uint8_t);
+
   private:
 	/*
 	 * Network functions
@@ -73,6 +82,15 @@ class NetEEPROMClass : NewEEPROMClass
 	void writePassSig();
 
   public:
+
+  	NetEEPROMClass();
+
+  	/*
+  	 * General EEPROM Interface
+  	 */
+  	uint8_t read(int);
+	void write(int, uint8_t);
+
 	/** @name Image Status
 	 * Image status functions
 	 */
@@ -158,9 +176,11 @@ class NetEEPROMClass : NewEEPROMClass
 	void print(HardwareSerial* serial);
 	/** Print all bootloader settings. Printing defaults if unset */
 	void printAll(HardwareSerial* serial);
+
+  private:
+	uint8_t _offset;
 };
 
-extern NetEEPROMClass NetEEPROM;
+extern NetEEPROMClass EEPROM;
 
 #endif
-// kate: indent-mode cstyle; indent-width 4; replace-tabs off; tab-width 4;

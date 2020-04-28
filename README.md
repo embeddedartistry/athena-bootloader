@@ -532,7 +532,7 @@ Ariadne uses the Arduino EEPROM to store values needed by the bootloader and Eth
 
 For more information, see the [NetEEPROM library](#supporting-libraries).
 
-If you use the [NewEEPROM](#supporting-libraries) library included with the Ariadne bootloader, then offsets will be handled for you automatically and you will not need to adjust your code. Note, however, that the full EEPROM space is not available.
+If you use the [NetEEPROM](#supporting-libraries) library included with the Ariadne bootloader, then offsets will be handled for you automatically and you will not need to adjust your code. Note, however, that the full EEPROM space is not available.
 
 ## Test Binaries
 
@@ -546,9 +546,8 @@ Supporting libraries are included with the bootloader and will be automatically 
 
 These libraries are meant to facilitate interacting with the Ariadne bootloader from Arduino applications.
 
-* [NewEEPROM](avr/libraries/NewEEPROM) is a patched EEPROM library that protect the memory space used by the Ariadne bootloader
+* [NetEEPROM](avr/libraries/NetEEPROM) is a patched EEPROM library that protect the memory space used by the Ariadne bootloader. This library also enables you to read/write the bootloader network settings.
 	- Use this library in place of the default EEPROM library to prevent settings from being overwritten
-* [NetEEPROM](avr/libraries/NetEEPROM) is a library that enables you to read/write the bootloader network settings
 * [EthernetReset](avr/libraries/EthernetReset) is a library that can be used to create an HTTP server in an application that enables you to:
 	- Remotely restart the Arduino application
 	- Restart into the bootloader in programming mode, which waits for the a binary over TFTP

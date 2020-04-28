@@ -6,7 +6,7 @@
  * turned off and may be retrieved later by another sketch.
  */
 
-#include <NewEEPROM.h>
+#include <NetEEPROM.h>
 
 // the current address in the EEPROM (i.e. which byte
 // we're going to write to next)

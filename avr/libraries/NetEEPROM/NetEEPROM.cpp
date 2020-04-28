@@ -24,6 +24,41 @@
  * Definitions                                      *
  ****************************************************/
 
+NetEEPROMClass::NetEEPROMClass()
+{
+	if(read(ARIADNE_SIGPOS, 0) == ARIADNE_SIGVAL)
+	{
+		_offset = ARIADNE_OFFSET;
+	}
+	else
+	{
+		_offset = NO_OFFSET;
+	}
+}
+
+/*
+ * General EEPROM Interface
+ */
+uint8_t NetEEPROMClass::read(int address, uint8_t offset)
+{
+	return eeprom_read_byte((unsigned char*)address + offset);
+}
+
+void NetEEPROMClass::write(int address, uint8_t value, uint8_t offset)
+{
+	eeprom_write_byte((unsigned char*)address + offset, value);
+}
+
+uint8_t NetEEPROMClass::read(int address)
+{
+	return read(address, _offset);
+}
+
+void NetEEPROMClass::write(int address, uint8_t value)
+{
+	write(address, value, _offset);
+}
+
 /*
  * Netowork functions
  */
@@ -328,4 +363,4 @@ void NetEEPROMClass::printAll(HardwareSerial* serial)
 		serial->println("(No password)");
 }
 
-NetEEPROMClass NetEEPROM;
+NetEEPROMClass EEPROM;

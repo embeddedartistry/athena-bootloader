@@ -6,7 +6,7 @@
 
  */
 
-#include <NewEEPROM.h>
+#include <NetEEPROM.h>
 
 void setup()
 {

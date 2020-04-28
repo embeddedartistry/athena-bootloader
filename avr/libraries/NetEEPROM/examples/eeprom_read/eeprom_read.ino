@@ -6,7 +6,7 @@
  * This example code is in the public domain.
  */
 
-#include <NewEEPROM.h>
+#include <NetEEPROM.h>
 
 // start reading from the first byte (address 0) of the EEPROM
 int address = 0;
