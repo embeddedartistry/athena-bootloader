@@ -502,7 +502,7 @@ $ sudo modprobe ip_conntrack_tftp
 
 ## Enabling Remote Reset and Reprogram Capabilities
 
-The [EthernetReset](#supporting-libraries) library is a requirement for your program if you want to support remotely enabling binary uploads. [A README is provided](avr/libraires/EthernetReset.md) and there is an [example sketch showing the usage of the library](avr/libraries/EthernetReset/examples/ResetServer/ResetServer.ino).
+The [EthernetReset](#supporting-libraries) library is a requirement for your program if you want to support remotely enabling binary uploads. [A README is provided](avr/libraries/EthernetReset.md) and there is an [example sketch showing the usage of the library](avr/libraries/EthernetReset/examples/ResetServer/ResetServer.ino).
 
 The following steps must be used to implement a remote upload capability for your device:
 
@@ -555,7 +555,7 @@ These libraries are meant to facilitate interacting with the Ariadne bootloader 
 	- Remotely restart the Arduino application
 	- Restart into the bootloader in programming mode, which waits for the a binary over TFTP
 
-The [EthernetReset](avr/libraries/EthernetReset) library is a requirement for your program if you want to support remotely enabling binary uploads. [A README is provided](avr/libraires/EthernetReset.md) and there is an [example sketch showing the usage of the library](avr/libraries/EthernetReset/examples/ResetServer/ResetServer.ino).
+The [EthernetReset](avr/libraries/EthernetReset) library is a requirement for your program if you want to support remotely enabling binary uploads. [A README is provided](avr/libraries/EthernetReset.md) and there is an [example sketch showing the usage of the library](avr/libraries/EthernetReset/examples/ResetServer/ResetServer.ino).
 
 ## Useful References
 
