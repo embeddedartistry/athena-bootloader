@@ -2,10 +2,10 @@
 #define AthenaEthernetReset_h
 
 #include <Arduino.h>
+#include <AthenaEEPROM.h>
 #include <Ethernet.h>
 #include <EthernetClient.h>
 #include <EthernetServer.h>
-#include <AthenaEEPROM.h>
 #include <SPI.h>
 #include <avr/pgmspace.h>
 #include <avr/wdt.h>
