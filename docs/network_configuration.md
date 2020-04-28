@@ -24,26 +24,26 @@ These default settings are applied whenever the bootloader is flashed. If you ha
 
 These settings can be [overridden during the build process](#overriding-default-settings-when-buildilg-the-bootloader), or they can be [changed after the bootloader is flashing using an application](#configuring-network-settings-after-flashing).
 
-**If the default values will not work, you MUST configure the network settings for the TFTP server in the bootloader and the EthernetReset server to work correctly with your network configuration.**
+**If the default values will not work, you MUST configure the network settings for the TFTP server in the bootloader and the AthenaEthernetReset server to work correctly with your network configuration.**
 
 ### Configuring Network Settings After Flashing
 
-Network Settings can be changed after the bootloader is flashing using the [__NetEEPROM__ library](../avr/libraries/NetEEPROM). This library is provided with the bootloader and will be automatically detected by the Arduino IDE.
+Network Settings can be changed after the bootloader is flashing using the [__AthenaEEPROM__ library](../avr/libraries/AthenaEEPROM). This library is provided with the bootloader and will be automatically detected by the Arduino IDE.
 
 This library can be included in your application to support reading and writing network settings. Please refer to the library for documentation on its usage.
 
-You  also use the provided example sketches, [_WriteNetworkSettings_](../avr/libraries/NetEEPROM/examples/WriteNetworkSettings/WriteNetworkSettings.ino) and [_ReadNetworkSettigns_](../avr/libraries/NetEEPROM/examples/ReadNetworkSettings/ReadNetworkSettings.ino), to see how the NetEEPROM library is used. These sketches can be used to adjust the network settings of your device. The sketches are commented and also meant to serve as documentation.
+You  also use the provided example sketches, [_WriteNetworkSettings_](../avr/libraries/AthenaEEPROM/examples/WriteNetworkSettings/WriteNetworkSettings.ino) and [_ReadNetworkSettigns_](../avr/libraries/AthenaEEPROM/examples/ReadNetworkSettings/ReadNetworkSettings.ino), to see how the AthenaEEPROM library is used. These sketches can be used to adjust the network settings of your device. The sketches are commented and also meant to serve as documentation.
 
-You can access these files [within this repository](../avr/libraries/NetEEPROM/examples/), or by using the Arduino IDE. Inside of the IDE, navigate to navigate to the __File__ > __Examples__ > __NetEEPROM (Ariadne-Bootloader)__ menu and select the desired example.
+You can access these files [within this repository](../avr/libraries/AthenaEEPROM/examples/), or by using the Arduino IDE. Inside of the IDE, navigate to navigate to the __File__ > __Examples__ > __AthenaEEPROM (Athena-Bootloader)__ menu and select the desired example.
 
-![Image showing the NetEEPROM example sketches](neteeprom_sketches.png "Ariadne NetEEPROm example sketches")
+![Image showing the AthenaEEPROM example sketches](neteeprom_sketches.png "Athena NetEEPROm example sketches")
 
 The settings array in the __WriteNetworkSettings__ sketch are placed in the order that Wiznet chips read them. Make sure to keep the values in this order.
 If you configure the network settings, you also need to configure the TFTP data transfer port. Default settings do not need to be changed if you want to use them.
 
 ### Overriding Default Settings When Building the Bootloader
 
-The default settings can be modified by adjusting the values in [`net.h`](../avr/bootloaders/ariadne/src/net.h):
+The default settings can be modified by adjusting the values in [`net.h`](../avr/bootloaders/athena/src/net.h):
 
 ```
 #ifndef IP_ADDR
@@ -63,7 +63,7 @@ The default settings can be modified by adjusting the values in [`net.h`](../avr
 #endif
 ```
 
-The default values can also be overridden by the build system. You can adjust the [Makefile](../avr/bootloaders/ariadne/src/Makefile) flags variables to include definitions for these values.
+The default values can also be overridden by the build system. You can adjust the [Makefile](../avr/bootloaders/athena/src/Makefile) flags variables to include definitions for these values.
 
 ## Configuring Your Router
 

@@ -1,1 +1,1 @@
-name=Ariadne Bootloader
+name=Athena Bootloader

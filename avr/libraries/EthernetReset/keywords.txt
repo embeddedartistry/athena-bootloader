@@ -1,3 +1,0 @@
-EthernetReset	KEYWORD1
-begin	KEYWORD2
-check	KEYWORD2

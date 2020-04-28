@@ -16,11 +16,11 @@ all: makerelease
 
 .PHONY: makerelease
 makerelease:
-	$(Q)cd avr/bootloaders/ariadne/src/; ./makerelease
+	$(Q)cd avr/bootloaders/athena/src/; ./makerelease
 
 .PHONY: clean
 clean:
-	$(Q)make -C avr/bootloaders/ariadne/src/ clean
+	$(Q)make -C avr/bootloaders/athena/src/ clean
 
 .PHONY: package
 package:

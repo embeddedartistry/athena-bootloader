@@ -1,12 +1,12 @@
-# Ariadne Bootloader for Arduino
+# Athena Bootloader for Arduino
 
-Ariadne is an Ethernet- and Serial-capable bootloader for Arduino. Using an Arduino Ethernet board or Wiznet W5x00 shield, you can upload programs to your Arduino over Ethernet. Ariadne starts a TFTP server on the Arduino board, and files can be transferred using any TFTP client.
+Athena is an Ethernet- and Serial-capable bootloader for Arduino. Using an Arduino Ethernet board or Wiznet W5x00 shield, you can upload programs to your Arduino over Ethernet. Athena starts a TFTP server on the Arduino board, and files can be transferred using any TFTP client.
 
-Embedded Artistry has forked this bootloader version from the [original project](https://github.com/loathingKernel/ariadne-bootloader), which seems to be no longer actively maintained. We are making many improvements and enhancements to the previous implementation.
+Embedded Artistry has forked this bootloader version from the [original project](https://github.com/loathingKernel/athena-bootloader), which seems to be no longer actively maintained. We are making many improvements and enhancements to the previous implementation.
 
-Ariadne is implemented for AVR chips. ARM chips cannot use this bootloader.
+Athena is implemented for AVR chips. ARM chips cannot use this bootloader.
 
-Bootloader binary files for different versions can be found on the [Releases](https://github.com/embeddedartistry/ariadne-bootloader/releases) page.
+Bootloader binary files for different versions can be found on the [Releases](https://github.com/embeddedartistry/athena-bootloader/releases) page.
 
 **Table of Contents:**
 
@@ -140,7 +140,7 @@ The ATmega32U4 is supported, but the chip cannot support uploads over USB serial
 
 ### Other Tested Boards
 
-These boards have been reported to work with the Ariadne bootloader:
+These boards have been reported to work with the Athena bootloader:
 
 * [ITead Studio IBoard][21]
 * [Sparkfun Ethernet Pro][22]
@@ -153,7 +153,7 @@ If you think another board can be added to this list, please [contact us](contac
 This repository is structured to follow the [latest Arduino IDE standard for 3rd-party hardware](https://github.com/arduino/Arduino/wiki/Arduino-IDE-1.5-3rd-party-Hardware-specification). Here is an overview of the structure:
 
 * [`avr/`](avr): This is where the bootloader code, pre-built binaries, and helper libraries live
-	- [`bootloaders/ariadne/`](avr/bootloaders/ariadne) contains the pre-built bootloader `.hex` files, as well as [source code for the bootloader](avr/bootloaders/ariadne/src)
+	- [`bootloaders/athena/`](avr/bootloaders/athena) contains the pre-built bootloader `.hex` files, as well as [source code for the bootloader](avr/bootloaders/athena/src)
 	- [`libraries/`](avr/libraries) contains helper libraries that are used to interact with the bootloader from an Arduino application
 	- [`variants/`](avr/variants) contains additional board definitions
 * [`docs/`](docs) contains additional reference documentation, images, and GitHub templates
@@ -164,20 +164,20 @@ This repository is structured to follow the [latest Arduino IDE standard for 3rd
 This is the abbreviated checklist for installing and using the bootloader:
 
 1. [Download the bootloader](#download-the-bootloader) and [install it to the proper location](#arduino-sdk-installation)
-	1. Just need the bootloader binaries? Check the [releases page](https://github.com/embeddedartistry/ariadne-bootloader/releases) for a tarball.
+	1. Just need the bootloader binaries? Check the [releases page](https://github.com/embeddedartistry/athena-bootloader/releases) for a tarball.
 1. [Flash the bootloader to the device](flashing-the-bootloader)
-2. **DO NOT SKIP:** Program network settings for the device using the [`NetEEPROM`](#supporting-libraries) library or [example sketches](avr/libraries/NetEEPROM/examples)
+2. **DO NOT SKIP:** Program network settings for the device using the [`AthenaEEPROM`](#supporting-libraries) library or [example sketches](avr/libraries/AthenaEEPROM/examples)
 	1. More information available in [docs/network_configuration.md](docs/network_configuration.md)
-3. Include the [`EthernetReset`](#supporting-libraries) library in your application (or use the [`ResetServer` example sketch](avr/libraries/EthernetReset/examples/))
+3. Include the [`AthenaEthernetReset`](#supporting-libraries) library in your application (or use the [`ResetServer` example sketch](avr/libraries/AthenaEthernetReset/examples/))
 	1. Create a reset server and specify a port
 	2. Call `.begin()` on the server object in `setup()`
 	3. Call `.check()` on the server object in `loop()`
 4. When your application is running, trigger a reprogramming mode using curl or a web browser
 	1. URL Format: `http://{ip}:{port}/{reset_path}/reprogram`
-		1. Example using default settings: `curl 192.168.1.128:8080/ariadne/reprogram`
+		1. Example using default settings: `curl 192.168.1.128:8080/athena/reprogram`
 	2. The device will respond with:
 		1. "Arduino will reset for reprogramming in 2 seconds"
-	3. You must use the "password" programmed via the NetEEPROM library to successfully enter the programming mode. The default password is `ariadne`
+	3. You must use the "password" programmed via the AthenaEEPROM library to successfully enter the programming mode. The default password is `athena`
 5. Follow the [TFTP Upload](#flashing-applications-via-tftp) instructions to send a new binary to the device
 
 Not able to connect to the device? Check out the [debugging guide](docs/Debugging.md).
@@ -195,16 +195,16 @@ Not able to connect to the device? Check out the [debugging guide](docs/Debuggin
 You can clone the repository from GitHub:
 
 ```
-$ git clone https://github.com/embeddedartistry/ariadne-bootloader
+$ git clone https://github.com/embeddedartistry/athena-bootloader
 ```
 
 If you have configured your GitHub account with SSH keys, you can also use the SSH checkout:
 
 ```
-$ git clone git@github.com:embeddedartistry/ariadne-bootloader.git
+$ git clone git@github.com:embeddedartistry/athena-bootloader.git
 ```
 
-You can also download a zip archive of the repository from [the GitHub repository page](https://github.com/embeddedartistry/ariadne-bootloader).
+You can also download a zip archive of the repository from [the GitHub repository page](https://github.com/embeddedartistry/athena-bootloader).
 
 ## Installing the Bootloader Project
 
@@ -213,7 +213,7 @@ You can also download a zip archive of the repository from [the GitHub repositor
 
 ### Arduino SDK Installation
 
-In order for the Arduino IDE to access the information, you need to place the `ariadne-bootloader` repository within the `hardware/` folder of your "Sketchbook Location". You can find this location by viewing the Arduino IDE settings. The default location is often the `Arduino/` folder in your home directory or in `Documents/`.
+In order for the Arduino IDE to access the information, you need to place the `athena-bootloader` repository within the `hardware/` folder of your "Sketchbook Location". You can find this location by viewing the Arduino IDE settings. The default location is often the `Arduino/` folder in your home directory or in `Documents/`.
 
 For our system, which is OS X, the Sketchbook location is:
 
@@ -233,16 +233,16 @@ You can clone the repository within that directory, or you can use a symbolic li
 
 ```
 $ cd /Users/embeddedartistry/Documents/Arduino/hardware
-$ ln -s ~/src/ariadne-bootloader/ ./ariadne
+$ ln -s ~/src/athena-bootloader/ ./athena
 ```
 
-Once the `ariadne-bootloader` folder is placed in the `hardware/` folder, Arduino will detect it. Restart the IDE if it is already open. You should now see the Ariadne bootloader show up in the board list.
+Once the `athena-bootloader` folder is placed in the `hardware/` folder, Arduino will detect it. Restart the IDE if it is already open. You should now see the Athena bootloader show up in the board list.
 
-![Image showing the Ariadne bootloader in boards](docs/boards.png "Ariadne Listed in Boards")
+![Image showing the Athena bootloader in boards](docs/boards.png "Athena Listed in Boards")
 
 ### Atmel Studio Installation
 
-If you are using Atmel Studio, our recommendation is to use the Visual Micro extension. When you are using the Visual Micro add-on, the standard installation instructions will apply. Then, use the Visual Micro board manager to select the proper Ariadne board definition for your target. 
+If you are using Atmel Studio, our recommendation is to use the Visual Micro extension. When you are using the Visual Micro add-on, the standard installation instructions will apply. Then, use the Visual Micro board manager to select the proper Athena board definition for your target. 
 
 For more information, see this link:
 
@@ -273,15 +273,15 @@ The programmers should be connected to the `ICSP` pins. On Arduino boards, the I
 
 After you have connected the Arduino board and the programmer to your computer launch the Arduino IDE.
 
-First, navigate to the __Tools__ > __Board__ menu and select your target board from the `Ariadne Bootloader` list (at the bottom in our view).
+First, navigate to the __Tools__ > __Board__ menu and select your target board from the `Athena Bootloader` list (at the bottom in our view).
 
-![Image showing the Ariadne bootloader in boards](docs/boards.png "Ariadne Listed in Boards")
+![Image showing the Athena bootloader in boards](docs/boards.png "Athena Listed in Boards")
 
 Next, navigate to the __Tools__ > __Version__ menu and select Wiznet chip from the list, as well as "Standard" or "Debug" mode. Debug binaries are larger, but contain helpful Serial output for seeing what the bootloader is doing. The *only* difference between Standard and Debug mode is the serial output.
 
-![Image showing the Ariadne bootloader versions](docs/version.png "Ariadne Bootloader Versions")
+![Image showing the Athena bootloader versions](docs/version.png "Athena Bootloader Versions")
 
-By default, bootloader updates will erase the contents of the EEPROM. Because the Ariadne EEPROM layout is different from the default layout, this approach is advisable. If you're simply upgrading Ariadne bootloader versions, you probably want to keep your previously configured device to a new version.
+By default, bootloader updates will erase the contents of the EEPROM. Because the Athena EEPROM layout is different from the default layout, this approach is advisable. If you're simply upgrading Athena bootloader versions, you probably want to keep your previously configured device to a new version.
 
 Navigate to the __Tools__ > __Erase EEPROM?__ menu and select `Save` to prevent the EEPROM from being erased.
 
@@ -313,7 +313,7 @@ Instructions on manually programming the bootloader with AVRDUDE are described i
 
 ## Flashing Applications via Serial
 
-Ariadne is built off of the standard Arduino AVR bootloaders. Serial upload capabilities are preserved. Serial uploads work even when an Ethernet shield is not installed.
+Athena is built off of the standard Arduino AVR bootloaders. Serial upload capabilities are preserved. Serial uploads work even when an Ethernet shield is not installed.
 
 To flash an application over USB/Serial:
 
@@ -345,7 +345,7 @@ Flashing applications via TFTP requires multiple moving parts. This README refer
 
 For more information on network configuration, see [docs/network_configuration.md](docs/network_configuration.md)
 
-**If the default values will not work, you MUST configure the network settings for the TFTP server in the bootloader and the EthernetReset server to work correctly with your network configuration.**
+**If the default values will not work, you MUST configure the network settings for the TFTP server in the bootloader and the AthenaEthernetReset server to work correctly with your network configuration.**
 
 ### Converting Your Sketch to the Right Format
 
@@ -502,23 +502,23 @@ $ sudo modprobe ip_conntrack_tftp
 
 ## Enabling Remote Reset and Reprogram Capabilities
 
-The [EthernetReset](#supporting-libraries) library is a requirement for your program if you want to support remotely enabling binary uploads. [A README is provided](avr/libraries/EthernetReset.md) and there is an [example sketch showing the usage of the library](avr/libraries/EthernetReset/examples/ResetServer/ResetServer.ino).
+The [AthenaEthernetReset](#supporting-libraries) library is a requirement for your program if you want to support remotely enabling binary uploads. [A README is provided](avr/libraries/AthenaEthernetReset.md) and there is an [example sketch showing the usage of the library](avr/libraries/AthenaEthernetReset/examples/ResetServer/ResetServer.ino).
 
 The following steps must be used to implement a remote upload capability for your device:
 
 1. Flash the bootloader to the device
-2. Program network settings for the device using the [NetEEPROM](#supporting-libraries) library or examples
-3. Include the EthernetReset library in your application
+2. Program network settings for the device using the [AthenaEEPROM](#supporting-libraries) library or examples
+3. Include the AthenaEthernetReset library in your application
 	1. Create a reset server and specify a port
 	2. Call `.begin()` on the server object in `setup()`
 	3. Call `.check()` on the server object in `loop()`
 4. Trigger a reset using curl or a web browser
 	1. URL Format: `http://{ip}:{port}/{password}/reprogram`
-		1. Example: `curl 192.168.1.128:8080/ariadne/reprogram`
+		1. Example: `curl 192.168.1.128:8080/athena/reprogram`
 		2. Note that the `reset` endpoint does not provide a reprogramming opportunity.
 	2. The device will respond with:
 		1. "Arduino will reset for reprogramming in 2 seconds"
-	3. You must use the "password" programmed via the NetEEPROM library to successfully enter the programming mode. The default value is `ariadne`.
+	3. You must use the "password" programmed via the AthenaEEPROM library to successfully enter the programming mode. The default value is `athena`.
 5. Follow the [TFTP Upload](#flashing-applications-via-tftp) instructions to send a new binary to the device
 
 ## Troubleshooting
@@ -527,15 +527,15 @@ If you're having problems connecting to the device, check out [docs/Debugging.md
 
 ## EEPROM Requirements
 
-Ariadne uses the Arduino EEPROM to store values needed by the bootloader and EthernetReset server. If you are using the default EEPROM library for our own purposes, please make sure to start writing after `NETEEPROM_END`, available in `NetEEPROM_defs.h`:
+Athena uses the Arduino EEPROM to store values needed by the bootloader and AthenaEthernetReset server. If you are using the default EEPROM library for our own purposes, please make sure to start writing after `NETEEPROM_END`, available in `AthenaEEPROM_defs.h`:
 
 ```
 #define NETEEPROM_END      63
 ```
 
-For more information, see the [NetEEPROM library](#supporting-libraries).
+For more information, see the [AthenaEEPROM library](#supporting-libraries).
 
-If you use the [NetEEPROM](#supporting-libraries) library included with the Ariadne bootloader, then offsets will be handled for you automatically and you will not need to adjust your code. Note, however, that the full EEPROM space is not available.
+If you use the [AthenaEEPROM](#supporting-libraries) library included with the Athena bootloader, then offsets will be handled for you automatically and you will not need to adjust your code. Note, however, that the full EEPROM space is not available.
 
 ## Test Binaries
 
@@ -547,15 +547,15 @@ The __fade__ sketch in the [`extras/tests/fade`](extras/tests/fade) folder will 
 
 Supporting libraries are included with the bootloader and will be automatically detected by the Arduino IDE.
 
-These libraries are meant to facilitate interacting with the Ariadne bootloader from Arduino applications.
+These libraries are meant to facilitate interacting with the Athena bootloader from Arduino applications.
 
-* [NetEEPROM](avr/libraries/NetEEPROM) is a patched EEPROM library that protect the memory space used by the Ariadne bootloader. This library also enables you to read/write the bootloader network settings.
+* [AthenaEEPROM](avr/libraries/AthenaEEPROM) is a patched EEPROM library that protect the memory space used by the Athena bootloader. This library also enables you to read/write the bootloader network settings.
 	- Use this library in place of the default EEPROM library to prevent settings from being overwritten
-* [EthernetReset](avr/libraries/EthernetReset) is a library that can be used to create an HTTP server in an application that enables you to:
+* [AthenaEthernetReset](avr/libraries/AthenaEthernetReset) is a library that can be used to create an HTTP server in an application that enables you to:
 	- Remotely restart the Arduino application
 	- Restart into the bootloader in programming mode, which waits for the a binary over TFTP
 
-The [EthernetReset](avr/libraries/EthernetReset) library is a requirement for your program if you want to support remotely enabling binary uploads. [A README is provided](avr/libraries/EthernetReset.md) and there is an [example sketch showing the usage of the library](avr/libraries/EthernetReset/examples/ResetServer/ResetServer.ino).
+The [AthenaEthernetReset](avr/libraries/AthenaEthernetReset) library is a requirement for your program if you want to support remotely enabling binary uploads. [A README is provided](avr/libraries/AthenaEthernetReset.md) and there is an [example sketch showing the usage of the library](avr/libraries/AthenaEthernetReset/examples/ResetServer/ResetServer.ino).
 
 ## Useful References
 
@@ -563,9 +563,9 @@ The [EthernetReset](avr/libraries/EthernetReset) library is a requirement for yo
 
 ## Acknowledgments
 
-The Embedded Artistry version of the Ariadne bootloader is derived from [loathingkernel/ariadne-bootloader](https://github.com/loathingKernel/ariadne-bootloader). Credit goes to its maintainer, [Stelios Tsampas](https://github.com/loathingKernel).
+The Embedded Artistry version of the Athena bootloader is derived from [loathingkernel/athena-bootloader](https://github.com/loathingKernel/ariadne-bootloader). Credit goes to its maintainer, [Stelios Tsampas](https://github.com/loathingKernel).
 
-The Ariadne bootloader is built upon these open source projects:
+The Ariadne bootloader was built upon these open source projects:
 
 * [TFTP-Bootloader][23] (The original base for this project)
 * [Optiboot][24] (Bootloader for the __ATmega328__)
@@ -575,22 +575,22 @@ The Ariadne bootloader is built upon these open source projects:
 
 * [AkhileshThorat](https://github.com/AkhileshThorat)
 
-The following contributors were listed in the [original project](https://github.com/loathingKernel/ariadne-bootloader) README:
+The following contributors were listed in the [original project](https://github.com/loathingKernel/athena-bootloader) README:
 
 * [mharizanov][26] (Commenting some of the initial *Arduino* code, enabling Stelios to take on the project)
-* [follower][27] (Sketches served as a starting point for the included __NetEEPROM__ and __EthernetReset__ libraries)
+* [follower][27] (Sketches served as a starting point for the included __AthenaEEPROM__ and __AthenaEthernetReset__ libraries)
 * [Arjen Hiemstra](https://github.com/arjenhiemstra) (Provided support for W5200 and W5500)
 * [per1234](https://github.com/per1234) (Testing and tech support in Arduino Forums)
 
 ### Donors 
 
-The following donors were listed in the [original project](https://github.com/loathingKernel/ariadne-bootloader) README:
+The following donors were listed in the [original project](https://github.com/loathingKernel/athena-bootloader) README:
 
 * Hachi Manzur (AVRISP mkII programmer, testing)
 
 ## License
 
-Ariadne is released under the [GPLv2, GNU General Public License][99].
+Athena is released under the [GPLv2, GNU General Public License][99].
 
 [2]: http://www.atmel.com/dyn/products/tools_card.asp?tool_id=2726
 [3]: http://www.ladyada.net/make/usbtinyisp/
@@ -599,7 +599,7 @@ Ariadne is released under the [GPLv2, GNU General Public License][99].
 [6]: http://www.atmel.com/tools/AVRISPMKII.aspx
 [7]: https://www.olimex.com/Products/AVR/Programmers/AVR-ISP-MK2/
 [8]: http://www.gammon.com.au/forum/?id=11635
-[9]: https://github.com/codebendercc/Ariadne-Bootloader#configuring-your-router-for-remote-flashing
+[9]: https://github.com/codebendercc/Athena-Bootloader#configuring-your-router-for-remote-flashing
 [10]: http://youtu.be/KCHqhV6xPMg
 [11]: http://en.wikipedia.org/wiki/Port_forwarding
 [12]: http://portforward.com/english/routers/port_forwarding/

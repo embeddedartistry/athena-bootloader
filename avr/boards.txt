@@ -3,278 +3,278 @@ menu.eeprom=Erase EEPROM?
 
 ##############################################################
 
-ariadne328D.name=Arduino Duemilanove w/ ATmega328
-ariadne328D.upload.tool=arduino:avrdude
-ariadne328D.upload.maximum_data_size=2048
-ariadne328D.upload.protocol=arduino
-ariadne328D.upload.maximum_size=28672
-ariadne328D.upload.speed=115200
+athena328D.name=Arduino Duemilanove w/ ATmega328
+athena328D.upload.tool=arduino:avrdude
+athena328D.upload.maximum_data_size=2048
+athena328D.upload.protocol=arduino
+athena328D.upload.maximum_size=28672
+athena328D.upload.speed=115200
 
-ariadne328D.bootloader.tool=arduino:avrdude
-ariadne328D.bootloader.low_fuses=0xFF
-ariadne328D.bootloader.extended_fuses=0x05
-ariadne328D.bootloader.unlock_bits=0x3F
-ariadne328D.bootloader.lock_bits=0x0F
+athena328D.bootloader.tool=arduino:avrdude
+athena328D.bootloader.low_fuses=0xFF
+athena328D.bootloader.extended_fuses=0x05
+athena328D.bootloader.unlock_bits=0x3F
+athena328D.bootloader.lock_bits=0x0F
 
-ariadne328D.build.mcu=atmega328p
-ariadne328D.build.f_cpu=16000000L
-ariadne328D.build.core=arduino:arduino
-ariadne328D.build.variant=arduino:standard
-ariadne328D.build.board=AVR_DUEMILANOVE
+athena328D.build.mcu=atmega328p
+athena328D.build.f_cpu=16000000L
+athena328D.build.core=arduino:arduino
+athena328D.build.variant=arduino:standard
+athena328D.build.board=AVR_DUEMILANOVE
 
 ## Save EEPROM Settings
 ## --------------------
-ariadne328D.menu.eeprom.erase=Erase
-ariadne328D.menu.eeprom.erase.bootloader.high_fuses=0xD8
-ariadne328D.menu.eeprom.save=Save
-ariadne328D.menu.eeprom.save.bootloader.high_fuses=0xD0
+athena328D.menu.eeprom.erase=Erase
+athena328D.menu.eeprom.erase.bootloader.high_fuses=0xD8
+athena328D.menu.eeprom.save=Save
+athena328D.menu.eeprom.save.bootloader.high_fuses=0xD0
 
 ## standard bootloader
 ## ---------------------------------------------
-ariadne328D.menu.version.standardw5100=Standard w/ Wiznet W5100
-ariadne328D.menu.version.standardw5100.bootloader.file=ariadne/ariadne_atmega328_w5100.hex
+athena328D.menu.version.standardw5100=Standard w/ Wiznet W5100
+athena328D.menu.version.standardw5100.bootloader.file=athena/athena_atmega328_w5100.hex
 
 ## debug bootloader
 ## ---------------------------------------------
-ariadne328D.menu.version.debugw5100=Debug w/ Wiznet W5100
-ariadne328D.menu.version.debugw5100.bootloader.file=ariadne/ariadne_debug328_w5100.hex
+athena328D.menu.version.debugw5100=Debug w/ Wiznet W5100
+athena328D.menu.version.debugw5100.bootloader.file=athena/athena_debug328_w5100.hex
 
 ##############################################################
 
-ariadne328UW.name=Arduino Uno
+athena328UW.name=Arduino Uno
 
-ariadne328UW.upload.tool=arduino:avrdude
-ariadne328UW.upload.maximum_data_size=2048
-ariadne328UW.upload.protocol=arduino
-ariadne328UW.upload.maximum_size=28672
-ariadne328UW.upload.speed=115200
+athena328UW.upload.tool=arduino:avrdude
+athena328UW.upload.maximum_data_size=2048
+athena328UW.upload.protocol=arduino
+athena328UW.upload.maximum_size=28672
+athena328UW.upload.speed=115200
 
-ariadne328UW.bootloader.tool=arduino:avrdude
-ariadne328UW.bootloader.low_fuses=0xFF
-ariadne328UW.bootloader.extended_fuses=0x05
-ariadne328UW.bootloader.unlock_bits=0x3F
-ariadne328UW.bootloader.lock_bits=0x0F
+athena328UW.bootloader.tool=arduino:avrdude
+athena328UW.bootloader.low_fuses=0xFF
+athena328UW.bootloader.extended_fuses=0x05
+athena328UW.bootloader.unlock_bits=0x3F
+athena328UW.bootloader.lock_bits=0x0F
 
-ariadne328UW.build.mcu=atmega328p
-ariadne328UW.build.f_cpu=16000000L
-ariadne328UW.build.core=arduino:arduino
-ariadne328UW.build.variant=arduino:standard
-ariadne328UW.build.board=AVR_UNO
+athena328UW.build.mcu=atmega328p
+athena328UW.build.f_cpu=16000000L
+athena328UW.build.core=arduino:arduino
+athena328UW.build.variant=arduino:standard
+athena328UW.build.board=AVR_UNO
 
 ## Save EEPROM Settings
 ## --------------------
-ariadne328UW.menu.eeprom.erase=Erase
-ariadne328UW.menu.eeprom.erase.bootloader.high_fuses=0xD8
-ariadne328UW.menu.eeprom.save=Save
-ariadne328UW.menu.eeprom.save.bootloader.high_fuses=0xD0
+athena328UW.menu.eeprom.erase=Erase
+athena328UW.menu.eeprom.erase.bootloader.high_fuses=0xD8
+athena328UW.menu.eeprom.save=Save
+athena328UW.menu.eeprom.save.bootloader.high_fuses=0xD0
 
 ## standard bootloader for Arduino Uno with Wiznet W5100 chip
 ## ---------------------------------------------
-ariadne328UW.menu.version.standardw5100=Standard w/ Wiznet W5100
-ariadne328UW.menu.version.standardw5100.bootloader.file=ariadne/ariadne_atmega328_w5100.hex
+athena328UW.menu.version.standardw5100=Standard w/ Wiznet W5100
+athena328UW.menu.version.standardw5100.bootloader.file=athena/athena_atmega328_w5100.hex
 
 ## debug bootloader for Arduino Uno with Wiznet W5100 chip
 ## ---------------------------------------------
-ariadne328UW.menu.version.debugw5100=Debug w/ Wiznet W5100
-ariadne328UW.menu.version.debugw5100.bootloader.file=ariadne/ariadne_debug328_w5100.hex
+athena328UW.menu.version.debugw5100=Debug w/ Wiznet W5100
+athena328UW.menu.version.debugw5100.bootloader.file=athena/athena_debug328_w5100.hex
 
 ## standard bootloader for Arduino Uno with Wiznet W5200 chip
 ## ---------------------------------------------
-ariadne328UW.menu.version.standardw5200=Standard w/ Wiznet W5200
-ariadne328UW.menu.version.standardw5200.bootloader.file=ariadne/ariadne_atmega328_w5200.hex
+athena328UW.menu.version.standardw5200=Standard w/ Wiznet W5200
+athena328UW.menu.version.standardw5200.bootloader.file=athena/athena_atmega328_w5200.hex
 
 ## debug bootloader for Arduino Uno with Wiznet W5200 chip
 ## ---------------------------------------------
-ariadne328UW.menu.version.debugw5200=Debug w/ Wiznet W5200
-ariadne328UW.menu.version.debugw5200.bootloader.file=ariadne/ariadne_debug328_w5200.hex
+athena328UW.menu.version.debugw5200=Debug w/ Wiznet W5200
+athena328UW.menu.version.debugw5200.bootloader.file=athena/athena_debug328_w5200.hex
 
 ## standard bootloader for Arduino Uno with Wiznet W5500 chip
 ## ---------------------------------------------
-ariadne328UW.menu.version.standardw5500=Standard w/ Wiznet W5500
-ariadne328UW.menu.version.standardw5500.bootloader.file=ariadne/ariadne_atmega328_w5500.hex
+athena328UW.menu.version.standardw5500=Standard w/ Wiznet W5500
+athena328UW.menu.version.standardw5500.bootloader.file=athena/athena_atmega328_w5500.hex
 
 ## debug bootloader for Arduino Uno with Wiznet W5500 chip
 ## ---------------------------------------------
-ariadne328UW.menu.version.debugw5500=Debug w/ Wiznet W5500
-ariadne328UW.menu.version.debugw5500.bootloader.file=ariadne/ariadne_debug328_w5500.hex
+athena328UW.menu.version.debugw5500=Debug w/ Wiznet W5500
+athena328UW.menu.version.debugw5500.bootloader.file=athena/athena_debug328_w5500.hex
 
 ##############################################################
 
-ariadne328E.name=Arduino Ethernet
+athena328E.name=Arduino Ethernet
 
-ariadne328E.upload.tool=arduino:avrdude
-ariadne328E.upload.maximum_data_size=2048
-ariadne328E.upload.protocol=arduino
-ariadne328E.upload.maximum_size=28672
-ariadne328E.upload.speed=115200
+athena328E.upload.tool=arduino:avrdude
+athena328E.upload.maximum_data_size=2048
+athena328E.upload.protocol=arduino
+athena328E.upload.maximum_size=28672
+athena328E.upload.speed=115200
 
-ariadne328E.bootloader.tool=arduino:avrdude
-ariadne328E.bootloader.low_fuses=0xFF
-ariadne328E.bootloader.extended_fuses=0x05
-ariadne328E.bootloader.unlock_bits=0x3F
-ariadne328E.bootloader.lock_bits=0x0F
-ariadne328E.bootloader.file=ariadne/ariadne_atmega328_ethernet.hex
+athena328E.bootloader.tool=arduino:avrdude
+athena328E.bootloader.low_fuses=0xFF
+athena328E.bootloader.extended_fuses=0x05
+athena328E.bootloader.unlock_bits=0x3F
+athena328E.bootloader.lock_bits=0x0F
+athena328E.bootloader.file=athena/athena_atmega328_ethernet.hex
 
-ariadne328E.build.mcu=atmega328p
-ariadne328E.build.f_cpu=16000000L
-ariadne328E.build.core=arduino:arduino
-ariadne328E.build.variant=arduino:standard
-ariadne328E.build.board=AVR_ETHERNET
+athena328E.build.mcu=atmega328p
+athena328E.build.f_cpu=16000000L
+athena328E.build.core=arduino:arduino
+athena328E.build.variant=arduino:standard
+athena328E.build.board=AVR_ETHERNET
 
 ## Save EEPROM Settings
 ## --------------------
-ariadne328E.menu.eeprom.erase=Erase
-ariadne328E.menu.eeprom.erase.bootloader.high_fuses=0xD8
-ariadne328E.menu.eeprom.save=Save
-ariadne328E.menu.eeprom.save.bootloader.high_fuses=0xD0
+athena328E.menu.eeprom.erase=Erase
+athena328E.menu.eeprom.erase.bootloader.high_fuses=0xD8
+athena328E.menu.eeprom.save=Save
+athena328E.menu.eeprom.save.bootloader.high_fuses=0xD0
 
 ##############################################################
 
-ariadne2560MW.name=Arduino Mega 2560
+athena2560MW.name=Arduino Mega 2560
 
-ariadne2560MW.upload.tool=arduino:avrdude
-ariadne2560MW.upload.maximum_data_size=8192
-ariadne2560MW.upload.protocol=wiring
-ariadne2560MW.upload.maximum_size=258048
-ariadne2560MW.upload.speed=115200
+athena2560MW.upload.tool=arduino:avrdude
+athena2560MW.upload.maximum_data_size=8192
+athena2560MW.upload.protocol=wiring
+athena2560MW.upload.maximum_size=258048
+athena2560MW.upload.speed=115200
 
-ariadne2560MW.bootloader.tool=arduino:avrdude
-ariadne2560MW.bootloader.low_fuses=0xFF
-ariadne2560MW.bootloader.extended_fuses=0xFD
-ariadne2560MW.bootloader.unlock_bits=0x3F
-ariadne2560MW.bootloader.lock_bits=0x0F
+athena2560MW.bootloader.tool=arduino:avrdude
+athena2560MW.bootloader.low_fuses=0xFF
+athena2560MW.bootloader.extended_fuses=0xFD
+athena2560MW.bootloader.unlock_bits=0x3F
+athena2560MW.bootloader.lock_bits=0x0F
 
-ariadne2560MW.build.mcu=atmega2560
-ariadne2560MW.build.f_cpu=16000000L
-ariadne2560MW.build.core=arduino:arduino
-ariadne2560MW.build.variant=arduino:mega
-ariadne2560MW.build.board=AVR_MEGA2560
+athena2560MW.build.mcu=atmega2560
+athena2560MW.build.f_cpu=16000000L
+athena2560MW.build.core=arduino:arduino
+athena2560MW.build.variant=arduino:mega
+athena2560MW.build.board=AVR_MEGA2560
 
 ## Save EEPROM Settings
 ## --------------------
-ariadne2560MW.menu.eeprom.erase=Erase
-ariadne2560MW.menu.eeprom.erase.bootloader.high_fuses=0xD8
-ariadne2560MW.menu.eeprom.save=Save
-ariadne2560MW.menu.eeprom.save.bootloader.high_fuses=0xD0
+athena2560MW.menu.eeprom.erase=Erase
+athena2560MW.menu.eeprom.erase.bootloader.high_fuses=0xD8
+athena2560MW.menu.eeprom.save=Save
+athena2560MW.menu.eeprom.save.bootloader.high_fuses=0xD0
 
 ## standard bootloader for Mega 2560 with Wiznet W5100 chip
 ## ---------------------------------------------
-ariadne2560MW.menu.version.standardw5100=Standard w/ Wiznet W5100
-ariadne2560MW.menu.version.standardw5100.bootloader.file=ariadne/ariadne_atmega2560_w5100.hex
+athena2560MW.menu.version.standardw5100=Standard w/ Wiznet W5100
+athena2560MW.menu.version.standardw5100.bootloader.file=athena/athena_atmega2560_w5100.hex
 
 ## debug bootloader for Mega 2560 with Wiznet W5100 chip
 ## ---------------------------------------------
-ariadne2560MW.menu.version.debugw5100=Debug w/ Wiznet W5100
-ariadne2560MW.menu.version.debugw5100.bootloader.file=ariadne/ariadne_debug2560_w5100.hex
+athena2560MW.menu.version.debugw5100=Debug w/ Wiznet W5100
+athena2560MW.menu.version.debugw5100.bootloader.file=athena/athena_debug2560_w5100.hex
 
 ## standard bootloader for Mega 2560 with Wiznet W5200 chip
 ## ---------------------------------------------
-ariadne2560MW.menu.version.standardw5200=Standard w/ Wiznet W5200
-ariadne2560MW.menu.version.standardw5200.bootloader.file=ariadne/ariadne_atmega2560_w5200.hex
+athena2560MW.menu.version.standardw5200=Standard w/ Wiznet W5200
+athena2560MW.menu.version.standardw5200.bootloader.file=athena/athena_atmega2560_w5200.hex
 
 ## debug bootloader for Mega 2560 with Wiznet W5200 chip
 ## ---------------------------------------------
-ariadne2560MW.menu.version.debugw5200=Debug w/ Wiznet W5200
-ariadne2560MW.menu.version.debugw5200.bootloader.file=ariadne/ariadne_debug2560_w5200.hex
+athena2560MW.menu.version.debugw5200=Debug w/ Wiznet W5200
+athena2560MW.menu.version.debugw5200.bootloader.file=athena/athena_debug2560_w5200.hex
 
 ## standard bootloader for Mega 2560 with Wiznet W5500 chip
 ## ---------------------------------------------
-ariadne2560MW.menu.version.standardw5500=Standard w/ Wiznet W5500
-ariadne2560MW.menu.version.standardw5500.bootloader.file=ariadne/ariadne_atmega2560_w5500.hex
+athena2560MW.menu.version.standardw5500=Standard w/ Wiznet W5500
+athena2560MW.menu.version.standardw5500.bootloader.file=athena/athena_atmega2560_w5500.hex
 
 ## debug bootloader for Mega 2560 with Wiznet W5500 chip
 ## ---------------------------------------------
-ariadne2560MW.menu.version.debugw5500=Debug w/ Wiznet W5500
-ariadne2560MW.menu.version.debugw5500.bootloader.file=ariadne/ariadne_debug2560_w5500.hex
+athena2560MW.menu.version.debugw5500=Debug w/ Wiznet W5500
+athena2560MW.menu.version.debugw5500.bootloader.file=athena/athena_debug2560_w5500.hex
 
 ##############################################################
 
-ariadne1284W.name=ATmega1284P
+athena1284W.name=ATmega1284P
 
-ariadne1284W.upload.tool=arduino:avrdude
-ariadne1284W.upload.maximum_data_size=16384
-ariadne1284W.upload.maximum_size=126976
-ariadne1284W.upload.protocol=arduino
-ariadne1284W.upload.speed=115200
+athena1284W.upload.tool=arduino:avrdude
+athena1284W.upload.maximum_data_size=16384
+athena1284W.upload.maximum_size=126976
+athena1284W.upload.protocol=arduino
+athena1284W.upload.speed=115200
 
-ariadne1284W.bootloader.tool=arduino:avrdude
-ariadne1284W.bootloader.low_fuses=0xFF
-ariadne1284W.bootloader.extended_fuses=0xFD
-ariadne1284W.bootloader.unlock_bits=0x3F
-ariadne1284W.bootloader.lock_bits=0x0F
+athena1284W.bootloader.tool=arduino:avrdude
+athena1284W.bootloader.low_fuses=0xFF
+athena1284W.bootloader.extended_fuses=0xFD
+athena1284W.bootloader.unlock_bits=0x3F
+athena1284W.bootloader.lock_bits=0x0F
 
-ariadne1284W.build.mcu=atmega1284p
-ariadne1284W.build.f_cpu=16000000L
-ariadne1284W.build.core=arduino:arduino
-ariadne1284W.build.variant=bobuino
-ariadne1284W.build.board=1284P_STANDARD
+athena1284W.build.mcu=atmega1284p
+athena1284W.build.f_cpu=16000000L
+athena1284W.build.core=arduino:arduino
+athena1284W.build.variant=bobuino
+athena1284W.build.board=1284P_STANDARD
 
 ## Save EEPROM Settings
 ## --------------------
-ariadne1284W.menu.eeprom.erase=Erase
-ariadne1284W.menu.eeprom.erase.bootloader.high_fuses=0xD8
-ariadne1284W.menu.eeprom.save=Save
-ariadne1284W.menu.eeprom.save.bootloader.high_fuses=0xD0
+athena1284W.menu.eeprom.erase=Erase
+athena1284W.menu.eeprom.erase.bootloader.high_fuses=0xD8
+athena1284W.menu.eeprom.save=Save
+athena1284W.menu.eeprom.save.bootloader.high_fuses=0xD0
 
 ## Bootloader for 1284p with Wiznet W5100 chip
 ## ---------------------------------------------
-ariadne1284W.menu.version.standardw5100=w/ Wiznet W5100
-ariadne1284W.menu.version.standardw5100.bootloader.file=ariadne/ariadne_atmega1284_w5100.hex
+athena1284W.menu.version.standardw5100=w/ Wiznet W5100
+athena1284W.menu.version.standardw5100.bootloader.file=athena/athena_atmega1284_w5100.hex
 
 ## Bootloader for 1284p with Wiznet W5200 chip
 ## ---------------------------------------------
-ariadne1284W.menu.version.standardw5200=w/ Wiznet W5200
-ariadne1284W.menu.version.standardw5200.bootloader.file=ariadne/ariadne_atmega1284_w5200.hex
+athena1284W.menu.version.standardw5200=w/ Wiznet W5200
+athena1284W.menu.version.standardw5200.bootloader.file=athena/athena_atmega1284_w5200.hex
 
 ## Bootloader for 1284p with Wiznet W5500 chip
 ## ---------------------------------------------
-ariadne1284W.menu.version.standardw5500=w/ Wiznet W5500
-ariadne1284W.menu.version.standardw5500.bootloader.file=ariadne/ariadne_atmega1284_w5500.hex
+athena1284W.menu.version.standardw5500=w/ Wiznet W5500
+athena1284W.menu.version.standardw5500.bootloader.file=athena/athena_atmega1284_w5500.hex
 
 ##############################################################
 
-ariadne32U4.name=ATmega32U4
+athena32U4.name=ATmega32U4
 
-ariadne32U4.upload.tool=arduino:avrdude
-ariadne32U4.upload.maximum_data_size=2560
-ariadne32U4.upload.maximum_size=28672
-ariadne32U4.upload.protocol=avr109
-ariadne32U4.upload.speed=57600
-ariadne32U4.upload.disable_flushing=true
-ariadne32U4.upload.use_1200bps_touch=true
-ariadne32U4.upload.wait_for_upload_port=true
+athena32U4.upload.tool=arduino:avrdude
+athena32U4.upload.maximum_data_size=2560
+athena32U4.upload.maximum_size=28672
+athena32U4.upload.protocol=avr109
+athena32U4.upload.speed=57600
+athena32U4.upload.disable_flushing=true
+athena32U4.upload.use_1200bps_touch=true
+athena32U4.upload.wait_for_upload_port=true
 
-ariadne32U4.bootloader.tool=arduino:avrdude
-ariadne32U4.bootloader.low_fuses=0xFF
-ariadne32U4.bootloader.extended_fuses=0xCB
-ariadne32U4.bootloader.unlock_bits=0x3F
-ariadne32U4.bootloader.lock_bits=0x0F
+athena32U4.bootloader.tool=arduino:avrdude
+athena32U4.bootloader.low_fuses=0xFF
+athena32U4.bootloader.extended_fuses=0xCB
+athena32U4.bootloader.unlock_bits=0x3F
+athena32U4.bootloader.lock_bits=0x0F
 
-ariadne32U4.build.mcu=atmega32u4
-ariadne32U4.build.f_cpu=16000000L
-ariadne32U4.build.core=arduino
-ariadne32U4.build.variant=leonardo
-ariadne32U4.build.board=AVR_LEONARDO
+athena32U4.build.mcu=atmega32u4
+athena32U4.build.f_cpu=16000000L
+athena32U4.build.core=arduino
+athena32U4.build.variant=leonardo
+athena32U4.build.board=AVR_LEONARDO
 
 ## Save EEPROM Settings
 ## --------------------
-ariadne32U4.menu.eeprom.erase=Erase
-ariadne32U4.menu.eeprom.erase.bootloader.high_fuses=0xD8
-ariadne32U4.menu.eeprom.save=Save
-ariadne32U4.menu.eeprom.save.bootloader.high_fuses=0xD0
+athena32U4.menu.eeprom.erase=Erase
+athena32U4.menu.eeprom.erase.bootloader.high_fuses=0xD8
+athena32U4.menu.eeprom.save=Save
+athena32U4.menu.eeprom.save.bootloader.high_fuses=0xD0
 
 ## Bootloader for 32u4 with Wiznet W5100 chip
 ## ---------------------------------------------
-ariadne32U4.menu.version.standardw5100=w/ Wiznet W5100
-ariadne32U4.menu.version.standardw5100.bootloader.file=ariadne/ariadne_atmega32u4_w5100.hex
+athena32U4.menu.version.standardw5100=w/ Wiznet W5100
+athena32U4.menu.version.standardw5100.bootloader.file=athena/athena_atmega32u4_w5100.hex
 
 ## Bootloader for 32u4 with Wiznet W5200 chip
 ## ---------------------------------------------
-ariadne32U4.menu.version.standardw5200=w/ Wiznet W5200
-ariadne32U4.menu.version.standardw5200.bootloader.file=ariadne/ariadne_atmega32u4_w5200.hex
+athena32U4.menu.version.standardw5200=w/ Wiznet W5200
+athena32U4.menu.version.standardw5200.bootloader.file=athena/athena_atmega32u4_w5200.hex
 
 ## Bootloader for 32u4 with Wiznet W5500 chip
 ## ---------------------------------------------
-ariadne32U4.menu.version.standardw5500=w/ Wiznet W5500
-ariadne32U4.menu.version.standardw5500.bootloader.file=ariadne/ariadne_atmega32u4_w5500.hex
+athena32U4.menu.version.standardw5500=w/ Wiznet W5500
+athena32U4.menu.version.standardw5500.bootloader.file=athena/athena_atmega32u4_w5500.hex
 

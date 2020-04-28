@@ -1,11 +1,11 @@
 # Manual Programming with AVRDUDE
 
-The [Makefile](avr/bootloaders/ariadne/src/Makefile) for this project enables you to manually flash the bootloader to your device using `avrdude`. All build targets will be flashed using the same target name with the `_isp` prefix.
+The [Makefile](avr/bootloaders/athena/src/Makefile) for this project enables you to manually flash the bootloader to your device using `avrdude`. All build targets will be flashed using the same target name with the `_isp` prefix.
 
 You will need to specify an `ISPTOOL` and `ISPPORT` value when you invoke the command. These values should correspond to the adapter you are using on your system.
 
 ```
-$ cd avr/bootloaders/ariadne/src
+$ cd avr/bootloaders/athena/src
 $ make debug328_w5500_isp ISPTOOL=stk500 ISPPORT=/dev/cu.usbserial-14110
 ```
 
@@ -38,7 +38,7 @@ Here are the supported build targets. Append `_isp` to invoke `avrdude` on the t
 If you're not sure about the proper settings to supply, check the Arduino debug output when burning a bootloader when the IDE is properly configured for your tool. You will be able to find the `ISPTOOL` value by looking for the `-c` flag (`-cstk500` below). The `ISPPORT` can be identified by finding the `-P` flag. (Note that the port will likely change every time you cycle the USB connection of the programmer. It is almost always listed as a USB serial device).
 
 ```
-/Applications/Arduino.app/Contents/Java/hardware/tools/avr/bin/avrdude -C/Applications/Arduino.app/Contents/Java/hardware/tools/avr/etc/avrdude.conf -v -patmega328p -cstk500 -P/dev/cu.usbserial-14110 -Uflash:w:/Users/pjohnston/Documents/Arduino/hardware/ariadne/avr/bootloaders/ariadne/ariadne_debug328_w5500.hex:i -Ulock:w:0x0F:m 
+/Applications/Arduino.app/Contents/Java/hardware/tools/avr/bin/avrdude -C/Applications/Arduino.app/Contents/Java/hardware/tools/avr/etc/avrdude.conf -v -patmega328p -cstk500 -P/dev/cu.usbserial-14110 -Uflash:w:/Users/pjohnston/Documents/Arduino/hardware/athena/avr/bootloaders/athena/athena_debug328_w5500.hex:i -Ulock:w:0x0F:m 
 ```
 
 
@@ -47,7 +47,7 @@ If you're not sure about the proper settings to supply, check the Arduino debug 
 Here is full output for a successful flashing run using an STK500 adapter and programming the Arduino Uno bootloader for the W5500 board.
 
 ```
-/Applications/Arduino.app/Contents/Java/hardware/tools/avr/bin/avrdude -C/Applications/Arduino.app/Contents/Java/hardware/tools/avr/etc/avrdude.conf -v -patmega328p -cstk500 -P/dev/cu.usbserial-14110 -Uflash:w:/Users/pjohnston/Documents/Arduino/hardware/ariadne/avr/bootloaders/ariadne/ariadne_debug328_w5500.hex:i -Ulock:w:0x0F:m 
+/Applications/Arduino.app/Contents/Java/hardware/tools/avr/bin/avrdude -C/Applications/Arduino.app/Contents/Java/hardware/tools/avr/etc/avrdude.conf -v -patmega328p -cstk500 -P/dev/cu.usbserial-14110 -Uflash:w:/Users/pjohnston/Documents/Arduino/hardware/athena/avr/bootloaders/athena/athena_debug328_w5500.hex:i -Ulock:w:0x0F:m 
 
 avrdude: Version 6.3-20190619
          Copyright (c) 2000-2005 Brian Dean, http://www.bdmicro.com/
@@ -156,15 +156,15 @@ avrdude: Device signature = 0x1e950f (probably m328p)
 avrdude: NOTE: "flash" memory has been specified, an erase cycle will be performed
          To disable this feature, specify the -D option.
 avrdude: erasing chip
-avrdude: reading input file "/Users/pjohnston/Documents/Arduino/hardware/ariadne/avr/bootloaders/ariadne/ariadne_debug328_w5500.hex"
+avrdude: reading input file "/Users/pjohnston/Documents/Arduino/hardware/athena/avr/bootloaders/athena/athena_debug328_w5500.hex"
 avrdude: writing flash (32684 bytes):
 
 Writing | ################################################## | 100% 0.00s
 
 avrdude: 32684 bytes of flash written
-avrdude: verifying flash memory against /Users/pjohnston/Documents/Arduino/hardware/ariadne/avr/bootloaders/ariadne/ariadne_debug328_w5500.hex:
-avrdude: load data flash data from input file /Users/pjohnston/Documents/Arduino/hardware/ariadne/avr/bootloaders/ariadne/ariadne_debug328_w5500.hex:
-avrdude: input file /Users/pjohnston/Documents/Arduino/hardware/ariadne/avr/bootloaders/ariadne/ariadne_debug328_w5500.hex contains 32684 bytes
+avrdude: verifying flash memory against /Users/pjohnston/Documents/Arduino/hardware/athena/avr/bootloaders/athena/athena_debug328_w5500.hex:
+avrdude: load data flash data from input file /Users/pjohnston/Documents/Arduino/hardware/athena/avr/bootloaders/athena/athena_debug328_w5500.hex:
+avrdude: input file /Users/pjohnston/Documents/Arduino/hardware/athena/avr/bootloaders/athena/athena_debug328_w5500.hex contains 32684 bytes
 avrdude: reading on-chip flash data:
 
 Reading | ################################################## | 100% 0.00s

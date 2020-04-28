@@ -51,7 +51,7 @@ pipeline
         echo 'Archiving artifacts'
         dir('buildresults/release')
         {
-          archiveArtifacts 'ariadne_bootloaders.tgz'
+          archiveArtifacts 'athena_bootloaders.tgz'
         }
       }
       post
