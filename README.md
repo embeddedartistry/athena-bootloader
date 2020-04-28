@@ -182,6 +182,8 @@ This is the abbreviated checklist for installing and using the bootloader:
 
 Not able to connect to the device? Check out the [debugging guide](docs/Debugging.md).
 
+Need to use a custom board file for compiling and uploading sketches? Once you've flashed the bootloader, you can do that safely. You will need to install the [AthenaEthernetReset](https://github.com/embeddedartistry/AthenaEthernetReset) and [AthenaEEPROM](https://github.com/embeddedartistry/AthenaEEPROM) libraries separately, however, because the IDE only picks them up in the bootloader folder if you've selected an Ariadne configuration.
+
 ## Related Documents
 
 * [Compiling Instructions](docs/compiling.md) for anyone looking to modify the bootloader
