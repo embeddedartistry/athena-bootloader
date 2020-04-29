@@ -19,16 +19,16 @@ const unsigned char mDebugMain_PREFIX[] PROGMEM = "Main: ";
 
 #if defined(__AVR_ATmega328__) || defined(__AVR_ATmega328P__)
 #if defined(ARDUINO_ETHERNET)
-const unsigned char mDebugMain_TITLE[] PROGMEM = "Athena for Arduino Ethernet, Version 1.0";
+const unsigned char mDebugMain_TITLE[] PROGMEM = "Athena for Arduino Ethernet, Version 1.1";
 #else
-const unsigned char mDebugMain_TITLE[] PROGMEM = "Athena for Arduino Uno, Version 1.0";
+const unsigned char mDebugMain_TITLE[] PROGMEM = "Athena for Arduino Uno, Version 1.1";
 #endif
 #elif defined(__AVR_ATmega2560__)
-const unsigned char mDebugMain_TITLE[] PROGMEM = "Athena for Arduino Mega2560, Version 1.0";
+const unsigned char mDebugMain_TITLE[] PROGMEM = "Athena for Arduino Mega2560, Version 1.1";
 #elif defined(__AVR_ATmega1284P__)
-const unsigned char mDebugMain_TITLE[] PROGMEM = "Athena for Arduino Mega1284P, Version 1.0";
+const unsigned char mDebugMain_TITLE[] PROGMEM = "Athena for Arduino Mega1284P, Version 1.1";
 #else
-const unsigned char mDebugMain_TITLE[] PROGMEM = "Unknown MCU with athena, Version 1.0";
+const unsigned char mDebugMain_TITLE[] PROGMEM = "Unknown MCU with athena, Version 1.1";
 #endif
 const unsigned char mDebugMain_EXIT[] PROGMEM = "Start user app";
 #if(DEBUG_MAIN > 1)
