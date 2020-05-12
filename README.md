@@ -10,8 +10,9 @@ Bootloader binary files for different versions can be found on the [Releases](ht
 
 **Table of Contents:**
 
-1. [Dependencies](#dependencies)
+1. [Getting the Bootloader](#getting-the-bootloader)
 	1. [git-lfs](#git-lfs)
+1. [Dependencies](#dependencies)
 	2. [avr-gcc](#avr-gcc)
 	3. [avrdude](#avrdude)
 1. [Supported Boards](#supported-boards)
@@ -48,25 +49,40 @@ Bootloader binary files for different versions can be found on the [Releases](ht
 	2. [Donors](#donors)
 1. [License](#license)
 
-## Dependencies
+## Getting the Bootloader
 
-This project requires Arduino SDK 1.15 or later due to the project's source layout.
+To download this repository, we recommend cloning with the `--recursive` flag to ensure submodules (e.g., [supporting libraries](#supporting-libraries)) are automatically downloaded.
 
-The following dependencies are required to compile and use this bootloader:
+```
+$ git clone https://github.com/embeddedartistry/athena-bootloader.git --recursive
+```
 
-* [git-lfs](#git-lfs)
-* [avr-gcc](#avr-gcc)
-* [avrdude](#avrdude)
+You can also download submodules after cloning with:
+
+```
+$ git submodule update --init --recursive
+```
+
+
 
 ### git-lfs
 
-This project requires you to use [git-lfs](https://git-lfs.github.com). Images, pre-built bootloader binaries, and other files are stored within git-lfs.
+This project requires you to use [git-lfs](https://git-lfs.github.com). Images, pre-built bootloader binaries, and other files are stored within git-lfs. If you have git-lfs installed, these files will downloaded correctly when cloning the repository.
 
 If you do not have this installed, please visit [the git-lfs web page](https://git-lfs.github.com) for installation instructions.
 
 If you cloned this repository before installing git-lfs, please run `git lfs pull`. If you have git-lfs installed before cloning the repository, git will automatically perform a `git lfs pull` for you.
 
 When you don't have git-lfs installed, you will see all of the files in the repository. However, files stored with git-lfs will show up as small placeholders. Trying to use these files will result in errors.
+
+## Dependencies
+
+This project requires Arduino SDK 1.15 or later due to the project's source layout.
+
+The following dependencies are required to compile and use this bootloader:
+
+* [avr-gcc](#avr-gcc)
+* [avrdude](#avrdude)
 
 ### avr-gcc
 
