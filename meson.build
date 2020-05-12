@@ -1,4 +1,4 @@
-project('Ariadne Bootloader',
+project('AthenaBootloader',
 	'c',
 	version: '11.1'
 )
