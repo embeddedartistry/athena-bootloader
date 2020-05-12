@@ -63,7 +63,11 @@ You can also download submodules after cloning with:
 $ git submodule update --init --recursive
 ```
 
+You can also [download a .tar.xz file from the Releases page](https://github.com/embeddedartistry/athena-bootloader/releases/), which contains the full source tree (including submodules) and populated binary files. To extract the archive, use:
 
+```
+$ tar xvf <Archive Name>
+```
 
 ### git-lfs
 
@@ -74,6 +78,14 @@ If you do not have this installed, please visit [the git-lfs web page](https://g
 If you cloned this repository before installing git-lfs, please run `git lfs pull`. If you have git-lfs installed before cloning the repository, git will automatically perform a `git lfs pull` for you.
 
 When you don't have git-lfs installed, you will see all of the files in the repository. However, files stored with git-lfs will show up as small placeholders. Trying to use these files will result in errors.
+
+### Don't Want to use git-lfs?
+
+If you don't want to use git-lfs, you have the following options:
+
+1. Manually build the bootloader binaries on your machine by running `make` at the top-level of the repository.
+1. [Download the latest .zip archive of the bootloader binaries from the Releases page](https://github.com/embeddedartistry/athena-bootloader/releases/), and copy them to `avr/bootloaders/athena/` so they will be properly found by the Arduino IDE
+2. [Download a .tar.xz file from the Releases page](https://github.com/embeddedartistry/athena-bootloader/releases/), which contains the full source tree (including submodules) and populated binary files.
 
 ## Dependencies
 
@@ -569,13 +581,13 @@ The __fade__ sketch in the [`extras/tests/fade`](extras/tests/fade) folder will 
 
 ## Supporting Libraries
 
-Supporting libraries are included with the bootloader and will be automatically detected by the Arduino IDE.
+Supporting libraries are included with the bootloader. These libraries are meant to facilitate interacting with the Athena bootloader from Arduino applications.
 
-These libraries are meant to facilitate interacting with the Athena bootloader from Arduino applications.
+These libraries are packaged with the bootloader and will automatically detected by the Arduino IDE when an Athena board configuration is used. If you are using a custom board configuration, you may also want to install these libraries separately so that they are available even when an Athena board configuration is not selected.
 
-* [AthenaEEPROM](avr/libraries/AthenaEEPROM) is a patched EEPROM library that protect the memory space used by the Athena bootloader. This library also enables you to read/write the bootloader network settings.
+* [AthenaEEPROM](https://github.com/embeddedartistry/AthenaEEPROM) (found at `avr/libraries/AthenaEEPROM`) is a patched EEPROM library that protect the memory space used by the Athena bootloader. This library also enables you to read/write the bootloader network settings.
 	- Use this library in place of the default EEPROM library to prevent settings from being overwritten
-* [AthenaEthernetReset](avr/libraries/AthenaEthernetReset) is a library that can be used to create an HTTP server in an application that enables you to:
+* [AthenaEthernetReset](https://github.com/embeddedartistry/AthenaEthernetReset) (found at `avr/libraries/AthenaEthernetReset`) is a library that can be used to create an HTTP server in an application that enables you to:
 	- Remotely restart the Arduino application
 	- Restart into the bootloader in programming mode, which waits for the a binary over TFTP
 
