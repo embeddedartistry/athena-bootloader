@@ -10,9 +10,14 @@ export VERBOSE := 0
 endif
 
 BUILDRESULTS?=buildresults
+CONFIGURED_BUILD_DEP = $(BUILDRESULTS)/build.ninja
 
 .PHONY: all
 all: makerelease
+
+# Runs whenever the build has not been configured successfully
+$(CONFIGURED_BUILD_DEP):
+	$(Q) meson $(BUILDRESULTS)
 
 .PHONY: makerelease
 makerelease:
@@ -25,6 +30,10 @@ clean:
 .PHONY: package
 package:
 	$(Q)tools/package.sh
+
+.PHONY: dist
+dist: $(CONFIGURED_BUILD_DEP)
+	$(Q) ninja -C $(BUILDRESULTS) dist
 
 .PHONY: format
 format:
