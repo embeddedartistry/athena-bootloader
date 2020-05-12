@@ -1,9 +1,9 @@
 [submodule "tools/format"]
 	path = tools/format
-	url = git@github.com:embeddedartistry/format.git
+	url = https://github.com/embeddedartistry/format
 [submodule "avr/libraries/AthenaEEPROM"]
 	path = avr/libraries/AthenaEEPROM
 	url = https://github.com/embeddedartistry/AthenaEEPROM
 [submodule "avr/libraries/AthenaEthernetReset"]
 	path = avr/libraries/AthenaEthernetReset
-	url = git@github.com:embeddedartistry/AthenaEthernetReset.git
+	url = https://github.com/embeddedartistry/AthenaEthernetReset
