@@ -194,9 +194,9 @@ This is the abbreviated checklist for installing and using the bootloader:
 1. [Download the bootloader](#download-the-bootloader) and [install it to the proper location](#arduino-sdk-installation)
 	1. Just need the bootloader binaries? Check the [releases page](https://github.com/embeddedartistry/athena-bootloader/releases) for a tarball.
 1. [Flash the bootloader to the device](flashing-the-bootloader)
-2. **DO NOT SKIP:** Program network settings for the device using the [`AthenaEEPROM`](#supporting-libraries) library or [example sketches](avr/libraries/AthenaEEPROM/examples)
+2. **DO NOT SKIP:** Program network settings for the device using the [`AthenaEEPROM`](#supporting-libraries) library or [example sketches](https://github.com/embeddedartistry/AthenaEEPROM/tree/master/examples)
 	1. More information available in [docs/network_configuration.md](docs/network_configuration.md)
-3. Include the [`AthenaEthernetReset`](#supporting-libraries) library in your application (or use the [`ResetServer` example sketch](avr/libraries/AthenaEthernetReset/examples/))
+3. Include the [`AthenaEthernetReset`](#supporting-libraries) library in your application (or use the [`ResetServer` example sketch](https://github.com/embeddedartistry/AthenaEthernetReset/blob/master/examples/AthenaResetServer/AthenaResetServer.ino)
 	1. Create a reset server and specify a port
 	2. Call `.begin()` on the server object in `setup()`
 	3. Call `.check()` on the server object in `loop()`
@@ -538,7 +538,7 @@ $ sudo modprobe ip_conntrack_tftp
 
 ## Enabling Remote Reset and Reprogram Capabilities
 
-The [AthenaEthernetReset](#supporting-libraries) library is a requirement for your program if you want to support remotely enabling binary uploads. [A README is provided](avr/libraries/AthenaEthernetReset.md) and there is an [example sketch showing the usage of the library](avr/libraries/AthenaEthernetReset/examples/ResetServer/ResetServer.ino).
+The [AthenaEthernetReset](#supporting-libraries) library is a requirement for your program if you want to support remotely enabling binary uploads. [A README is provided](https://github.com/embeddedartistry/AthenaEthernetReset/blob/master/README.md) and there is an [example sketch showing the usage of the library](https://github.com/embeddedartistry/AthenaEthernetReset/blob/master/examples/AthenaResetServer/AthenaResetServer.ino).
 
 The following steps must be used to implement a remote upload capability for your device:
 
@@ -591,7 +591,7 @@ These libraries are packaged with the bootloader and will automatically detected
 	- Remotely restart the Arduino application
 	- Restart into the bootloader in programming mode, which waits for the a binary over TFTP
 
-The [AthenaEthernetReset](avr/libraries/AthenaEthernetReset) library is a requirement for your program if you want to support remotely enabling binary uploads. [A README is provided](avr/libraries/AthenaEthernetReset.md) and there is an [example sketch showing the usage of the library](avr/libraries/AthenaEthernetReset/examples/ResetServer/ResetServer.ino).
+The [AthenaEthernetReset](https://github.com/embeddedartistry/AthenaEthernetReset/) library is a requirement for your program if you want to support remotely enabling binary uploads. [A README is provided](https://github.com/embeddedartistry/AthenaEthernetReset/blob/master/README.md) and there is an [example sketch showing the usage of the library](https://github.com/embeddedartistry/AthenaEthernetReset/blob/master/examples/AthenaResetServer/AthenaResetServer.ino).
 
 ## Useful References
 
