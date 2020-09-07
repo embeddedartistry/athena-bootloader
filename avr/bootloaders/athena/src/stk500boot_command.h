@@ -65,7 +65,7 @@
 #define CMD_ENTER_PROGMODE_HVSP             0x30
 #define CMD_LEAVE_PROGMODE_HVSP             0x31
 #define CMD_CHIP_ERASE_HVSP                 0x32
-#define CMD_PROGRAM_FLASH_HVSP  `     0x33
+#define CMD_PROGRAM_FLASH_HVSP  			0x33
 #define CMD_READ_FLASH_HVSP                 0x34
 #define CMD_PROGRAM_EEPROM_HVSP             0x35
 #define CMD_READ_EEPROM_HVSP                0x36
