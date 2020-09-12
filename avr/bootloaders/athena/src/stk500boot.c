@@ -332,7 +332,7 @@ uint8_t processStk500boot(void)
 
 			case CMD_LEAVE_PROGMODE_ISP:
 				isLeave = 1;
-				//*	fall thru
+				// intentional fallthrough
 
 			case CMD_SET_PARAMETER:
 			case CMD_ENTER_PROGMODE_ISP:
