@@ -420,10 +420,12 @@ static void sendResponse(uint16_t response)
 
 		case ACK:
 			if(lastPacket > highPacket)
+			{
 				highPacket = lastPacket;
+			}
 
 			DBG_TFTP(tracePGMlnTftp(mDebugTftp_SACK);)
-			/* no break */
+			/* fallthrough */
 
 		case FINAL_ACK:
 
@@ -476,10 +478,14 @@ void tftpInit(void)
 #if defined(RANDOM_TFTP_DATA_PORT)
 #else
 	if(eeprom_read_byte((uint8_t*)NETEEPROM_SIG_3) == NETEEPROM_SIG_3_VALUE)
+	{
 		tftpTransferPort = ((eeprom_read_byte((uint8_t*)NETEEPROM_PORT + 1) << 8) +
 							eeprom_read_byte((uint8_t*)NETEEPROM_PORT));
+	}
 	else
+	{
 		tftpTransferPort = TFTP_DATA_PORT;
+	}
 #endif
 
 	DBG_TFTP(tracePGMlnTftp(mDebugTftp_INIT);
