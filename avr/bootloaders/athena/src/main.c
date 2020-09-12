@@ -108,9 +108,14 @@ int main(void)
 
 		// If there is no tftp flashing, poll serial
 		if(!tftpFlashing)
-			// If flashing is done exit
+			// If flashing is done, exit the loop & boot the app
 			if(serialPoll() == 0)
 			{
+				// We need to delay to give avrdude time to cleanly finish
+				// Failure to delay can cause a checksum error on the
+				// final command, which borks the upload process from the IDE
+				// side of the world
+				_delay_ms(1);
 				break;
 			}
 
