@@ -8,6 +8,7 @@
 
 #include <avr/io.h>
 
+#include "gpio.h"
 #include "spi.h"
 #define ENABLE_DEBUG
 #include "debug.h"

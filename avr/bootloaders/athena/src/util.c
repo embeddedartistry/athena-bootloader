@@ -14,7 +14,7 @@
 
 #include "debug.h"
 #include "debug_util.h"
-#include "spi.h" // TODO: refactor this out, need a pin header instead
+#include "gpio.h"
 #include "util.h"
 
 static uint16_t last_timer_1;
