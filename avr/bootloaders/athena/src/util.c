@@ -26,9 +26,13 @@ void updateLed(void)
 
 #if !defined(__AVR_ATmega1280__) && !defined(__AVR_ATmega2560__)
 	if(next_timer_1 & 0x1000)
+	{
 		LED_PORT ^= _BV(LED); // Led pin high
+	}
 	else
+	{
 		LED_PORT &= ~_BV(LED); // Led pin low
+	}
 #endif
 
 	if(next_timer_1 < last_timer_1)
@@ -53,14 +57,15 @@ uint8_t timedOut(void)
 	// Never timeout if there is no code in Flash
 #if(FLASHEND > 0x10000)
 	if(pgm_read_word_far(0x0000) == 0xFFFF)
+	{
 		return (0);
+	}
 #else
 	if(pgm_read_word_near(0x0000) == 0xFFFF)
+	{
 		return (0);
+	}
 #endif
 
-	if(tick > TIMEOUT)
-		return (1);
-	else
-		return (0);
+	return (tick > TIMEOUT) ? 1 : 0;
 }
