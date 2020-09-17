@@ -24,6 +24,8 @@
 
 int main(void) __attribute__((OS_main)) __attribute__((section(".init9")));
 void appStart(void) __attribute__((naked));
+void check_and_update_eeprom_version(void);
+void check_and_update_bootloader_version(void);
 
 int main(void)
 {
@@ -64,19 +66,12 @@ int main(void)
 	// Set up Timer 1 as timekeeper for LED flashing
 	TCCR1B = _BV(CS12); // Same thing as TCCR1B = 0x04;
 
-	/* Write version information in the EEPROM */
-	if(eeprom_read_byte((uint8_t*)NETEEPROM_MAJVER) != ATHENA_EEPROM_FORMAT_MAJVER)
-	{
-		eeprom_write_byte((uint8_t*)NETEEPROM_MAJVER, ATHENA_EEPROM_FORMAT_MAJVER);
-	}
-
-	if(eeprom_read_byte((uint8_t*)NETEEPROM_MINVER) != ATHENA_EEPROM_FORMAT_MINVER)
-	{
-		eeprom_write_byte((uint8_t*)NETEEPROM_MINVER, ATHENA_EEPROM_FORMAT_MINVER);
-	}
+	check_and_update_eeprom_version();
+	check_and_update_bootloader_version();
 
 	/* Initialize UART communication */
 	serialInit();
+	// Print the program name, hardware type, and software version
 	DBG_MAIN(tracePGMlnMain(mDebugMain_TITLE);)
 
 	DBG_BTN(DBG_MAIN_EX(tracePGMlnMain(mDebugMain_BTN);) buttonInit();)
@@ -156,4 +151,37 @@ void appStart(void)
 	asm volatile("clr    r30     \n\t"
 				 "clr    r31     \n\t"
 				 "ijmp   \n\t");
+}
+
+void check_and_update_eeprom_version()
+{
+	/* Write EEPROM format version information if different from the defined values */
+	if(eeprom_read_byte((uint8_t*)NETEEPROM_MAJVER) != ATHENA_EEPROM_FORMAT_MAJVER)
+	{
+		eeprom_write_byte((uint8_t*)NETEEPROM_MAJVER, ATHENA_EEPROM_FORMAT_MAJVER);
+	}
+
+	if(eeprom_read_byte((uint8_t*)NETEEPROM_MINVER) != ATHENA_EEPROM_FORMAT_MINVER)
+	{
+		eeprom_write_byte((uint8_t*)NETEEPROM_MINVER, ATHENA_EEPROM_FORMAT_MINVER);
+	}
+}
+
+void check_and_update_bootloader_version()
+{
+	/* Write Athena version information if different from the defined values */
+	if(eeprom_read_byte((uint8_t*)NETEEPROM_ATHENA_VER_MAJOR) != BUILD_MAJOR_VER)
+	{
+		eeprom_write_byte((uint8_t*)NETEEPROM_ATHENA_VER_MAJOR, BUILD_MAJOR_VER);
+	}
+
+	if(eeprom_read_byte((uint8_t*)NETEEPROM_ATHENA_VER_MINOR) != BUILD_MINOR_VER)
+	{
+		eeprom_write_byte((uint8_t*)NETEEPROM_ATHENA_VER_MINOR, BUILD_MINOR_VER);
+	}
+
+	if(eeprom_read_byte((uint8_t*)NETEEPROM_ATHENA_VER_PATCH) != BUILD_PATCH_VER)
+	{
+		eeprom_write_byte((uint8_t*)NETEEPROM_ATHENA_VER_PATCH, BUILD_PATCH_VER);
+	}
 }

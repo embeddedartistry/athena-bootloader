@@ -11,6 +11,9 @@
 
 #include <avr/pgmspace.h>
 
+#define PP_STRINGIFY_IMPL(X) #X
+#define PP_STRINGIFY(X) PP_STRINGIFY_IMPL(X)
+
 #if(DEBUG_MAIN > 0)
 #undef DBG_MAIN
 #define DBG_MAIN(block) block
@@ -19,16 +22,16 @@ const unsigned char mDebugMain_PREFIX[] PROGMEM = "Main: ";
 
 #if defined(__AVR_ATmega328__) || defined(__AVR_ATmega328P__)
 #if defined(ARDUINO_ETHERNET)
-const unsigned char mDebugMain_TITLE[] PROGMEM = "Athena for Arduino Ethernet, Version 1.1";
+const unsigned char mDebugMain_TITLE[] PROGMEM = "Athena for Arduino Ethernet, Version " PP_STRINGIFY(BUILD_TAG);
 #else
-const unsigned char mDebugMain_TITLE[] PROGMEM = "Athena for Arduino Uno, Version 1.1";
+const unsigned char mDebugMain_TITLE[] PROGMEM = "Athena for Arduino Uno, Version " PP_STRINGIFY(BUILD_TAG);
 #endif
 #elif defined(__AVR_ATmega2560__)
-const unsigned char mDebugMain_TITLE[] PROGMEM = "Athena for Arduino Mega2560, Version 1.1";
+const unsigned char mDebugMain_TITLE[] PROGMEM = "Athena for Arduino Mega2560, Version "  PP_STRINGIFY(BUILD_TAG);
 #elif defined(__AVR_ATmega1284P__)
-const unsigned char mDebugMain_TITLE[] PROGMEM = "Athena for Arduino Mega1284P, Version 1.1";
+const unsigned char mDebugMain_TITLE[] PROGMEM = "Athena for Arduino Mega1284P, Version "  PP_STRINGIFY(BUILD_TAG);
 #else
-const unsigned char mDebugMain_TITLE[] PROGMEM = "Unknown MCU with athena, Version 1.1";
+const unsigned char mDebugMain_TITLE[] PROGMEM = "Unknown MCU with athena, Version " PP_STRINGIFY(BUILD_TAG);
 #endif
 const unsigned char mDebugMain_EXIT[] PROGMEM = "Start user app";
 #if(DEBUG_MAIN > 1)

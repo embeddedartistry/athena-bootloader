@@ -20,6 +20,14 @@
 # make ng_isp
 # etc...
 
+# Generate Version
+version := $(subst -, ,$(shell git describe --long --dirty --tags))
+export BUILD_TAG :=$(strip $(word 1, $(version)))
+split_tag := $(subst ., ,$(BUILD_TAG))
+export MAJOR_VER := $(strip $(word 1, $(split_tag)))
+export MINOR_VER := $(strip $(word 2, $(split_tag)))
+export PATCH_VER := $(strip $(word 3, $(split_tag)))
+
 # program name should not be changed...
 PROGRAM    = athena
 
@@ -116,7 +124,7 @@ OBJ      = main.o spi.o ethernet/net.o ethernet/tftp.o ethernet/validate.o debug
 OPTIMIZE = -Os -flto -fuse-linker-plugin -fno-inline-small-functions -fno-split-wide-types -mno-interrupts -mrelax
 OPTIMIZE += -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums -fno-jump-tables -std=gnu99 #-save-temps
 INCLUDES = -I . -I debug -I ethernet -I optiboot -I stk500boot -isystem ../../../libraries
-DEFS     =
+DEFS     = -DBUILD_TAG=$(BUILD_TAG) -DBUILD_MAJOR_VER=$(MAJOR_VER) -DBUILD_MINOR_VER=$(MINOR_VER) -DBUILD_PATCH_VER=$(PATCH_VER)
 LIBS     =
 
 CC       = $(GCCROOT)avr-gcc
@@ -579,6 +587,13 @@ atmega1284_w5500_isp: isp
 #
 # Generic build targets
 #
+
+# Main.o parses version information from the Makefile, so we need
+# to make sure that it's always rebuilt
+main.o: FORCE
+.PHONY: FORCE
+FORCE:
+
 isp: $(TARGET)
 	$(ISPFUSES)
 	$(ISPFLASH)
