@@ -1,6 +1,8 @@
 #ifndef debug_h
 #define debug_h
 
+#include <stdint.h>
+
 /*
  * Define DBG_* dummy macros. These disable the debugging code if they aren't
  * overriden later on in the subsytem sections.
