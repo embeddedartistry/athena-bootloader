@@ -3,6 +3,7 @@ buildresults/
 *.o
 *.elf
 *.hex
+*.bin
 
 # Tool Files
 *.sublime-workspace
