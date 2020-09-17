@@ -65,11 +65,7 @@ You can also download submodules after cloning with:
 $ git submodule update --init --recursive
 ```
 
-You can also [download a .tar.xz file from the Releases page](https://github.com/embeddedartistry/athena-bootloader/releases/), which contains the full source tree (including submodules) and populated binary files. To extract the archive, use:
-
-```
-$ tar xvf <Archive Name>
-```
+You can also [download .zip archives from latest release page](https://github.com/embeddedartistry/athena-bootloader/releases/latest), which contains the full source tree (including submodules) and populated binary files.
 
 ### git-lfs
 
@@ -86,8 +82,8 @@ When you don't have git-lfs installed, you will see all of the files in the repo
 If you don't want to use git-lfs, you have the following options:
 
 1. Manually build the bootloader binaries on your machine by running `make` at the top-level of the repository.
-1. [Download the latest .zip archive of the bootloader binaries from the Releases page](https://github.com/embeddedartistry/athena-bootloader/releases/), and copy them to `avr/bootloaders/athena/` so they will be properly found by the Arduino IDE
-2. [Download a .tar.xz file from the Releases page](https://github.com/embeddedartistry/athena-bootloader/releases/), which contains the full source tree (including submodules) and populated binary files.
+1. [Download the latest .zip archive of the bootloader binaries for the latest release](https://github.com/embeddedartistry/athena-bootloader/releases/latest), and copy them to `avr/bootloaders/athena/` so they will be properly found by the Arduino IDE
+2. [Download the latest ProjectFile .zip archive for the latest release](https://github.com/embeddedartistry/athena-bootloader/releases/latest), which contains the full source tree (including submodules) and populated binary files.
 
 ## Dependencies
 
@@ -194,7 +190,7 @@ This repository is structured to follow the [latest Arduino IDE standard for 3rd
 This is the abbreviated checklist for installing and using the bootloader:
 
 1. [Download the bootloader](#download-the-bootloader) and [install it to the proper location](#arduino-sdk-installation)
-	1. Just need the bootloader binaries? Check the [releases page](https://github.com/embeddedartistry/athena-bootloader/releases) for a tarball.
+	1. Just need the bootloader binaries? Check the [releases page](https://github.com/embeddedartistry/athena-bootloader/releases).
 1. [Flash the bootloader to the device](flashing-the-bootloader)
 2. **DO NOT SKIP:** Program network settings for the device using the [`AthenaEEPROM`](#supporting-libraries) library or [example sketches](https://github.com/embeddedartistry/AthenaEEPROM/tree/master/examples)
 	1. More information available in [docs/network_configuration.md](docs/network_configuration.md)
@@ -562,6 +558,22 @@ The following steps must be used to implement a remote upload capability for you
 ## Troubleshooting
 
 If you're having problems connecting to the device, check out [docs/Debugging.md](docs/Debugging.md) for troubleshooting tips.
+
+If you see an error like the one below, you only have placeholder git-lfs files. Please see the [git-lfs](#git-lfs) section above for instructions.
+
+```
+avrdude: ERROR: No valid record found in Intel Hex file "C:\Users\XXX\Documents\Arduino\hardware\athena-bootloader-11.1.8\avr/bootloaders/athena/athena_debug2560_w5500.hex"
+avrdude: read from file 'C:\Users\XXX\Documents\Arduino\hardware\athena-bootloader-11.1.8\avr/bootloaders/athena/athena_debug2560_w5500.hex' failed
+Error while burning bootloader.
+```
+
+If you see an error like the one below, your submodules are not populated. Please see the instructions on [Getting the Bootloader](#getting-the-bootloader).
+
+```
+Invalid library found in C:\Users\XXX\Documents\Arduino\hardware\athena-bootloader-11.1.8\avr\libraries\AthenaEEPROM: no headers files (.h) found in C:\Users\XXX\Documents\Arduino\hardware\athena-bootloader-11.1.8\avr\libraries\AthenaEEPROM
+Invalid library found in C:\Users\XXX\Documents\Arduino\hardware\athena-bootloader-11.1.8\avr\libraries\AthenaEthernetReset: no headers files (.h) found in C:\Users\XXX\Documents\Arduino\hardware\athena-bootloader-11.1.8\avr\libraries\AthenaEthernetReset
+Invalid library found in C:\Users\XXX\Documents\Arduino\libraries\Archive: no headers files (.h) found in C:\Users\XXX\Documents\Arduino\libraries\Archive
+```
 
 ## EEPROM Requirements
 
