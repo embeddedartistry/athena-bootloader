@@ -123,7 +123,7 @@ pipeline
       githubSetConfig('69e4682e-2951-492f-b828-da06364c322d')
       // Release step creates a tag
       githubUploadRelease("${params.MAJOR_VERSION}.${params.MINOR_VERSION}.${BUILD_NUMBER}",
-        'buildresults/release/*.tgz, buildresults/meson-dist/AthenaBootloader-*')
+        'buildresults/release/*.zip, buildresults/meson-dist/AthenaBootloaderProjectFiles-*')
     }
     failure
     {
