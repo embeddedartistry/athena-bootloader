@@ -41,6 +41,9 @@ pipeline
     {
       steps
       {
+
+        sh 'git checkout master'
+        sh 'git pull'
         sh 'git commit -am "Updating firmware images with latest version number."'
         sh 'git push'
       }
