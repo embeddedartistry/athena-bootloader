@@ -41,6 +41,7 @@ Bootloader binary files for different versions can be found on the [Releases](ht
 		1. [Linux and OS X Upload](#linux-and-os-x-upload)
 			1. [Linux TFTP Note](#linux-tftp-note)
 1. [Enabling Remote Reset and Reprogram Capabilities](#enabling-remote-reset-and-reprogram-capabilities)
+	1. [Reprogramming Without The Reset Server Library](#reprogramming-without-the-reset-server-library)
 1. [Troubleshooting](#troubleshooting)
 1. [EEPROM Requirements](#eeprom-requirements)
 1. [Test Binaries](#test-binaries)
@@ -561,6 +562,17 @@ The following steps must be used to implement a remote upload capability for you
 		1. "Arduino will reset for reprogramming in 2 seconds"
 	3. You must use the "password" programmed via the AthenaEEPROM library to successfully enter the programming mode. The default value is `athena`.
 5. Follow the [TFTP Upload](#flashing-applications-via-tftp) instructions to send a new binary to the device
+
+### Reprogramming Without The Reset Server Library
+
+If you don't want to use the EthernetReset server (because you have your own web server), you can trigger update mode manually with the following function calls:
+
+```
+EEPROM.enableUpdateMode(); // in AthenaEEPROM library
+watchdogReset(); // from avr/wdt.h
+```
+
+After the device resets, it will wait for a firmware update over TFTP or Serial. This mode will not time out. If the device is manually reset, it will boot once more into the image currently installed on the board.
 
 ## Troubleshooting
 
