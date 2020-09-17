@@ -381,6 +381,13 @@ For more information on network configuration, see [docs/network_configuration.m
 
 **If the default values will not work, you MUST configure the network settings for the TFTP server in the bootloader and the AthenaEthernetReset server to work correctly with your network configuration.**
 
+The process flow is:
+
+1. Reset into TFTP mode in the bootloader
+2. Connect to the device
+2. Upload a binary image
+3. After upload completes, the new application auto-boots
+
 ### Converting Your Sketch to the Right Format
 
 While Arduino serial flashing uses __HEX__ files, the bootloader TFTP server only works with binary files. You must manually convert your programs the `.bin` file format using `avr-objcopy`.
