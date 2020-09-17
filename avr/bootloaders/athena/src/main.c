@@ -7,11 +7,6 @@
  * Version: 0.2 support for USB flashing
  */
 
-#include <avr/boot.h>
-#include <avr/eeprom.h>
-#include <avr/wdt.h>
-#include <util/delay.h>
-#include <stdbool.h>
 #include "debug.h"
 #include "debug_main.h"
 #include "net.h"
@@ -21,6 +16,11 @@
 #include "tftp.h"
 #include "util.h"
 #include "watchdog.h"
+#include <avr/boot.h>
+#include <avr/eeprom.h>
+#include <avr/wdt.h>
+#include <stdbool.h>
+#include <util/delay.h>
 
 int main(void) __attribute__((OS_main)) __attribute__((section(".init9")));
 void appStart(void) __attribute__((naked));
@@ -142,7 +142,7 @@ int main(void)
 		if(timedOut())
 		{
 			if(eeprom_read_byte((uint8_t*)NETEEPROM_IMG_STAT) == NETEEPROM_IMG_OK_VALUE &&
-				update_requested == false)
+			   update_requested == false)
 			{
 				// Note that we only want to escape this loop if IMG_OK_VALUE is a match
 				// and update_requested == false; otherwise, we need to keep waiting for
