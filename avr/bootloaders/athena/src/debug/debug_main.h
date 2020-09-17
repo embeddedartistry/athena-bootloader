@@ -19,7 +19,9 @@
 #define DBG_MAIN(block) block
 #define tracePGMlnMain(msg) tracePGMln(mDebugMain_PREFIX, msg)
 const unsigned char mDebugMain_PREFIX[] PROGMEM = "Main: ";
-
+const unsigned char mDebug_UpdateMode[] PROGMEM = "Update Mode Requested";
+const unsigned char mDebug_GoodImage[] PROGMEM = "Good image signature detected";
+const unsigned char mDebug_BadImage[] PROGMEM = "BAD image signature detected";
 #if defined(__AVR_ATmega328__) || defined(__AVR_ATmega328P__)
 #if defined(ARDUINO_ETHERNET)
 const unsigned char mDebugMain_TITLE[] PROGMEM = "Athena for Arduino Ethernet, Version " PP_STRINGIFY(BUILD_TAG);
@@ -37,7 +39,6 @@ const unsigned char mDebugMain_EXIT[] PROGMEM = "Start user app";
 #if(DEBUG_MAIN > 1)
 #undef DBG_MAIN_EX
 #define DBG_MAIN_EX(block) block
-const unsigned char mDebug_UpdateMode[] PROGMEM = "Booted in update mode";
 const unsigned char mDebugMain_SPI[] PROGMEM = "Init spi comm";
 const unsigned char mDebugMain_NET[] PROGMEM = "Init network layer";
 const unsigned char mDebugMain_TFTP[] PROGMEM = "Init tftp server";

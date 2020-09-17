@@ -82,8 +82,18 @@ int main(void)
 	{
 		eeprom_write_byte((uint8_t*)NETEEPROM_IMG_STAT, NETEEPROM_IMG_OK_VALUE);
 		update_requested = true;
-		DBG_MAIN_EX(tracePGMlnMain(mDebug_UpdateMode);)
+		DBG_MAIN(tracePGMlnMain(mDebug_UpdateMode);)
 	}
+#ifdef DEBUG_MAIN
+	else if(eeprom_read_byte((uint8_t*)NETEEPROM_IMG_STAT) == NETEEPROM_IMG_OK_VALUE)
+	{
+		DBG_MAIN(tracePGMlnMain(mDebug_GoodImage);)
+	}
+	else
+	{
+		DBG_MAIN(tracePGMlnMain(mDebug_BadImage);)
+	}
+#endif
 
 	DBG_BTN(DBG_MAIN_EX(tracePGMlnMain(mDebugMain_BTN);) buttonInit();)
 
@@ -153,8 +163,6 @@ int main(void)
 				tftpFlashing = FALSE;
 			}
 		}
-		wdt_reset();
-		/* Blink the notification led */
 		wdt_reset(); // Required so it doesn`t hang.
 		updateLed();
 	}
