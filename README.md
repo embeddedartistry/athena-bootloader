@@ -1,6 +1,6 @@
 # Athena Bootloader for Arduino
 
-**PSA: DO NOT DOWNLOAD THIS PROJECT AS A ZIP ARCHIVE USING THE GIT INTERFACE. USE THE [LATEST RELEASE](https://github.com/embeddedartistry/athena-bootloader/releases/latest)**
+**PSA: DO NOT DOWNLOAD THIS PROJECT AS A ZIP ARCHIVE USING THE GIT INTERFACE. USE THE [LATEST RELEASE](https://github.com/embeddedartistry/athena-bootloader/releases/latest) PAGE**
 
 Athena is an Ethernet- and Serial-capable bootloader for Arduino. Using an Arduino Ethernet board or Wiznet W5x00 shield, you can upload programs to your Arduino over Ethernet. Athena starts a TFTP server on the Arduino board, and files can be transferred using any TFTP client.
 
@@ -66,7 +66,7 @@ You can also download submodules after cloning with:
 $ git submodule update --init --recursive
 ```
 
-You can also [download .zip archives from latest release page](https://github.com/embeddedartistry/athena-bootloader/releases/latest), which contains the full source tree (including submodules) and populated binary files.
+You can also [access .zip archives from latest release page](https://github.com/embeddedartistry/athena-bootloader/releases/latest). Download the latest ProjectFile .zip archive for the latest release, which contains the full source tree (including submodules) and populated binary files. This is what you should use for populating the Arduino hardware folder.
 
 ### git-lfs
 
@@ -83,7 +83,7 @@ When you don't have git-lfs installed, you will see all of the files in the repo
 If you don't want to use git-lfs, you have the following options:
 
 1. Manually build the bootloader binaries on your machine by running `make` at the top-level of the repository.
-1. [Download the latest .zip archive of the bootloader binaries for the latest release](https://github.com/embeddedartistry/athena-bootloader/releases/latest), and copy them to `avr/bootloaders/athena/` so they will be properly found by the Arduino IDE
+1. [Download the latest .zip archive of the bootloader binaries for the latest release](https://github.com/embeddedartistry/athena-bootloader/releases/latest), and copy them to `avr/bootloaders/athena/` folder so they will be properly found by the Arduino IDE. This will replace the placeholders with complete files.
 2. [Download the latest ProjectFile .zip archive for the latest release](https://github.com/embeddedartistry/athena-bootloader/releases/latest), which contains the full source tree (including submodules) and populated binary files.
 
 ## Dependencies
