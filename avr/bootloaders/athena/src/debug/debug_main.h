@@ -37,6 +37,7 @@ const unsigned char mDebugMain_EXIT[] PROGMEM = "Start user app";
 #if(DEBUG_MAIN > 1)
 #undef DBG_MAIN_EX
 #define DBG_MAIN_EX(block) block
+const unsigned char mDebug_UpdateMode[] PROGMEM = "Booted in update mode";
 const unsigned char mDebugMain_SPI[] PROGMEM = "Init spi comm";
 const unsigned char mDebugMain_NET[] PROGMEM = "Init network layer";
 const unsigned char mDebugMain_TFTP[] PROGMEM = "Init tftp server";

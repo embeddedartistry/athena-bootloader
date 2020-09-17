@@ -11,7 +11,7 @@
 #include <avr/eeprom.h>
 #include <avr/wdt.h>
 #include <util/delay.h>
-
+#include <stdbool.h>
 #include "debug.h"
 #include "debug_main.h"
 #include "net.h"
@@ -58,14 +58,6 @@ int main(void)
 	}
 	wdt_enable(WDTO_8S);
 
-	// Check if an update has been requested. If so, restore the image status to OK_VALUE
-	// in case a new image is not received over the network.
-	if(eeprom_read_byte((uint8_t*)NETEEPROM_IMG_STAT) == NETEEPROM_ENTER_UPDATE_MODE_VALUE)
-	{
-		eeprom_write_byte((uint8_t*)NETEEPROM_IMG_STAT, NETEEPROM_IMG_OK_VALUE);
-		update_requested = true;
-	}
-
 	// Prescaler=0, ClkIO Period = 62,5ns
 	// TCCR1B values:
 	// 0x01 -> ClkIO/1 -> 62,5ns period, 4ms max
@@ -83,6 +75,15 @@ int main(void)
 	serialInit();
 	// Print the program name, hardware type, and software version
 	DBG_MAIN(tracePGMlnMain(mDebugMain_TITLE);)
+
+	// Check if an update has been requested. If so, restore the image status to OK_VALUE
+	// in case a new image is not received over the network.
+	if(eeprom_read_byte((uint8_t*)NETEEPROM_IMG_STAT) == NETEEPROM_ENTER_UPDATE_MODE_VALUE)
+	{
+		eeprom_write_byte((uint8_t*)NETEEPROM_IMG_STAT, NETEEPROM_IMG_OK_VALUE);
+		update_requested = true;
+		DBG_MAIN_EX(tracePGMlnMain(mDebug_UpdateMode);)
+	}
 
 	DBG_BTN(DBG_MAIN_EX(tracePGMlnMain(mDebugMain_BTN);) buttonInit();)
 
