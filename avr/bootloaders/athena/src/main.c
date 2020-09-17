@@ -65,14 +65,14 @@ int main(void)
 	TCCR1B = _BV(CS12); // Same thing as TCCR1B = 0x04;
 
 	/* Write version information in the EEPROM */
-	if(eeprom_read_byte((uint8_t*)NETEEPROM_MAJVER) != ATHENA_MAJVER)
+	if(eeprom_read_byte((uint8_t*)NETEEPROM_MAJVER) != ATHENA_EEPROM_FORMAT_MAJVER)
 	{
-		eeprom_write_byte((uint8_t*)NETEEPROM_MAJVER, ATHENA_MAJVER);
+		eeprom_write_byte((uint8_t*)NETEEPROM_MAJVER, ATHENA_EEPROM_FORMAT_MAJVER);
 	}
 
-	if(eeprom_read_byte((uint8_t*)NETEEPROM_MINVER) != ATHENA_MINVER)
+	if(eeprom_read_byte((uint8_t*)NETEEPROM_MINVER) != ATHENA_EEPROM_FORMAT_MINVER)
 	{
-		eeprom_write_byte((uint8_t*)NETEEPROM_MINVER, ATHENA_MINVER);
+		eeprom_write_byte((uint8_t*)NETEEPROM_MINVER, ATHENA_EEPROM_FORMAT_MINVER);
 	}
 
 	/* Initialize UART communication */

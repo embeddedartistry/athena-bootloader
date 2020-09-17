@@ -56,13 +56,15 @@ uint8_t processOptiboot(void)
 		if(which == 0x82)
 		{
 			/*
+			 * // TODO: change this to the bootloader version, not EEPROM
 			 * Send tftpboot version as "minor SW version"
 			 */
-			putch(ATHENA_MINVER);
+			putch(ATHENA_EEPROM_FORMAT_MINVER);
 		}
 		else if(which == 0x81)
 		{
-			putch(ATHENA_MAJVER);
+			// TODO: change this to the bootloader version, not EEPROM
+			putch(ATHENA_EEPROM_FORMAT_MAJVER);
 		}
 		else
 		{

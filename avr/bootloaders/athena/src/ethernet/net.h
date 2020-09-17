@@ -12,7 +12,7 @@
 #endif
 
 // Included for default networking address definitions
-#include <AthenaEEPROM/AthenaEEPROM_defs.h>
+#include <AthenaEEPROM/src/AthenaEEPROM_defs.h>
 
 /* Network settings */
 #ifndef IP_ADDR
