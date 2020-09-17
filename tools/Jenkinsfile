@@ -25,7 +25,7 @@ pipeline
       steps
       {
         echo 'Running make clean...'
-        sh 'make clean'
+        sh 'make distclean'
 
         gitTagPreBuild "${params.MAJOR_VERSION}.${params.MINOR_VERSION}.${BUILD_NUMBER}"
       }
@@ -35,6 +35,14 @@ pipeline
       steps
       {
         sh 'make'
+      }
+    }
+    stage('Commit Updated Images')
+    {
+      steps
+      {
+        sh 'git commit -am "Updating firmware images with latest version number."'
+        sh 'git push'
       }
     }
     stage('Package')
