@@ -52,11 +52,11 @@ pipeline
         echo 'Archiving artifacts'
         dir('buildresults/release')
         {
-          archiveArtifacts 'athena_bootloaders.tgz'
+          archiveArtifacts 'athena_bootloaders-*'
         }
         dir('buildresults/meson-dist')
         {
-          archiveArtifacts 'AthenaBootloader-*'
+          archiveArtifacts 'AthenaBootloaderProjectFiles-*'
         }
       }
       post

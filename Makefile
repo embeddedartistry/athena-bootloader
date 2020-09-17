@@ -12,6 +12,9 @@ endif
 BUILDRESULTS?=buildresults
 CONFIGURED_BUILD_DEP = $(BUILDRESULTS)/build.ninja
 
+version := $(subst -, ,$(shell git describe --long --dirty --tags))
+export BUILD_TAG :=$(strip $(word 1, $(version)))
+
 .PHONY: all
 all: makerelease
 
@@ -27,13 +30,20 @@ makerelease:
 clean:
 	$(Q)make -C avr/bootloaders/athena/src/ clean
 
+.PHONY: distclean
+distclean:
+	$(Q) rm -rf $(BUILDRESULTS)
+
 .PHONY: package
 package:
 	$(Q)tools/package.sh
+	$(Q) mv $(BUILDRESULTS)/release/athena_bootloaders.zip $(BUILDRESULTS)/release/athena_bootloaders-$(BUILD_TAG).zip
 
 .PHONY: dist
 dist: $(CONFIGURED_BUILD_DEP)
-	$(Q) ninja -C $(BUILDRESULTS) dist
+	$(Q) meson dist -C $(BUILDRESULTS) --formats zip
+	$(Q) mv $(BUILDRESULTS)/meson-dist/AthenaBootloader-*.zip $(BUILDRESULTS)/meson-dist/AthenaBootloaderProjectFiles-$(BUILD_TAG).zip
+	$(Q) mv $(BUILDRESULTS)/meson-dist/AthenaBootloader-*.zip.sha256sum $(BUILDRESULTS)/meson-dist/AthenaBootloaderProjectFiles-$(BUILD_TAG).zip.sha256sum
 
 .PHONY: format
 format:
