@@ -27,6 +27,8 @@ void appStart(void) __attribute__((naked));
 void check_and_update_eeprom_version(void);
 void check_and_update_bootloader_version(void);
 
+bool update_requested = false;
+
 int main(void)
 {
 	uint8_t ch;
@@ -55,6 +57,14 @@ int main(void)
 		}
 	}
 	wdt_enable(WDTO_8S);
+
+	// Check if an update has been requested. If so, restore the image status to OK_VALUE
+	// in case a new image is not received over the network.
+	if(eeprom_read_byte((uint8_t*)NETEEPROM_IMG_STAT) == NETEEPROM_ENTER_UPDATE_MODE_VALUE)
+	{
+		eeprom_write_byte((uint8_t*)NETEEPROM_IMG_STAT, NETEEPROM_IMG_OK_VALUE);
+		update_requested = true;
+	}
 
 	// Prescaler=0, ClkIO Period = 62,5ns
 	// TCCR1B values:
@@ -95,14 +105,17 @@ int main(void)
 	{
 		// If there is no serial flashing under way, poll tftp
 		if(!serialFlashing && !tftpInitError)
+		{
 			// If tftp recieved a FINAL_ACK, break
 			if(tftpPoll() == 0)
 			{
 				break;
 			}
+		}
 
 		// If there is no tftp flashing, poll serial
 		if(!tftpFlashing)
+		{
 			// If flashing is done, exit the loop & boot the app
 			if(serialPoll() == 0)
 			{
@@ -113,11 +126,16 @@ int main(void)
 				_delay_ms(1);
 				break;
 			}
+		}
 
 		if(timedOut())
 		{
-			if(eeprom_read_byte((uint8_t*)NETEEPROM_IMG_STAT) == NETEEPROM_IMG_OK_VALUE)
+			if(eeprom_read_byte((uint8_t*)NETEEPROM_IMG_STAT) == NETEEPROM_IMG_OK_VALUE &&
+				update_requested == false)
 			{
+				// Note that we only want to escape this loop if IMG_OK_VALUE is a match
+				// and update_requested == false; otherwise, we need to keep waiting for
+				// an image.
 				break;
 			}
 
