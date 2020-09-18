@@ -17,6 +17,7 @@
 #define tracePGMlnSpi(msg) tracePGMln(mDebugSpi_PREFIX, msg)
 const unsigned char mDebugSpi_PREFIX[] PROGMEM = " Spi: ";
 const unsigned char mDebugSpi_DONE[] PROGMEM = "SPI init done";
+const unsigned char mDebugSpi_CUSTOM_ETH_CS[] PROGMEM = "Using Custom Eth CS Pin: ";
 #if(DEBUG_SPI > 1)
 #undef DBG_SPI_EX
 #define DBG_SPI_EX(block) block

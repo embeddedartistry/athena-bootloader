@@ -1,6 +1,41 @@
 #ifndef GPIO_H_
 #define GPIO_H_
 
+#include "util.h" // TODO: refactor util.h so this isn't needed; used for PROGMEM_OFFSET definition
+#include <avr/pgmspace.h>
+#include <stdint.h>
+
+extern const uint8_t PROGMEM digital_pin_to_port_PGM[];
+extern const uint8_t PROGMEM digital_pin_to_bit_mask_PGM[];
+extern const uint16_t PROGMEM port_to_output_PGM[];
+extern const uint16_t PROGMEM port_to_mode_PGM[];
+
+// Helper macros for Mega / Uno differentiation
+#if(FLASHEND > 0x10000)
+/* 0x30000 was added to fix the issues of progmem with >64Kb flash.
+ * 0x30000 is specific to atmega2560 and won't work on smaller or larger flashes.
+ * I should find a way to macro the calculation of this value
+ */
+#define ADJUSTED_PGM_READ_BYTE(P) pgm_read_byte_far(PROGMEM_OFFSET + P)
+#define ADJUSTED_PGM_READ_WORD(P) pgm_read_word_far(PROGMEM_OFFSET + P)
+#else
+#define ADJUSTED_PGM_READ_BYTE(P) pgm_read_byte(P)
+#define ADJUSTED_PGM_READ_WORD(P) pgm_read_word(P)
+#endif
+
+// Pulled from AVR Core - Arduino.h
+// Get the bit location within the hardware port of the given virtual pin.
+// This comes from the pins_*.c file for the active board configuration.
+//
+// These perform slightly better as macros compared to inline functions
+//
+#define digitalPinToPort(P) (ADJUSTED_PGM_READ_BYTE(digital_pin_to_port_PGM + (P)))
+#define digitalPinToBitMask(P) (ADJUSTED_PGM_READ_BYTE(digital_pin_to_bit_mask_PGM + (P)))
+#define portModeRegister(P) ((volatile uint8_t*)(ADJUSTED_PGM_READ_WORD(port_to_mode_PGM + (P))))
+#define portOutputRegister(P) \
+	((volatile uint8_t*)(ADJUSTED_PGM_READ_WORD(port_to_output_PGM + (P))))
+#define portModeRegister(P) ((volatile uint8_t*)(ADJUSTED_PGM_READ_WORD(port_to_mode_PGM + (P))))
+
 /** Pin definitions for SPI and leds */
 /** Uno and Deumilanove */
 #if defined(__AVR_ATmega328__) || defined(__AVR_ATmega328P__)

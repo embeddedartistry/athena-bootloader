@@ -120,13 +120,13 @@ STK500-1 = $(STK500) -e -d$(MCU_TARGET) -pf -vf -if$(PROGRAM)_$(TARGET).hex \
 	   -lFF -LFF -f$(HFUSE)$(LFUSE) -EF8 -ms -q -cUSB -I200kHz -s -wt
 STK500-2 = $(STK500) -d$(MCU_TARGET) -ms -q -lCF -LCF -cUSB -I200kHz -s -wt
 
-OBJ      = main.o spi.o ethernet/net.o ethernet/tftp.o ethernet/validate.o debug/debug.o watchdog.o serial.o util.o optiboot/optiboot.o stk500boot/stk500boot.o
+OBJ      = main.o ethernet/spi.o ethernet/net.o ethernet/tftp.o ethernet/validate.o debug/debug.o watchdog.o serial.o util.o gpio.o optiboot/optiboot.o stk500boot/stk500boot.o
 OPTIMIZE = -Os -flto -fuse-linker-plugin -fno-inline-small-functions -fno-split-wide-types -mno-interrupts -mrelax
 OPTIMIZE += -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums -fno-jump-tables -std=gnu99 #-save-temps
 INCLUDES = -I . -I debug -I ethernet -I optiboot -I stk500boot -isystem ../../../libraries
 DEFS     = -DBUILD_TAG=$(BUILD_TAG) -DBUILD_MAJOR_VER=$(MAJOR_VER) -DBUILD_MINOR_VER=$(MINOR_VER) -DBUILD_PATCH_VER=$(PATCH_VER)
 LIBS     =
-
+DEBUG_SETTINGS = '-DDEBUG_MAIN=1' '-DDEBUG_NET=1' '-DDEBUG_TFTP=1' '-DDEBUG_SPI=1'
 CC       = $(GCCROOT)avr-gcc
 
 # Override is only needed by avr-lib build system.
@@ -144,7 +144,7 @@ SIZE    = $(GCCROOT)avr-size
 # Use it only if you have already seen the source code
 debug328_w5100: TARGET = debug328_w5100
 debug328_w5100: MCU_TARGET = atmega328p
-debug328_w5100: CFLAGS += '-D__WIZ_W5100__' '-DDEBUG_MAIN=1' '-DDEBUG_NET=1' '-DDEBUG_TFTP=1' '-DBAUD_RATE=115200'
+debug328_w5100: CFLAGS += '-D__WIZ_W5100__' $(DEBUG_SETTINGS) '-DBAUD_RATE=115200'
 debug328_w5100: AVR_FREQ = 16000000L
 debug328_w5100: LDSECTIONS = -Wl,--section-start=.text=0x7000 #-Wl,--section-start=.version=0x7ffe
 debug328_w5100: $(PROGRAM)_debug328_w5100.hex
@@ -165,7 +165,7 @@ debug328_w5100_isp: isp
 # Use it only if you have already seen the source code
 debug328_w5200: TARGET = debug328_w5200
 debug328_w5200: MCU_TARGET = atmega328p
-debug328_w5200: CFLAGS += '-D__WIZ_W5200__' '-DDEBUG_MAIN=1' '-DDEBUG_NET=1' '-DDEBUG_TFTP=1' '-DBAUD_RATE=115200'
+debug328_w5200: CFLAGS += '-D__WIZ_W5200__' $(DEBUG_SETTINGS) '-DBAUD_RATE=115200'
 debug328_w5200: AVR_FREQ = 16000000L
 debug328_w5200: LDSECTIONS = -Wl,--section-start=.text=0x7000 #-Wl,--section-start=.version=0x7ffe
 debug328_w5200: $(PROGRAM)_debug328_w5200.hex
@@ -186,7 +186,7 @@ debug328_w5200_isp: isp
 # Use it only if you have already seen the source code
 debug328_w5500: TARGET = debug328_w5500
 debug328_w5500: MCU_TARGET = atmega328p
-debug328_w5500: CFLAGS += '-D__WIZ_W5500__' '-DDEBUG_MAIN=1' '-DDEBUG_NET=1' '-DDEBUG_TFTP=1' '-DBAUD_RATE=115200'
+debug328_w5500: CFLAGS += '-D__WIZ_W5500__' $(DEBUG_SETTINGS) '-DBAUD_RATE=115200'
 debug328_w5500: AVR_FREQ = 16000000L
 debug328_w5500: LDSECTIONS = -Wl,--section-start=.text=0x7000 #-Wl,--section-start=.version=0x7ffe
 debug328_w5500: $(PROGRAM)_debug328_w5500.hex
@@ -206,7 +206,7 @@ debug328_w5500_isp: isp
 # Debug build for Arduino Mega2560
 debug2560_w5100: TARGET = debug2560_w5100
 debug2560_w5100: MCU_TARGET = atmega2560
-debug2560_w5100: CFLAGS += '-D__WIZ_W5100__' '-DDEBUG_MAIN=1' '-DDEBUG_NET=1' '-DDEBUG_TFTP=1' '-DBAUD_RATE=115200'
+debug2560_w5100: CFLAGS += '-D__WIZ_W5100__' $(DEBUG_SETTINGS) '-DBAUD_RATE=115200'
 debug2560_w5100: AVR_FREQ = 16000000L
 debug2560_w5100: LDSECTIONS  = -Wl,--section-start=.text=0x3e000
 debug2560_w5100: $(PROGRAM)_debug2560_w5100.hex
@@ -226,7 +226,7 @@ debug2560_w5100_isp: isp
 # Debug build for Arduino Mega2560
 debug2560_w5200: TARGET = debug2560_w5200
 debug2560_w5200: MCU_TARGET = atmega2560
-debug2560_w5200: CFLAGS += '-D__WIZ_W5200__' '-DDEBUG_MAIN=1' '-DDEBUG_NET=1' '-DDEBUG_TFTP=1' '-DBAUD_RATE=115200'
+debug2560_w5200: CFLAGS += '-D__WIZ_W5200__' $(DEBUG_SETTINGS) '-DBAUD_RATE=115200'
 debug2560_w5200: AVR_FREQ = 16000000L
 debug2560_w5200: LDSECTIONS  = -Wl,--section-start=.text=0x3e000
 debug2560_w5200: $(PROGRAM)_debug2560_w5200.hex
@@ -246,7 +246,7 @@ debug2560_w5200_isp: isp
 # Debug build for Arduino Mega2560
 debug2560_w5500: TARGET = debug2560_w5500
 debug2560_w5500: MCU_TARGET = atmega2560
-debug2560_w5500: CFLAGS += '-D__WIZ_W5500__' '-DDEBUG_MAIN=1' '-DDEBUG_NET=1' '-DDEBUG_TFTP=1' '-DBAUD_RATE=115200'
+debug2560_w5500: CFLAGS += '-D__WIZ_W5500__' $(DEBUG_SETTINGS) '-DBAUD_RATE=115200'
 debug2560_w5500: AVR_FREQ = 16000000L
 debug2560_w5500: LDSECTIONS  = -Wl,--section-start=.text=0x3e000
 debug2560_w5500: $(PROGRAM)_debug2560_w5500.hex
@@ -266,7 +266,7 @@ debug2560_w5500_isp: isp
 # Debug build for Atmega1284
 debug1284_w5100: TARGET = debug1284_w5100
 debug1284_w5100: MCU_TARGET = atmega1284p
-debug1284_w5100: CFLAGS += '-D__WIZ_W5100__' '-DDEBUG_MAIN=1' '-DDEBUG_NET=1' '-DDEBUG_TFTP=1' '-DBAUD_RATE=115200'
+debug1284_w5100: CFLAGS += '-D__WIZ_W5100__' $(DEBUG_SETTINGS) '-DBAUD_RATE=115200'
 debug1284_w5100: AVR_FREQ = 16000000L
 debug1284_w5100: LDSECTIONS  = -Wl,--section-start=.text=0x1e000
 debug1284_w5100: $(PROGRAM)_debug1284_w5100.hex
@@ -286,7 +286,7 @@ debug1284_w5100_isp: isp
 # Debug build for Atmega1284
 debug1284_w5200: TARGET = debug1284_w5200
 debug1284_w5200: MCU_TARGET = atmega1284p
-debug1284_w5200: CFLAGS += '-D__WIZ_W5200__' '-DDEBUG_MAIN=1' '-DDEBUG_NET=1' '-DDEBUG_TFTP=1' '-DDEBUG_VALD=1' '-DBAUD_RATE=115200'
+debug1284_w5200: CFLAGS += '-D__WIZ_W5200__' $(DEBUG_SETTINGS) '-DBAUD_RATE=115200'
 debug1284_w5200: AVR_FREQ = 16000000L
 debug1284_w5200: LDSECTIONS  = -Wl,--section-start=.text=0x1e000
 debug1284_w5200: $(PROGRAM)_debug1284_w5200.hex
@@ -306,7 +306,7 @@ debug1284_w5200_isp: isp
 # Debug build for Atmega1284
 debug1284_w5500: TARGET = debug1284_w5500
 debug1284_w5500: MCU_TARGET = atmega1284p
-debug1284_w5500: CFLAGS += '-D__WIZ_W5500__' '-DDEBUG_MAIN=1' '-DDEBUG_NET=1' '-DDEBUG_TFTP=1' '-DDEBUG_VALD=1' '-DBAUD_RATE=115200'
+debug1284_w5500: CFLAGS += '-D__WIZ_W5500__' '-DDEBUG_MAIN=1' $(DEBUG_SETTINGS) '-DBAUD_RATE=115200'
 debug1284_w5500: AVR_FREQ = 16000000L
 debug1284_w5500: LDSECTIONS  = -Wl,--section-start=.text=0x1e000
 debug1284_w5500: $(PROGRAM)_debug1284_w5500.hex
