@@ -1,6 +1,8 @@
 #ifndef tftp_h
 #define tftp_h
 
+#include <stdint.h>
+
 /** TFTP port settings */
 #define TFTP_PORT 69
 #define TFTP_DATA_PORT 46969

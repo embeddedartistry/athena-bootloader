@@ -7,19 +7,18 @@
  * Version: 0.2 tftp / flashing functional
  */
 
-#include <avr/boot.h>
-#include <avr/pgmspace.h>
-#include <util/delay.h>
-
+#include "tftp.h"
 #include "debug.h"
 #include "debug_tftp.h"
 #include "net.h"
 #include "neteeprom.h"
 #include "serial.h"
 #include "spi.h"
-#include "tftp.h"
 #include "util.h"
 #include "validate.h"
+#include <avr/boot.h>
+#include <avr/pgmspace.h>
+#include <util/delay.h>
 
 /** Opcode?: tftp operation is unsupported. The bootloader only supports 'put' */
 #define TFTP_OPCODE_ERROR_LEN 12
@@ -48,24 +47,24 @@ static void sockInit(uint16_t port)
 {
 	DBG_TFTP(tracePGMlnTftp(mDebugTftp_SOCK); tracenum(port);)
 
-	uint8_t error = 0;
+	uint8_t read_val = 0;
 	uint8_t err_count = 0;
 
 	spiWriteReg(REG_S3_CR, S3_W_CB, CR_CLOSE);
 	do
 	{
 		// wait for command to complete
-		error = spiReadReg(REG_S3_CR, S3_R_CB);
+		read_val = spiReadReg(REG_S3_CR, S3_R_CB);
 		err_count++;
 
 		if(err_count > 128)
 		{
-			DBG_TFTP(tracePGMlnTftp(mDebugTftp_SOCKCLOSEERR);)
+			DBG_TFTP(tracePGMlnTftp(mDebugTftp_SOCKCLOSEERR); puthex(read_val);)
 
 			tftpInitError = TRUE;
 			return;
 		}
-	} while(error);
+	} while(read_val != SOCK_CLOSED);
 
 	err_count = 0;
 
@@ -87,13 +86,13 @@ static void sockInit(uint16_t port)
 
 		if(err_count > 128)
 		{
-			DBG_TFTP(tracePGMlnTftp(mDebugTftp_SOCKOPENERR);)
+			DBG_TFTP(tracePGMlnTftp(mDebugTftp_SOCKOPENERR); puthex(read_val);)
 
 			tftpInitError = TRUE;
 			return;
 		}
-		// If socket correctly opened continue
-	} while(spiReadReg(REG_S3_SR, S3_R_CB) != SOCK_UDP);
+		read_val = spiReadReg(REG_S3_SR, S3_R_CB);
+	} while(read_val != SOCK_UDP); // If socket correctly opened continue
 
 	DBG_TFTP(tracePGMlnTftp(mDebugTftp_SOCKDONE);)
 }
@@ -113,7 +112,7 @@ static uint8_t processPacket(void)
 
 	DBG_TFTP(tracePGMlnTftp(mDebugTftp_START); tracenum(packetSize);
 
-			 if(packetSize >= 0x800) tracePGMlnTftp(mDebugTftp_OVFL);
+			 if(packetSize >= 0x800) { tracePGMlnTftp(mDebugTftp_OVFL); }
 
 			 DBG_BTN(button();))
 
@@ -488,12 +487,19 @@ void tftpInit(void)
 	}
 #endif
 
-	DBG_TFTP(tracePGMlnTftp(mDebugTftp_INIT);
+	if(tftpInitError)
+	{
+		DBG_TFTP(tracePGMlnTftp(mDebugTftp_INIT_FAILED);)
+	}
+	else
+	{
+		DBG_TFTP(tracePGMlnTftp(mDebugTftp_INIT);
 #if defined(RANDOM_TFTP_DATA_PORT)
 #else
-			 tracePGMlnTftp(mDebugTftp_PORT); tracenum(tftpTransferPort);
+				 tracePGMlnTftp(mDebugTftp_PORT); tracenum(tftpTransferPort);
 #endif
-	)
+				 ) // End DBG_TFTP
+	}
 }
 
 /**
@@ -504,15 +510,6 @@ uint8_t tftpPoll(void)
 	uint8_t response = ACK;
 	// Get the size of the recieved data
 	uint16_t packetSize = spiReadWord(REG_S3_RX_RSR0, S3_R_CB);
-	//	uint16_t packetSize = 0, incSize = 0;
-
-	// 	do {
-	// 		incSize = spiReadWord(REG_S3_RX_RSR0);
-	// 		if(incSize != 0) {
-	// 			_delay_ms(400);
-	// 			packetSize = spiReadWord(REG_S3_RX_RSR0);
-	// 		}
-	// 	} while (packetSize != incSize);
 
 	if(packetSize)
 	{
@@ -540,7 +537,7 @@ uint8_t tftpPoll(void)
 	if(response == FINAL_ACK)
 	{
 		spiWriteReg(REG_S3_CR, S3_W_CB, CR_CLOSE);
-		// Complete
+		// Tftp Complete
 		return (0);
 	}
 
