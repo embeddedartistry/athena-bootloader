@@ -6,13 +6,47 @@
  * Function: SPI functions
  */
 
-#include <avr/io.h>
-
-#include "gpio.h"
 #include "spi.h"
-#define ENABLE_DEBUG
 #include "debug.h"
 #include "debug_spi.h"
+#include "gpio.h"
+#include "neteeprom.h"
+#include <avr/eeprom.h>
+#include <avr/io.h>
+#include <stdint.h>
+
+volatile uint8_t* eth_cs_ddr = &ETH_DDR;
+volatile uint8_t* eth_cs_port = &ETH_PORT;
+uint8_t eth_cs_pin = _BV(ETH_SS);
+
+void initialize_eth_cs(void)
+{
+	uint8_t eth_pin = eeprom_read_byte((uint8_t*)NETEEPROM_ETHERNET_CS_PIN);
+
+	if(eth_pin != 0xff)
+	{
+		DBG_SPI(tracePGMlnSpi(mDebugSpi_CUSTOM_ETH_CS); tracenum(eth_pin);)
+		uint8_t eth_port = digitalPinToPort(eth_pin);
+		eth_cs_port = portOutputRegister(eth_port);
+		eth_cs_ddr = portModeRegister(eth_port);
+		eth_cs_pin = digitalPinToBitMask(eth_pin);
+	}
+
+	/** Set ethernet SS high */
+	*eth_cs_port |= eth_cs_pin;
+	/** Set ethernet SS as output */
+	*eth_cs_ddr |= eth_cs_pin;
+}
+
+void spi_cs_low(void)
+{
+	*eth_cs_port &= ~eth_cs_pin;
+}
+
+void spi_cs_high(void)
+{
+	*eth_cs_port |= eth_cs_pin;
+}
 
 /** Send uint8_t to Ethernet controller */
 void spiWriteReg(uint16_t address, uint8_t cb, uint8_t value)
@@ -136,7 +170,6 @@ void spiInit(void)
 	 * At this stage all pins are set to HIGH. This in fact DISABLES SPI for both Ethernet and SD.
 	 * SS pin for ethernet is pulled low just in time for reading or writing data inside those
 	 * functions. */
-
 	SPCR = 0;
 
 	/**
@@ -152,13 +185,7 @@ void spiInit(void)
 	/** Set SPI pins as output */
 	SPI_DDR = _BV(SCK) | _BV(MOSI) | _BV(SS);
 
-#if(ETH_SS != SS)
-	/** Initialize extra SS pin used in some boards (mega) */
-	/** Set ethernet SS high */
-	ETH_PORT |= _BV(ETH_SS);
-	/** Set ethernet SS as output */
-	ETH_DDR |= _BV(ETH_SS);
-#endif
+	initialize_eth_cs();
 
 	/** Disable SD card */
 	/** Set SD SS pin high */

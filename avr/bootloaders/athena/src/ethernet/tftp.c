@@ -263,13 +263,19 @@ static uint8_t processPacket(void)
 
 				// Set the return code before packetLength gets rounded up
 				if(packetLength < TFTP_DATA_SIZE)
+				{
 					returnCode = FINAL_ACK;
+				}
 				else
+				{
 					returnCode = ACK;
+				}
 
 				// Round up packet length to a full flash sector size
 				while(packetLength % SPM_PAGESIZE)
+				{
 					packetLength++;
+				}
 
 				DBG_TFTP(tracePGMlnTftp(mDebugTftp_PLEN); tracenum(packetLength);)
 
