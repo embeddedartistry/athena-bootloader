@@ -53,9 +53,10 @@ void puthex(uint8_t c)
 {
 	c &= 0xf;
 	if(c > 9)
+	{
 		c += 7;
-	// while(!(UART_STATUS_REG & _BV(UART_DATA_REG_EMPTY)));
-	// UART_DATA_REG = c + '0';
+	}
+
 	putch(c + '0');
 }
 
@@ -77,9 +78,6 @@ uint8_t getch(void)
 		 */
 		wdt_reset();
 	}
-
-	// ch = UART_DATA_REG;
-	// return ch;
 
 	return (UART_DATA_REG);
 }
