@@ -1,5 +1,5 @@
 project('AthenaBootloader',
 	'c',
-	version: '11.2'
+	version: '11.3'
 )
 
