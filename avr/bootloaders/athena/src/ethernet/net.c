@@ -64,7 +64,9 @@ void netInit(void)
 	   (eeprom_read_byte((uint8_t*)NETEEPROM_SIG_2) == NETEEPROM_SIG_2_VALUE))
 	{
 		for(i = 0; i < EEPROM_SETTINGS_SIZE; i++)
+		{
 			registerBuffer[i + 1] = eeprom_read_byte((uint8_t*)NETEEPROM_DATA + i);
+		}
 
 		DBG_NET(tracePGMlnNet(mDebugNet_EEPROM);)
 	}
@@ -74,17 +76,23 @@ void netInit(void)
 		tracePGMlnNet(mDebugNet_ADDR); for(i = 15; i < 19; i++) {
 			tracenet(registerBuffer[i]);
 			if(i != 18)
+			{
 				putch(0x2E);
+			}
 		} tracePGMlnNet(mDebugNet_SUBN);
 		for(i = 5; i < 9; i++) {
 			tracenet(registerBuffer[i]);
 			if(i != 8)
+			{
 				putch(0x2E);
+			}
 		} tracePGMlnNet(mDebugNet_GW);
 		for(i = 1; i < 5; i++) {
 			tracenet(registerBuffer[i]);
 			if(i != 4)
+			{
 				putch(0x2E);
+			}
 		} tracePGMlnNet(mDebugNet_MAC);
 		for(i = 9; i < 15; i++) {
 			tracenet(registerBuffer[i]);
@@ -98,11 +106,13 @@ void netInit(void)
 #else
 	for(i = 0; i < REGISTER_BLOCK_SIZE; i++)
 #endif
+	{
 #if defined(__WIZ_W5500__)
 		spiWriteReg(i, 0x04, registerBuffer[i]);
 #else
 		spiWriteReg(i, 0, registerBuffer[i]);
 #endif
+	}
 
 #if defined(__WIZ_W5200__)
 	for(i = 0; i < 8; i++)
