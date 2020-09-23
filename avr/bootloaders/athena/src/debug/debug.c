@@ -39,7 +39,9 @@ void tracePGM(const void* p_msg)
 		c = pgm_read_byte_near((uint16_t)p_msg + i);
 #endif
 		if(c != 0)
+		{
 			putch(c);
+		}
 		i++;
 	}
 }
@@ -58,7 +60,9 @@ void trace(char* msg)
 	if(*msg != '\0')
 	{
 		while((c = *msg++))
+		{
 			putch(c);
+		}
 	}
 }
 
@@ -104,7 +108,9 @@ uint8_t checkButton(void)
 		_delay_ms(25);
 
 		if(bit_is_clear(PINB, PB0))
+		{
 			return 0;
+		}
 	}
 
 	return 1;
@@ -115,8 +121,12 @@ void button(void)
 	DBG_BTN(tracePGMlnBtn(mDebugBtn_WAIT);)
 
 	while(1)
+	{
 		if(checkButton())
+		{
 			break;
+		}
+	}
 
 	_delay_ms(250); // Lock input
 }
