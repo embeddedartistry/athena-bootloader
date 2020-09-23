@@ -42,6 +42,8 @@ Bootloader binary files for different versions can be found on the [Releases](ht
 			1. [Linux TFTP Note](#linux-tftp-note)
 1. [Enabling Remote Reset and Reprogram Capabilities](#enabling-remote-reset-and-reprogram-capabilities)
 	1. [Reprogramming Without The Reset Server Library](#reprogramming-without-the-reset-server-library)
+1. [Changing the Ethernet CS Pin](#changing-the-ethernet-cs-pin)
+2. [Enabling Ethernet Reset Behavior](#enabling-ethernet-reset-behavior)
 1. [Troubleshooting](#troubleshooting)
 1. [EEPROM Requirements](#eeprom-requirements)
 1. [Test Binaries](#test-binaries)
@@ -573,6 +575,22 @@ watchdogReset(); // from avr/wdt.h
 ```
 
 After the device resets, it will wait for a firmware update over TFTP or Serial. This mode will not time out. If the device is manually reset, it will boot once more into the image currently installed on the board.
+
+## Changing the Ethernet CS Pin
+
+The bootloader is programmed to use the default CS pin to talk to the Ethernet controller. If your board is using a custom pin, you can change the pin that the bootloader will use by programming the EEPROM:
+
+```
+EEPROM.setEthernetCSPin(53); // Uses Arduino pin number
+```
+
+## Enabling Ethernet Reset Behavior
+
+By default, the bootloader does not know about a reset pin. If your hardware requires the bootloader to perform a reset during system boot, you can specify a reset pin using the EEPROM:
+
+```
+EEPROM.setEthernetResetPin(53); // Uses Arduino pin number
+```
 
 ## Troubleshooting
 
