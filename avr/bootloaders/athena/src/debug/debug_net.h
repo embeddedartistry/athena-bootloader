@@ -23,6 +23,7 @@ const unsigned char mDebugNet_SUBN[] PROGMEM = "\t Subnet: ";
 const unsigned char mDebugNet_GW[] PROGMEM = "\tGateway: ";
 const unsigned char mDebugNet_MAC[] PROGMEM = "\t    MAC: ";
 const unsigned char mDebugNet_DONE[] PROGMEM = "Network init done";
+const unsigned char mDebugNet_RESET[] PROGMEM = "Ethernet Reset pin defined - performing reset";
 #if(DEBUG_NET > 1)
 #undef DBG_NET_EX
 #define DBG_NET_EX(block) block

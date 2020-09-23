@@ -7,15 +7,16 @@
  * Version: 0.1 tftp / flashing functional
  */
 
-#include <avr/eeprom.h>
-#include <avr/io.h>
-
+#include "net.h"
 #include "debug.h"
 #include "debug_net.h"
-#include "net.h"
+#include "gpio.h"
 #include "neteeprom.h"
 #include "serial.h"
 #include "spi.h"
+#include <avr/eeprom.h>
+#include <avr/io.h>
+#include <util/delay.h>
 
 uint8_t registerBuffer[REGISTER_BLOCK_SIZE] = {
 	0x80, // MR Mode - reset device
@@ -54,9 +55,37 @@ uint8_t registerBuffer[REGISTER_BLOCK_SIZE] = {
 #endif
 };
 
+void checkAndPerformEthernetReset(void)
+{
+	uint8_t eth_reset_pin = eeprom_read_byte((uint8_t*)NETEEPROM_ETHERNET_RESET_PIN);
+
+	if(eth_reset_pin != 0xff)
+	{
+		DBG_NET(tracePGMlnNet(mDebugNet_RESET); tracenum(eth_reset_pin);)
+		uint8_t eth_port = digitalPinToPort(eth_reset_pin);
+		volatile uint8_t* eth_reset_port = portOutputRegister(eth_port);
+		volatile uint8_t* eth_reset_ddr = portModeRegister(eth_port);
+		uint8_t eth_reset_pin_val = digitalPinToBitMask(eth_reset_pin);
+
+		// Initialize pin - set high, output
+		*eth_reset_port |= eth_reset_pin_val;
+		*eth_reset_ddr |= eth_reset_pin_val;
+
+		// Perform Reset - low, delay, high
+		*eth_reset_port &= ~eth_reset_pin_val;
+		_delay_ms(5); // 500us - 1ms is required; we'll do 5ms for some buffer
+		*eth_reset_port |= eth_reset_pin_val;
+		_delay_ms(
+			60); // allow 50ms after reset to let PLLs stabilize
+				 // 50ms pulled from: http://wizwiki.net/wiki/doku.php?id=products:wiz850io:start
+	}
+}
+
 void netInit(void)
 {
 	uint8_t i;
+
+	checkAndPerformEthernetReset();
 
 	/* Pull in altered network settings, if available,
 	 * from AVR EEPROM (if signature bytes are set) */
@@ -97,7 +126,9 @@ void netInit(void)
 		for(i = 9; i < 15; i++) {
 			tracenet(registerBuffer[i]);
 			if(i != 14)
+			{
 				putch(0x2E);
+			}
 		})
 
 	/** Configure Wiznet chip. Network settings */
