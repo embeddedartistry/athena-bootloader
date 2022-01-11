@@ -4,7 +4,7 @@
 
 Athena is an Ethernet- and Serial-capable bootloader for Arduino. Using an Arduino Ethernet board or Wiznet W5x00 shield, you can upload programs to your Arduino over Ethernet. Athena starts a TFTP server on the Arduino board, and files can be transferred using any TFTP client.
 
-Embedded Artistry has forked this bootloader version from the [original project](https://github.com/loathingKernel/athena-bootloader), which seems to be no longer actively maintained. We are making many improvements and enhancements to the previous implementation.
+Embedded Artistry has forked this bootloader version from the [original project](https://github.com/loathingKernel/ariadne-bootloader), which seems to be no longer actively maintained. We are making many improvements and enhancements to the previous implementation.
 
 Athena is implemented for AVR chips. ARM chips cannot use this bootloader.
 
@@ -650,7 +650,7 @@ The [AthenaEthernetReset](https://github.com/embeddedartistry/AthenaEthernetRese
 
 ## Acknowledgments
 
-The Embedded Artistry version of the Athena bootloader is derived from [loathingkernel/athena-bootloader](https://github.com/loathingKernel/ariadne-bootloader). Credit goes to its maintainer, [Stelios Tsampas](https://github.com/loathingKernel).
+The Embedded Artistry version of the Athena bootloader is derived from [loathingkernel/ariadne-bootloader](https://github.com/loathingKernel/ariadne-bootloader). Credit goes to its maintainer, [Stelios Tsampas](https://github.com/loathingKernel).
 
 The Ariadne bootloader was built upon these open source projects:
 
@@ -662,7 +662,7 @@ The Ariadne bootloader was built upon these open source projects:
 
 * [AkhileshThorat](https://github.com/AkhileshThorat)
 
-The following contributors were listed in the [original project](https://github.com/loathingKernel/athena-bootloader) README:
+The following contributors were listed in the [original project](https://github.com/loathingKernel/ariadne-bootloader) README:
 
 * [mharizanov][26] (Commenting some of the initial *Arduino* code, enabling Stelios to take on the project)
 * [follower][27] (Sketches served as a starting point for the included __AthenaEEPROM__ and __AthenaEthernetReset__ libraries)
@@ -671,7 +671,7 @@ The following contributors were listed in the [original project](https://github.
 
 ### Donors 
 
-The following donors were listed in the [original project](https://github.com/loathingKernel/athena-bootloader) README:
+The following donors were listed in the [original project](https://github.com/loathingKernel/ariadne-bootloader) README:
 
 * Hachi Manzur (AVRISP mkII programmer, testing)
 
