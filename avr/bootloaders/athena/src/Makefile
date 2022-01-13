@@ -63,7 +63,7 @@ ifeq ($(ENV), arduino)
 # For Arduino, we assume that we're connected to the optiboot directory
 # included with the arduino distribution, which means that the full set
 # of avr-tools are "right up there" in standard places.
-TOOLROOT = ../../../tools
+TOOLROOT ?= ../../../tools
 GCCROOT = $(TOOLROOT)/avr/bin/
 AVRDUDE_CONF = -C$(TOOLROOT)/avr/etc/avrdude.conf
 
@@ -80,10 +80,10 @@ else ifeq ($(ENV), arduinodev)
 # Arduino IDE source code environment.  Use the unpacked compilers created
 # by the build (you'll need to do "ant build" first.)
 ifeq ($(OS), macosx)
-TOOLROOT = ../../../../build/macosx/work/Arduino.app/Contents/Resources/Java/hardware/tools
+TOOLROOT ?= ../../../../build/macosx/work/Arduino.app/Contents/Resources/Java/hardware/tools
 endif
 ifeq ($(OS), windows)
-TOOLROOT = ../../../../build/windows/work/hardware/tools
+TOOLROOT ?= ../../../../build/windows/work/hardware/tools
 endif
 
 GCCROOT = $(TOOLROOT)/avr/bin/
