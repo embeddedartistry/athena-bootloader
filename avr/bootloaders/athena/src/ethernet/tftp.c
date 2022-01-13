@@ -121,13 +121,6 @@ static uint8_t processPacket(void)
 
 	DBG_TFTP_EX(tracePGMlnTftp(mDebugTftp_RPTR); tracenum(readPointer);)
 
-#if defined(__WIZ_W5500__)
-	// W5500 auto increments the readpointer by memory mapping a 16bit addr
-#else
-	if(readPointer == 0)
-		readPointer += S3_RX_START;
-#endif
-
 	for(count = TFTP_PACKET_MAX_SIZE; count--;)
 	{
 		DBG_TFTP_EX(if((count == TFTP_PACKET_MAX_SIZE - 1) || (count == 0)) {
@@ -137,12 +130,12 @@ static uint8_t processPacket(void)
 
 #if defined(__WIZ_W5500__)
 		*bufPtr++ = spiReadReg(readPointer++, S3_RXBUF_CB);
-		// W5500 auto increments the readpointer by memory mapping a 16bit addr
+		// W5500 have [automaticly] offset address mapping between the read pointer to the physical address
 		// Use uint16_t overflow from 0xFFFF to 0x10000 to follow W5500 internal pointer
 #else
-		*bufPtr++ = spiReadReg(readPointer++, 0);
-		if(readPointer == S3_RX_END)
-			readPointer = S3_RX_START;
+		*bufPtr++ = spiReadReg(S3_readPointer_to_phy_address(readPointer++), 0);
+		// W5100 & W5200 should read from the physical address
+		// address (relative to the base address) calculate by masking with the buffer size
 #endif
 	}
 
