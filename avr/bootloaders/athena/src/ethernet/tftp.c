@@ -373,12 +373,6 @@ static void sendResponse(uint16_t response)
 	uint8_t packetLength;
 	uint16_t writePointer;
 
-#if defined(__WIZ_W5500__)
-	writePointer = spiReadWord(REG_S3_TX_WR0, S3_R_CB);
-#else
-	writePointer = spiReadWord(REG_S3_TX_WR0, 0) + S3_TX_START;
-#endif
-
 	switch(response)
 	{
 		default:
@@ -440,20 +434,22 @@ static void sendResponse(uint16_t response)
 
 	txPtr = txBuffer;
 
+	writePointer = spiReadWord(REG_S3_TX_WR0, S3_R_CB);
+
 	while(packetLength--)
 	{
-		spiWriteReg(writePointer++, S3_TXBUF_CB, *txPtr++);
 #if defined(__WIZ_W5500__)
-		// W5500 auto increments the readpointer by memory mapping a 16bit addr
+		spiWriteReg(writePointer++, S3_TXBUF_CB, *txPtr++);
+		// W5500 have [automaticly] offset address mapping between the write pointer to the physical address
 		// Use uint16_t overflow from 0xFFFF to 0x10000 to follow W5500 internal pointer
-	}
-	spiWriteWord(REG_S3_TX_WR0, S3_W_CB, writePointer);
 #else
-		if(writePointer == S3_TX_END)
-			writePointer = S3_TX_START;
-	}
-	spiWriteWord(REG_S3_TX_WR0, S3_W_CB, writePointer - S3_TX_START);
+		spiWriteReg(S3_writePointer_to_phy_address(writePointer++), S3_TXBUF_CB, *txPtr++);
+		// W5100 & W5200 should write to the physical address
+		// address (relative to the base address) calculate by masking with the buffer size
 #endif
+	}
+
+	spiWriteWord(REG_S3_TX_WR0, S3_W_CB, writePointer);  // Write back new pointer
 
 	spiWriteReg(REG_S3_CR, S3_W_CB, CR_SEND);
 
