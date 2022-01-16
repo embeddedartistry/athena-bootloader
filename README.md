@@ -18,8 +18,9 @@ Bootloader binary files for different versions can be found on the [Releases](ht
 	1. [avr-gcc](#avr-gcc)
 	1. [avrdude](#avrdude)
 1. [Supported Boards](#supported-boards)
-	1. [Notes on ATMega32U4 Support](notes-on-atmega32u4-support)
-	2. [Other Tested Boards](#other-tested-boards)
+	1. [Notes on ATMega32U4 Support](#notes-on-atmega32u4-support)
+	1. [Notes on WIZnet Shields](#notes-on-wiznet-shields)
+	1. [Other Tested Boards](#other-tested-boards)
 1. [Repository Structure](#repository-structure)
 1. [Quickstart Checklist](#quickstart-checklist)
 2. [Related Documents](#related-documents)
@@ -148,9 +149,9 @@ Officially supported MCUs:
 * __ATmega328__
 * __ATmega2560__
 * __ATmega1284__
-* __ATmega32U4__ ([see notes](notes-on-atmega32u4-support))
+* __ATmega32U4__ ([see notes](#notes-on-atmega32u4-support))
 
-Officially supported Ethernet controllers:
+Officially supported Ethernet controllers ([see notes](#notes-on-wiznet-shields)):
 
 * __WizNet W5100__
 * __WizNet W5200__
@@ -158,7 +159,7 @@ Officially supported Ethernet controllers:
 
 Officially supported Arduino Boards:
 
-* [Arduino Ethernet](17)
+* [Arduino Ethernet][17]
 * [Arduino Uno][18]
 * [Arduino Duemilanove w/ ATmega328][19]
 * [Arduino Mega 2560][20]
@@ -166,6 +167,11 @@ Officially supported Arduino Boards:
 ### Notes on ATmega32U4 Support
 
 The ATmega32U4 is supported, but the chip cannot support uploads over USB serial. It should be possible to upload sketches over the serial port (non-USB), but this has not been tested. The Caterina bootloader requires the majority of bootloader space to implement USB support. It is unclear whether both USB and Ethernet support can be implemented for this chip.
+
+### Notes on WIZnet Shields
+
+On WIZnet shields pins 11,12, and 13 are **tied up** (by defualt) with the corresponding pins on the ICSP header.  
+For more details look [here](docs/spi_on_wiznet_ethernet_shields.md)
 
 ### Other Tested Boards
 
@@ -175,7 +181,7 @@ These boards have been reported to work with the Athena bootloader:
 * [Sparkfun Ethernet Pro][22]
 * [XBoard Relay][28]
 
-If you think another board can be added to this list, please [contact us](contact@embeddedartistry.com).
+If you think another board can be added to this list, please [contact us](mailto:contact@embeddedartistry.com).
 
 ## Repository Structure
 
@@ -691,7 +697,7 @@ Athena is released under the [GPLv2, GNU General Public License][99].
 [11]: http://en.wikipedia.org/wiki/Port_forwarding
 [12]: http://portforward.com/english/routers/port_forwarding/
 [13]: http://codebender.cc
-[17]: www.arduino.cc/en/Main/ArduinoBoardEthernet
+[17]: http://www.arduino.cc/en/Main/ArduinoBoardEthernet
 [18]: http://www.arduino.cc/en/Main/ArduinoBoardUno
 [19]: http://www.arduino.cc/en/Main/ArduinoBoardDuemilanove
 [20]: http://arduino.cc/en/Main/arduinoBoardMega2560
