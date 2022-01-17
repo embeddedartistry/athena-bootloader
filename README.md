@@ -170,8 +170,7 @@ The ATmega32U4 is supported, but the chip cannot support uploads over USB serial
 
 ### Notes on WIZnet Shields
 
-On WIZnet shields pins 11,12, and 13 are **tied up** (by defualt) with the corresponding pins on the ICSP header.  
-For more details look [here](docs/spi_on_wiznet_ethernet_shields.md)
+On WIZnet shields pins 11,12, and 13 are **tied up** (by default) with the corresponding pins on the ICSP header.  For more information on handling these pins, see [this document](docs/spi_on_wiznet_ethernet_shields.md).
 
 ### Other Tested Boards
 
