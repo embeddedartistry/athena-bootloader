@@ -289,12 +289,12 @@ const uint8_t PROGMEM digital_pin_to_bit_mask_PGM[] = {
 	_BV(6), // D29 / D12 - A11 - PD6
 	_BV(5), // D30 / TX Led - PD5
 };
-/** 
+/**
  * Mega1284P
  *  this pin mapping will work with the below layout (Bobuino)
  *  other boards with Mega1284P might have different mapping
  *  between the Arduino "virtual" pins to the hardware pins
-**/
+ **/
 #elif defined(__AVR_ATmega1284P__)
 
 // ATMEL ATMEGA1284P on OSWIN (Bobuino pin layout)
@@ -326,94 +326,82 @@ const uint8_t PROGMEM digital_pin_to_bit_mask_PGM[] = {
 // these arrays map port names (e.g. port B) to the
 // appropriate addresses for various functions (e.g. reading
 // and writing)
-const uint16_t PROGMEM port_to_mode_PGM[] =
-{
-	NOT_A_PORT,
-	(uint16_t) &DDRA,
-	(uint16_t) &DDRB,
-	(uint16_t) &DDRC,
-	(uint16_t) &DDRD,
+const uint16_t PROGMEM port_to_mode_PGM[] = {
+	NOT_A_PORT, (uint16_t)&DDRA, (uint16_t)&DDRB, (uint16_t)&DDRC, (uint16_t)&DDRD,
 };
 
-const uint16_t PROGMEM port_to_output_PGM[] =
-{
-	NOT_A_PORT,
-	(uint16_t) &PORTA,
-	(uint16_t) &PORTB,
-	(uint16_t) &PORTC,
-	(uint16_t) &PORTD,
+const uint16_t PROGMEM port_to_output_PGM[] = {
+	NOT_A_PORT, (uint16_t)&PORTA, (uint16_t)&PORTB, (uint16_t)&PORTC, (uint16_t)&PORTD,
 };
 
-const uint8_t PROGMEM digital_pin_to_port_PGM[] =
-{
-  PD, // D0
-  PD, // D1
-  PD, // D2
-  PD, // D3
-  PB, // D4
-  PB, // D5
-  PB, // D6
-  PB, // D7
-  PD, // D8
-  PD, // D9
-  PB, // D10
-  PB, // D11
-  PB, // D12
-  PB, // D13
-  PA, // D14
-  PA, // D15
-  PA, // D16
-  PA, // D17
-  PA, // D18
-  PA, // D19
-  PA, // D20
-  PA, // D21
-  PC, // D22
-  PC, // D23
-  PC, // D24
-  PC, // D25
-  PC, // D26
-  PC, // D27
-  PC, // D28
-  PC, // D29
-  PD, // D30
-  PD, // D31
+const uint8_t PROGMEM digital_pin_to_port_PGM[] = {
+	PD, // D0
+	PD, // D1
+	PD, // D2
+	PD, // D3
+	PB, // D4
+	PB, // D5
+	PB, // D6
+	PB, // D7
+	PD, // D8
+	PD, // D9
+	PB, // D10
+	PB, // D11
+	PB, // D12
+	PB, // D13
+	PA, // D14
+	PA, // D15
+	PA, // D16
+	PA, // D17
+	PA, // D18
+	PA, // D19
+	PA, // D20
+	PA, // D21
+	PC, // D22
+	PC, // D23
+	PC, // D24
+	PC, // D25
+	PC, // D26
+	PC, // D27
+	PC, // D28
+	PC, // D29
+	PD, // D30
+	PD, // D31
 };
 
-const uint8_t PROGMEM digital_pin_to_bit_mask_PGM[] =
-{
-  _BV(0), // D0 PD0
-  _BV(1), // D1 PD1
-  _BV(2), // D2 PD2
-  _BV(3), // D3 PD3
-  _BV(0), // D4 PB0
-  _BV(1), // D5 PB1
-  _BV(2), // D6 PB2
-  _BV(3), // D7 PB3
-  _BV(5), // D8 PD5
-  _BV(6), // D9 PD6
-  _BV(4), // D10 PB4
-  _BV(5), // D11 PB5
-  _BV(6), // D12 PB6
-  _BV(7), // D13 PB7
-  _BV(7), // D14 PA7
-  _BV(6), // D15 PA6
-  _BV(5), // D16 PA5
-  _BV(4), // D17 PA4
-  _BV(3), // D18 PA3
-  _BV(2), // D19 PA2
-  _BV(1), // D20 PA1
-  _BV(0), // D21 PA0
-  _BV(0), // D22 PC0
-  _BV(1), // D23 PC1
-  _BV(2), // D24 PC2
-  _BV(3), // D25 PC3
-  _BV(4), // D26 PC4
-  _BV(5), // D27 PC5
-  _BV(6), // D28 PC6
-  _BV(7), // D29 PC7
-  _BV(4), // D30 PD4
-  _BV(7), // D31 PD7
+const uint8_t PROGMEM digital_pin_to_bit_mask_PGM[] = {
+	_BV(0), // D0 PD0
+	_BV(1), // D1 PD1
+	_BV(2), // D2 PD2
+	_BV(3), // D3 PD3
+	_BV(0), // D4 PB0
+	_BV(1), // D5 PB1
+	_BV(2), // D6 PB2
+	_BV(3), // D7 PB3
+	_BV(5), // D8 PD5
+	_BV(6), // D9 PD6
+	_BV(4), // D10 PB4
+	_BV(5), // D11 PB5
+	_BV(6), // D12 PB6
+	_BV(7), // D13 PB7
+	_BV(7), // D14 PA7
+	_BV(6), // D15 PA6
+	_BV(5), // D16 PA5
+	_BV(4), // D17 PA4
+	_BV(3), // D18 PA3
+	_BV(2), // D19 PA2
+	_BV(1), // D20 PA1
+	_BV(0), // D21 PA0
+	_BV(0), // D22 PC0
+	_BV(1), // D23 PC1
+	_BV(2), // D24 PC2
+	_BV(3), // D25 PC3
+	_BV(4), // D26 PC4
+	_BV(5), // D27 PC5
+	_BV(6), // D28 PC6
+	_BV(7), // D29 PC7
+	_BV(4), // D30 PD4
+	_BV(7), // D31 PD7
 };
 
 #endif
