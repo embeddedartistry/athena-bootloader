@@ -622,7 +622,8 @@ Invalid library found in C:\Users\XXX\Documents\Arduino\libraries\Archive: no he
 Athena uses the Arduino EEPROM to store values needed by the bootloader and AthenaEthernetReset server. If you are using the default EEPROM library for our own purposes, please make sure to start writing after `NETEEPROM_END`, available in `AthenaEEPROM_defs.h`:
 
 ```
-#define NETEEPROM_END      63
+#define NETEEPROM_START 0
+#define NETEEPROM_END   (NETEEPROM_START + 70)
 ```
 
 For more information, see the [AthenaEEPROM library](#supporting-libraries).
