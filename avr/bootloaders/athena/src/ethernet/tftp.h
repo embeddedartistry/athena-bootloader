@@ -51,7 +51,7 @@
 #define TFTP_PACKET_MAX_SIZE \
 	(UDP_HEADER_SIZE + TFTP_OPCODE_SIZE + TFTP_BLOCKNO_SIZE + TFTP_MAX_PAYLOAD)
 
-#define TFTP_PACKET_DELAY 400
+#define TFTP_PACKET_DELAY 5
 
 /**
  * Tftp status flag, it is set to TRUE if flashing from
