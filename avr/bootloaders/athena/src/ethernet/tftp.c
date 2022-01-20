@@ -505,25 +505,28 @@ void tftpInit(void)
  */
 uint8_t tftpPoll(void)
 {
+	uint16_t packetSize;
+	uint16_t prev = 0;
 	uint8_t response = ACK;
+	
 	// Get the size of the recieved data
-	uint16_t packetSize = spiReadWord(REG_S3_RX_RSR0, S3_R_CB);
+	packetSize = spiReadWord(REG_S3_RX_RSR0, S3_R_CB);
+
+	// Reading twice (recommended by Wiznet, https://github.com/Wiznet/ioLibrary_Driver)
+	while(packetSize != prev)
+	{
+		_delay_ms(TFTP_PACKET_DELAY);
+		
+		prev = packetSize;
+		packetSize = spiReadWord(REG_S3_RX_RSR0, S3_R_CB);
+	}
 
 	if(packetSize)
 	{
 		tftpFlashing = TRUE;
 
-		while((spiReadReg(REG_S3_IR, S3_R_CB) & IR_RECV))
-		{
-			spiWriteReg(REG_S3_IR, S3_W_CB, IR_RECV);
-			// FIXME: is this right after all? smaller delay but
-			// still a delay and it still breaks occasionally
-			_delay_ms(TFTP_PACKET_DELAY);
-		}
-
 		// Process Packet and get TFTP response code
 #if(DEBUG_TFTP > 0)
-		packetSize = spiReadWord(REG_S3_RX_RSR0, S3_R_CB);
 		response = processPacket(packetSize);
 #else
 		response = processPacket();
