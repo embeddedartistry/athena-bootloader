@@ -117,6 +117,8 @@ static uint8_t processPacket(void)
 			 DBG_BTN(button();))
 
 	// Read data from chip to buffer
+
+	// Use uint16_t overflow from 0xFFFF to 0x10000 to follow WIZnet internal pointer
 	readPointer = spiReadWord(REG_S3_RX_RD0, S3_R_CB);
 
 	DBG_TFTP_EX(tracePGMlnTftp(mDebugTftp_RPTR); tracenum(readPointer);)
@@ -130,10 +132,10 @@ static uint8_t processPacket(void)
 
 #if defined(__WIZ_W5500__)
 		*bufPtr++ = spiReadReg(readPointer++, S3_RXBUF_CB);
-		// W5500 have [automaticly] offset address mapping between the read pointer to the physical address
-		// Use uint16_t overflow from 0xFFFF to 0x10000 to follow W5500 internal pointer
+		// W5500 have [automaticly] offset address mapping between the read pointer
+		//  to the physical address
 #else
-		*bufPtr++ = spiReadReg(S3_readPointer_to_phy_address(readPointer++), 0);
+		*bufPtr++ = spiReadReg(S3_map_readPointer_to_phy_address(readPointer++), 0);
 		// W5100 & W5200 should read from the physical address
 		// address (relative to the base address) calculate by masking with the buffer size
 #endif
@@ -434,22 +436,23 @@ static void sendResponse(uint16_t response)
 
 	txPtr = txBuffer;
 
+	// Use uint16_t overflow from 0xFFFF to 0x10000 to follow WIZnet internal pointer
 	writePointer = spiReadWord(REG_S3_TX_WR0, S3_R_CB);
 
 	while(packetLength--)
 	{
 #if defined(__WIZ_W5500__)
 		spiWriteReg(writePointer++, S3_TXBUF_CB, *txPtr++);
-		// W5500 have [automaticly] offset address mapping between the write pointer to the physical address
-		// Use uint16_t overflow from 0xFFFF to 0x10000 to follow W5500 internal pointer
+		// W5500 have [automaticly] offset address mapping between the write pointer
+		//  to the physical address
 #else
-		spiWriteReg(S3_writePointer_to_phy_address(writePointer++), S3_TXBUF_CB, *txPtr++);
+		spiWriteReg(S3_map_writePointer_to_phy_address(writePointer++), S3_TXBUF_CB, *txPtr++);
 		// W5100 & W5200 should write to the physical address
 		// address (relative to the base address) calculate by masking with the buffer size
 #endif
 	}
 
-	spiWriteWord(REG_S3_TX_WR0, S3_W_CB, writePointer);  // Write back new pointer
+	spiWriteWord(REG_S3_TX_WR0, S3_W_CB, writePointer); // Write back new pointer
 
 	spiWriteReg(REG_S3_CR, S3_W_CB, CR_SEND);
 
