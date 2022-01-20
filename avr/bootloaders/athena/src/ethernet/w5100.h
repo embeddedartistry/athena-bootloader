@@ -228,8 +228,10 @@
 #define S3_RX_START 0x7800
 #define S3_RX_END 0x8000
 
-#define S3_writePointer_to_phy_address(rptr) (S3_TX_START + (rptr & (S3_TX_END - S3_TX_START - 1)))
-#define S3_readPointer_to_phy_address(rptr)  (S3_RX_START + (rptr & (S3_RX_END - S3_RX_START - 1)))
+#define S3_map_writePointer_to_phy_address(rptr) \
+	(S3_TX_START + (rptr & (S3_TX_END - S3_TX_START - 1)))
+#define S3_map_readPointer_to_phy_address(rptr) \
+	(S3_RX_START + (rptr & (S3_RX_END - S3_RX_START - 1)))
 
 #define MR_CLOSED 0x00
 #define MR_TCP 0x01
