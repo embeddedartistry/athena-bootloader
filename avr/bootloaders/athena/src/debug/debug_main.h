@@ -22,25 +22,33 @@ const unsigned char mDebugMain_PREFIX[] PROGMEM = "Main: ";
 const unsigned char mDebug_UpdateMode[] PROGMEM = "Update Mode Requested";
 const unsigned char mDebug_GoodImage[] PROGMEM = "Good image signature detected";
 const unsigned char mDebug_BadImage[] PROGMEM = "BAD image signature detected";
+
 #if defined(__AVR_ATmega328__) || defined(__AVR_ATmega328P__)
 #if defined(ARDUINO_ETHERNET)
-const unsigned char mDebugMain_TITLE[] PROGMEM =
-	"Athena for Arduino Ethernet, Version " PP_STRINGIFY(BUILD_TAG);
+#define TITLE_BOARD_TYPE "Athena for Arduino Ethernet"
 #else
-const unsigned char mDebugMain_TITLE[] PROGMEM =
-	"Athena for Arduino Uno, Version " PP_STRINGIFY(BUILD_TAG);
+#define TITLE_BOARD_TYPE "Athena for Arduino Uno"
 #endif
 #elif defined(__AVR_ATmega2560__)
-const unsigned char mDebugMain_TITLE[] PROGMEM =
-	"Athena for Arduino Mega2560, Version " PP_STRINGIFY(BUILD_TAG);
+#define TITLE_BOARD_TYPE "Athena for Arduino Mega2560"
 #elif defined(__AVR_ATmega1284P__)
-const unsigned char mDebugMain_TITLE[] PROGMEM =
-	"Athena for Arduino Mega1284P, Version " PP_STRINGIFY(BUILD_TAG);
+#define TITLE_BOARD_TYPE "Athena for Arduino Mega1284P"
 #else
-const unsigned char mDebugMain_TITLE[] PROGMEM =
-	"Unknown MCU with athena, Version " PP_STRINGIFY(BUILD_TAG);
+#define TITLE_BOARD_TYPE "Unknown MCU with athena"
 #endif
+
+#if defined(__WIZ_W5100__)
+#define TITLE_WIZ_TYPE "W5100"
+#elif defined(__WIZ_W5200__)
+#define TITLE_WIZ_TYPE "W5200"
+#elif defined(__WIZ_W5500__)
+#define TITLE_WIZ_TYPE "W5500"
+#endif
+
+const unsigned char mDebugMain_TITLE[] PROGMEM =
+	TITLE_BOARD_TYPE " (" TITLE_WIZ_TYPE "), Version " PP_STRINGIFY(BUILD_TAG);
 const unsigned char mDebugMain_EXIT[] PROGMEM = "Start user app";
+
 #if(DEBUG_MAIN > 1)
 #undef DBG_MAIN_EX
 #define DBG_MAIN_EX(block) block
