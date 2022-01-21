@@ -152,7 +152,7 @@
 
 /* Serial status flag, it is set to TRUE if flashing from
  * serial is currently active */
-uint8_t serialFlashing;
+extern uint8_t serialFlashing;
 
 /*
  * Function definitions
