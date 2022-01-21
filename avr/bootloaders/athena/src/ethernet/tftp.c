@@ -41,6 +41,13 @@ const unsigned char tftp_invalid_image_packet[] PROGMEM = "\0\5"
 														  "\0\0"
 														  "Invalid image file";
 
+uint8_t tftpFlashing;
+uint8_t tftpInitError;
+
+#ifndef TFTP_RANDOM_PORT
+uint16_t tftpTransferPort;
+#endif
+
 uint16_t lastPacket = 0, highPacket = 0;
 
 static void sockInit(uint16_t port)

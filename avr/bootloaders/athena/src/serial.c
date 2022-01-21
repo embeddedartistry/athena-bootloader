@@ -24,6 +24,8 @@
 #error "Unknown MCU. Cannot find the proper serial bootloader."
 #endif
 
+uint8_t serialFlashing;
+
 void serialInit(void)
 {
 	// Double speed mode USART0

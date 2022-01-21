@@ -56,12 +56,8 @@
 /**
  * Tftp status flag, it is set to TRUE if flashing from
  * tftp is currently active */
-uint8_t tftpFlashing;
-uint8_t tftpInitError;
-
-#ifndef TFTP_RANDOM_PORT
-uint16_t tftpTransferPort;
-#endif
+extern uint8_t tftpFlashing;
+extern uint8_t tftpInitError;
 
 void tftpInit(void);
 uint8_t tftpPoll(void);
