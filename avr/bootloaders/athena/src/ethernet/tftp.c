@@ -515,7 +515,7 @@ uint8_t tftpPoll(void)
 	uint16_t packetSize;
 	uint16_t prev = 0;
 	uint8_t response = ACK;
-	
+
 	// Get the size of the recieved data
 	packetSize = spiReadWord(REG_S3_RX_RSR0, S3_R_CB);
 
@@ -523,7 +523,7 @@ uint8_t tftpPoll(void)
 	while(packetSize != prev)
 	{
 		_delay_ms(TFTP_PACKET_DELAY);
-		
+
 		prev = packetSize;
 		packetSize = spiReadWord(REG_S3_RX_RSR0, S3_R_CB);
 	}
