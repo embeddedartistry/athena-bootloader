@@ -281,21 +281,6 @@ static uint8_t processPacket(void)
 
 				DBG_TFTP(tracePGMlnTftp(mDebugTftp_PLEN); tracenum(packetLength);)
 
-				if(writeAddr == 0)
-				{
-					// First sector - validate
-					if(!validImage(pageBase))
-					{
-#if defined(__AVR_ATmega328__) || defined(__AVR_ATmega328P__)
-						/* FIXME: Validity checks. Small programms (under 512 bytes?) don't
-						 * have the the JMP sections and that is why app.bin was failing.
-						 * When flashing big binaries is fixed, uncomment the break below.*/
-						returnCode = INVALID_IMAGE;
-						break;
-#endif
-					}
-				}
-
 				// Flash packets
 				uint16_t writeValue;
 				for(offset = 0; offset < packetLength;)
