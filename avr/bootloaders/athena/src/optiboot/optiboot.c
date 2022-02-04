@@ -79,7 +79,13 @@ uint8_t processOptiboot(void)
 	else if(ch == STK_SET_DEVICE_EXT)
 	{
 		// SET DEVICE EXT is ignored
+		//   avrdude: stk500_set_extended_parms() function send a different message [length]
+		//   based on the reported bootloader version
+#if(BUILD_MAJOR_VER > 1) || ((BUILD_MAJOR_VER == 1) && (BUILD_MINOR_VER > 10))
+		getNch(5);
+#else
 		getNch(4);
+#endif
 	}
 	else if(ch == STK_LOAD_ADDRESS)
 	{
