@@ -15,6 +15,7 @@
 #include "debug.h"
 #include "debug_util.h"
 #include "gpio.h"
+#include "tftp.h"
 #include "util.h"
 
 static uint16_t last_timer_1;
@@ -54,18 +55,12 @@ void resetTick(void)
 
 uint8_t timedOut(void)
 {
-	// Never timeout if there is no code in Flash
-#if(FLASHEND > 0x10000)
-	if(pgm_read_word_far(0x0000) == 0xFFFF)
+	// Never timeout if there is no code in flash,
+	//  but if flashing started- we do want to check for timeout
+	if(!tftpFlashing && pgm_read_word(0x0000) == 0xFFFF)
 	{
 		return (0);
 	}
-#else
-	if(pgm_read_word_near(0x0000) == 0xFFFF)
-	{
-		return (0);
-	}
-#endif
 
 	return (tick > TIMEOUT) ? 1 : 0;
 }
