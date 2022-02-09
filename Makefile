@@ -37,7 +37,9 @@ distclean:
 .PHONY: package
 package:
 	$(Q)tools/package.sh
+	$(Q)tools/package_bm.sh
 	$(Q) mv $(BUILDRESULTS)/release/athena_bootloaders.zip $(BUILDRESULTS)/release/athena_bootloaders-$(BUILD_TAG).zip
+	$(Q) mv $(BUILDRESULTS)/release/athena_bootloaders-bm.zip $(BUILDRESULTS)/release/athena_bootloaders-bm-$(BUILD_TAG).zip
 
 .PHONY: dist
 dist: $(CONFIGURED_BUILD_DEP)
