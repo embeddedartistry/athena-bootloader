@@ -17,8 +17,8 @@
                     "help": {
                         "online": "https://github.com/embeddedartistry/athena-bootloader"
                     },
-                    "url": "https://github.com/embeddedartistry/athena-bootloader/releases/download/%%VERSION%%/athena_bootloaders_package.zip",
-                    "archiveFileName": "athena_bootloaders_package.zip",
+                    "url": "https://github.com/embeddedartistry/athena-bootloader/releases/download/%%VERSION%%/athena_bootloaders-%%VERSION%%.zip",
+                    "archiveFileName": "athena_bootloaders-%%VERSION%%.zip",
                     "checksum": "SHA-256:%%CHECKSUM%%",
                     "size": "%%SIZE%%",
                     "boards": [
