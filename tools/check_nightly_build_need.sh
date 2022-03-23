@@ -7,8 +7,8 @@
 GIT_DESCRIBE=`git describe --tags`
 
 if [[ "$GIT_DESCRIBE" == *"-"* ]]; then
-	return 0
+	exit 0
 fi
 
 # No need to build
-return 1
+exit 1
