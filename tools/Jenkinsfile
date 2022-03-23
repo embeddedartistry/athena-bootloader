@@ -37,6 +37,8 @@ pipeline
       steps
       {
         sh 'make package'
+        sh 'git checkout master'
+        sh 'git pull'
         sh 'git add package_athena-bootloader_index.json'
         sh "git commit -m 'Generate package_athena-bootloader_index.json for ${params.MAJOR_VERSION}.${params.MINOR_VERSION}.${BUILD_NUMBER}'"
         sh "git push"
