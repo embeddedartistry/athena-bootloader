@@ -1,0 +1,51 @@
+{
+    "packages": [
+        {
+            "name": "Athena-Bootloader",
+            "maintainer": "Embedded Artistry",
+            "websiteURL": "https://github.com/embeddedartistry/athena-bootloader",
+            "email": "",
+            "help": {
+                "online": "https://github.com/embeddedartistry/athena-bootloader/issues"
+            },
+            "platforms": [
+                {
+                    "name": "Athena Bootloader",
+                    "architecture": "avr",
+                    "version": "%%VERSION%%",
+                    "category": "Contributed",
+                    "help": {
+                        "online": "https://github.com/embeddedartistry/athena-bootloader"
+                    },
+                    "url": "https://github.com/embeddedartistry/athena-bootloader/releases/download/%%VERSION%%/athena_bootloaders_package.zip",
+                    "archiveFileName": "athena_bootloaders_package.zip",
+                    "checksum": "SHA-256:%%CHECKSUM%%",
+                    "size": "%%SIZE%%",
+                    "boards": [
+                        {
+                            "name": "Arduino Duemilanove w/ ATmega328"
+                        },
+                        {
+                            "name": "Arduino Uno"
+                        },
+                        {
+                            "name": "Arduino Ethernet"
+                        },
+                        {
+                            "name": "Arduino Mega 2560"
+                        },
+                        {
+                            "name": "ATmega1284P"
+                        },
+                        {
+                            "name": "ATmega32U4"
+                        }
+                    ],
+                    "toolsDependencies": []
+                }
+
+            ],
+            "tools": []
+        }
+    ]
+}
