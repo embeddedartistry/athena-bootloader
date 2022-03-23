@@ -1,7 +1,5 @@
 # Athena Bootloader for Arduino
 
-**PSA: DO NOT DOWNLOAD THIS PROJECT AS A ZIP ARCHIVE USING THE GIT INTERFACE. USE THE [LATEST RELEASE](https://github.com/embeddedartistry/athena-bootloader/releases/latest) PAGE**
-
 Athena is an Ethernet- and Serial-capable bootloader for Arduino. Using an Arduino Ethernet board or Wiznet W5x00 shield, you can upload programs to your Arduino over Ethernet. Athena starts a TFTP server on the Arduino board, and files can be transferred using any TFTP client.
 
 Embedded Artistry has forked this bootloader version from the [original project](https://github.com/loathingKernel/ariadne-bootloader), which seems to be no longer actively maintained. We are making many improvements and enhancements to the previous implementation.
@@ -55,9 +53,9 @@ Bootloader binary files for different versions can be found on the [Releases](ht
 	2. [Donors](#donors)
 1. [License](#license)
 
-## Getting the Bootloader
+## Cloning the Repository
 
-To download this repository, we recommend cloning with the `--recursive` flag to ensure submodules (e.g., [supporting libraries](#supporting-libraries)) are automatically downloaded.
+To download this repository for local development, we recommend cloning with the `--recursive` flag to ensure submodules (e.g., [supporting libraries](#supporting-libraries)) are automatically downloaded.
 
 ```
 $ git clone https://github.com/embeddedartistry/athena-bootloader.git --recursive
