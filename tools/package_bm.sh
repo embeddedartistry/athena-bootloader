@@ -3,7 +3,7 @@
 
 set -ex
 
-VERSION=$1
+VERSION=`git describe --tags`
 
 ORIGIN_DIR=`pwd`
 OUTPUT_DIR=${ORIGIN_DIR}/buildresults/release
