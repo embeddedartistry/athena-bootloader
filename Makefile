@@ -38,12 +38,6 @@ distclean:
 package:
 	$(Q)tools/package.sh
 
-.PHONY: dist
-dist: $(CONFIGURED_BUILD_DEP)
-	$(Q) meson dist -C $(BUILDRESULTS) --formats zip
-	$(Q) mv $(BUILDRESULTS)/meson-dist/AthenaBootloader-*.zip $(BUILDRESULTS)/meson-dist/AthenaBootloaderProjectFiles-$(BUILD_TAG).zip
-	$(Q) mv $(BUILDRESULTS)/meson-dist/AthenaBootloader-*.zip.sha256sum $(BUILDRESULTS)/meson-dist/AthenaBootloaderProjectFiles-$(BUILD_TAG).zip.sha256sum
-
 .PHONY: format
 format:
 	$(Q)tools/format/clang-format-all.sh

@@ -51,14 +51,6 @@ pipeline
         sh 'make'
       }
     }
-    stage('Package')
-    {
-      steps
-      {
-        sh 'make package'
-        sh 'make dist'
-      }
-    }
   }
   post
   {
