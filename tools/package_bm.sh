@@ -1,8 +1,6 @@
 #!/bin/bash
 # Create package for board manager (package_AB_index.json) with the required directory structure
 
-set -ex
-
 VERSION=`git describe --tags`
 
 ORIGIN_DIR=`pwd`
