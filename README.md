@@ -255,7 +255,9 @@ You have two options for installing the bootloader:
 
 #### Board Manager Installation
 
-Follow [these Arduino IDE instructions for **Third Party Boards**](https://support.arduino.cc/hc/en-us/articles/360016119519-How-to-add-boards-in-the-board-manager), and add this custom URL: https://raw.githubusercontent.com/embeddedartistry/athena-bootloader/master/package_athena-bootloader_index.json
+Follow [these Arduino IDE instructions for **Third Party Boards**](https://support.arduino.cc/hc/en-us/articles/360016119519-How-to-add-boards-in-the-board-manager), and add this custom URL: https://raw.githubusercontent.com/embeddedartistry/athena-bootloader/master/package_athena-bootloader_index.json .
+
+Once that URL is added, navigate to Tools -> Boards submenu -> Board manager. You will be able to search for "Athena" and then install the board package.
 
 #### Manual Installation
 
