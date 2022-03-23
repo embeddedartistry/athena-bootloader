@@ -12,15 +12,15 @@
                 {
                     "name": "Athena Bootloader",
                     "architecture": "avr",
-                    "version": "11.3.23",
+                    "version": "11.3.25",
                     "category": "Contributed",
                     "help": {
                         "online": "https://github.com/embeddedartistry/athena-bootloader"
                     },
-                    "url": "https://github.com/embeddedartistry/athena-bootloader/releases/download/11.3.23/athena_bootloaders-11.3.23.zip",
-                    "archiveFileName": "athena_bootloaders-11.3.23.zip",
-                    "checksum": "SHA-256:c1c2664c03a64339a2b804c8e17627393e5db618694b316e090e18398c57dc03",
-                    "size": "205212",
+                    "url": "https://github.com/embeddedartistry/athena-bootloader/releases/download/11.3.25/athena_bootloaders-11.3.25.zip",
+                    "archiveFileName": "athena_bootloaders-11.3.25.zip",
+                    "checksum": "SHA-256:b332bcecf53af8f909eb22f621e98e20610f3d6e61c356141c07df08614cdda3",
+                    "size": "205218",
                     "boards": [
                         {
                             "name": "Arduino Duemilanove w/ ATmega328"
