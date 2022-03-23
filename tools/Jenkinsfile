@@ -13,12 +13,26 @@ pipeline
     string(defaultValue: '11', description: 'Major version number (x.0.0)', name: 'MAJOR_VERSION')
     string(defaultValue: '3', description: 'Minor version number (0.x.0)', name: 'MINOR_VERSION')
   }
+  triggers
+  {
+    //At 04:00 on every day-of-week from Monday through Friday.
+    pollSCM('H 4 * * 1-5')
+  }
   stages
   {
     stage('Setup')
     {
       steps
       {
+        echo 'Checking to see if we need to do this build'
+        script {
+          try {
+            sh "tools/check_nightly_build_need.sh"
+          } catch (Exception e) {
+            currentBuild.currentResult = 'ABORTED'
+          }
+        }
+
         echo 'Running make clean...'
         sh 'make distclean'
 
