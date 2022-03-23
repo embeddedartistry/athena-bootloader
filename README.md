@@ -24,7 +24,7 @@ Bootloader binary files for different versions can be found on the [Releases](ht
 1. [Repository Structure](#repository-structure)
 1. [Quickstart Checklist](#quickstart-checklist)
 2. [Related Documents](#related-documents)
-1. [Downloading the Bootloader](#downloading-the-bootloader)
+1. [Downloading and Building the Bootloader](#downloading-and-building-the-bootloader)
 1. [Installing the Bootloader Project](#installing-the-bootloader-project)
 	1. [Arduino SDK Installation](#arduino-sdk-installation)
 	1. [Atmel Studio Installation](#atmel-studio-installation)
@@ -73,21 +73,13 @@ You can also [access .zip archives from latest release page](https://github.com/
 
 ### git-lfs
 
-This project requires you to use [git-lfs](https://git-lfs.github.com). Images, pre-built bootloader binaries, and other files are stored within git-lfs. If you have git-lfs installed, these files will downloaded correctly when cloning the repository.
+This project requires you to use [git-lfs](https://git-lfs.github.com). Images and documentation are stored within git-lfs. If you have git-lfs installed, these files will downloaded correctly when cloning the repository.
 
 If you do not have this installed, please visit [the git-lfs web page](https://git-lfs.github.com) for installation instructions.
 
 If you cloned this repository before installing git-lfs, please run `git lfs pull`. If you have git-lfs installed before cloning the repository, git will automatically perform a `git lfs pull` for you.
 
 When you don't have git-lfs installed, you will see all of the files in the repository. However, files stored with git-lfs will show up as small placeholders. Trying to use these files will result in errors.
-
-### Don't Want to use git-lfs?
-
-If you don't want to use git-lfs, you have the following options:
-
-1. Manually build the bootloader binaries on your machine by running `make` at the top-level of the repository.
-1. [Download the latest .zip archive of the bootloader binaries for the latest release](https://github.com/embeddedartistry/athena-bootloader/releases/latest), and copy them to `avr/bootloaders/athena/` folder so they will be properly found by the Arduino IDE. This will replace the placeholders with complete files.
-2. [Download the latest ProjectFile .zip archive for the latest release](https://github.com/embeddedartistry/athena-bootloader/releases/latest), which contains the full source tree (including submodules) and populated binary files.
 
 ## Dependencies
 
@@ -226,7 +218,7 @@ Need to use a custom board file for compiling and uploading sketches? Once you'v
 * [Network Configuration](docs/network_configuration.md) provides pointers on configuring the network settings for your device
 * [Converting Binaries for TFTP Upload](docs/converting_binaries.md) provides more detailed instructions on the conversion process, with example locations for each OS when using the Arduino IDE
 
-## Downloading the Bootloader
+## Downloading and Building the Bootloader
 
 You can clone the repository from GitHub:
 
@@ -246,6 +238,8 @@ Note that you must use the `--recursive` flag because the project contains submo
 $ git submodule update --init
 ```
 
+To build binaries within the repository, run `make`.
+
 You can also download a zip archive of the repository from [the GitHub repository page](https://github.com/embeddedartistry/athena-bootloader).
 
 ## Installing the Bootloader Project
@@ -254,6 +248,18 @@ You can also download a zip archive of the repository from [the GitHub repositor
 1. [Atmel Studio Installation](#atmel-studio-installation)
 
 ### Arduino SDK Installation
+
+
+You have two options for installing the bootloader:
+
+1. Use the board manager
+2. Manual installation
+
+#### Board Manager Installation
+
+Follow [these Arduino IDE instructions for **Third Party Boards**](https://support.arduino.cc/hc/en-us/articles/360016119519-How-to-add-boards-in-the-board-manager), and add this custom URL: https://raw.githubusercontent.com/embeddedartistry/athena-bootloader/master/package_athena-bootloader_index.json
+
+#### Manual Installation
 
 In order for the Arduino IDE to access the information, you need to place the `athena-bootloader` repository within the `hardware/` folder of your "Sketchbook Location". You can find this location by viewing the Arduino IDE settings. The default location is often the `Arduino/` folder in your home directory or in `Documents/`.
 
@@ -271,14 +277,22 @@ Our Sketchbook folder does not have a `hardware` directory by default. We create
 $ mkdir -p /Users/embeddedartistry/Documents/Arduino/hardware
 ```
 
-You can clone the repository within that directory, or you can use a symbolic link within the `hardware/` folder:
+You can go to [the releases page]() and download the `athena_bootloaders-VERSION.zip` file for a given release, unzipping that in the target directory.
+
+You can also clone the repository within that directory, or you can use a symbolic link within the `hardware/` folder:
 
 ```
 $ cd /Users/embeddedartistry/Documents/Arduino/hardware
 $ ln -s ~/src/athena-bootloader/ ./athena
 ```
 
-Once the `athena-bootloader` folder is placed in the `hardware/` folder, Arduino will detect it. Restart the IDE if it is already open. You should now see the Athena bootloader show up in the board list.
+If you cloned the repository, you will need to build the bootloader files.
+
+```
+$ make
+```
+
+In either case, once the `athena-bootloader` folder is placed in the `hardware/` folder, Arduino will detect it. Restart the IDE if it is already open. You should now see the Athena bootloader show up in the board list.
 
 ![Image showing the Athena bootloader in boards](docs/boards.png "Athena Listed in Boards")
 
