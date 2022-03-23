@@ -30,6 +30,7 @@ pipeline
             sh "tools/check_nightly_build_need.sh"
           } catch (Exception e) {
             currentBuild.currentResult = 'ABORTED'
+            error('Aborting, no changes since last nightly build.')
           }
         }
 
