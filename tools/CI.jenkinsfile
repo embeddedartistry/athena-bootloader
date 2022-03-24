@@ -26,7 +26,6 @@ pipeline
       steps
       {
         setGithubStatus('continuous-integration/jenkins/athena', 'athena CI Build Started', 'PENDING')
-        setNextBuildNumber("${BUILD_NUMBER}")
       }
     }
     stage('Clean')
@@ -82,6 +81,7 @@ pipeline
     aborted
     {
       echo "Build manually aborted on Jenkins"
+      setNextBuildNumber("${BUILD_NUMBER}")
       slackNotify('ABORTED')
       setGithubStatus('continuous-integration/jenkins/athena', 'athena CI Build Aborted', 'ERROR')
     }
