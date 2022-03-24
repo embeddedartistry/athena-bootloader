@@ -26,7 +26,7 @@ pipeline
       steps
       {
         setGithubStatus('continuous-integration/jenkins/athena', 'athena CI Build Started', 'PENDING')
-        nextBuildNumber(${BUILD_NUMBER})
+        nextBuildNumber("${BUILD_NUMBER}")
       }
     }
     stage('Clean')
