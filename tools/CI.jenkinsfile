@@ -4,6 +4,17 @@
 pipeline
 {
   agent any
+  options
+  {
+    buildDiscarder(BuildHistoryManager([
+      [
+        conditions: [
+            BuildResult(matchAborted: true)
+        ],
+        actions: [DeleteBuild()]
+      ]
+    ]))
+  }
   environment
   {
     GIT_CHANGE_LOG = gitChangeLog(currentBuild.changeSets)
@@ -15,6 +26,7 @@ pipeline
       steps
       {
         setGithubStatus('continuous-integration/jenkins/athena', 'athena CI Build Started', 'PENDING')
+        nextBuildNumber(${BUILD_NUMBER})
       }
     }
     stage('Clean')
