@@ -4,17 +4,6 @@
 pipeline
 {
   agent any
-  options
-  {
-    buildDiscarder(BuildHistoryManager([
-      [
-        conditions: [
-            BuildResult(matchAborted: true)
-        ],
-        actions: [DeleteBuild()]
-      ]
-    ]))
-  }
   environment
   {
     GIT_CHANGE_LOG = gitChangeLog(currentBuild.changeSets)
@@ -81,9 +70,11 @@ pipeline
     aborted
     {
       echo "Build manually aborted on Jenkins"
+      def job = jenkins.model.Jenkins.instance.getItemByFullName("<folder>/<job>")
       setNextBuildNumber("${BUILD_NUMBER}")
       slackNotify('ABORTED')
       setGithubStatus('continuous-integration/jenkins/athena', 'athena CI Build Aborted', 'ERROR')
+      deleteBuild()
     }
     always
     {
