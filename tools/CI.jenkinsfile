@@ -70,10 +70,10 @@ pipeline
     aborted
     {
       echo "Build manually aborted on Jenkins"
-      deleteBuild()
       setNextBuildNumber("${BUILD_NUMBER}")
       slackNotify('ABORTED')
       setGithubStatus('continuous-integration/jenkins/athena', 'athena CI Build Aborted', 'ERROR')
+      deleteBuild()
     }
     always
     {
